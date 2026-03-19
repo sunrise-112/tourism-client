@@ -1,7 +1,10 @@
 import { toast } from "react-toastify";
 import http from "./httpService";
+import { jwtDecode } from "jwt-decode";
 
-const apiEndPoint = import.meta.env.VITE_API_URL + "/api/user";
+const apiEndPoint = import.meta.env.VITE_API_URL + "/user";
+
+const tokenKey = "token";
 
 const getAll = async ({
   role,
@@ -65,6 +68,18 @@ const deleteMany = async (ids) => {
   toast.success("Users deleted successfully!");
 };
 
+const getCurrentUser = () => {
+  try {
+    const token = localStorage.getItem(tokenKey);
+    if (!token) return null;
+
+    const decoded = jwtDecode(token);
+    return decoded;
+  } catch (ex) {
+    return null;
+  }
+};
+
 export default {
   getAll,
   getById,
@@ -74,4 +89,5 @@ export default {
   getMe,
   deleteOne,
   deleteMany,
+  getCurrentUser,
 };

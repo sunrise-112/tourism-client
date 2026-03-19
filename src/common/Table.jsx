@@ -1,4 +1,4 @@
-import CardsTable from "./CardTable";
+import CardsTable from "../common/CardsTable";
 import TableHeader from "../common/TableHeader";
 import TableBody from "../common/TableBody";
 import { useTranslation } from "react-i18next";
@@ -26,7 +26,13 @@ const Table = ({
       dir={isRTL ? "rtl" : "ltr"}
       className='w-full rounded-2xl border border-base-200 bg-base-100 shadow-sm overflow-hidden'
     >
-      {/* Cards view — mobile/tablet */}
+      {/* Cards view — mobile/tablet *data,
+  columns,
+  onSort,
+  sortColumn,
+  showCards = true,
+  onSelectAll,
+  selectAll,/}
       {showCards && (
         <div className='block xl:hidden p-4'>
           <CardsTable items={data} columns={columns} />

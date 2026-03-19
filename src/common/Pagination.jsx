@@ -1,6 +1,5 @@
 import React from "react";
-import _ from "lodash";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const Pagination = ({
   itemsCount,
@@ -9,12 +8,16 @@ const Pagination = ({
   onPageChange,
   onPageSizeChange,
 }) => {
+  const { t } = useTranslation();
+
   const pageSizeOptions = [5, 10, 20, 30, 40, 50, 100, 200];
   const totalPages = Math.ceil(itemsCount / pageSize);
+  const startItem = (pageNumber - 1) * pageSize + 1;
+  const endItem = Math.min(pageNumber * pageSize, itemsCount);
 
-  // Smart pagination - show limited pages with ellipsis
+  // ── Smart pagination with ellipsis ──────────────────────────
   const getVisiblePages = () => {
-    const delta = 2; // Number of pages to show on each side of current page
+    const delta = 2;
     const range = [];
     const rangeWithDots = [];
 
@@ -22,159 +25,129 @@ const Pagination = ({
       let i = Math.max(2, pageNumber - delta);
       i <= Math.min(totalPages - 1, pageNumber + delta);
       i++
-    ) {
+    )
       range.push(i);
-    }
 
-    if (pageNumber - delta > 2) {
-      rangeWithDots.push(1, "...");
-    } else {
-      rangeWithDots.push(1);
-    }
+    if (pageNumber - delta > 2) rangeWithDots.push(1, "...");
+    else rangeWithDots.push(1);
 
     rangeWithDots.push(...range);
 
-    if (pageNumber + delta < totalPages - 1) {
+    if (pageNumber + delta < totalPages - 1)
       rangeWithDots.push("...", totalPages);
-    } else {
-      if (totalPages > 1) rangeWithDots.push(totalPages);
-    }
+    else if (totalPages > 1) rangeWithDots.push(totalPages);
 
     return rangeWithDots.filter(
       (item, index, arr) => arr.indexOf(item) === index
     );
   };
 
-  const startItem = (pageNumber - 1) * pageSize + 1;
-  const endItem = Math.min(pageNumber * pageSize, itemsCount);
   const visiblePages = getVisiblePages();
 
+  // ── Page button ──────────────────────────────────────────────
+  const PageBtn = ({ page, active, disabled, onClick, children }) => (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`
+        w-9 h-9 flex items-center justify-center rounded-xl text-sm font-semibold
+        border transition-all duration-150 select-none
+        ${
+          active
+            ? "bg-amber-400 text-amber-900 border-amber-400 shadow-md shadow-amber-200"
+            : disabled
+            ? "bg-stone-50 text-stone-300 border-stone-100 cursor-not-allowed"
+            : "bg-white text-stone-500 border-stone-200 hover:border-amber-300 hover:text-amber-600 hover:bg-amber-50"
+        }
+      `}
+    >
+      {children}
+    </button>
+  );
+
   return (
-    <div className='bg-base-100 border-t border-base-300'>
-      <div className='flex flex-col sm:flex-row items-center justify-between px-4 py-4 gap-4'>
-        {/* Items Info */}
-        <div className='flex-1 flex flex-col sm:flex-row items-center justify-between gap-4'>
-          <div className='text-sm text-base-content/70 order-2 sm:order-1'>
-            {t("Showing")}{" "}
-            <span className='font-semibold text-base-content'>{startItem}</span>{" "}
-            {t("to")}{" "}
-            <span className='font-semibold text-base-content'>{endItem}</span>{" "}
-            {t("of")}{" "}
-            <span className='font-semibold text-base-content'>
-              {itemsCount}
-            </span>{" "}
-            {t("Results")}
-          </div>
+    <div
+      className='flex flex-col sm:flex-row items-center justify-between gap-4 px-2 py-4'
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
+    >
+      {/* ── Results info ──────────────────────────────── */}
+      <p className='text-xs text-stone-400 order-2 sm:order-1 whitespace-nowrap'>
+        {t("Showing")}{" "}
+        <span className='font-bold text-stone-600'>{startItem}</span>
+        {" – "}
+        <span className='font-bold text-stone-600'>{endItem}</span> {t("of")}{" "}
+        <span className='font-bold text-stone-600'>{itemsCount}</span>{" "}
+        {t("Results")}
+      </p>
 
-          {/* Pagination Controls */}
-          <div className='order-1 sm:order-2'>
-            {totalPages > 1 ? (
-              <div className='join'>
-                {/* Previous Button */}
-                <button
-                  className={`join-item btn btn-sm ${
-                    pageNumber === 1
-                      ? "btn-disabled"
-                      : "btn-ghost hover:btn-accent"
-                  }`}
-                  onClick={() => pageNumber > 1 && onPageChange(pageNumber - 1)}
-                  disabled={pageNumber === 1}
-                >
-                  <i className='fa fa-chevron-left text-xs'></i>
-                </button>
+      {/* ── Pagination buttons ────────────────────────── */}
+      {totalPages > 1 && (
+        <div className='flex items-center gap-1.5 order-1 sm:order-2'>
+          {/* First */}
+          <PageBtn disabled={pageNumber === 1} onClick={() => onPageChange(1)}>
+            <i className='fa fa-angle-double-left text-xs' />
+          </PageBtn>
 
-                {/* Page Numbers */}
-                {visiblePages.map((page, index) => (
-                  <React.Fragment key={index}>
-                    {page === "..." ? (
-                      <button className='join-item btn btn-sm btn-disabled'>
-                        ...
-                      </button>
-                    ) : (
-                      <button
-                        className={`join-item btn btn-sm ${
-                          pageNumber === page
-                            ? "btn-accent"
-                            : "btn-ghost hover:btn-accent"
-                        }`}
-                        onClick={() => onPageChange(page)}
-                      >
-                        {page}
-                      </button>
-                    )}
-                  </React.Fragment>
-                ))}
-
-                {/* Next Button */}
-                <button
-                  className={`join-item btn btn-sm ${
-                    pageNumber === totalPages
-                      ? "btn-disabled"
-                      : "btn-ghost hover:btn-accent"
-                  }`}
-                  onClick={() =>
-                    pageNumber < totalPages && onPageChange(pageNumber + 1)
-                  }
-                  disabled={pageNumber === totalPages}
-                >
-                  <i className='fa fa-chevron-right text-xs'></i>
-                </button>
-              </div>
-            ) : (
-              // Maintain space when pagination is not visible
-              <div className='h-8' />
-            )}
-          </div>
-        </div>
-
-        {/* Page Size Selector */}
-        <div className='flex items-center gap-2'>
-          <label className='text-sm text-base-content/70 whitespace-nowrap'>
-            {t("Per page")}:
-          </label>
-          <select
-            className='select select-bordered select-sm w-20 focus:select-accent'
-            value={pageSize}
-            onChange={(e) => onPageSizeChange(parseInt(e.target.value))}
-          >
-            {pageSizeOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Mobile-only quick navigation */}
-      <div className='sm:hidden px-4'>
-        <div className='flex items-center justify-center'>
-          <button
-            className={`btn btn-sm btn-circle ${
-              pageNumber === 1 ? "btn-disabled" : "btn-ghost hover:btn-accent"
-            }`}
-            onClick={() => onPageChange(1)}
+          {/* Prev */}
+          <PageBtn
             disabled={pageNumber === 1}
+            onClick={() => onPageChange(pageNumber - 1)}
           >
-            <i className='fa fa-angle-double-left text-xs'></i>
-          </button>
+            <i className='fa fa-chevron-left text-xs' />
+          </PageBtn>
 
-          <span className='text-sm text-base-content/70 mx-2'>
-            Page {pageNumber} of {totalPages}
-          </span>
+          {/* Page numbers */}
+          {visiblePages.map((page, i) =>
+            page === "..." ? (
+              <span
+                key={`dots-${i}`}
+                className='w-9 h-9 flex items-center justify-center text-stone-300 text-sm select-none'
+              >
+                ···
+              </span>
+            ) : (
+              <PageBtn
+                key={page}
+                active={pageNumber === page}
+                onClick={() => onPageChange(page)}
+              >
+                {page}
+              </PageBtn>
+            )
+          )}
 
-          <button
-            className={`btn btn-sm btn-circle ${
-              pageNumber === totalPages
-                ? "btn-disabled"
-                : "btn-ghost hover:btn-accent"
-            }`}
-            onClick={() => onPageChange(totalPages)}
+          {/* Next */}
+          <PageBtn
             disabled={pageNumber === totalPages}
+            onClick={() => onPageChange(pageNumber + 1)}
           >
-            <i className='fa fa-angle-double-right text-xs'></i>
-          </button>
+            <i className='fa fa-chevron-right text-xs' />
+          </PageBtn>
+
+          {/* Last */}
+          <PageBtn
+            disabled={pageNumber === totalPages}
+            onClick={() => onPageChange(totalPages)}
+          >
+            <i className='fa fa-angle-double-right text-xs' />
+          </PageBtn>
         </div>
+      )}
+
+      {/* ── Page size selector ────────────────────────── */}
+      <div className='flex items-center gap-2 order-3 whitespace-nowrap'>
+        <span className='text-xs text-stone-400'>{t("Per page")}:</span>
+        <select
+          value={pageSize}
+          onChange={(e) => onPageSizeChange(parseInt(e.target.value))}
+          className='text-xs font-semibold text-stone-600 bg-white border border-stone-200 rounded-xl px-2.5 py-2 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/15 transition-all cursor-pointer'
+        >
+          {pageSizeOptions.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );

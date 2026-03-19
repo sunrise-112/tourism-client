@@ -2,7 +2,8 @@ import { Navigate } from "react-router-dom";
 import userService from "../../services/userService";
 
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
-  const user = userService.getMe();
+  const user = userService.getCurrentUser();
+  console.log("User role: ", user?.role);
 
   if (!user) return <Navigate to='/login' />;
 

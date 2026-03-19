@@ -1,7 +1,9 @@
 import { toast } from "react-toastify";
 import http from "./httpService";
 
-const apiEndPoint = import.meta.env.VITE_API_URL + "/api/auth";
+const apiEndPoint = import.meta.env.VITE_API_URL + "/auth";
+
+const tokenKey = "token";
 
 const register = async (data) => {
   const response = await http.post(`${apiEndPoint}/register`, data);
@@ -12,6 +14,8 @@ const register = async (data) => {
 
 const login = async (data) => {
   const response = await http.post(`${apiEndPoint}/login`, data);
+
+  localStorage.setItem(tokenKey, response.headers["x-auth-token"]);
   return response;
 };
 

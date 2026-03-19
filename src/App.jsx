@@ -2,6 +2,30 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// ─── Public Pages ─────────────────────────────────────────────
+import Home from "./pages/public/Home";
+import NotFound from "./pages/public/NotFound.jsx";
+import NotAuthorized from "./pages/public/NotAuthorized.jsx";
+import AboutUs from "./pages/public/AboutUs.jsx";
+import ContactUs from "./pages/public/ContactUs.jsx";
+
+// Pages
+import ToursList from "./pages/tours/ToursList";
+import TourDetail from "./pages/tours/TourDetail.jsx";
+
+/*
+ */
+
+// ─── Auth Pages ───────────────────────────────────────────────
+import Login from "../src/pages/auth/Login";
+import Register from "../src/pages/auth/register";
+import ForgotPassword from "../src/pages/auth/ForgotPassword";
+import ResetPassword from "../src/pages/auth/ResetPassword";
+import VerifyEmail from "../src/pages/auth/VerifyEmail";
+
+// Constants
+import Roles from "./constants/role";
+
 // Guard
 import ProtectedRoute from "./components/guards/ProtectedRoute";
 
@@ -10,8 +34,22 @@ import AdminLayout from "./layouts/AdminLayout";
 import CustomerLayout from "./layouts/CustomerLayout";
 import PublicLayout from "./layouts/PublicLayout";
 
-// Constants
-import Roles from "./constants/role";
+// ─── Customer Pages ───────────────────────────────────────────
+import CustomerDashboard from "./pages/customer/Dashboard.jsx";
+import MyBookings from "./pages/customer/MyBookings.jsx";
+import MyReviews from "./pages/customer/MyReviews.jsx";
+import Profile from "./pages/customer/Profile.jsx";
+
+// ─── Admin Pages ──────────────────────────────────────────────
+import AdminDashboard from "./pages/admin/Dashboard.jsx";
+import ManageTours from "./pages/admin/ManageTours.jsx";
+import ManageBookings from "./pages/admin/ManageBookings.jsx";
+import ManageUsers from "./pages/admin/ManageUsers.jsx";
+import ManageReviews from "./pages/admin/ManageReviews.jsx";
+import SharedLayout from "./layouts/SharedLayout";
+import TourForm from "./components/tours/TourForm";
+
+/* 
 
 // ─── Public Pages ─────────────────────────────────────────────
 import Home from "./pages/public/Home";
@@ -19,8 +57,6 @@ import ToursList from "./pages/public/ToursList";
 import TourDetail from "./pages/public/TourDetail";
 import AboutUs from "./pages/public/AboutUs";
 import ContactUs from "./pages/public/ContactUs";
-import NotFound from "./pages/public/NotFound";
-import NotAuthorized from "./pages/public/NotAuthorized";
 
 // ─── Auth Pages ───────────────────────────────────────────────
 import Login from "./pages/auth/Login";
@@ -29,6 +65,10 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import VerifyEmail from "./pages/auth/VerifyEmail";
 
+
+
+
+************************ I'M HERE ***************************
 // ─── Customer Pages ───────────────────────────────────────────
 import CustomerDashboard from "./pages/customer/Dashboard";
 import MyBookings from "./pages/customer/MyBookings";
@@ -41,6 +81,7 @@ import ManageTours from "./pages/admin/ManageTours";
 import ManageBookings from "./pages/admin/ManageBookings";
 import ManageUsers from "./pages/admin/ManageUsers";
 import ManageReviews from "./pages/admin/ManageReviews";
+ */
 
 const App = () => {
   return (
@@ -61,6 +102,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/tours' element={<ToursList />} />
           <Route path='/tours/:id' element={<TourDetail />} />
+
           <Route path='/about' element={<AboutUs />} />
           <Route path='/contact' element={<ContactUs />} />
         </Route>
@@ -74,7 +116,7 @@ const App = () => {
 
         {/* ─── Customer ──────────────────────────────────── */}
         <Route
-          path='/dashboard'
+          path='/customer/dashboard'
           element={
             <ProtectedRoute allowedRoles={[Roles.CUSTOMER]}>
               <CustomerLayout>
@@ -84,7 +126,7 @@ const App = () => {
           }
         />
         <Route
-          path='/bookings/my'
+          path='/my-bookings'
           element={
             <ProtectedRoute allowedRoles={[Roles.CUSTOMER]}>
               <CustomerLayout>
@@ -103,20 +145,10 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route
-          path='/profile/me'
-          element={
-            <ProtectedRoute allowedRoles={[Roles.CUSTOMER]}>
-              <CustomerLayout>
-                <Profile />
-              </CustomerLayout>
-            </ProtectedRoute>
-          }
-        />
 
         {/* ─── Admin ─────────────────────────────────────── */}
         <Route
-          path='/admin'
+          path='/admin/dashboard'
           element={
             <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
               <AdminLayout>
@@ -136,6 +168,27 @@ const App = () => {
           }
         />
         <Route
+          path='/admin/tours/create'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <TourForm />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/admin/tours/edit/:id'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <TourForm />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path='/admin/bookings'
           element={
             <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
@@ -147,6 +200,8 @@ const App = () => {
         />
         <Route
           path='/admin/users'
+          Browse
+          Tours
           element={
             <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
               <AdminLayout>
@@ -166,10 +221,21 @@ const App = () => {
           }
         />
 
+        {/* Shared ADMIN - CUSTOMER */}
+        <Route
+          path='/profile/me'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN, Roles.CUSTOMER]}>
+              <SharedLayout>
+                <Profile />
+              </SharedLayout>
+            </ProtectedRoute>
+          }
+        />
+
         {/* ─── Fallbacks ─────────────────────────────────── */}
         <Route path='/not-authorized' element={<NotAuthorized />} />
-        <Route path='/404' element={<NotFound />} />
-        <Route path='*' element={<Navigate to='/404' replace />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </>
   );

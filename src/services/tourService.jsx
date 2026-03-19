@@ -1,27 +1,29 @@
 import { toast } from "react-toastify";
 import http from "./httpService";
 
-const apiEndPoint = import.meta.env.VITE_API_URL + "/api/tour";
+const apiEndPoint = import.meta.env.VITE_API_URL + "/tour";
 
 // ─── Shared (Admin + Customer) ───────────────────────────────────────────────
 
 const getAll = async ({
+  searchQuery,
   category,
   is_featured,
   is_hot_deal,
   limit = 10,
-  skip = 0,
+  page = 1,
   sortBy,
   order,
   startDate,
   endDate,
 } = {}) => {
   const query = new URLSearchParams({
+    ...(searchQuery && { searchQuery }),
     ...(category && { category }),
     ...(is_featured !== undefined && { is_featured }),
     ...(is_hot_deal !== undefined && { is_hot_deal }),
     ...(limit && { limit }),
-    ...(skip && { skip }),
+    ...(page && { page }),
     ...(sortBy && { sortBy }),
     ...(order && { order }),
     ...(startDate && { startDate }),

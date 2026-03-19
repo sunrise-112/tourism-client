@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import http from "./httpService";
 
-const apiEndPoint = import.meta.env.VITE_API_URL + "/api/review";
+const apiEndPoint = import.meta.env.VITE_API_URL + "/review";
 
 // ─── Public (No Auth) ────────────────────────────────────────────────────────
 

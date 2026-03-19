@@ -51,9 +51,11 @@ const Footer = () => {
             className='flex items-center gap-2 text-xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent w-fit'
           >
             <div className='w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0'>
-              <i className='fa fa-globe text-white text-sm' />
+              <i className='fa fa-globe text-black text-sm' />
             </div>
-            {import.meta.env.VITE_COMPANY || "TourApp"}
+            <div className='text-black'>
+              {import.meta.env.VITE_COMPANY || "TourApp"}
+            </div>
           </Link>
 
           <p className='text-sm text-base-content/50 leading-relaxed max-w-xs'>

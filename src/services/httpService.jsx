@@ -1,3 +1,4 @@
+/* 
 import axios from "axios";
 
 const api = axios.create({
@@ -22,7 +23,6 @@ const setJwt = (jwt) => {
 
 let isRefreshing = false;
 let refreshQueue = [];
-
 const processQueue = (error, token = null) => {
   refreshQueue.forEach((prom) => {
     if (error) {
@@ -92,7 +92,7 @@ api.interceptors.response.use(
 
     return Promise.reject(error);
   }
-);
+); 
 
 api.interceptors.request.use(
   (config) => {
@@ -104,6 +104,36 @@ api.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
+export default {
+  get: api.get,
+  post: api.post,
+  put: api.put,
+  delete: api.delete,
+  patch: api.patch,
+  setJwt,
+};  
+*/
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_DELIVERY_API,
+  withCredentials: true,
+});
+
+const setJwt = (jwt) => {
+  if (jwt) {
+    api.defaults.headers.common["x-auth-token"] = jwt;
+    localStorage.setItem("token", jwt);
+  } else {
+    delete api.defaults.headers.common["x-auth-token"];
+    localStorage.removeItem("token");
+  }
+};
+
+// Set token on init if it exists
+const token = localStorage.getItem("token");
+if (token) setJwt(token);
 
 export default {
   get: api.get,
