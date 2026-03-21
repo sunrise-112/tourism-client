@@ -190,12 +190,23 @@ const TourDetail = () => {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [itinerary, setItinerary] = useState([]);
+  const [exclusions, setExclusions] = useState([]);
+  const [inclusions, setInclusions] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await tourService.getById(id);
         setTour(data);
+        setItinerary(data?.itineraries);
+        setInclusions(
+          data.inclusions?.map((inc) => ({ id: inc.id, name: inc.text }))
+        );
+        setExclusions(
+          data.exclusions?.map((inc) => ({ id: inc.id, name: inc.text }))
+        );
+
         // Fetch related tours by category
         if (data?.category) {
           const related = await tourService.getAll({
@@ -451,15 +462,15 @@ const TourDetail = () => {
                       <p className='text-xs font-bold uppercase tracking-widest text-amber-600 mb-4'>
                         Included
                       </p>
-                      {INCLUSIONS.map((item) => (
+                      {inclusions.map((item) => (
                         <div
-                          key={item.text}
+                          key={item.id}
                           className='flex items-center gap-3 text-sm text-stone-600'
                         >
                           <span className='w-6 h-6 rounded-full bg-amber-400/20 flex items-center justify-center shrink-0'>
                             <i className='fa fa-check text-amber-600 text-[10px]' />
                           </span>
-                          {item.text}
+                          {item.name}
                         </div>
                       ))}
                     </div>
@@ -467,15 +478,15 @@ const TourDetail = () => {
                       <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-4'>
                         Not Included
                       </p>
-                      {EXCLUSIONS.map((item) => (
+                      {exclusions.map((item) => (
                         <div
-                          key={item}
+                          key={item.id}
                           className='flex items-center gap-3 text-sm text-stone-400'
                         >
                           <span className='w-6 h-6 rounded-full bg-stone-200 flex items-center justify-center shrink-0'>
                             <i className='fa fa-times text-stone-400 text-[10px]' />
                           </span>
-                          {item}
+                          {item.name}
                         </div>
                       ))}
                     </div>
@@ -525,21 +536,72 @@ const TourDetail = () => {
                   {/* Timeline line */}
                   <div className='absolute left-5 top-0 bottom-0 w-px bg-amber-100' />
                   <div className='space-y-6'>
-                    {ITINERARY.map((day, i) => (
+                    {itinerary.map((day, i) => (
                       <div key={day.day} className='flex gap-6 relative'>
+                        {/* Day bubble */}
                         <div className='w-10 h-10 rounded-full bg-amber-400 flex items-center justify-center text-amber-900 font-black text-sm shrink-0 z-10 shadow-md shadow-amber-200'>
                           {day.day}
                         </div>
-                        <div className='flex-1 bg-white rounded-2xl border border-stone-100 p-5 pb-6'>
-                          <p className='text-xs font-bold uppercase tracking-widest text-amber-500 mb-1'>
-                            Day {day.day}
-                          </p>
-                          <h3 className='font-black text-stone-800 mb-2'>
-                            {day.title}
-                          </h3>
-                          <p className='text-sm text-stone-500 leading-relaxed'>
-                            {day.desc}
-                          </p>
+
+                        {/* Card */}
+                        <div className='flex-1 bg-white rounded-2xl border border-stone-100 overflow-hidden'>
+                          {/* Image */}
+                          {day.image && (
+                            <div className='relative h-44 overflow-hidden'>
+                              <img
+                                src={renderImage(day.image)}
+                                alt={day.title}
+                                className='w-full h-full object-cover'
+                              />
+                              {/* Gradient fade into card content */}
+                              <div className='absolute inset-0 bg-gradient-to-t from-white/60 to-transparent' />
+                            </div>
+                          )}
+
+                          <div className='p-5'>
+                            {/* Eyebrow */}
+                            <p className='text-xs font-bold uppercase tracking-widest text-amber-500 mb-1'>
+                              Day {day.day}
+                            </p>
+
+                            {/* Title */}
+                            <h3 className='font-black text-stone-800 text-base mb-1'>
+                              {day.title}
+                            </h3>
+
+                            {/* Location */}
+                            {day.location && (
+                              <p className='flex items-center gap-1.5 text-xs text-stone-400 font-medium mb-3'>
+                                <svg
+                                  className='w-3.5 h-3.5 text-amber-400 flex-shrink-0'
+                                  fill='none'
+                                  viewBox='0 0 24 24'
+                                  stroke='currentColor'
+                                >
+                                  <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    strokeWidth={2}
+                                    d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
+                                  />
+                                  <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    strokeWidth={2}
+                                    d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'
+                                  />
+                                </svg>
+                                {day.location}
+                              </p>
+                            )}
+
+                            {/* Description */}
+                            {(day.description || day.desc) && (
+                              <p className='text-sm text-stone-500 leading-relaxed'>
+                                {day.description || day.desc}
+                              </p>
+                            )}
+                          </div>
                         </div>
                       </div>
                     ))}

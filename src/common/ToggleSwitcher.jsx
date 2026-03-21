@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-export default ({
+const ToggleSwitcher = ({
   label,
   name,
   data,
@@ -9,39 +9,59 @@ export default ({
   icon,
   selected,
   description,
+  bg_color
 }) => {
-  const hasError = errors && errors[name];
+  const hasError = !!(errors && errors[name]);
   const isChecked = data[name] === true || data[name] === "true";
 
   return (
-    <div className='form-control w-full mb-4 transition-all duration-300 ease-in-out'>
+    <div
+      className={`
+      w-full transition-all duration-200
+      ${hasError ? "opacity-90" : ""}
+    `}
+    >
       <label
         htmlFor={name}
-        className='label cursor-pointer justify-between py-3'
+        className='flex items-center justify-between gap-4 cursor-pointer group'
       >
-        <div className='flex items-center gap-3'>
+        {/* Left: icon + text */}
+        <div className='flex items-center gap-3 min-w-0'>
           {icon && (
             <div
-              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors duration-300 ${
+              className={`
+              w-9 h-9 flex items-center justify-center rounded-lg flex-shrink-0
+              transition-all duration-300
+              ${
                 hasError
-                  ? "text-error bg-error/10"
+                  ? "bg-red-500/10 text-red-400"
                   : isChecked
-                  ? "text-primary bg-primary/10"
-                  : "text-base-content/40 bg-base-200"
-              }`}
+                  ? "bg-amber-500/15 text-amber-400"
+                  : "bg-white-800 text-zinc-500 group-hover:text-zinc-400"
+              }
+            `}
             >
               {icon}
             </div>
           )}
-          <div className='flex-1'>
-            <span className='font-semibold text-base-content'>{label}</span>
+          <div className='min-w-0'>
+            <p
+              className={`
+              text-sm font-semibold truncate transition-colors duration-200
+            `}
+            >
+              {label}
+            </p>
             {description && (
-              <p className='text-sm text-base-content/60 mt-1'>{description}</p>
+              <p className='text-xs text-zinc-600 mt-0.5 truncate'>
+                {description}
+              </p>
             )}
           </div>
         </div>
 
-        <div className='relative'>
+        {/* Right: toggle */}
+        <div className='relative flex-shrink-0'>
           <input
             type='checkbox'
             id={name}
@@ -49,64 +69,67 @@ export default ({
             checked={isChecked}
             onChange={onChange}
             className='sr-only peer'
-            autoFocus={selected}
           />
+
+          {/* Track */}
           <div
             className={`
-              relative w-20 h-8 rounded-full transition-all duration-300 cursor-pointer flex items-center
-              ${
-                hasError
-                  ? "bg-error/30"
-                  : isChecked
-                  ? "bg-primary"
-                  : "bg-base-300"
-              }
-            `}
+            w-[52px] h-7 rounded-full
+            flex items-center
+            transition-all duration-300 ease-out
+            border
+            ${
+              hasError
+                ? "bg-red-500/20 border-red-500/40"
+                : isChecked
+                ? `${bg_color} border-amber-400/50 shadow-[0_0_12px_rgba(245,158,11,0.3)]`
+                : "bg-white-800 border-zinc-700 group-hover:border-zinc-600"
+            }
+          `}
           >
-            {/* Text labels */}
+            {/* Labels inside track */}
             <span
-              className={`absolute left-5 text-xs font-semibold transition-opacity duration-300 ${
-                isChecked ? "opacity-100 text-white" : "opacity-0"
-              }`}
+              className={`
+              absolute left-2 text-[9px] font-black uppercase tracking-wider
+              transition-all duration-300 pointer-events-none
+            `}
             >
               Yes
             </span>
             <span
-              className={`absolute right-6 text-xs font-semibold transition-opacity duration-300 ${
-                !isChecked ? "opacity-100 text-base-content/60" : "opacity-0"
-              }`}
+              className={`
+              absolute right-2 text-[9px] font-black uppercase tracking-wider
+              transition-all duration-300 pointer-events-none
+            `}
             >
               No
             </span>
 
-            {/* Sliding dot */}
+            {/* Thumb */}
             <div
               className={`
-                absolute top-1 w-6 h-6 rounded-full 
-                bg-white shadow-md transition-transform duration-300
-                ${isChecked ? "translate-x-12" : "translate-x-1"}
-              `}
-            ></div>
+              absolute top-[3px] w-[22px] h-[22px] rounded-full
+              shadow-[0_1px_4px_rgba(0,0,0,0.4)]
+              transition-all duration-300 ease-out
+              ${
+                isChecked
+                  ? "translate-x-[26px] bg-zinc-900"
+                  : "translate-x-[3px] bg-zinc-400"
+              }
+            `}
+            />
           </div>
         </div>
       </label>
 
       {hasError && (
-        <label className='label pt-0'>
-          <span className='label-text-alt text-error flex items-center gap-2'>
-            <div className='w-4 h-4 flex items-center justify-center bg-error/10 rounded-full'>
-              <svg className='w-3 h-3' fill='currentColor' viewBox='0 0 20 20'>
-                <path
-                  fillRule='evenodd'
-                  d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z'
-                  clipRule='evenodd'
-                />
-              </svg>
-            </div>
-            {errors[name]}
-          </span>
-        </label>
+        <p className='text-xs text-red-400 flex items-center gap-1.5 mt-2 ml-1'>
+          <span className='inline-block w-1 h-1 rounded-full bg-red-400' />
+          {errors[name]}
+        </p>
       )}
     </div>
   );
 };
+
+export default ToggleSwitcher;

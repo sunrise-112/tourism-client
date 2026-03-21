@@ -112,24 +112,34 @@ const useForm = (formData = null, initialSchema = null, doSubmit) => {
 
   const getFormData = () => {
     const newForm = new FormData();
+
     Object.entries(data).forEach(([key, value]) => {
       if (value instanceof File) {
-        // Single file (ImageUpload)
         newForm.append(key, value);
+      } else if (key === "gallery") {
+        // ✅ Handle mixed array: File (new) + string (existing)
+        if (Array.isArray(value)) {
+          value.forEach((v) => {
+            if (v instanceof File) {
+              newForm.append("gallery", v);
+            } else if (typeof v === "string") {
+              newForm.append("gallery_existing", v);
+            }
+          });
+        }
       } else if (
         Array.isArray(value) &&
         value.every((v) => v instanceof File)
       ) {
-        // Multiple files (DraggableImageInput)
         value.forEach((file) => newForm.append(key, file));
       } else if (Array.isArray(value)) {
-        value.forEach((item, index) =>
-          newForm.append(`${key}[${index}]`, Number(item))
-        );
+        // ✅ generic primitive arrays only — no Number() coercion
+        value.forEach((item) => newForm.append(key, item));
       } else if (value !== null && value !== undefined) {
         newForm.append(key, String(value));
       }
     });
+
     return newForm;
   };
 

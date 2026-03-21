@@ -177,7 +177,6 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path='/admin/tours/edit/:id'
           element={

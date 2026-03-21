@@ -46,9 +46,9 @@ const searchByTitle = async (q) => {
 
 // ─── Admin ───────────────────────────────────────────────────────────────────
 
-const create = async (data) => {
-  const response = await http.post(`${apiEndPoint}/admin`, data);
-  if (response) toast.success("Tour created successfully!");
+const create = (formData) => {
+  const response = http.post(`${apiEndPoint}/admin`, formData);
+  if (response) toast.success("Tour updated successfully!");
   return response.data.data;
 };
 
