@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AreaChart,
   Area,
@@ -13,31 +13,30 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
 } from "recharts";
 import userService from "../../services/userService";
 import bookingService from "../../services/bookingService";
 import tourService from "../../services/tourService";
 import reviewService from "../../services/reviewService";
+import statsService from "../../services/statsService";
 import renderImage from "../../utils/renderImage";
+import DateRangePicker from "../../common/DateRangePicker";
+import getCurrentMonthRange from "../../utils/getCurrentMonthRange";
 
-// ─── Mock / fallback data ─────────────────────────────────────
-const REVENUE_DATA = [
-  { month: "Oct", revenue: 1300, bookings: 4 },
-  { month: "Nov", revenue: 2800, bookings: 9 },
-  { month: "Dec", revenue: 1900, bookings: 6 },
-  { month: "Jan", revenue: 4200, bookings: 14 },
-  { month: "Feb", revenue: 3600, bookings: 11 },
-  { month: "Mar", revenue: 5800, bookings: 18 },
-];
+const DATE_RANGE_KEY = "admin_dashboard_date_range";
 
-const CATEGORY_DATA = [
-  { name: "Desert", value: 6, color: "#F59E0B" },
-  { name: "Cultural", value: 8, color: "#FB923C" },
-  { name: "Trekking", value: 4, color: "#FBBF24" },
-  { name: "Coastal", value: 3, color: "#FDE68A" },
-  { name: "Adventure", value: 2, color: "#F97316" },
+// ─── Nationality chart colours ────────────────────────────────
+const NAT_COLORS = [
+  "#F59E0B",
+  "#FB923C",
+  "#FBBF24",
+  "#FDE68A",
+  "#F97316",
+  "#EF4444",
+  "#10B981",
+  "#60A5FA",
+  "#A78BFA",
+  "#F472B6",
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────
@@ -177,10 +176,8 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
         <i className='fa fa-chevron-right text-stone-300 text-[10px]' />
         <span className='font-semibold text-stone-700'>Dashboard</span>
       </div>
-
       <div className='flex-1' />
 
-      {/* Search */}
       <div className='hidden md:flex items-center gap-2 bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 w-52'>
         <i className='fa fa-search text-stone-300 text-xs' />
         <input
@@ -189,7 +186,6 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
         />
       </div>
 
-      {/* Quick actions */}
       <Link
         to='/admin/tours/create'
         className='hidden sm:flex items-center gap-1.5 text-xs font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-3 py-2 rounded-xl shadow-sm shadow-amber-200'
@@ -211,7 +207,7 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
         </button>
         {notifOpen && (
           <div
-            className='absolute right-0 top-12 w-76 bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'
+            className='absolute right-0 top-12 bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'
             style={{ width: "300px" }}
           >
             <div className='px-4 py-3 border-b border-stone-100 flex items-center justify-between'>
@@ -338,13 +334,29 @@ const ChartTooltip = ({ active, payload, label }) => {
           className='font-black'
           style={{ color: p.color || "#F59E0B" }}
         >
-          {p.name === "revenue" ? `$${p.value}` : p.value}{" "}
+          {p.name === "revenue" ? `$${p.value.toLocaleString()}` : p.value}{" "}
           {p.name !== "revenue" && p.name}
         </p>
       ))}
     </div>
   );
 };
+
+/* // ─── localStorage helpers ─────────────────────────────────────
+const loadDateRange = (fallback) => {
+  try {
+    const stored = localStorage.getItem(DATE_RANGE_KEY);
+    return stored ? JSON.parse(stored) : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+const saveDateRange = (range) => {
+  try {
+    localStorage.setItem(DATE_RANGE_KEY, JSON.stringify(range));
+  } catch {}
+}; */
 
 // ─── Admin Dashboard ──────────────────────────────────────────
 const AdminDashboard = () => {
@@ -355,67 +367,105 @@ const AdminDashboard = () => {
   const [bookingsCount, setBookingsCount] = useState(0);
   const [tours, setTours] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [userCount, setUserCount] = useState(0);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const { start, end } = getCurrentMonthRange();
+  const [dateRange, setDateRange] = useState({
+    startDate: start,
+    endDate: end,
+  });
+  const [compareDateRange, setCompareDateRange] = useState({
+    startDate: null,
+    endDate: null,
+  });
+
+  const handleRangeSelect = (range) => {
+    console.log("Range: ", range);
+
+    setDateRange(range);
+  };
+
+  const handleCompareDateSelect = (range) => {
+    console.log("Compare range: ", range)
+    setCompareDateRange(range);
+  };
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [u, b, t, r] = await Promise.all([
-          userService.getMe(),
-          bookingService.getAll({ limit: 5, page: 1 }),
-          tourService.getAll({ type: "tour", limit: 4 }),
-          reviewService.getAll({ limit: 3, approve: false }),
-        ]);
+        setLoading(true);
 
+        const u = await userService.getMe();
         setUser(u);
+
+        const b = await bookingService.getAll({ limit: 5, page: 1 });
         setBookings(b.data);
         setBookingsCount(b?.pagination?.totalItems);
+
+        const t = await tourService.getAll({ type: "tour", limit: 4 });
         setTours(t?.data);
+
+        const r = await reviewService.getAll({ limit: 3, approve: false });
         setReviews(r?.data);
-        setUserCount(u?.data?.total || 0);
-      } catch {
-        setUser({
-          name: "Admin User",
-          email: "admin@maghribtours.com",
-          role: "admin",
+
+        const s = await statsService.getAdminStats({
+          startDate: dateRange?.startDate,
+          endDate: dateRange?.endDate,
+          compareStartDate: dateRange?.compareStartDate,
+          compareEndDate: dateRange?.compareEndDate,
         });
-        setBookings(MOCK_BOOKINGS);
-        setTours(MOCK_TOURS);
-        setReviews(MOCK_REVIEWS);
+
+        setStats(s?.data);
+      } catch (err) {
+        console.error("Dashboard fetch error:", err);
       } finally {
         setLoading(false);
       }
     };
     fetchAll();
-  }, []);
+  }, [dateRange]);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 1024) {
-        setMobileOpen(false);
-      }
+      if (window.innerWidth < 1024) setMobileOpen(false);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Derived stats
-  const totalRevenue = bookings
-    .filter((b) => b.status !== "cancelled")
-    .reduce((s, b) => s + Number(b.total_price || 0), 0);
-  const confirmed = bookings.filter((b) => b.status === "confirmed").length;
-  const pending = bookings.filter((b) => b.status === "pending").length;
+  // ── Derived values from stats API ─────────────────────────
+  const ps = stats?.primaryStats;
+  console.log("ps: ", ps);
+  const totalRevenue = ps?.totalRevenue ?? 0;
+  const confirmedCount = ps?.confirmedBookings ?? 0;
+  const pendingCount = ps?.pendingBookings ?? 0;
+  const cancelledCount = ps?.cancelledBookings ?? 0;
+  const totalBookings = ps?.totalBookings ?? bookingsCount;
+  const avgValue = ps?.avgBookingValue ?? 0;
+  const totalPeople = ps?.totalPeople ?? 0;
+  const topTours = ps?.topTours ?? [];
+  const nationalityData = (ps?.nationalityBreakdown ?? []).map((n, i) => ({
+    name: n.nationality,
+    value: parseInt(n.count),
+    color: NAT_COLORS[i % NAT_COLORS.length],
+  }));
+  const monthlyData = (ps?.monthlyBreakdown ?? []).map((m) => ({
+    month: m.month,
+    revenue: m.revenue,
+    bookings: m.bookings,
+    people: m.total_people,
+  }));
+
   const pendingReviews = reviews.filter((r) => !r.approved).length;
-  const sidebarWidth = mobileOpen ? 0 : collapsed ? 72 : 256;
 
   return (
     <div
       className='min-h-screen bg-stone-100'
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
-      <main className={`min-h-screen bg-stone-100 `}>
+      <main className='min-h-screen bg-stone-100'>
         <div className='p-2 md:p-8 max-w-[1400px] space-y-3'>
           {/* ── Welcome banner ─────────────────────────── */}
           <div className='relative bg-[#1C1107] rounded-2xl overflow-hidden p-7 flex flex-col md:flex-row md:items-center justify-between gap-6'>
@@ -476,6 +526,26 @@ const AdminDashboard = () => {
             </div>
           </div>
 
+          {/* ── Date range filter ──────────────────────── */}
+          <div className='bg-white rounded-2xl border border-stone-100 px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3'>
+            <div>
+              <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
+                Filter Period
+              </p>
+              <p className='text-sm font-semibold text-stone-700'>
+                {dateRange.startDate && dateRange.endDate
+                  ? `${dateRange.startDate} → ${dateRange.endDate}`
+                  : "All time"}
+              </p>
+            </div>
+            <DateRangePicker
+              setRangeSelect={handleRangeSelect}
+              setCompareDateRange={handleCompareDateSelect}
+              dateRange={dateRange}
+              enableCompare
+            />
+          </div>
+
           {/* ── KPI Stats ──────────────────────────────── */}
           <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
             {[
@@ -483,30 +553,32 @@ const AdminDashboard = () => {
                 icon: "fa-dollar-sign",
                 label: "Total Revenue",
                 value: loading ? "—" : `$${totalRevenue.toLocaleString()}`,
-                sub: "Excl. cancelled",
+                sub: `Avg $${avgValue} / booking`,
                 color: "from-amber-400 to-orange-500",
                 ring: "ring-amber-200",
-                trend: "+12%",
+                trend: `$${
+                  ps?.confirmedRevenue?.toLocaleString() ?? 0
+                } confirmed`,
                 up: true,
               },
               {
                 icon: "fa-suitcase",
                 label: "Total Bookings",
-                value: bookingsCount,
-                sub: `${confirmed} confirmed`,
+                value: loading ? "—" : totalBookings,
+                sub: `${confirmedCount} confirmed · ${pendingCount} pending`,
                 color: "from-emerald-400 to-teal-500",
                 ring: "ring-emerald-200",
-                trend: "+8%",
+                trend: `${cancelledCount} cancelled`,
                 up: true,
               },
               {
-                icon: "fa-map-marked-alt",
-                label: "Active Tours",
-                value: loading ? "—" : tours.length,
-                sub: `${tours.filter((t) => t.is_featured).length} featured`,
+                icon: "fa-users",
+                label: "Total Travellers",
+                value: loading ? "—" : totalPeople.toLocaleString(),
+                sub: "Excl. cancelled bookings",
                 color: "from-blue-400 to-indigo-500",
                 ring: "ring-blue-200",
-                trend: "+3",
+                trend: `${topTours.length} tours booked`,
                 up: true,
               },
               {
@@ -558,7 +630,7 @@ const AdminDashboard = () => {
 
           {/* ── Charts row ─────────────────────────────── */}
           <div className='grid lg:grid-cols-3 gap-6'>
-            {/* Revenue + Bookings area chart */}
+            {/* Revenue & Bookings — real monthly data */}
             <div className='lg:col-span-2 bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='flex items-center justify-between mb-6'>
                 <div>
@@ -580,88 +652,120 @@ const AdminDashboard = () => {
                   </span>
                 </div>
               </div>
-              <ResponsiveContainer width='100%' height={210}>
-                <AreaChart
-                  data={REVENUE_DATA}
-                  margin={{ top: 5, right: 5, bottom: 0, left: -20 }}
-                >
-                  <defs>
-                    <linearGradient id='revGrad' x1='0' y1='0' x2='0' y2='1'>
-                      <stop offset='5%' stopColor='#F59E0B' stopOpacity={0.2} />
-                      <stop offset='95%' stopColor='#F59E0B' stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id='bkGrad' x1='0' y1='0' x2='0' y2='1'>
-                      <stop offset='5%' stopColor='#60A5FA' stopOpacity={0.2} />
-                      <stop offset='95%' stopColor='#60A5FA' stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid
-                    strokeDasharray='3 3'
-                    stroke='#f1ede8'
-                    vertical={false}
-                  />
-                  <XAxis
-                    dataKey='month'
-                    tick={{ fontSize: 11, fill: "#a8a29e" }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    tick={{ fontSize: 11, fill: "#a8a29e" }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip content={<ChartTooltip />} />
-                  <Area
-                    type='monotone'
-                    dataKey='revenue'
-                    stroke='#F59E0B'
-                    strokeWidth={2.5}
-                    fill='url(#revGrad)'
-                    dot={{ fill: "#F59E0B", strokeWidth: 0, r: 3 }}
-                  />
-                  <Area
-                    type='monotone'
-                    dataKey='bookings'
-                    stroke='#60A5FA'
-                    strokeWidth={2}
-                    fill='url(#bkGrad)'
-                    dot={{ fill: "#60A5FA", strokeWidth: 0, r: 3 }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              {loading ? (
+                <Sk className='h-[210px]' />
+              ) : monthlyData.length === 0 ? (
+                <div className='h-[210px] flex items-center justify-center text-stone-300 text-sm'>
+                  No data for this period
+                </div>
+              ) : (
+                <ResponsiveContainer width='100%' height={210}>
+                  <AreaChart
+                    data={monthlyData}
+                    margin={{ top: 5, right: 5, bottom: 0, left: -20 }}
+                  >
+                    <defs>
+                      <linearGradient id='revGrad' x1='0' y1='0' x2='0' y2='1'>
+                        <stop
+                          offset='5%'
+                          stopColor='#F59E0B'
+                          stopOpacity={0.2}
+                        />
+                        <stop
+                          offset='95%'
+                          stopColor='#F59E0B'
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                      <linearGradient id='bkGrad' x1='0' y1='0' x2='0' y2='1'>
+                        <stop
+                          offset='5%'
+                          stopColor='#60A5FA'
+                          stopOpacity={0.2}
+                        />
+                        <stop
+                          offset='95%'
+                          stopColor='#60A5FA'
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid
+                      strokeDasharray='3 3'
+                      stroke='#f1ede8'
+                      vertical={false}
+                    />
+                    <XAxis
+                      dataKey='month'
+                      tick={{ fontSize: 11, fill: "#a8a29e" }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 11, fill: "#a8a29e" }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <Tooltip content={<ChartTooltip />} />
+                    <Area
+                      type='monotone'
+                      dataKey='revenue'
+                      stroke='#F59E0B'
+                      strokeWidth={2.5}
+                      fill='url(#revGrad)'
+                      dot={{ fill: "#F59E0B", strokeWidth: 0, r: 3 }}
+                    />
+                    <Area
+                      type='monotone'
+                      dataKey='bookings'
+                      stroke='#60A5FA'
+                      strokeWidth={2}
+                      fill='url(#bkGrad)'
+                      dot={{ fill: "#60A5FA", strokeWidth: 0, r: 3 }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
             </div>
 
-            {/* Category breakdown */}
+            {/* Nationality breakdown — real data */}
             <div className='bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='mb-5'>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-1'>
                   Breakdown
                 </p>
                 <h3 className='font-black text-stone-800 text-lg'>
-                  Tours by Category
+                  Bookings by Nationality
                 </h3>
               </div>
-              <ResponsiveContainer width='100%' height={150}>
-                <PieChart>
-                  <Pie
-                    data={CATEGORY_DATA}
-                    cx='50%'
-                    cy='50%'
-                    innerRadius={42}
-                    outerRadius={65}
-                    paddingAngle={3}
-                    dataKey='value'
-                  >
-                    {CATEGORY_DATA.map((entry, i) => (
-                      <Cell key={i} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(v, n) => [v, n]} />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className='space-y-2 mt-2'>
-                {CATEGORY_DATA.map((c) => (
+              {loading ? (
+                <Sk className='h-[150px]' />
+              ) : nationalityData.length === 0 ? (
+                <div className='h-[150px] flex items-center justify-center text-stone-300 text-sm'>
+                  No data
+                </div>
+              ) : (
+                <ResponsiveContainer width='100%' height={150}>
+                  <PieChart>
+                    <Pie
+                      data={nationalityData}
+                      cx='50%'
+                      cy='50%'
+                      innerRadius={42}
+                      outerRadius={65}
+                      paddingAngle={3}
+                      dataKey='value'
+                    >
+                      {nationalityData.map((entry, i) => (
+                        <Cell key={i} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(v, n) => [v, n]} />
+                  </PieChart>
+                </ResponsiveContainer>
+              )}
+              <div className='space-y-2 mt-3'>
+                {nationalityData.map((c) => (
                   <div
                     key={c.name}
                     className='flex items-center justify-between text-xs'
@@ -823,7 +927,7 @@ const AdminDashboard = () => {
                 )}
               </div>
 
-              {/* Quick stats panel */}
+              {/* Quick stats */}
               <div className='bg-white rounded-2xl border border-stone-100 p-5'>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-4'>
                   Quick Stats
@@ -831,25 +935,29 @@ const AdminDashboard = () => {
                 <div className='space-y-3'>
                   {[
                     {
+                      label: "Confirmed bookings",
+                      value: confirmedCount,
+                      color: "text-emerald-600",
+                    },
+                    {
                       label: "Pending bookings",
-                      value: pending,
+                      value: pendingCount,
                       color: "text-amber-600",
                     },
                     {
-                      label: "Featured tours",
-                      value: tours.filter((t) => t.is_featured).length,
-                      color: "text-blue-600",
-                    },
-                    {
-                      label: "Hot deals",
-                      value: tours.filter((t) => t.is_hot_deal).length,
+                      label: "Cancelled bookings",
+                      value: cancelledCount,
                       color: "text-red-500",
                     },
                     {
-                      label: "Cancellations",
-                      value: bookings.filter((b) => b.status === "cancelled")
-                        .length,
-                      color: "text-stone-500",
+                      label: "Avg booking value",
+                      value: `$${avgValue}`,
+                      color: "text-blue-600",
+                    },
+                    {
+                      label: "Total travellers",
+                      value: totalPeople,
+                      color: "text-stone-700",
                     },
                   ].map((s) => (
                     <div
@@ -869,7 +977,7 @@ const AdminDashboard = () => {
 
           {/* ── Bottom row ─────────────────────────────── */}
           <div className='grid lg:grid-cols-2 gap-6'>
-            {/* Bar chart */}
+            {/* Monthly booking volume bar chart — real data */}
             <div className='bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='flex items-center justify-between mb-6'>
                 <div>
@@ -881,49 +989,59 @@ const AdminDashboard = () => {
                   </h3>
                 </div>
                 <span className='text-xs font-bold text-stone-400 bg-stone-100 px-3 py-1.5 rounded-xl'>
-                  2026
+                  {new Date().getFullYear()}
                 </span>
               </div>
-              <ResponsiveContainer width='100%' height={180}>
-                <BarChart
-                  data={REVENUE_DATA}
-                  margin={{ top: 5, right: 5, bottom: 0, left: -20 }}
-                >
-                  <CartesianGrid
-                    strokeDasharray='3 3'
-                    stroke='#f1ede8'
-                    vertical={false}
-                  />
-                  <XAxis
-                    dataKey='month'
-                    tick={{ fontSize: 11, fill: "#a8a29e" }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    tick={{ fontSize: 11, fill: "#a8a29e" }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip content={<ChartTooltip />} />
-                  <Bar
-                    dataKey='bookings'
-                    fill='#F59E0B'
-                    radius={[6, 6, 0, 0]}
-                    maxBarSize={36}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+              {loading ? (
+                <Sk className='h-[180px]' />
+              ) : monthlyData.length === 0 ? (
+                <div className='h-[180px] flex items-center justify-center text-stone-300 text-sm'>
+                  No data for this period
+                </div>
+              ) : (
+                <ResponsiveContainer width='100%' height={180}>
+                  <BarChart
+                    data={monthlyData}
+                    margin={{ top: 5, right: 5, bottom: 0, left: -20 }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray='3 3'
+                      stroke='#f1ede8'
+                      vertical={false}
+                    />
+                    <XAxis
+                      dataKey='month'
+                      tick={{ fontSize: 11, fill: "#a8a29e" }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 11, fill: "#a8a29e" }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <Tooltip content={<ChartTooltip />} />
+                    <Bar
+                      dataKey='bookings'
+                      fill='#F59E0B'
+                      radius={[6, 6, 0, 0]}
+                      maxBarSize={36}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </div>
 
-            {/* Top tours */}
+            {/* Top tours — real data */}
             <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
               <div className='flex items-center justify-between px-6 py-5 border-b border-stone-100'>
                 <div>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
-                    Catalog
+                    Top Performers
                   </p>
-                  <h3 className='font-black text-stone-800'>Tour Highlights</h3>
+                  <h3 className='font-black text-stone-800'>
+                    Top Tours by Revenue
+                  </h3>
                 </div>
                 <Link
                   to='/admin/tours'
@@ -933,67 +1051,65 @@ const AdminDashboard = () => {
                 </Link>
               </div>
               <div className='divide-y divide-stone-50'>
-                {loading
-                  ? [...Array(4)].map((_, i) => (
-                      <div
-                        key={i}
-                        className='flex items-center gap-3 px-5 py-3'
-                      >
-                        <Sk className='w-10 h-9 rounded-xl shrink-0' />
-                        <div className='flex-1'>
-                          <Sk className='h-3 w-3/4' />
-                        </div>
+                {loading ? (
+                  [...Array(4)].map((_, i) => (
+                    <div key={i} className='flex items-center gap-3 px-5 py-3'>
+                      <Sk className='w-10 h-9 rounded-xl shrink-0' />
+                      <div className='flex-1'>
+                        <Sk className='h-3 w-3/4' />
                       </div>
-                    ))
-                  : tours.slice(0, 4).map((t, i) => (
-                      <div
-                        key={t.id}
-                        className='flex items-center gap-4 px-5 py-3 hover:bg-stone-50 transition-colors group'
+                    </div>
+                  ))
+                ) : topTours.length === 0 ? (
+                  <div className='px-6 py-10 text-center text-stone-300 text-sm'>
+                    No bookings in this period
+                  </div>
+                ) : (
+                  topTours.map((t, i) => (
+                    <div
+                      key={t.tour_id}
+                      className='flex items-center gap-4 px-5 py-3.5 hover:bg-stone-50 transition-colors'
+                    >
+                      {/* Rank */}
+                      <span
+                        className={`text-xs font-black w-5 shrink-0 ${
+                          i === 0
+                            ? "text-amber-500"
+                            : i === 1
+                            ? "text-stone-400"
+                            : "text-stone-300"
+                        }`}
                       >
-                        <span className='text-xs font-black text-stone-300 w-4 shrink-0'>
-                          {i + 1}
-                        </span>
-                        <div className='w-10 h-9 rounded-xl overflow-hidden bg-stone-100 shrink-0'>
-                          {t.cover_image ? (
-                            <img
-                              src={renderImage(t.cover_image)}
-                              alt=''
-                              className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
-                            />
-                          ) : (
-                            <div className='w-full h-full flex items-center justify-center text-stone-300'>
-                              <i className='fa fa-image text-xs' />
-                            </div>
-                          )}
-                        </div>
-                        <div className='flex-1 min-w-0'>
-                          <p className='text-xs font-bold text-stone-700 truncate'>
-                            {t.title}
-                          </p>
-                          <p className='text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-0.5'>
-                            <i className='fa fa-map-marker-alt text-[9px]' />
-                            {t.destination}
-                          </p>
-                        </div>
-                        <div className='text-right shrink-0'>
-                          <p className='text-sm font-black text-amber-600'>
-                            ${t.price}
-                          </p>
-                          <div className='flex gap-1 mt-0.5 justify-end'>
-                            {t.is_featured && (
-                              <span className='text-[9px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-bold'>
-                                Featured
-                              </span>
-                            )}
-                            {t.is_hot_deal && (
-                              <span className='text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold'>
-                                Hot
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                        #{i + 1}
+                      </span>
+                      {/* Tour name + bookings */}
+                      <div className='flex-1 min-w-0'>
+                        <p className='text-sm font-bold text-stone-800 truncate'>
+                          {t.name}
+                        </p>
+                        <p className='text-xs text-stone-400 mt-0.5'>
+                          <span className='font-semibold text-stone-500'>
+                            {t.total_bookings}
+                          </span>{" "}
+                          bookings ·{" "}
+                          <span className='font-semibold text-stone-500'>
+                            {t.total_people}
+                          </span>{" "}
+                          people
+                        </p>
                       </div>
-                    ))}
+                      {/* Revenue */}
+                      <div className='text-right shrink-0'>
+                        <p className='text-sm font-black text-amber-600'>
+                          ${Number(t.revenue).toLocaleString()}
+                        </p>
+                        <p className='text-[10px] text-stone-400 mt-0.5'>
+                          revenue
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
