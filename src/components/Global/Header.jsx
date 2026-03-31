@@ -24,8 +24,14 @@ const Header = ({
     if (setMobileOpen) setMobileOpen(state);
   };
 
+  const fetchUser = async () => {
+    const fetchedUser = await userService.getMe();
+    setUser(fetchedUser);
+    console.log("Fetched User: ", fetchedUser);
+  };
+
   useEffect(() => {
-    userService.getMe().then(setUser);
+    fetchUser();
   }, []);
 
   // Close dropdowns on outside click

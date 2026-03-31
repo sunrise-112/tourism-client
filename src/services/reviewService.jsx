@@ -24,7 +24,6 @@ const getMyReviews = async () => {
 
 const create = async (data) => {
   const response = await http.post(`${apiEndPoint}/shared`, data);
-  if (response) toast.success("Review submitted successfully!");
   return response.data.data;
 };
 
