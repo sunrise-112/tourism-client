@@ -24,30 +24,10 @@ const Table = ({
   return (
     <div
       dir={isRTL ? "rtl" : "ltr"}
-      className='w-full rounded-2xl border border-base-200 bg-base-100 shadow-sm overflow-hidden'
+      className='w-full rounded-2xl bg-white shadow-sm border border-gray-200 overflow-hidden'
     >
-      {/* Cards view — mobile/tablet *data,
-  columns,
-  onSort,
-  sortColumn,
-  showCards = true,
-  onSelectAll,
-  selectAll,/}
-      {showCards && (
-        <div className='block xl:hidden p-4'>
-          <CardsTable items={data} columns={columns} />
-        </div>
-      )}
-
-      {/* Table view — desktop */}
-      <div
-        className={
-          showCards
-            ? "hidden xl:block overflow-x-auto"
-            : "block overflow-x-auto"
-        }
-      >
-        <table className='table table-zebra w-full text-sm'>
+      <div className='overflow-x-auto w-full'>
+        <table className='w-full border-collapse'>
           <TableHeader
             columns={columns}
             onSort={onSort}

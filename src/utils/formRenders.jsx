@@ -1,3 +1,4 @@
+import React from "react";
 import Input from "../common/Input";
 import ColorInput from "../common/ColorInput";
 import TextArea from "../common/TextArea";
@@ -7,6 +8,8 @@ import MultiSelect from "../common/MultiSelect";
 import ToggleInput from "../common/toggleInput";
 import ImageUpload from "../common/ImageUpload";
 import DraggableImageInput from "../common/DraggableImageInput";
+import TimeInput from "../common/TimeInput";
+import DateInput from "../common/DateInput";
 
 export const renderButton = (
   label,
@@ -38,6 +41,7 @@ export const renderInput = (
   selected,
   icon,
   required,
+  max,
   placeholder
 ) => {
   return (
@@ -52,6 +56,7 @@ export const renderInput = (
       icon={icon}
       required={required}
       placeholder={placeholder}
+      max={max}
     />
   );
 };
@@ -92,11 +97,13 @@ export const renderTextarea = (
   handleChange,
   type,
   selected,
+  placeholder, 
   icon,
   required
 ) => {
   return (
     <TextArea
+      placeholder={placeholder}
       label={label}
       name={name}
       data={data}
@@ -180,6 +187,40 @@ export const renderMultiSelect = (
     />
   );
 };
+
+export const renderTimeInput = (
+  label,
+  name,
+  data,
+  errors,
+  onChange,
+  required
+) =>
+  React.createElement(TimeInput, {
+    label,
+    name,
+    data,
+    errors,
+    onChange,
+    required,
+  });
+
+export const renderDateInput = (
+  label,
+  name,
+  data,
+  errors,
+  onChange,
+  required
+) =>
+  React.createElement(DateInput, {
+    label,
+    name,
+    data,
+    errors,
+    onChange,
+    required,
+  });
 
 export const renderCheckBox = (
   label,

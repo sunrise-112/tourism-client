@@ -1,4 +1,4 @@
-export default ({ title, message, onConfirm, onClose, loading }) => (
+export default ({ title, message, onConfirm, tourId, onClose, loading }) => (
   <div className='fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm'>
     <div className='bg-white rounded-2xl border border-stone-100 shadow-2xl w-full max-w-sm overflow-hidden'>
       <div className='h-1 bg-gradient-to-r from-red-400 to-rose-500' />
@@ -21,7 +21,7 @@ export default ({ title, message, onConfirm, onClose, loading }) => (
             Cancel
           </button>
           <button
-            onClick={onConfirm}
+            onClick={() => onConfirm(tourId)}
             disabled={loading}
             className='flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-red-500 hover:bg-red-600 disabled:opacity-60 transition-colors'
           >

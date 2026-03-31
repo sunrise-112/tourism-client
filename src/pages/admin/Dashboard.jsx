@@ -20,10 +20,11 @@ import userService from "../../services/userService";
 import bookingService from "../../services/bookingService";
 import tourService from "../../services/tourService";
 import reviewService from "../../services/reviewService";
+import renderImage from "../../utils/renderImage";
 
 // ─── Mock / fallback data ─────────────────────────────────────
 const REVENUE_DATA = [
-  { month: "Oct", revenue: 1200, bookings: 4 },
+  { month: "Oct", revenue: 1300, bookings: 4 },
   { month: "Nov", revenue: 2800, bookings: 9 },
   { month: "Dec", revenue: 1900, bookings: 6 },
   { month: "Jan", revenue: 4200, bookings: 14 },
@@ -37,147 +38,6 @@ const CATEGORY_DATA = [
   { name: "Trekking", value: 4, color: "#FBBF24" },
   { name: "Coastal", value: 3, color: "#FDE68A" },
   { name: "Adventure", value: 2, color: "#F97316" },
-];
-
-const MOCK_BOOKINGS = [
-  {
-    id: 1,
-    tour: {
-      title: "Sahara Desert Camel Trek",
-      destination: "Merzouga",
-      cover_image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Camel_on_Erg_Chebbi.jpg/400px-Camel_on_Erg_Chebbi.jpg",
-    },
-    user: { name: "Sarah Mitchell", email: "s.mitchell@email.com" },
-    status: "confirmed",
-    total_price: 299,
-    booking_date: "2026-04-12",
-  },
-  {
-    id: 2,
-    tour: {
-      title: "Fez Medina Deep Dive",
-      destination: "Fez",
-      cover_image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Chouara_Tannery%2C_Fes.jpg/400px-Chouara_Tannery%2C_Fes.jpg",
-    },
-    user: { name: "James Okafor", email: "j.okafor@email.com" },
-    status: "pending",
-    total_price: 320,
-    booking_date: "2026-05-03",
-  },
-  {
-    id: 3,
-    tour: {
-      title: "Chefchaouen Blue City",
-      destination: "Chefchaouen",
-      cover_image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Chefchaouen%2C_Morocco_%2844435946544%29.jpg/400px-Chefchaouen%2C_Morocco_%2844435946544%29.jpg",
-    },
-    user: { name: "Lena Hoffmann", email: "l.hoffmann@email.com" },
-    status: "completed",
-    total_price: 280,
-    booking_date: "2026-02-18",
-  },
-  {
-    id: 4,
-    tour: {
-      title: "High Atlas Trekking",
-      destination: "Atlas",
-      cover_image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Toubkal_seen_from_Ouanoukrim.jpg/400px-Toubkal_seen_from_Ouanoukrim.jpg",
-    },
-    user: { name: "Carlos Diaz", email: "c.diaz@email.com" },
-    status: "confirmed",
-    total_price: 520,
-    booking_date: "2026-03-22",
-  },
-  {
-    id: 5,
-    tour: {
-      title: "Marrakech City Experience",
-      destination: "Marrakech",
-      cover_image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Jamaa_el_Fna_at_dusk.jpg/400px-Jamaa_el_Fna_at_dusk.jpg",
-    },
-    user: { name: "Yuki Tanaka", email: "y.tanaka@email.com" },
-    status: "cancelled",
-    total_price: 250,
-    booking_date: "2025-12-05",
-  },
-];
-
-const MOCK_REVIEWS = [
-  {
-    id: 1,
-    user: { name: "Sarah M.", avatar: null },
-    tour: { title: "Sahara Desert Camel Trek" },
-    rating: 5,
-    comment: "Absolutely breathtaking experience!",
-    approved: false,
-    created_at: new Date(Date.now() - 3600000).toISOString(),
-  },
-  {
-    id: 2,
-    user: { name: "James O.", avatar: null },
-    tour: { title: "Fez Medina Deep Dive" },
-    rating: 4,
-    comment: "Amazing culture and food throughout.",
-    approved: true,
-    created_at: new Date(Date.now() - 86400000).toISOString(),
-  },
-  {
-    id: 3,
-    user: { name: "Lena H.", avatar: null },
-    tour: { title: "Chefchaouen Blue City" },
-    rating: 5,
-    comment: "The blue city exceeded all expectations!",
-    approved: false,
-    created_at: new Date(Date.now() - 172800000).toISOString(),
-  },
-];
-
-const MOCK_TOURS = [
-  {
-    id: 1,
-    title: "Sahara Desert Camel Trek",
-    destination: "Merzouga",
-    price: 299,
-    is_featured: true,
-    is_hot_deal: true,
-    cover_image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Camel_on_Erg_Chebbi.jpg/400px-Camel_on_Erg_Chebbi.jpg",
-  },
-  {
-    id: 2,
-    title: "Fez Medina Deep Dive",
-    destination: "Fez",
-    price: 320,
-    is_featured: false,
-    is_hot_deal: true,
-    cover_image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Chouara_Tannery%2C_Fes.jpg/400px-Chouara_Tannery%2C_Fes.jpg",
-  },
-  {
-    id: 3,
-    title: "Chefchaouen Blue City",
-    destination: "Chefchaouen",
-    price: 280,
-    is_featured: true,
-    is_hot_deal: false,
-    cover_image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Chefchaouen%2C_Morocco_%2844435946544%29.jpg/400px-Chefchaouen%2C_Morocco_%2844435946544%29.jpg",
-  },
-  {
-    id: 4,
-    title: "High Atlas Trekking",
-    destination: "Atlas",
-    price: 520,
-    is_featured: false,
-    is_hot_deal: false,
-    cover_image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Toubkal_seen_from_Ouanoukrim.jpg/400px-Toubkal_seen_from_Ouanoukrim.jpg",
-  },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────
@@ -247,190 +107,6 @@ const StarRating = ({ rating }) => (
     ))}
   </div>
 );
-
-// ─── Admin Sidebar nav ────────────────────────────────────────
-const ADMIN_NAV = [
-  {
-    section: "Overview",
-    items: [{ icon: "fa-th-large", label: "Dashboard", path: "/admin" }],
-  },
-  {
-    section: "Management",
-    items: [
-      { icon: "fa-map-marked-alt", label: "Tours", path: "/admin/tours" },
-      { icon: "fa-suitcase", label: "Bookings", path: "/admin/bookings" },
-      { icon: "fa-users", label: "Users", path: "/admin/users" },
-      { icon: "fa-star", label: "Reviews", path: "/admin/reviews" },
-    ],
-  },
-  {
-    section: "Settings",
-    items: [
-      { icon: "fa-user-shield", label: "My Profile", path: "/profile/me" },
-      { icon: "fa-cog", label: "Settings", path: "/admin/settings" },
-    ],
-  },
-];
-
-// ─── Sidebar ──────────────────────────────────────────────────
-const Sidebar = ({
-  collapsed,
-  setCollapsed,
-  user,
-  mobileOpen,
-  setMobileOpen,
-}) => {
-  const location = useLocation();
-  const [openSections, setOpenSections] = useState({
-    Overview: true,
-    Management: true,
-    Settings: true,
-  });
-
-  const toggleSection = (s) => setOpenSections((p) => ({ ...p, [s]: !p[s] }));
-  const isActive = (path) => location.pathname === path;
-
-  return (
-    <>
-      {mobileOpen && (
-        <div
-          className='fixed inset-0 z-30 bg-black/50 lg:hidden'
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
-      <aside
-        className={`
-        fixed top-0 left-0 h-full z-40 flex flex-col
-        bg-[#1C1107] border-r border-white/5
-        transition-all duration-300 ease-in-out
-        ${collapsed ? "w-[72px]" : "w-64"}
-        ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-      `}
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
-      >
-        {/* Logo */}
-        <div
-          className={`flex items-center h-16 px-4 border-b border-white/5 shrink-0 ${
-            collapsed ? "justify-center" : "gap-3"
-          }`}
-        >
-          <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0 shadow-lg shadow-amber-900/30'>
-            <i className='fa fa-globe text-white text-sm' />
-          </div>
-          {!collapsed && (
-            <div>
-              <span
-                className='text-white font-black text-sm tracking-tight block'
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                MaghribTours
-              </span>
-              <span className='text-amber-400/60 text-[10px] font-bold uppercase tracking-widest'>
-                Admin Panel
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Nav */}
-        <nav className='flex-1 overflow-y-auto py-4 px-2 space-y-1 scrollbar-hide'>
-          {ADMIN_NAV.map(({ section, items }) => (
-            <div key={section} className='mb-2'>
-              {!collapsed && (
-                <button
-                  onClick={() => toggleSection(section)}
-                  className='w-full flex items-center justify-between px-3 py-1.5 mb-1 group'
-                >
-                  <span className='text-[10px] font-bold uppercase tracking-[0.18em] text-white/30 group-hover:text-white/50 transition-colors'>
-                    {section}
-                  </span>
-                  <i
-                    className={`fa fa-chevron-down text-[8px] text-white/25 transition-transform duration-200 ${
-                      openSections[section] ? "" : "-rotate-90"
-                    }`}
-                  />
-                </button>
-              )}
-              {(collapsed || openSections[section]) &&
-                items.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    title={collapsed ? item.label : undefined}
-                    className={`
-                    flex items-center gap-3 px-3 py-2.5 rounded-xl mb-0.5 transition-all duration-150 group relative
-                    ${
-                      isActive(item.path)
-                        ? "bg-amber-500/20 text-amber-400"
-                        : "text-white/40 hover:text-white/80 hover:bg-white/5"
-                    }
-                    ${collapsed ? "justify-center" : ""}
-                  `}
-                  >
-                    {isActive(item.path) && (
-                      <span className='absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-amber-400 rounded-r-full' />
-                    )}
-                    <i className={`fa ${item.icon} text-sm w-4 text-center`} />
-                    {!collapsed && (
-                      <span className='text-sm font-medium'>{item.label}</span>
-                    )}
-                    {collapsed && (
-                      <div className='absolute left-full ml-3 px-2.5 py-1.5 bg-stone-800 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-xl'>
-                        {item.label}
-                      </div>
-                    )}
-                  </Link>
-                ))}
-            </div>
-          ))}
-        </nav>
-
-        {/* User + collapse */}
-        <div className='shrink-0 border-t border-white/5 p-3 space-y-2'>
-          <div
-            className={`flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer ${
-              collapsed ? "justify-center" : ""
-            }`}
-          >
-            <Avatar
-              name={user?.name}
-              src={
-                user?.avatar
-                  ? `${import.meta.env.VITE_BACK_END_URL}${user.avatar}`
-                  : null
-              }
-              size='w-8 h-8'
-              textSize='text-xs'
-            />
-            {!collapsed && (
-              <div className='flex-1 min-w-0'>
-                <p className='text-xs font-bold text-white truncate'>
-                  {user?.name || "Admin"}
-                </p>
-                <p className='text-[10px] text-amber-400/60 font-bold uppercase tracking-widest'>
-                  Administrator
-                </p>
-              </div>
-            )}
-          </div>
-          <button
-            onClick={() => setCollapsed((c) => !c)}
-            className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-white/30 hover:text-white/60 hover:bg-white/5 transition-all text-xs ${
-              collapsed ? "justify-center" : ""
-            }`}
-          >
-            <i
-              className={`fa ${
-                collapsed ? "fa-chevron-right" : "fa-chevron-left"
-              } text-xs`}
-            />
-            {!collapsed && <span>Collapse</span>}
-          </button>
-        </div>
-      </aside>
-    </>
-  );
-};
 
 // ─── Topbar ───────────────────────────────────────────────────
 const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
@@ -676,6 +352,7 @@ const AdminDashboard = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
+  const [bookingsCount, setBookingsCount] = useState(0);
   const [tours, setTours] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [userCount, setUserCount] = useState(0);
@@ -687,17 +364,16 @@ const AdminDashboard = () => {
         const [u, b, t, r] = await Promise.all([
           userService.getMe(),
           bookingService.getAll({ limit: 5, page: 1 }),
-          tourService.getAll({ limit: 4 }),
-          reviewService.getAll({ limit: 3, approved: false }),
+          tourService.getAll({ type: "tour", limit: 4 }),
+          reviewService.getAll({ limit: 3, approve: false }),
         ]);
+
         setUser(u);
-        const bData = b?.data?.bookings || b?.data || [];
-        const tData = t?.data?.tours || t?.data || [];
-        const rData = r?.data?.reviews || r?.data || [];
-        setBookings(bData.length ? bData : MOCK_BOOKINGS);
-        setTours(tData.length ? tData : MOCK_TOURS);
-        setReviews(rData.length ? rData : MOCK_REVIEWS);
-        setUserCount(b?.data?.total || 0);
+        setBookings(b.data);
+        setBookingsCount(b?.pagination?.totalItems);
+        setTours(t?.data);
+        setReviews(r?.data);
+        setUserCount(u?.data?.total || 0);
       } catch {
         setUser({
           name: "Admin User",
@@ -739,9 +415,7 @@ const AdminDashboard = () => {
       className='min-h-screen bg-stone-100'
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
-      <main
-        className={`min-h-screen bg-stone-100 `}
-      >
+      <main className={`min-h-screen bg-stone-100 `}>
         <div className='p-2 md:p-8 max-w-[1400px] space-y-3'>
           {/* ── Welcome banner ─────────────────────────── */}
           <div className='relative bg-[#1C1107] rounded-2xl overflow-hidden p-7 flex flex-col md:flex-row md:items-center justify-between gap-6'>
@@ -818,7 +492,7 @@ const AdminDashboard = () => {
               {
                 icon: "fa-suitcase",
                 label: "Total Bookings",
-                value: loading ? "—" : bookings.length,
+                value: bookingsCount,
                 sub: `${confirmed} confirmed`,
                 color: "from-emerald-400 to-teal-500",
                 ring: "ring-emerald-200",
@@ -1044,9 +718,9 @@ const AdminDashboard = () => {
                         className='flex items-center gap-4 px-6 py-3.5 hover:bg-stone-50 transition-colors group'
                       >
                         <div className='w-11 h-10 rounded-xl overflow-hidden bg-stone-100 shrink-0'>
-                          {b.tour?.cover_image ? (
+                          {b?.tour_cover_image ? (
                             <img
-                              src={b.tour.cover_image}
+                              src={renderImage(b.tour_cover_image)}
                               alt=''
                               className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
                             />
@@ -1058,15 +732,15 @@ const AdminDashboard = () => {
                         </div>
                         <div className='flex-1 min-w-0'>
                           <p className='text-sm font-bold text-stone-800 truncate'>
-                            {b.tour?.title}
+                            {b?.tour_title}
                           </p>
                           <p className='text-xs text-stone-400 flex items-center gap-2 mt-0.5'>
                             <span className='flex items-center gap-1 text-amber-600 font-semibold'>
                               <i className='fa fa-map-marker-alt text-[9px]' />
-                              {b.tour?.destination}
+                              {b?.tour_destination}
                             </span>
                             <span>·</span>
-                            <span>{b.user?.name}</span>
+                            <span>{b.user_name}</span>
                           </p>
                         </div>
                         <div className='text-right shrink-0'>
@@ -1282,7 +956,7 @@ const AdminDashboard = () => {
                         <div className='w-10 h-9 rounded-xl overflow-hidden bg-stone-100 shrink-0'>
                           {t.cover_image ? (
                             <img
-                              src={t.cover_image}
+                              src={renderImage(t.cover_image)}
                               alt=''
                               className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
                             />

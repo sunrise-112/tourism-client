@@ -16,12 +16,16 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
+    phone: "",
+    nationality: "",
   });
 
   const schema = {
     name: Joi.string().max(100).required().label("Name"),
     email: Joi.string().email().max(150).required().label("Email"),
     password: Joi.string().min(8).max(255).required().label("Password"),
+    phone: Joi.string().max(20).label("Phone"),
+    nationality: Joi.string().max(100).label("Nationality"),
   };
 
   const doSubmit = async () => {
@@ -102,10 +106,16 @@ const Register = () => {
               data,
               errors,
               handleChange,
-              "password",
-              true
+              "password"
             )}
-
+            {renderInput("Phone", "phone", data, errors, handleChange)}
+            {renderInput(
+              "Nationality",
+              "nationality",
+              data,
+              errors,
+              handleChange
+            )}
             <div className='pt-2'>
               {renderButton(
                 "Create Account",

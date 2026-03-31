@@ -25,8 +25,44 @@ import {
   renderSelect,
   renderImageUpload,
   renderMultiSelect,
+  renderCheckBox,
+  renderTimeInput,
 } from "../../utils/formRenders";
 import renderImage from "../../utils/renderImage";
+import { toast } from "react-toastify";
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+const DIFFICULTY_OPTIONS = [
+  { id: "easy", name: "Easy" },
+  { id: "moderate", name: "Moderate" },
+  { id: "hard", name: "Hard" },
+  { id: "expert", name: "Expert" },
+];
+
+const DIFFICULTY_COLORS = {
+  easy: "bg-green-100 text-green-700 border-green-200",
+  moderate: "bg-amber-100 text-amber-700 border-amber-200",
+  hard: "bg-orange-100 text-orange-700 border-orange-200",
+  expert: "bg-red-100 text-red-700 border-red-200",
+};
+
+const TYPE_META = {
+  tour: {
+    label: "Tour",
+    icon: "🌍",
+    color: "bg-blue-100 text-blue-700 border-blue-200",
+  },
+  excursion: {
+    label: "Excursion",
+    icon: "🧭",
+    color: "bg-amber-100 text-amber-700 border-amber-200",
+  },
+  activity: {
+    label: "Activity",
+    icon: "⚡",
+    color: "bg-green-100 text-green-700 border-green-200",
+  },
+};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const getImageSrc = (value) => {
@@ -36,16 +72,32 @@ const getImageSrc = (value) => {
   return null;
 };
 
-const completenessFields = (data, itineraryData) => [
-  { label: "Title", done: !!data?.title },
-  { label: "Description", done: !!data?.description },
-  { label: "Destination", done: !!data?.destination },
-  { label: "Price", done: !!data?.price },
-  { label: "Duration", done: !!data?.duration_days },
-  { label: "Cover", done: !!data?.cover_image },
-  { label: "Gallery", done: (data?.gallery?.length ?? 0) > 0 },
-  { label: "Itinerary", done: (itineraryData?.length ?? 0) > 0 },
-];
+const getCompletenessFields = (data, itineraryData, activeType) => {
+  const common = [
+    { label: "Title", done: !!data?.title },
+    { label: "Description", done: !!data?.description },
+    { label: "Destination", done: !!data?.destination },
+    { label: "Price", done: !!data?.price },
+    { label: "Cover", done: !!data?.cover_image },
+    { label: "Gallery", done: (data?.gallery?.length ?? 0) > 0 },
+  ];
+  const byType = {
+    tour: [
+      { label: "Duration", done: !!data?.duration_days },
+      { label: "Itinerary", done: (itineraryData?.length ?? 0) > 0 },
+    ],
+    excursion: [
+      { label: "Departure", done: !!data?.departure_time },
+      { label: "Return", done: !!data?.return_time },
+      { label: "Meet Point", done: !!data?.meeting_point },
+    ],
+    activity: [
+      { label: "Duration", done: !!data?.duration_hours },
+      { label: "Difficulty", done: !!data?.difficulty_level },
+    ],
+  };
+  return [...common, ...(byType[activeType] ?? [])];
+};
 
 // ─── Section Wrapper ──────────────────────────────────────────────────────────
 const FormSection = ({ title, description, children, icon }) => (
@@ -69,21 +121,302 @@ const FormSection = ({ title, description, children, icon }) => (
   </div>
 );
 
+// ─── Type-specific form sections ──────────────────────────────────────────────
+const ExcursionFields = ({ data, errors, handleChange }) => (
+  <FormSection
+    title='Excursion Details'
+    description='Timing and logistics'
+    icon='🧭'
+  >
+    <TwoCol>
+      <div>
+        {renderTimeInput(
+          "Departure Time",
+          "departure_time",
+          data,
+          errors,
+          handleChange
+        )}
+      </div>
+      <div>
+        {renderTimeInput(
+          "Return Time",
+          "return_time",
+          data,
+          errors,
+          handleChange
+        )}
+      </div>
+    </TwoCol>
+    <TwoCol>
+      <div>
+        {renderInput(
+          "Duration (hours)",
+          "duration_hours",
+          data,
+          errors,
+          handleChange,
+          "number",
+          false
+        )}
+      </div>
+      <div>
+        {renderInput(
+          "Meeting Point",
+          "meeting_point",
+          data,
+          errors,
+          handleChange,
+          "text",
+          false
+        )}
+      </div>
+    </TwoCol>
+    <div className='bg-gray-50 rounded-xl px-4 py-3 border border-gray-100'>
+      {ToggleSwitcher({
+        label: "Guide Included",
+        name: "guide_included",
+        data,
+        errors,
+        onChange: handleChange,
+        bg_color: "bg-blue-400",
+      })}
+    </div>
+  </FormSection>
+);
+
+const ActivityFields = ({ data, errors, handleChange }) => (
+  <FormSection
+    title='Activity Details'
+    description='Duration and requirements'
+    icon='⚡'
+  >
+    <TwoCol>
+      <div>
+        {renderInput(
+          "Duration (hours)",
+          "duration_hours",
+          data,
+          errors,
+          handleChange,
+          "number",
+          false
+        )}
+      </div>
+      <div>
+        {renderSelect(
+          "Difficulty Level",
+          "difficulty_level",
+          data,
+          errors,
+          handleChange,
+          DIFFICULTY_OPTIONS,
+          "name",
+          "id"
+        )}
+      </div>
+    </TwoCol>
+    <div className='bg-gray-50 rounded-xl px-4 py-3 border border-gray-100'>
+      {renderCheckBox(
+        "Equipment Included",
+        "equipment_included",
+        data,
+        errors,
+        handleChange,
+        null,
+        null,
+        "All necessary equipment is provided"
+      )}
+    </div>
+  </FormSection>
+);
+
+// ─── Type-specific preview blocks ─────────────────────────────────────────────
+const ExcursionPreview = ({ data }) => {
+  if (
+    !data?.departure_time &&
+    !data?.return_time &&
+    !data?.meeting_point &&
+    !data?.duration_hours
+  )
+    return null;
+  const rows = [
+    { icon: "🕗", label: "Departs", value: data?.departure_time },
+    { icon: "🕕", label: "Returns", value: data?.return_time },
+    {
+      icon: "⏱️",
+      label: "Duration",
+      value: data?.duration_hours ? `${data.duration_hours}h` : null,
+    },
+    { icon: "📍", label: "Meet at", value: data?.meeting_point },
+    {
+      icon: "👤",
+      label: "Guide",
+      value: data?.guide_included ? "Included" : null,
+      green: true,
+    },
+  ].filter((r) => r.value);
+  if (!rows.length) return null;
+  return (
+    <div>
+      <p className='text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2'>
+        Excursion Info
+      </p>
+      <div className='space-y-1.5'>
+        {rows.map(({ icon, label, value, green }) => (
+          <div key={label} className='flex items-center gap-2 text-xs'>
+            <span className='text-base'>{icon}</span>
+            <span className='text-gray-500'>{label}</span>
+            <span
+              className={`font-semibold ml-auto truncate max-w-[120px] ${
+                green ? "text-green-600" : "text-gray-700"
+              }`}
+            >
+              {value}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ActivityPreview = ({ data }) => {
+  if (!data?.difficulty_level && !data?.duration_hours) return null;
+  return (
+    <div>
+      <p className='text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2'>
+        Activity Info
+      </p>
+      <div className='space-y-1.5'>
+        {data?.duration_hours && (
+          <div className='flex items-center gap-2 text-xs'>
+            <span className='text-base'>⏱️</span>
+            <span className='text-gray-500'>Duration</span>
+            <span className='font-semibold text-gray-700 ml-auto'>
+              {data.duration_hours}h
+            </span>
+          </div>
+        )}
+        {data?.difficulty_level && (
+          <div className='flex items-center gap-2 text-xs'>
+            <span className='text-base'>📊</span>
+            <span className='text-gray-500'>Difficulty</span>
+            <span
+              className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full border capitalize ${
+                DIFFICULTY_COLORS[data.difficulty_level]
+              }`}
+            >
+              {data.difficulty_level}
+            </span>
+          </div>
+        )}
+        {data?.equipment_included && (
+          <div className='flex items-center gap-2 text-xs'>
+            <span className='text-base'>🎒</span>
+            <span className='text-gray-500'>Equipment</span>
+            <span className='font-semibold text-green-600 ml-auto'>
+              Included
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ─── Stats row per type ───────────────────────────────────────────────────────
+const PreviewStats = ({ data, activeType }) => {
+  const statsByType = {
+    tour: [
+      { label: "Days", value: data?.duration_days, icon: "📅" },
+      { label: "Max Group", value: data?.max_group_size, icon: "👥" },
+      {
+        label: "Per day",
+        value:
+          data?.price && data?.duration_days
+            ? `$${Math.round(data.price / data.duration_days)}`
+            : null,
+        icon: "💰",
+      },
+    ],
+    excursion: [
+      {
+        label: "Hours",
+        value: data?.duration_hours ? `${data.duration_hours}h` : null,
+        icon: "⏱️",
+      },
+      { label: "Max Group", value: data?.max_group_size, icon: "👥" },
+      {
+        label: "Price",
+        value: data?.price ? `$${Number(data.price).toLocaleString()}` : null,
+        icon: "💰",
+      },
+    ],
+    activity: [
+      {
+        label: "Hours",
+        value: data?.duration_hours ? `${data.duration_hours}h` : null,
+        icon: "⏱️",
+      },
+      { label: "Max Group", value: data?.max_group_size, icon: "👥" },
+      {
+        label: "Difficulty",
+        value: data?.difficulty_level ?? null,
+        icon: "📊",
+      },
+    ],
+  };
+
+  const stats = statsByType[activeType] ?? statsByType.tour;
+
+  return (
+    <div className='grid grid-cols-3 gap-2'>
+      {stats.map(({ label, value, icon }) => (
+        <div
+          key={label}
+          className='bg-gray-50 rounded-xl p-2.5 text-center border border-gray-100'
+        >
+          <p className='text-base'>{icon}</p>
+          <p
+            className={`text-xs font-bold mt-0.5 capitalize ${
+              label === "Difficulty" && value
+                ? DIFFICULTY_COLORS[value]?.split(" ")[1]
+                : "text-gray-800"
+            }`}
+          >
+            {value ?? <span className='text-gray-300'>—</span>}
+          </p>
+          <p className='text-[10px] text-gray-400'>{label}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 // ─── Live Preview ─────────────────────────────────────────────────────────────
-const LivePreview = ({ data, itineraryData, isSubmitting, validate, id }) => {
+const LivePreview = ({
+  data,
+  itineraryData,
+  isSubmitting,
+  validate,
+  id,
+  Type,
+}) => {
+  const activeType = data?.type || Type?.toLowerCase();
+  const meta = TYPE_META[activeType] ?? TYPE_META.tour;
   const coverSrc = getImageSrc(data?.cover_image);
   const galleryPreviews = (data?.gallery || [])
     .slice(0, 4)
     .map(getImageSrc)
     .filter(Boolean);
-  const fields = completenessFields(data, itineraryData);
+  const fields = getCompletenessFields(data, itineraryData, activeType);
   const pct = Math.round(
     (fields.filter((f) => f.done).length / fields.length) * 100
   );
 
   return (
     <div className='flex flex-col gap-4'>
-      {/* Tour card preview */}
       <div className='bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden'>
         {/* Cover */}
         <div className='relative h-52 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden'>
@@ -112,8 +445,12 @@ const LivePreview = ({ data, itineraryData, isSubmitting, validate, id }) => {
             </div>
           )}
 
-          {/* Badges */}
           <div className='absolute top-3 left-3 flex gap-1.5 flex-wrap'>
+            <span
+              className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${meta.color}`}
+            >
+              {meta.icon} {meta.label}
+            </span>
             {data?.is_featured && (
               <span className='bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm'>
                 ⭐ Featured
@@ -152,7 +489,7 @@ const LivePreview = ({ data, itineraryData, isSubmitting, validate, id }) => {
             <h3 className='font-bold text-gray-900 text-lg leading-snug'>
               {data?.title || (
                 <span className='text-gray-300 font-normal italic text-base'>
-                  Tour title…
+                  {meta.label} title…
                 </span>
               )}
             </h3>
@@ -188,34 +525,11 @@ const LivePreview = ({ data, itineraryData, isSubmitting, validate, id }) => {
             </p>
           )}
 
-          {/* Stats */}
-          <div className='grid grid-cols-3 gap-2'>
-            {[
-              { label: "Days", value: data?.duration_days, icon: "📅" },
-              { label: "Max Group", value: data?.max_group_size, icon: "👥" },
-              {
-                label: "Per day",
-                value:
-                  data?.price && data?.duration_days
-                    ? `$${Math.round(data.price / data.duration_days)}`
-                    : null,
-                icon: "💰",
-              },
-            ].map(({ label, value, icon }) => (
-              <div
-                key={label}
-                className='bg-gray-50 rounded-xl p-2.5 text-center border border-gray-100'
-              >
-                <p className='text-base'>{icon}</p>
-                <p className='text-xs font-bold text-gray-800 mt-0.5'>
-                  {value ?? <span className='text-gray-300'>—</span>}
-                </p>
-                <p className='text-[10px] text-gray-400'>{label}</p>
-              </div>
-            ))}
-          </div>
+          <PreviewStats data={data} activeType={activeType} />
 
-          {/* Gallery strip */}
+          {activeType === "excursion" && <ExcursionPreview data={data} />}
+          {activeType === "activity" && <ActivityPreview data={data} />}
+
           {galleryPreviews.length > 0 && (
             <div>
               <p className='text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2'>
@@ -243,8 +557,8 @@ const LivePreview = ({ data, itineraryData, isSubmitting, validate, id }) => {
             </div>
           )}
 
-          {/* Itinerary */}
-          {itineraryData?.length > 0 && (
+          {/* Itinerary — tour only */}
+          {activeType === "tour" && itineraryData?.length > 0 && (
             <div>
               <p className='text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2'>
                 Itinerary · {itineraryData.length} day
@@ -325,8 +639,7 @@ const LivePreview = ({ data, itineraryData, isSubmitting, validate, id }) => {
           w-full py-3.5 rounded-xl font-bold text-sm tracking-wide uppercase
           bg-amber-500 hover:bg-amber-400 active:scale-[0.98]
           disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed disabled:shadow-none
-          text-white
-          shadow-[0_4px_16px_rgba(245,158,11,0.3)] hover:shadow-[0_4px_24px_rgba(245,158,11,0.4)]
+          text-white shadow-[0_4px_16px_rgba(245,158,11,0.3)] hover:shadow-[0_4px_24px_rgba(245,158,11,0.4)]
           transition-all duration-200 flex items-center justify-center gap-2
         '
       >
@@ -354,9 +667,9 @@ const LivePreview = ({ data, itineraryData, isSubmitting, validate, id }) => {
             Processing…
           </>
         ) : id ? (
-          "Update Tour"
+          `Update ${Type}`
         ) : (
-          "Publish Tour"
+          `Publish ${Type}`
         )}
       </button>
     </div>
@@ -364,18 +677,13 @@ const LivePreview = ({ data, itineraryData, isSubmitting, validate, id }) => {
 };
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
-const TourForm = () => {
+const TourForm = ({ Type }) => {
   const { id } = useParams();
+  const activeType = Type;
+
   const [formData, setFormData] = useState({
     title: "",
-    description: "",
     destination: "",
-    price: "",
-    duration_days: "",
-    max_group_size: "",
-    cover_image: "",
-    is_featured: false,
-    is_hot_deal: false,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -391,54 +699,109 @@ const TourForm = () => {
     { id: 4, name: "Historical" },
   ];
 
-  const schema = {
-    id: Joi.optional(),
-    title: Joi.string().max(200).required().label("Title"),
-    description: Joi.string().optional().label("Description"),
-    destination: Joi.string().max(150).optional().label("Destination"),
-    cover_image: Joi.optional(),
-    gallery: Joi.optional(),
-    price: Joi.number().precision(2).positive().optional().label("Price"),
-    duration_days: Joi.number()
-      .integer()
-      .positive()
-      .optional()
-      .label("Duration Days"),
-    max_group_size: Joi.number()
-      .integer()
-      .positive()
-      .optional()
-      .label("Max Group Size"),
-    is_featured: Joi.boolean().default(false).label("Is Featured"),
-    is_hot_deal: Joi.boolean().default(false).label("Is Hot Deal"),
-    category: Joi.string().max(80).optional().label("Category"),
-    inclusions: Joi.array().items(Joi.number()).optional().label("Inclusions"),
-    exclusions: Joi.array().items(Joi.number()).optional().label("Exclusions"),
-    created_at: Joi.any(),
-    updated_at: Joi.any(),
+  const getSchema = (activeType) => {
+    const common = {
+      id: Joi.optional(),
+      title: Joi.string().max(200).required().label("Title"),
+      description: Joi.string().optional().allow("", null).label("Description"),
+      destination: Joi.string()
+        .max(150)
+        .optional()
+        .allow("", null)
+        .label("Destination"),
+      cover_image: Joi.optional(),
+      gallery: Joi.optional(),
+      price: Joi.number().precision(2).positive().optional().label("Price"),
+      max_group_size: Joi.number()
+        .integer()
+        .positive()
+        .optional()
+        .label("Max Group Size"),
+      is_featured: Joi.boolean().default(false).label("Is Featured"),
+      is_hot_deal: Joi.boolean().default(false).label("Is Hot Deal"),
+      category: Joi.string()
+        .max(80)
+        .optional()
+        .allow("", null)
+        .label("Category"),
+      inclusions: Joi.array().items(Joi.number()).min(2).label("Inclusions"),
+      exclusions: Joi.array()
+        .items(Joi.number())
+        .min(2)
+        .optional()
+        .label("Exclusions"),
+      type: Joi.string().optional().allow("", null).label("Type"),
+      created_at: Joi.any(),
+      updated_at: Joi.any(),
+
+      // ✅ All type-specific fields allowed in base — overridden per type
+      duration_days: Joi.any(),
+      departure_time: Joi.any(),
+      return_time: Joi.any(),
+      meeting_point: Joi.any(),
+      guide_included: Joi.any(),
+      duration_hours: Joi.any(),
+      difficulty_level: Joi.any(),
+      equipment_included: Joi.any(),
+    };
+
+    const byType = {
+      tour: {
+        duration_days: Joi.number()
+          .positive()
+          .optional()
+          .label("Duration Days"),
+      },
+      excursion: {
+        departure_time: Joi.string()
+          .optional()
+          .allow("", null)
+          .label("Departure Time"),
+        return_time: Joi.string()
+          .optional()
+          .allow("", null)
+          .label("Return Time"),
+        meeting_point: Joi.string()
+          .max(255)
+          .optional()
+          .allow("", null)
+          .label("Meeting Point"),
+        guide_included: Joi.boolean().optional().label("Guide Included"),
+        duration_hours: Joi.number()
+          .integer()
+          .positive()
+          .optional()
+          .label("Duration Hours"),
+      },
+      activity: {
+        duration_hours: Joi.number()
+          .integer()
+          .positive()
+          .optional()
+          .label("Duration Hours"),
+        difficulty_level: Joi.string()
+          .valid("easy", "moderate", "hard", "expert")
+          .optional()
+          .allow("", null)
+          .label("Difficulty Level"),
+        equipment_included: Joi.boolean()
+          .optional()
+          .label("Equipment Included"),
+      },
+    };
+
+    return { ...common, ...(byType[activeType] ?? {}) };
   };
 
   useEffect(() => {
     const fetchOptions = async () => {
-      const [inclusions, exclusions] = await Promise.all([
+      const [inc, exc] = await Promise.all([
         inclusionsService.getAll({ is_active: true, limit: 100 }),
         exclusionsService.getAll({ is_active: true, limit: 100 }),
       ]);
-
-      setFormData({
-        inclusions: inclusions?.data?.map((inc) => parseInt(inc.id)),
-        exclusions: exclusions?.data?.map((exc) => parseInt(exc.id)),
-      });
-
-      setInclusions(
-        inclusions?.data?.map((inc) => ({ id: inc.id, name: inc.text }))
-      );
-
-      setExclusions(
-        exclusions?.data?.map((exc) => ({ id: exc.id, name: exc.text }))
-      );
+      setInclusions(inc?.data?.map((i) => ({ id: i.id, name: i.text })));
+      setExclusions(exc?.data?.map((e) => ({ id: e.id, name: e.text })));
     };
-
     fetchOptions();
   }, [id]);
 
@@ -448,24 +811,47 @@ const TourForm = () => {
       try {
         setIsLoading(true);
         const tour = await tourService.getById(id);
+
         setFormData({
           id: tour.id,
+          type: tour.type,
           title: tour.title,
           description: tour.description,
           destination: tour.destination,
           price: tour.price,
-          duration_days: tour.duration_days,
           max_group_size: tour.max_group_size,
           cover_image: tour.cover_image,
           is_featured: tour.is_featured,
           is_hot_deal: tour.is_hot_deal,
           category: tour.category,
-          inclusions: tour.inclusions.map((inc) => parseInt(inc.id)),
-          exclusions: tour.exclusions.map((exc) => parseInt(exc.id)),
+          inclusions: tour.inclusions?.map((i) => parseInt(i.id)),
+          exclusions: tour.exclusions?.map((e) => parseInt(e.id)),
           gallery: tour.images?.map((img) =>
             typeof img === "object" && img?.url ? img.url : img
           ),
+          ...(tour.type === "tour"
+            ? {
+                duration_days: tour.duration_days,
+              }
+            : {}),
+          ...(tour.type === "excursion"
+            ? {
+                duration_hours: tour.duration_hours,
+                departure_time: tour.departure_time,
+                return_time: tour.return_time,
+                meeting_point: tour.meeting_point,
+                guide_included: tour.guide_included,
+              }
+            : {}),
+          ...(tour.type === "activity"
+            ? {
+                duration_hours: tour.duration_hours,
+                difficulty_level: tour.difficulty_level,
+                equipment_included: tour.equipment_included,
+              }
+            : {}),
         });
+
         setItineraryInitialData(
           (tour.itineraries || []).map((i) => ({
             day: i?.day,
@@ -484,11 +870,18 @@ const TourForm = () => {
     fetchTour();
   }, [id]);
 
+  const mapToViewModel = (tour) => {
+    return;
+  };
+
   const doSubmit = async () => {
     try {
       if (isSubmitting) return;
       setIsSubmitting(true);
+
       const fd = getFormData();
+      fd.append("type", activeType);
+
       itineraryData.forEach((day, index) => {
         Object.entries(day).forEach(([key, value]) => {
           if (value instanceof File)
@@ -497,16 +890,23 @@ const TourForm = () => {
             fd.append(`itinerary[${index}][${key}]`, String(value));
         });
       });
+
       id ? await tourService.update(id, fd) : await tourService.create(fd);
+
+      const label =
+        activeType[0].toUpperCase() + activeType.slice(1).toLowerCase();
+      toast.success(`${label} ${id ? "updated" : "created"} successfully!`);
     } catch (err) {
-      console.error(err);
+      toast.error(err.response.data.message);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const { data, errors, handleChange, handleSubmit, validate, getFormData } =
-    useForm(formData, schema, doSubmit);
+    useForm(formData, getSchema(activeType), doSubmit);
+
+  console.log("Validate: ", validate());
 
   if (isLoading) {
     return (
@@ -531,7 +931,7 @@ const TourForm = () => {
               d='M4 12a8 8 0 018-8v8H4z'
             />
           </svg>
-          <p className='text-sm text-gray-400 font-medium'>Loading tour…</p>
+          <p className='text-sm text-gray-400 font-medium'>Loading {Type}…</p>
         </div>
       </div>
     );
@@ -541,30 +941,20 @@ const TourForm = () => {
     <div className='min-h-screen bg-gray-50/80'>
       <form onSubmit={handleSubmit} noValidate>
         {/* Sticky header */}
-        <div className='bg-white border-b border-gray-100 px-6 py-4 sticky top-0 z-20 shadow-sm'>
+        <div className='bg-white border-b border-gray-100 px-6 py-4 top-0 z-20 shadow-sm'>
           <div className='max-w-7xl mx-auto flex items-center justify-between'>
             <div className='flex items-center gap-3'>
               <div className='w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center shadow-sm'>
-                <svg
-                  className='w-4 h-4 text-white'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064'
-                  />
-                </svg>
+                <span className='text-base'>
+                  {TYPE_META[activeType]?.icon ?? "🌍"}
+                </span>
               </div>
               <div>
                 <h1 className='text-sm font-bold text-gray-900'>
-                  {id ? "Edit Tour" : "New Tour"}
+                  {id ? `Edit ${Type}` : `New ${Type}`}
                 </h1>
                 <p className='text-[11px] text-gray-400'>
-                  {id ? "Update tour details" : "Fill in details to publish"}
+                  {id ? `Update ${Type} details` : "Fill in details to publish"}
                 </p>
               </div>
             </div>
@@ -582,9 +972,10 @@ const TourForm = () => {
           <div className='grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-8 items-start'>
             {/* LEFT — form */}
             <div className='space-y-6 min-w-0'>
+              {/* ── Common ── */}
               <FormSection
                 title='Basic Information'
-                description='Core tour details'
+                description={`Core ${Type} details`}
                 icon='📋'
               >
                 {renderInput(
@@ -631,30 +1022,60 @@ const TourForm = () => {
                       true
                     )}
                   </div>
-                  <div>
-                    {renderInput(
-                      "Duration (days)",
-                      "duration_days",
-                      data,
-                      errors,
-                      handleChange,
-                      "number",
-                      true
-                    )}
-                  </div>
+                  {/* duration_days only relevant for tours */}
+                  {activeType === "tour" ? (
+                    <div>
+                      {renderInput(
+                        "Duration (days)",
+                        "duration_days",
+                        data,
+                        errors,
+                        handleChange,
+                        "number",
+                        true
+                      )}
+                    </div>
+                  ) : (
+                    <div>
+                      {renderInput(
+                        "Max Group Size",
+                        "max_group_size",
+                        data,
+                        errors,
+                        handleChange,
+                        "number",
+                        true
+                      )}
+                    </div>
+                  )}
                 </TwoCol>
-                <TwoCol>
-                  <div>
-                    {renderInput(
-                      "Max Group Size",
-                      "max_group_size",
-                      data,
-                      errors,
-                      handleChange,
-                      "number",
-                      true
-                    )}
-                  </div>
+                {activeType === "tour" ? (
+                  <TwoCol>
+                    <div>
+                      {renderInput(
+                        "Max Group Size",
+                        "max_group_size",
+                        data,
+                        errors,
+                        handleChange,
+                        "number",
+                        true
+                      )}
+                    </div>
+                    <div>
+                      {renderSelect(
+                        "Category",
+                        "category",
+                        data,
+                        errors,
+                        handleChange,
+                        CATEGORIES,
+                        "name",
+                        "name"
+                      )}
+                    </div>
+                  </TwoCol>
+                ) : (
                   <div>
                     {renderSelect(
                       "Category",
@@ -667,7 +1088,7 @@ const TourForm = () => {
                       "name"
                     )}
                   </div>
-                </TwoCol>
+                )}
               </FormSection>
 
               <FormSection title='Visibility' icon='🏷️'>
@@ -695,6 +1116,23 @@ const TourForm = () => {
                 </div>
               </FormSection>
 
+              {/* ── Type-specific ── */}
+              {activeType === "excursion" && (
+                <ExcursionFields
+                  data={data}
+                  errors={errors}
+                  handleChange={handleChange}
+                />
+              )}
+              {activeType === "activity" && (
+                <ActivityFields
+                  data={data}
+                  errors={errors}
+                  handleChange={handleChange}
+                />
+              )}
+
+              {/* ── Common ── */}
               <FormSection
                 title='Media'
                 description='Cover image and gallery'
@@ -712,7 +1150,7 @@ const TourForm = () => {
                       errors,
                       handleChange,
                       true,
-                      "Select tour thumbnail"
+                      "Select thumbnail"
                     )}
                   </div>
                   <div>
@@ -733,10 +1171,13 @@ const TourForm = () => {
                 </div>
               </FormSection>
 
-              <ItinerarySection
-                initialData={itineraryInitialData}
-                onUpdate={(structured) => setItineraryData(structured)}
-              />
+              {/* Itinerary — tour only */}
+              {activeType === "tour" && (
+                <ItinerarySection
+                  initialData={itineraryInitialData}
+                  onUpdate={(structured) => setItineraryData(structured)}
+                />
+              )}
 
               <FormSection
                 title='Inclusions & Exclusions'
@@ -791,8 +1232,8 @@ const TourForm = () => {
                   {isSubmitting
                     ? "Processing…"
                     : id
-                    ? "Update Tour"
-                    : "Publish Tour"}
+                    ? `Update ${Type}`
+                    : `Publish ${Type}`}
                 </button>
               </div>
             </div>
@@ -815,6 +1256,7 @@ const TourForm = () => {
                   isSubmitting={isSubmitting}
                   validate={validate}
                   id={id}
+                  Type={Type}
                 />
               </div>
             </div>

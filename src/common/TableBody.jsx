@@ -12,7 +12,7 @@ const TableBody = ({ items, columns }) => {
       <tbody>
         <tr>
           <td colSpan={columns.length} className='text-center py-16'>
-            <div className='flex flex-col items-center justify-center gap-3 text-base-content/30'>
+            <div className='flex flex-col items-center justify-center gap-3 text-gray-300'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 className='h-16 w-16'
@@ -43,12 +43,16 @@ const TableBody = ({ items, columns }) => {
       {items.map((item, rowIndex) => (
         <tr
           key={item?.id || rowIndex}
-          className='border-b border-base-200 hover:bg-base-200/40 transition-colors duration-150 group'
+          className={`
+            transition-colors duration-150 group
+            ${rowIndex % 2 === 0 ? "bg-white" : "bg-gray-100"}
+            hover:bg-blue-50/50
+          `}
         >
           {columns.map((column, colIndex) => (
             <td
               key={column.path || column.key || colIndex}
-              className='px-4 py-3 text-sm text-base-content whitespace-nowrap'
+              className='px-4 py-3 text-sm border border-gray-200 text-gray-700 whitespace-nowrap'
             >
               {renderCell(item, column)}
             </td>

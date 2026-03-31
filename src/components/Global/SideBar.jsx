@@ -5,6 +5,7 @@ import role from "../../constants/role";
 
 const user = userService?.getCurrentUser();
 const isAdmin = user?.role === role.ADMIN;
+const isCustomer = user?.role === role.CUSTOMER;
 
 const NAV = [
   {
@@ -21,12 +22,59 @@ const NAV = [
         path: `${isAdmin ? "/admin/bookings" : "/my-bookings"}`,
       },
       ...(isAdmin
-        ? [{ icon: "fa-compass", label: "Tours", path: "/admin/tours" }]
+        ? [{ icon: "fa-map-marked-alt", label: "Tours", path: "/admin/tours" }]
         : []),
-      { icon: "fa-heart", label: "Favorites", path: "/favorites" },
+      ...(isAdmin
+        ? [
+            {
+              icon: "fa-hiking",
+              label: "Excursions",
+              path: "/admin/excursions",
+            },
+          ]
+        : []),
+      ...(isAdmin
+        ? [
+            {
+              icon: "fa-running",
+              label: "Activities",
+              path: "/admin/activities",
+            },
+          ]
+        : []),
+      ...(isAdmin
+        ? [
+            {
+              icon: "fa-comments",
+              label: "Reviews",
+              path: `/admin/reviews`,
+            },
+          ]
+        : []),
+      ...(isAdmin
+        ? [
+            {
+              icon: "fa-user",
+              label: "Users",
+              path: "/users",
+            },
+          ]
+        : []),
+      ...(isAdmin
+        ? [
+            {
+              icon: "fa-list",
+              label: "Categoris",
+              path: "/categories",
+            },
+          ]
+        : []),
+      ...(isCustomer
+        ? [{ icon: "fa-heart", label: "Favorites", path: "/favorites" }]
+        : []),
     ],
   },
-  {
+  /*   {
     section: "Explore",
     items: [
       { icon: "fa-compass", label: "Browse Tours", path: "/tours" },
@@ -37,7 +85,7 @@ const NAV = [
       },
     ],
   },
-  {
+ */ {
     section: "Account",
     items: [
       { icon: "fa-user-circle", label: "Profile", path: "/profile/me" },

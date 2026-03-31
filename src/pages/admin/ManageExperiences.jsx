@@ -19,7 +19,7 @@ import userService from "../../services/userService";
 import role from "../../constants/role";
 import paginate from "../../utils/paginate";
 
-const ManageTours = () => {
+const ManageExperiences = ({ Type }) => {
   const [searchParam] = useSearchParams();
   const q = searchParam.get("q");
 
@@ -105,19 +105,27 @@ const ManageTours = () => {
     const canDelete = isAdmin;
 
     const editIcon = (
-      <Link to={`/admin/tours/edit/${item.id}`}>
+      <Link
+        to={`/admin/${Type === "activity" ? "activities" : Type + "s"}/edit/${
+          item.id
+        }`}
+      >
         <i className='fas fa-edit text-blue-500 transition-colors ml-4'></i>
       </Link>
     );
 
     const viewIcon = (
-      <Link to={`/admin/tours/view/${item.id}`}>
+      <Link
+        to={`/admin/${Type === "activity" ? "activities" : Type + "s"}/view/${
+          item.id
+        }`}
+      >
         <i className='fas fa-eye  text-yellow-500 transition-colors ml-4'></i>
       </Link>
     );
 
     const deleteIcon = (
-      <button onClick={() => setDeleteModal(true)}>
+      <button onClick={() => setDeleteModal(item)}>
         <i className='fas fa-trash text-red-500 transition-colors ml-4'></i>
       </button>
     );
@@ -139,6 +147,7 @@ const ManageTours = () => {
     try {
       setLoading(true);
       const res = await tourService.getAll({
+        type: Type,
         page: pageNumber,
         limit: pageSize,
         searchQuery: q,
@@ -159,15 +168,19 @@ const ManageTours = () => {
 
   useEffect(() => {
     fetchData();
-  }, [pageNumber, pageSize, q]);
+  }, [pageNumber, pageSize, q, Type]);
 
-  const handleDelete = async () => {
+  const handleDelete = async (id) => {
     try {
       setDeleting(true);
-      await tourService.deleteById(deleteModal.id);
+      await tourService.deleteOne(id);
       setTours((prev) => prev.filter((t) => t.id !== deleteModal.id));
       setTotalItems((n) => n - 1);
-      toast.success("Tour deleted successfully!");
+      toast.success(
+        `${
+          String(Type[0]).toUpperCase() + String(Type).slice(1).toLowerCase()
+        } deleted successfully!`
+      );
       setDeleteModal(null);
     } catch (err) {
       toast.error(err?.response?.data?.message || "Failed to delete tour!");
@@ -203,17 +216,24 @@ const ManageTours = () => {
             className='text-3xl font-black text-stone-800'
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Manage Tours
+            <div>
+              <div className='capitalize'>
+                Manage {Type === "activity" ? "activities" : Type + "s"}
+              </div>
+            </div>
           </h1>
           <p className='text-stone-400 text-sm mt-1'>
-            {totalItems} tours in total
+            {totalItems} {Type === "activity" ? "activities" : Type + "s"} in
+            total
           </p>
         </div>
         <Link
-          to='/admin/tours/create'
+          to={`/admin/${
+            Type === "activity" ? "activities" : Type + "s"
+          }/create`}
           className='inline-flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-5 py-2.5 rounded-xl shadow-sm shadow-amber-200 self-start sm:self-auto'
         >
-          <i className='fa fa-plus text-xs' /> Add New Tour
+          <i className='fa fa-plus text-xs' /> Add New {Type}
         </Link>
       </div>
 
@@ -222,7 +242,7 @@ const ManageTours = () => {
         {[
           {
             icon: "fa-map-marked-alt",
-            label: "Total Tours",
+            label: `Total ${Type === "activity" ? "activities" : Type + "s"}`,
             value: totalItems,
             color: "from-amber-400 to-orange-500",
             ring: "ring-amber-200",
@@ -278,9 +298,9 @@ const ManageTours = () => {
       ) : data.length === 0 ? (
         <div className='bg-white rounded-2xl border border-stone-100 py-20 text-center'>
           <i className='fa fa-map text-5xl text-stone-200 mb-4 block' />
-          <p className='font-bold text-stone-500 mb-1'>No tours found</p>
+          <p className='font-bold text-stone-500 mb-1'>No {Type} found</p>
           <p className='text-sm text-stone-400'>
-            Try adjusting your search or add a new tour.
+            Try adjusting your search or add a new {Type}.
           </p>
         </div>
       ) : (
@@ -312,9 +332,10 @@ const ManageTours = () => {
       {/* Delete modal */}
       {deleteModal && (
         <ConfirmModal
-          title='Delete Tour'
-          message={`Are you sure you want to delete "${deleteModal.title}"? This action cannot be undone.`}
+          title={`Delete ${Type}`}
+          message={`Are you sure you want to delete "${Type}"? This action cannot be undone.`}
           onConfirm={handleDelete}
+          tourId={deleteModal?.id}
           onClose={() => setDeleteModal(null)}
           loading={deleting}
         />
@@ -323,4 +344,4 @@ const ManageTours = () => {
   );
 };
 
-export default ManageTours;
+export default ManageExperiences;

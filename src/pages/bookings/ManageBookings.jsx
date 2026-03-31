@@ -3,6 +3,9 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 import bookingService from "../../services/bookingService";
 import Pagination from "../../common/Pagination";
+import { Link } from "react-router-dom";
+
+import renderImage from "../../utils/renderImage";
 
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
@@ -144,8 +147,8 @@ const ManageBookings = ({ searchQuery }) => {
         ...(statusFilter !== "All" && { status: statusFilter.toLowerCase() }),
       };
       const res = await bookingService.getAll(params);
-      setBookings(res?.data?.bookings || res?.data || []);
-      setTotalItems(res?.data?.total || 0);
+      setBookings(res?.data);
+      setTotalItems(res?.data?.length || 0);
     } catch {
       toast.error("Failed to fetch bookings!");
     } finally {
@@ -186,7 +189,6 @@ const ManageBookings = ({ searchQuery }) => {
           b.id === statusModal.id ? { ...b, status: newStatus } : b
         )
       );
-      toast.success("Booking status updated!");
       setStatusModal(null);
     } catch (err) {
       toast.error(err?.response?.data?.message || "Failed to update status!");
@@ -198,7 +200,7 @@ const ManageBookings = ({ searchQuery }) => {
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      await bookingService.deleteById(deleteModal.id);
+      await bookingService.deleteOne(deleteModal.id);
       setBookings((prev) => prev.filter((b) => b.id !== deleteModal.id));
       setTotalItems((n) => n - 1);
       toast.success("Booking deleted!");
@@ -359,32 +361,24 @@ const ManageBookings = ({ searchQuery }) => {
                     {/* Tour */}
                     <td className='px-4 py-3'>
                       <div className='flex items-center gap-3'>
-                        <div className='w-10 h-9 rounded-xl overflow-hidden bg-stone-100 shrink-0'>
-                          {b.tour?.cover_image ? (
-                            <img
-                              src={b.tour.cover_image}
-                              alt=''
-                              className='w-full h-full object-cover'
-                            />
-                          ) : (
-                            <div className='w-full h-full flex items-center justify-center text-stone-300'>
-                              <i className='fa fa-image text-xs' />
-                            </div>
-                          )}
+                        <div className='w-10 h-10 rounded-md overflow-hidden bg-stone-100 shrink-0'>
+                          <img
+                            src={renderImage(b?.tour_cover_image)}
+                            alt={b?.tour_cover_image}
+                            className='w-full h-full object-cover'
+                          />
                         </div>
                         <p className='font-semibold text-stone-700 max-w-[160px] truncate text-xs'>
-                          {b.tour?.title || "—"}
+                          {b.tour_title || "—"}
                         </p>
                       </div>
                     </td>
                     {/* Customer */}
                     <td className='px-4 py-3'>
                       <p className='font-semibold text-stone-700 text-xs'>
-                        {b.user?.name || "—"}
+                        {b.user_name || "—"}
                       </p>
-                      <p className='text-stone-400 text-[10px]'>
-                        {b.user?.email}
-                      </p>
+                      <p className='text-stone-400 text-[10px]'>{b.email}</p>
                     </td>
                     {/* Date */}
                     <td className='px-4 py-3 whitespace-nowrap text-xs text-stone-500'>
@@ -398,7 +392,7 @@ const ManageBookings = ({ searchQuery }) => {
                     </td>
                     {/* Duration */}
                     <td className='px-4 py-3 text-xs text-stone-500 whitespace-nowrap'>
-                      {b.tour?.duration_days ? `${b.tour.duration_days}d` : "—"}
+                      {b.duration_days ? `${b.duration_days}d` : "—"}
                     </td>
                     {/* Total */}
                     <td className='px-4 py-3'>
@@ -416,14 +410,22 @@ const ManageBookings = ({ searchQuery }) => {
                         <button
                           onClick={() => setStatusModal(b)}
                           title='Update Status'
-                          className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-amber-50 hover:text-amber-600 flex items-center justify-center text-stone-400 transition-colors'
+                          className='cursor-pointer w-8 h-8 rounded-xl bg-stone-100 hover:bg-amber-50 hover:text-amber-600 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-exchange-alt text-xs' />
                         </button>
                         <button
+                          title='View Booking'
+                          className='cursor-pointer w-8 h-8 rounded-xl bg-stone-100 hover:bg-amber-50 hover:text-amber-600 flex items-center justify-center text-stone-400 transition-colors'
+                        >
+                          <Link to={`/booking/view/${b.id}`}>
+                            <i className='fa fa-eye text-xs' />
+                          </Link>
+                        </button>
+                        <button
                           onClick={() => setDeleteModal(b)}
                           title='Delete'
-                          className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-stone-400 transition-colors'
+                          className='cursor-pointer w-8 h-8 rounded-xl bg-stone-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-trash text-xs' />
                         </button>

@@ -1,9 +1,29 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import tourService from "../../services/tourService";
-import renderImage from "../../utils/renderImage";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import Joi from "joi-browser";
 
-// ─── Mock Data (replace with API when ready) ──────────────────
+// Hooks
+import useForm from "../../hooks/useForm";
+
+// Components
+import BookingForm from "../bookings/BookingForm";
+
+// Services
+import tourService from "../../services/tourService";
+import bookingService from "../../services/bookingService";
+import reviewService from "../../services/reviewService";
+import userService from "../../services/userService";
+
+// Utils
+import renderImage from "../../utils/renderImage";
+import { toast } from "react-toastify";
+import {
+  renderButton,
+  renderInput,
+  renderTextarea,
+} from "../../utils/formRenders";
+import { formatDate } from "date-fns";
+
 const MOCK_REVIEWS = [
   {
     id: 1,
@@ -34,51 +54,8 @@ const MOCK_REVIEWS = [
   },
 ];
 
-const INCLUSIONS = [
-  { icon: "fa-user-tie", text: "Professional licensed guide" },
-  { icon: "fa-car", text: "All ground transportation" },
-  { icon: "fa-bed", text: "Accommodation as per itinerary" },
-  { icon: "fa-utensils", text: "Daily breakfast and dinner" },
-  { icon: "fa-ticket-alt", text: "Entrance fees to all sites" },
-  { icon: "fa-first-aid", text: "Travel insurance coverage" },
-];
-
-const EXCLUSIONS = [
-  "International flights",
-  "Personal travel insurance",
-  "Optional activities",
-  "Tips & gratuities",
-];
-
-const ITINERARY = [
-  {
-    day: 1,
-    title: "Arrival & City Orientation",
-    desc: "Welcome to Morocco! Transfer to your riad, evening orientation walk through the medina and welcome dinner.",
-  },
-  {
-    day: 2,
-    title: "Ancient Medina Exploration",
-    desc: "Full day exploring the old city — tanneries, madrasas, spice markets, and hidden alleyways with your expert guide.",
-  },
-  {
-    day: 3,
-    title: "Mountain Drive & Kasbahs",
-    desc: "Scenic drive through the Atlas Mountains, stopping at ancient kasbahs and Berber villages along the route.",
-  },
-  {
-    day: 4,
-    title: "Desert Arrival & Camel Trek",
-    desc: "Arrive at the Sahara dunes by afternoon. Sunset camel trek to your luxury desert camp. Stargazing dinner.",
-  },
-  {
-    day: 5,
-    title: "Sunrise & Return Journey",
-    desc: "Watch the desert sunrise before beginning your journey back, visiting the Draa Valley palm groves en route.",
-  },
-];
-
 // ─── Helpers ──────────────────────────────────────────────────
+
 const StarRating = ({ rating, size = "text-sm" }) => (
   <div className='flex items-center gap-0.5'>
     {[1, 2, 3, 4, 5].map((s) => (
@@ -116,14 +93,13 @@ const SectionHeading = ({ eyebrow, title }) => (
   </div>
 );
 
-// ─── Review Card ──────────────────────────────────────────────
 const ReviewCard = ({ review }) => (
   <div className='bg-white rounded-2xl border border-stone-100 p-6'>
     <div className='flex items-start gap-4 mb-4'>
-      <InitialAvatar name={review.name} />
+      <InitialAvatar name={review.user_name} />
       <div className='flex-1 min-w-0'>
-        <p className='font-bold text-stone-800 text-sm'>{review.name}</p>
-        <p className='text-xs text-stone-400'>{review.date}</p>
+        <p className='font-bold text-stone-800 text-sm'>{review.user_name}</p>
+        <p className='text-xs text-stone-400'>{review.created_at}</p>
       </div>
       <StarRating rating={review.rating} />
     </div>
@@ -131,7 +107,6 @@ const ReviewCard = ({ review }) => (
   </div>
 );
 
-// ─── Related Tour Card ────────────────────────────────────────
 const RelatedCard = ({ tour }) => (
   <Link
     to={`/tours/${tour.id}`}
@@ -153,7 +128,9 @@ const RelatedCard = ({ tour }) => (
       <div className='absolute inset-0 bg-gradient-to-t from-black/40 to-transparent' />
       <div className='absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-sm'>
         <i className='fa fa-clock mr-1 text-[10px]' />
-        {tour.duration_days}d
+        {tour.type === "tour"
+          ? `${tour.duration_days}d`
+          : `${tour.duration_hours}h`}
       </div>
     </div>
     <div className='p-4'>
@@ -174,40 +151,282 @@ const RelatedCard = ({ tour }) => (
   </Link>
 );
 
+// ─── Per-type config ───────────────────────────────────────────
+
+const getTypeConfig = (tour) => {
+  switch (tour.type) {
+    case "excursion":
+      return {
+        label: "Excursion",
+        icon: "fa-compass",
+        color: "text-sky-500",
+        quickStats: [
+          {
+            icon: "fa-clock",
+            label: "Duration",
+            value: tour.duration_hours ? `${tour.duration_hours} hours` : "—",
+          },
+          {
+            icon: "fa-bus",
+            label: "Departure",
+            value: tour.departure_time || "—",
+          },
+          {
+            icon: "fa-flag-checkered",
+            label: "Return",
+            value: tour.return_time || "—",
+          },
+          {
+            icon: "fa-map-marker-alt",
+            label: "Meeting Point",
+            value: tour.meeting_point || "—",
+          },
+          {
+            icon: "fa-users",
+            label: "Group Size",
+            value: tour.max_group_size ? `Max ${tour.max_group_size}` : "—",
+          },
+          {
+            icon: "fa-user-tie",
+            label: "Guide",
+            value: tour.guide_included ? "Included" : "Not included",
+          },
+        ],
+        sidebarStats: [
+          tour.duration_hours && {
+            icon: "fa-clock",
+            label: "Duration",
+            value: `${tour.duration_hours} hours`,
+          },
+          tour.departure_time && {
+            icon: "fa-bus",
+            label: "Departure",
+            value: tour.departure_time,
+          },
+          tour.return_time && {
+            icon: "fa-flag-checkered",
+            label: "Return",
+            value: tour.return_time,
+          },
+          tour.meeting_point && {
+            icon: "fa-map-marker-alt",
+            label: "Meeting Point",
+            value: tour.meeting_point,
+          },
+          tour.guide_included !== undefined && {
+            icon: "fa-user-tie",
+            label: "Guide",
+            value: tour.guide_included ? "Included" : "Not included",
+          },
+          tour.max_group_size && {
+            icon: "fa-users",
+            label: "Group Size",
+            value: `Max ${tour.max_group_size}`,
+          },
+        ].filter(Boolean),
+      };
+
+    case "activity":
+      return {
+        label: "Activity",
+        icon: "fa-hiking",
+        color: "text-emerald-500",
+        quickStats: [
+          {
+            icon: "fa-clock",
+            label: "Duration",
+            value: tour.duration_hours ? `${tour.duration_hours} hours` : "—",
+          },
+          {
+            icon: "fa-mountain",
+            label: "Difficulty",
+            value: tour.difficulty_level
+              ? tour.difficulty_level.charAt(0).toUpperCase() +
+                tour.difficulty_level.slice(1)
+              : "—",
+          },
+          {
+            icon: "fa-tools",
+            label: "Equipment",
+            value: tour.equipment_included ? "Included" : "Not included",
+          },
+          {
+            icon: "fa-users",
+            label: "Group Size",
+            value: tour.max_group_size ? `Max ${tour.max_group_size}` : "—",
+          },
+          {
+            icon: "fa-tag",
+            label: "Category",
+            value: tour.category || "—",
+          },
+          {
+            icon: "fa-map-marker-alt",
+            label: "Destination",
+            value: tour.destination || "—",
+          },
+        ],
+        sidebarStats: [
+          tour.duration_hours && {
+            icon: "fa-clock",
+            label: "Duration",
+            value: `${tour.duration_hours} hours`,
+          },
+          tour.difficulty_level && {
+            icon: "fa-mountain",
+            label: "Difficulty",
+            value:
+              tour.difficulty_level.charAt(0).toUpperCase() +
+              tour.difficulty_level.slice(1),
+          },
+          tour.equipment_included !== undefined && {
+            icon: "fa-tools",
+            label: "Equipment",
+            value: tour.equipment_included ? "Included" : "Not included",
+          },
+          tour.max_group_size && {
+            icon: "fa-users",
+            label: "Group Size",
+            value: `Max ${tour.max_group_size}`,
+          },
+          tour.destination && {
+            icon: "fa-map-marker-alt",
+            label: "Destination",
+            value: tour.destination,
+          },
+        ].filter(Boolean),
+      };
+
+    case "tour":
+    default:
+      return {
+        label: "Tour",
+        icon: "fa-route",
+        color: "text-amber-500",
+        quickStats: [
+          {
+            icon: "fa-clock",
+            label: "Duration",
+            value: tour.duration_days ? `${tour.duration_days} days` : "—",
+          },
+          {
+            icon: "fa-users",
+            label: "Group Size",
+            value: tour.max_group_size ? `Max ${tour.max_group_size}` : "—",
+          },
+          {
+            icon: "fa-tag",
+            label: "Category",
+            value: tour.category || "—",
+          },
+          {
+            icon: "fa-map-marker-alt",
+            label: "Destination",
+            value: tour.destination || "—",
+          },
+        ],
+        sidebarStats: [
+          tour.duration_days && {
+            icon: "fa-clock",
+            label: "Duration",
+            value: `${tour.duration_days} days`,
+          },
+          tour.max_group_size && {
+            icon: "fa-users",
+            label: "Group Size",
+            value: `Max ${tour.max_group_size}`,
+          },
+          tour.destination && {
+            icon: "fa-map-marker-alt",
+            label: "Destination",
+            value: tour.destination,
+          },
+        ].filter(Boolean),
+      };
+  }
+};
+
+// ─── Difficulty badge ──────────────────────────────────────────
+
+const DifficultyBadge = ({ level }) => {
+  const config = {
+    easy: {
+      color: "bg-emerald-50 text-emerald-600 border-emerald-200",
+      icon: "fa-leaf",
+    },
+    moderate: {
+      color: "bg-amber-50 text-amber-600 border-amber-200",
+      icon: "fa-hiking",
+    },
+    hard: {
+      color: "bg-orange-50 text-orange-600 border-orange-200",
+      icon: "fa-mountain",
+    },
+    expert: {
+      color: "bg-red-50 text-red-600 border-red-200",
+      icon: "fa-skull-crossbones",
+    },
+  };
+  const c = config[level] || config.easy;
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border ${c.color}`}
+    >
+      <i className={`fa ${c.icon} text-[10px]`} />
+      {level.charAt(0).toUpperCase() + level.slice(1)}
+    </span>
+  );
+};
+
 // ─── TourDetail ───────────────────────────────────────────────
+
 const TourDetail = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [tour, setTour] = useState(null);
   const [relatedTours, setRelatedTours] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [lightbox, setLightbox] = useState(null);
-  const [comment, setComment] = useState({
-    name: "",
+  const [formData, setFormData] = useState();
+  const [reviews, setReviews] = useState([]);
+  const [reviewData, setReviewData] = useState({
+    /*     name: "",
     email: "",
-    rating: 5,
-    message: "",
+ */ rating: 5,
+    comment: "",
   });
-  const [submitting, setSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [itinerary, setItinerary] = useState([]);
   const [exclusions, setExclusions] = useState([]);
   const [inclusions, setInclusions] = useState([]);
 
   useEffect(() => {
+    const fetchUser = async () => {
+      const fetchedUser = await userService.getMe();
+      setFormData({
+        full_name: fetchedUser?.name || "",
+        email: fetchedUser?.email || "",
+        phone: fetchedUser?.phone || "",
+        nationality: fetchedUser?.nationality || "",
+      });
+    };
+    fetchUser();
+  }, [id]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await tourService.getById(id);
         setTour(data);
-        setItinerary(data?.itineraries);
+        setItinerary(data?.itineraries || []);
         setInclusions(
-          data.inclusions?.map((inc) => ({ id: inc.id, name: inc.text }))
+          data.inclusions?.map((inc) => ({ id: inc.id, name: inc.text })) || []
         );
         setExclusions(
-          data.exclusions?.map((inc) => ({ id: inc.id, name: inc.text }))
+          data.exclusions?.map((exc) => ({ id: exc.id, name: exc.text })) || []
         );
-
-        // Fetch related tours by category
         if (data?.category) {
           const related = await tourService.getAll({
             category: data.category,
@@ -216,6 +435,9 @@ const TourDetail = () => {
           const list = related?.data?.tours || related?.data || [];
           setRelatedTours(list.filter((t) => t.id !== data.id).slice(0, 3));
         }
+
+        const fetchedReviews = await reviewService.getAll({ tour_id: id, approve: true });
+        setReviews(fetchedReviews?.data);
       } finally {
         setLoading(false);
       }
@@ -223,29 +445,131 @@ const TourDetail = () => {
     fetchData();
   }, [id]);
 
-  const handleCommentChange = (e) =>
+  /*   const handleCommentChange = (e) =>
     setComment((c) => ({ ...c, [e.target.name]: e.target.value }));
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true);
-    // Replace with real API call: await reviewService.create(id, comment)
+    setIsSubmitting(true);
     await new Promise((r) => setTimeout(r, 1000));
-    setSubmitting(false);
+    setIsSubmitting(false);
     setSubmitted(true);
-    setComment({ name: "", email: "", rating: 5, message: "" });
+    setComment({ name: "", email: "", rating: 5, comment: "" });
   };
-
-  // ── Gallery images (cover + extras if available) ──────────
+ */
   const galleryImages = tour
     ? [tour.cover_image, ...(tour.images || [])].filter(Boolean).slice(0, 6)
     : [];
 
   const avgRating = (
-    MOCK_REVIEWS.reduce((s, r) => s + r.rating, 0) / MOCK_REVIEWS.length
+    reviews?.reduce((s, r) => s + r.rating, 0) / reviews?.length
   ).toFixed(1);
 
-  const TABS = ["overview", "itinerary", "reviews", "map"];
+  // Only show itinerary tab for tours
+  const TABS =
+    tour?.type === "tour"
+      ? ["overview", "itinerary", "reviews", "map"]
+      : ["overview", "reviews", "map"];
+
+  const bookingSchema = {
+    tour_id: Joi.any(),
+    num_people: Joi.number().min(1).required(),
+    full_name: Joi.string().max(150).required().label("Full Name"),
+    email: Joi.string().email().required().label("Email"),
+    phone: Joi.string().max(30).optional().allow("", null).label("Phone"),
+    booking_date: Joi.string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .optional()
+      .allow("", null)
+      .label("Booking Date"),
+    booking_time: Joi.string()
+      .regex(/^\d{2}:\d{2}$/)
+      .optional()
+      .allow("", null)
+      .label("Booking Time"),
+    nationality: Joi.string()
+      .max(100)
+      .optional()
+      .allow("", null)
+      .label("Nationality"),
+    pickup_location: Joi.string()
+      .max(255)
+      .optional()
+      .allow("", null)
+      .label("Pickup Location"),
+    special_requests: Joi.string()
+      .max(1000)
+      .optional()
+      .allow("", null)
+      .label("Special Requests"),
+  };
+
+  const doSubmit = async () => {
+    try {
+      setIsSubmitting(true);
+      const createData = {
+        tour_id: parseInt(id),
+        ...data,
+      };
+
+      await bookingService.create(createData);
+      navigate("/booking/successfull");
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error?.response?.data?.err);
+      console.log("Error: ", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const {
+    data,
+    setData,
+    errors,
+    setErrors,
+    handleChange,
+    handleSubmit,
+    validate,
+  } = useForm(formData, bookingSchema, doSubmit);
+
+  console.log("validate: ", validate);
+
+  useEffect(() => {
+    const errs = { ...errors };
+    if (data?.num_people > tour?.max_group_size) {
+      errs.num_people = `Num of people should be less than or equal to ${tour?.max_group_size}`;
+      setErrors(errs);
+    } else {
+      setErrors({});
+    }
+  }, [data?.num_people]);
+
+  // Comments
+  const reviewSchema = {
+    rating: Joi.number().min(1).max(5).required().label("Rating"),
+    comment: Joi.string().min(1).max(255).required().label("Comment"),
+  };
+
+  const doSubmitReview = async () => {
+    try {
+      setIsSubmitting(true);
+      await reviewService.create({ ...cData, tour_id: id, rating: 5 });
+      toast.success("Review submitted successfully!");
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+      console.log("Error: ", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const {
+    data: cData,
+    errors: cErrors,
+    handleChange: cHandleChange,
+    handleSubmit: cHandleSubmit,
+    validate: cValidate,
+  } = useForm(reviewData, reviewSchema, doSubmitReview);
 
   // ── Loading ──────────────────────────────────────────────
   if (loading)
@@ -264,7 +588,6 @@ const TourDetail = () => {
       </div>
     );
 
-  // ── Not Found ────────────────────────────────────────────
   if (!tour)
     return (
       <div
@@ -287,6 +610,16 @@ const TourDetail = () => {
       </div>
     );
 
+  const typeConfig = getTypeConfig(tour);
+
+  // ── Per-day price ─────────────────────────────────────────
+  const priceBreakdown =
+    tour.type === "tour" && tour.duration_days
+      ? `~$${Math.round(tour.price / tour.duration_days)}/day`
+      : tour.type === "excursion" && tour.duration_hours
+      ? `~$${Math.round(tour.price / tour.duration_hours)}/hr`
+      : null;
+
   return (
     <div
       className='min-h-screen bg-stone-50'
@@ -303,7 +636,6 @@ const TourDetail = () => {
         )}
         <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent' />
 
-        {/* Back */}
         <div className='absolute top-6 left-6'>
           <Link
             to='/tours'
@@ -313,8 +645,12 @@ const TourDetail = () => {
           </Link>
         </div>
 
-        {/* Badges */}
         <div className='absolute top-6 right-6 flex gap-2'>
+          {/* Type badge */}
+          <span className='flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-sm border border-white/20'>
+            <i className={`fa ${typeConfig.icon} text-[10px]`} />
+            {typeConfig.label}
+          </span>
           {tour.is_hot_deal && (
             <span className='flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-red-500 text-white shadow'>
               <i className='fa fa-fire text-[10px]' /> Hot Deal
@@ -327,7 +663,6 @@ const TourDetail = () => {
           )}
         </div>
 
-        {/* Hero content */}
         <div className='absolute bottom-0 left-0 right-0 px-6 pb-10 md:px-12'>
           <div className='max-w-6xl mx-auto'>
             {tour.category && (
@@ -342,14 +677,35 @@ const TourDetail = () => {
               {tour.title}
             </h1>
             <div className='flex flex-wrap items-center gap-4 text-sm text-white/70'>
-              <span className='flex items-center gap-1.5'>
-                <i className='fa fa-map-marker-alt text-amber-400' />{" "}
-                {tour.destination}
-              </span>
-              {tour.duration_days && (
+              {tour.destination && (
+                <span className='flex items-center gap-1.5'>
+                  <i className='fa fa-map-marker-alt text-amber-400' />{" "}
+                  {tour.destination}
+                </span>
+              )}
+              {/* Duration — type-aware */}
+              {tour.type === "tour" && tour.duration_days && (
                 <span className='flex items-center gap-1.5'>
                   <i className='fa fa-clock text-amber-400' />{" "}
                   {tour.duration_days} days
+                </span>
+              )}
+              {(tour.type === "excursion" || tour.type === "activity") &&
+                tour.duration_hours && (
+                  <span className='flex items-center gap-1.5'>
+                    <i className='fa fa-clock text-amber-400' />{" "}
+                    {tour.duration_hours} hours
+                  </span>
+                )}
+              {/* Difficulty badge for activities */}
+              {tour.type === "activity" && tour.difficulty_level && (
+                <DifficultyBadge level={tour.difficulty_level} />
+              )}
+              {/* Departure time for excursions */}
+              {tour.type === "excursion" && tour.departure_time && (
+                <span className='flex items-center gap-1.5'>
+                  <i className='fa fa-bus text-amber-400' /> Departs{" "}
+                  {tour.departure_time}
                 </span>
               )}
               {tour.max_group_size && (
@@ -361,7 +717,7 @@ const TourDetail = () => {
               <span className='flex items-center gap-1.5'>
                 <StarRating rating={Math.round(avgRating)} size='text-xs' />
                 <span className='text-amber-400 font-bold'>{avgRating}</span>
-                <span>({MOCK_REVIEWS.length} reviews)</span>
+                <span>({reviews?.length} reviews)</span>
               </span>
             </div>
           </div>
@@ -395,34 +751,9 @@ const TourDetail = () => {
             {/* OVERVIEW TAB */}
             {activeTab === "overview" && (
               <>
-                {/* Quick stats */}
-                <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-                  {[
-                    {
-                      icon: "fa-clock",
-                      label: "Duration",
-                      value: tour.duration_days
-                        ? `${tour.duration_days} days`
-                        : "—",
-                    },
-                    {
-                      icon: "fa-users",
-                      label: "Group Size",
-                      value: tour.max_group_size
-                        ? `Max ${tour.max_group_size}`
-                        : "—",
-                    },
-                    {
-                      icon: "fa-tag",
-                      label: "Category",
-                      value: tour.category || "—",
-                    },
-                    {
-                      icon: "fa-map-marker-alt",
-                      label: "Destination",
-                      value: tour.destination || "—",
-                    },
-                  ].map((s) => (
+                {/* Quick stats — dynamic per type */}
+                <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
+                  {typeConfig.quickStats.map((s) => (
                     <div
                       key={s.label}
                       className='bg-white rounded-2xl border border-stone-100 p-5'
@@ -443,55 +774,152 @@ const TourDetail = () => {
                 {/* Description */}
                 <div>
                   <SectionHeading
-                    eyebrow='About this tour'
-                    title='Tour Overview'
+                    eyebrow={`About this ${tour.type}`}
+                    title={
+                      tour.type === "tour"
+                        ? "Tour Overview"
+                        : tour.type === "excursion"
+                        ? "Excursion Overview"
+                        : "Activity Overview"
+                    }
                   />
                   <p className='text-stone-500 leading-relaxed whitespace-pre-line text-[15px]'>
                     {tour.description || "No description available."}
                   </p>
                 </div>
 
+                {/* Excursion-specific: logistics strip */}
+                {tour.type === "excursion" && (
+                  <div className='bg-sky-50 border border-sky-100 rounded-2xl p-6 grid grid-cols-2 md:grid-cols-3 gap-5'>
+                    {tour.departure_time && (
+                      <div>
+                        <p className='text-xs font-bold uppercase tracking-widest text-sky-500 mb-1'>
+                          Departure
+                        </p>
+                        <p className='text-sm font-bold text-stone-700'>
+                          {tour.departure_time}
+                        </p>
+                      </div>
+                    )}
+                    {tour.return_time && (
+                      <div>
+                        <p className='text-xs font-bold uppercase tracking-widest text-sky-500 mb-1'>
+                          Return
+                        </p>
+                        <p className='text-sm font-bold text-stone-700'>
+                          {tour.return_time}
+                        </p>
+                      </div>
+                    )}
+                    {tour.meeting_point && (
+                      <div>
+                        <p className='text-xs font-bold uppercase tracking-widest text-sky-500 mb-1'>
+                          Meeting Point
+                        </p>
+                        <p className='text-sm font-bold text-stone-700'>
+                          {tour.meeting_point}
+                        </p>
+                      </div>
+                    )}
+                    {tour.guide_included !== undefined && (
+                      <div>
+                        <p className='text-xs font-bold uppercase tracking-widest text-sky-500 mb-1'>
+                          Guide
+                        </p>
+                        <p className='text-sm font-bold text-stone-700'>
+                          {tour.guide_included
+                            ? "✓ Included"
+                            : "✗ Not included"}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Activity-specific: difficulty + equipment strip */}
+                {tour.type === "activity" && (
+                  <div className='bg-emerald-50 border border-emerald-100 rounded-2xl p-6 flex flex-wrap gap-8'>
+                    {tour.difficulty_level && (
+                      <div>
+                        <p className='text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2'>
+                          Difficulty
+                        </p>
+                        <DifficultyBadge level={tour.difficulty_level} />
+                      </div>
+                    )}
+                    {tour.equipment_included !== undefined && (
+                      <div>
+                        <p className='text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2'>
+                          Equipment
+                        </p>
+                        <span
+                          className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border ${
+                            tour.equipment_included
+                              ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+                              : "bg-stone-100 text-stone-500 border-stone-200"
+                          }`}
+                        >
+                          <i
+                            className={`fa ${
+                              tour.equipment_included ? "fa-check" : "fa-times"
+                            } text-[10px]`}
+                          />
+                          {tour.equipment_included
+                            ? "Included"
+                            : "Not included"}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Inclusions / Exclusions */}
-                <div>
-                  <SectionHeading
-                    eyebrow="What's covered"
-                    title='Inclusions & Exclusions'
-                  />
-                  <div className='grid md:grid-cols-2 gap-6'>
-                    <div className='bg-amber-50 border border-amber-100 rounded-2xl p-6 space-y-3'>
-                      <p className='text-xs font-bold uppercase tracking-widest text-amber-600 mb-4'>
-                        Included
-                      </p>
-                      {inclusions.map((item) => (
-                        <div
-                          key={item.id}
-                          className='flex items-center gap-3 text-sm text-stone-600'
-                        >
-                          <span className='w-6 h-6 rounded-full bg-amber-400/20 flex items-center justify-center shrink-0'>
-                            <i className='fa fa-check text-amber-600 text-[10px]' />
-                          </span>
-                          {item.name}
+                {(inclusions.length > 0 || exclusions.length > 0) && (
+                  <div>
+                    <SectionHeading
+                      eyebrow="What's covered"
+                      title='Inclusions & Exclusions'
+                    />
+                    <div className='grid md:grid-cols-2 gap-6'>
+                      {inclusions.length > 0 && (
+                        <div className='bg-amber-50 border border-amber-100 rounded-2xl p-6 space-y-3'>
+                          <p className='text-xs font-bold uppercase tracking-widest text-amber-600 mb-4'>
+                            Included
+                          </p>
+                          {inclusions.map((item) => (
+                            <div
+                              key={item.id}
+                              className='flex items-center gap-3 text-sm text-stone-600'
+                            >
+                              <span className='w-6 h-6 rounded-full bg-amber-400/20 flex items-center justify-center shrink-0'>
+                                <i className='fa fa-check text-amber-600 text-[10px]' />
+                              </span>
+                              {item.name}
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                    <div className='bg-stone-50 border border-stone-200 rounded-2xl p-6 space-y-3'>
-                      <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-4'>
-                        Not Included
-                      </p>
-                      {exclusions.map((item) => (
-                        <div
-                          key={item.id}
-                          className='flex items-center gap-3 text-sm text-stone-400'
-                        >
-                          <span className='w-6 h-6 rounded-full bg-stone-200 flex items-center justify-center shrink-0'>
-                            <i className='fa fa-times text-stone-400 text-[10px]' />
-                          </span>
-                          {item.name}
+                      )}
+                      {exclusions.length > 0 && (
+                        <div className='bg-stone-50 border border-stone-200 rounded-2xl p-6 space-y-3'>
+                          <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-4'>
+                            Not Included
+                          </p>
+                          {exclusions.map((item) => (
+                            <div
+                              key={item.id}
+                              className='flex items-center gap-3 text-sm text-stone-400'
+                            >
+                              <span className='w-6 h-6 rounded-full bg-stone-200 flex items-center justify-center shrink-0'>
+                                <i className='fa fa-times text-stone-400 text-[10px]' />
+                              </span>
+                              {item.name}
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      )}
                     </div>
                   </div>
-                </div>
+                )}
 
                 {/* Gallery */}
                 {galleryImages.length > 0 && (
@@ -528,24 +956,19 @@ const TourDetail = () => {
               </>
             )}
 
-            {/* ITINERARY TAB */}
-            {activeTab === "itinerary" && (
+            {/* ITINERARY TAB — tours only */}
+            {activeTab === "itinerary" && tour.type === "tour" && (
               <div>
                 <SectionHeading eyebrow='Day by day' title='Tour Itinerary' />
                 <div className='relative'>
-                  {/* Timeline line */}
                   <div className='absolute left-5 top-0 bottom-0 w-px bg-amber-100' />
                   <div className='space-y-6'>
-                    {itinerary.map((day, i) => (
+                    {itinerary.map((day) => (
                       <div key={day.day} className='flex gap-6 relative'>
-                        {/* Day bubble */}
                         <div className='w-10 h-10 rounded-full bg-amber-400 flex items-center justify-center text-amber-900 font-black text-sm shrink-0 z-10 shadow-md shadow-amber-200'>
                           {day.day}
                         </div>
-
-                        {/* Card */}
                         <div className='flex-1 bg-white rounded-2xl border border-stone-100 overflow-hidden'>
-                          {/* Image */}
                           {day.image && (
                             <div className='relative h-44 overflow-hidden'>
                               <img
@@ -553,23 +976,16 @@ const TourDetail = () => {
                                 alt={day.title}
                                 className='w-full h-full object-cover'
                               />
-                              {/* Gradient fade into card content */}
                               <div className='absolute inset-0 bg-gradient-to-t from-white/60 to-transparent' />
                             </div>
                           )}
-
                           <div className='p-5'>
-                            {/* Eyebrow */}
                             <p className='text-xs font-bold uppercase tracking-widest text-amber-500 mb-1'>
                               Day {day.day}
                             </p>
-
-                            {/* Title */}
                             <h3 className='font-black text-stone-800 text-base mb-1'>
                               {day.title}
                             </h3>
-
-                            {/* Location */}
                             {day.location && (
                               <p className='flex items-center gap-1.5 text-xs text-stone-400 font-medium mb-3'>
                                 <svg
@@ -594,8 +1010,6 @@ const TourDetail = () => {
                                 {day.location}
                               </p>
                             )}
-
-                            {/* Description */}
                             {(day.description || day.desc) && (
                               <p className='text-sm text-stone-500 leading-relaxed'>
                                 {day.description || day.desc}
@@ -613,7 +1027,6 @@ const TourDetail = () => {
             {/* REVIEWS TAB */}
             {activeTab === "reviews" && (
               <div>
-                {/* Rating summary */}
                 <div className='bg-white rounded-2xl border border-stone-100 p-8 mb-8 flex flex-col md:flex-row items-center gap-8'>
                   <div className='text-center shrink-0'>
                     <p className='text-6xl font-black text-amber-500'>
@@ -621,17 +1034,15 @@ const TourDetail = () => {
                     </p>
                     <StarRating rating={Math.round(avgRating)} size='text-lg' />
                     <p className='text-xs text-stone-400 mt-2'>
-                      {MOCK_REVIEWS.length} reviews
+                      {reviews?.length} reviews
                     </p>
                   </div>
                   <div className='flex-1 w-full space-y-2'>
                     {[5, 4, 3, 2, 1].map((star) => {
-                      const count = MOCK_REVIEWS.filter(
+                      const count = reviews?.filter(
                         (r) => r.rating === star
                       ).length;
-                      const pct = Math.round(
-                        (count / MOCK_REVIEWS.length) * 100
-                      );
+                      const pct = Math.round((count / reviews?.length) * 100);
                       return (
                         <div key={star} className='flex items-center gap-3'>
                           <span className='text-xs text-stone-400 w-3'>
@@ -653,18 +1064,16 @@ const TourDetail = () => {
                   </div>
                 </div>
 
-                {/* Reviews list */}
                 <SectionHeading
                   eyebrow='Traveler stories'
                   title='Guest Reviews'
                 />
                 <div className='space-y-4 mb-12'>
-                  {MOCK_REVIEWS.map((r) => (
+                  {reviews?.map((r) => (
                     <ReviewCard key={r.id} review={r} />
                   ))}
                 </div>
 
-                {/* Add comment form */}
                 <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
                   <div className='h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-400' />
                   <div className='p-7'>
@@ -677,7 +1086,6 @@ const TourDetail = () => {
                     <p className='text-sm text-stone-400 mb-6'>
                       Help fellow travelers by leaving an honest review
                     </p>
-
                     {submitted ? (
                       <div className='text-center py-10'>
                         <div className='w-14 h-14 rounded-full bg-amber-50 flex items-center justify-center mx-auto mb-4'>
@@ -697,18 +1105,23 @@ const TourDetail = () => {
                         </button>
                       </div>
                     ) : (
-                      <form
-                        onSubmit={handleCommentSubmit}
-                        className='space-y-4'
-                      >
-                        <div className='grid md:grid-cols-2 gap-4'>
+                      <form onSubmit={cHandleSubmit} className='space-y-4'>
+                        {/*  <div className='grid md:grid-cols-2 gap-4'>
                           <div>
                             <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1.5'>
                               Name *
                             </label>
+                            {renderInput(
+                              "",
+                              "name",
+                              cData,
+                              cErrors,
+                              cHandleChange,
+                              "text"
+                            )}
                             <input
                               name='name'
-                              value={comment.name}
+                              value={cData?.name}
                               onChange={handleCommentChange}
                               required
                               placeholder='Your full name'
@@ -719,9 +1132,17 @@ const TourDetail = () => {
                             <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1.5'>
                               Email *
                             </label>
+                            {renderInput(
+                              "",
+                              "email",
+                              cData,
+                              cErrors,
+                              cHandleChange,
+                              "email"
+                            )}
                             <input
                               name='email'
-                              value={comment.email}
+                              value={cData?.email}
                               onChange={handleCommentChange}
                               required
                               type='email'
@@ -729,9 +1150,7 @@ const TourDetail = () => {
                               className='w-full px-4 py-3 text-sm bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/15 transition-all placeholder-stone-300 text-stone-700'
                             />
                           </div>
-                        </div>
-
-                        {/* Star picker */}
+                        </div> */}
                         <div>
                           <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-2'>
                             Your Rating *
@@ -742,13 +1161,13 @@ const TourDetail = () => {
                                 key={s}
                                 type='button'
                                 onClick={() =>
-                                  setComment((c) => ({ ...c, rating: s }))
+                                  setReviewData((c) => ({ ...c, rating: s }))
                                 }
                                 className='text-2xl transition-transform hover:scale-110'
                               >
                                 <i
                                   className={`fa fa-star ${
-                                    s <= comment.rating
+                                    s <= cData?.rating
                                       ? "text-amber-400"
                                       : "text-stone-200"
                                   }`}
@@ -764,44 +1183,47 @@ const TourDetail = () => {
                                   "Good",
                                   "Very Good",
                                   "Excellent",
-                                ][comment.rating]
+                                ][cData?.rating]
                               }
                             </span>
                           </div>
                         </div>
-
                         <div>
                           <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1.5'>
                             Review *
                           </label>
-                          <textarea
-                            name='message'
-                            value={comment.message}
-                            onChange={handleCommentChange}
-                            required
-                            rows={4}
-                            placeholder='Tell us about your experience...'
-                            className='w-full px-4 py-3 text-sm bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/15 transition-all placeholder-stone-300 text-stone-700 resize-none'
-                          />
+                          {renderTextarea(
+                            "",
+                            "comment",
+                            cData,
+                            cErrors,
+                            cHandleChange,
+                            "text"
+                          )}
                         </div>
-
-                        <button
+                        {renderButton(
+                          "Submit Review",
+                          "submit",
+                          cValidate,
+                          isSubmitting,
+                          <i className='fa fa-paper-plane text-xs' />,
+                          "submit"
+                        )}
+                        {/*                         <button
                           type='submit'
-                          disabled={submitting}
+                          disabled={isSubmitting}
                           className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 transition-colors px-7 py-3 rounded-xl shadow-lg shadow-amber-200'
                         >
-                          {submitting ? (
+                          {isSubmitting ? (
                             <>
                               <i className='fa fa-spinner fa-spin text-xs' />{" "}
                               Submitting...
                             </>
                           ) : (
-                            <>
-                              <i className='fa fa-paper-plane text-xs' /> Submit
-                              Review
-                            </>
+                            <>Submit Review</>
                           )}
                         </button>
+ */}{" "}
                       </form>
                     )}
                   </div>
@@ -825,7 +1247,8 @@ const TourDetail = () => {
                     loading='lazy'
                     allowFullScreen
                     src={`https://maps.google.com/maps?q=${encodeURIComponent(
-                      tour.destination + ", Morocco"
+                      (tour.destination || tour.meeting_point || "") +
+                        ", Morocco"
                     )}&output=embed`}
                   />
                 </div>
@@ -836,67 +1259,19 @@ const TourDetail = () => {
           {/* ── RIGHT — STICKY BOOKING ───────────────── */}
           <div className='w-full lg:w-80 shrink-0'>
             <div className='sticky top-[65px] space-y-4'>
-              {/* Price card */}
-              <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden shadow-xl shadow-stone-200/50'>
-                <div className='h-1.5 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-400' />
-                <div className='p-6'>
-                  <p className='text-xs text-stone-400 uppercase tracking-widest mb-1'>
-                    Price per person
-                  </p>
-                  <p className='text-4xl font-black text-amber-600'>
-                    ${Number(tour.price).toLocaleString()}
-                  </p>
-                  {tour.duration_days && (
-                    <p className='text-xs text-stone-400 mb-5'>
-                      ~${Math.round(tour.price / tour.duration_days)}/day
-                    </p>
-                  )}
-
-                  <div className='space-y-3 mb-5 pb-5 border-b border-stone-100'>
-                    {tour.duration_days && (
-                      <div className='flex items-center justify-between text-sm'>
-                        <span className='text-stone-400 flex items-center gap-2'>
-                          <i className='fa fa-clock text-amber-400 w-4 text-center' />{" "}
-                          Duration
-                        </span>
-                        <span className='font-semibold text-stone-700'>
-                          {tour.duration_days} days
-                        </span>
-                      </div>
-                    )}
-                    {tour.max_group_size && (
-                      <div className='flex items-center justify-between text-sm'>
-                        <span className='text-stone-400 flex items-center gap-2'>
-                          <i className='fa fa-users text-amber-400 w-4 text-center' />{" "}
-                          Group size
-                        </span>
-                        <span className='font-semibold text-stone-700'>
-                          Max {tour.max_group_size}
-                        </span>
-                      </div>
-                    )}
-                    {tour.destination && (
-                      <div className='flex items-center justify-between text-sm'>
-                        <span className='text-stone-400 flex items-center gap-2'>
-                          <i className='fa fa-map-marker-alt text-amber-400 w-4 text-center' />{" "}
-                          Destination
-                        </span>
-                        <span className='font-semibold text-stone-700 text-right max-w-[130px] truncate'>
-                          {tour.destination}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  <button className='w-full py-3.5 rounded-xl text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors shadow-lg shadow-amber-200 flex items-center justify-center gap-2 mb-3'>
-                    Book This Tour <i className='fa fa-arrow-right text-xs' />
-                  </button>
-                  <button className='w-full py-3 rounded-xl text-sm font-semibold text-stone-500 hover:text-stone-700 border border-stone-200 hover:border-stone-300 transition-colors flex items-center justify-center gap-2'>
-                    <i className='fa fa-envelope text-xs' /> Enquire Now
-                  </button>
-                </div>
-              </div>
-
+              {
+                <BookingForm
+                  tour={tour}
+                  data={data}
+                  errors={errors}
+                  handleChange={handleChange}
+                  handleSubmit={handleSubmit}
+                  validate={validate}
+                  priceBreakdown={priceBreakdown}
+                  typeConfig={typeConfig}
+                  isSubmitting={isSubmitting}
+                />
+              }
               {/* Trust badges */}
               <div className='bg-white rounded-2xl border border-stone-100 p-5 space-y-3'>
                 {[
@@ -922,7 +1297,7 @@ const TourDetail = () => {
               {/* Share */}
               <div className='bg-white rounded-2xl border border-stone-100 p-5'>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-3'>
-                  Share this tour
+                  Share this {tour.type}
                 </p>
                 <div className='flex gap-2'>
                   {[

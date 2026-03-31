@@ -1,38 +1,37 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// ─── Public Pages ─────────────────────────────────────────────
+// ─── Public Pages
 import Home from "./pages/public/Home";
 import NotFound from "./pages/public/NotFound.jsx";
 import NotAuthorized from "./pages/public/NotAuthorized.jsx";
 import AboutUs from "./pages/public/AboutUs.jsx";
 import ContactUs from "./pages/public/ContactUs.jsx";
+import BookingSuccess from "./pages/public/BookingSuccess.jsx";
 
-// Pages
+// ─── Pages
 import ToursList from "./pages/tours/ToursList";
 import TourDetail from "./pages/tours/TourDetail.jsx";
 
-/*
- */
-
-// ─── Auth Pages ───────────────────────────────────────────────
+// ─── Auth Pages
 import Login from "../src/pages/auth/Login";
 import Register from "../src/pages/auth/register";
 import ForgotPassword from "../src/pages/auth/ForgotPassword";
 import ResetPassword from "../src/pages/auth/ResetPassword";
 import VerifyEmail from "../src/pages/auth/VerifyEmail";
 
-// Constants
+// ─── Constants
 import Roles from "./constants/role";
 
-// Guard
+// ─── Guard
 import ProtectedRoute from "./components/guards/ProtectedRoute";
 
-// Layouts
+// ─── Layouts
 import AdminLayout from "./layouts/AdminLayout";
 import CustomerLayout from "./layouts/CustomerLayout";
 import PublicLayout from "./layouts/PublicLayout";
+import SharedLayout from "./layouts/SharedLayout";
 
 // ─── Customer Pages ───────────────────────────────────────────
 import CustomerDashboard from "./pages/customer/Dashboard.jsx";
@@ -42,12 +41,16 @@ import Profile from "./pages/customer/Profile.jsx";
 
 // ─── Admin Pages ──────────────────────────────────────────────
 import AdminDashboard from "./pages/admin/Dashboard.jsx";
-import ManageTours from "./pages/admin/ManageTours.jsx";
-import ManageBookings from "./pages/admin/ManageBookings.jsx";
+import ManageExperiences from "./pages/admin/ManageExperiences.jsx";
+import ManageBookings from "./pages/bookings/ManageBookings";
 import ManageUsers from "./pages/admin/ManageUsers.jsx";
 import ManageReviews from "./pages/admin/ManageReviews.jsx";
-import SharedLayout from "./layouts/SharedLayout";
+import BookingPreview from "./pages/customer/BookingPreview";
+
+// ─── Components
 import TourForm from "./components/tours/TourForm";
+import TourPreview from "./components/tours/TourPreview";
+import ManageCategories from "./pages/admin/ManageCategories";
 
 /* 
 
@@ -77,7 +80,7 @@ import Profile from "./pages/customer/Profile";
 
 // ─── Admin Pages ──────────────────────────────────────────────
 import AdminDashboard from "./pages/admin/Dashboard";
-import ManageTours from "./pages/admin/ManageTours";
+import ManageExperiences from "./pages/admin/ManageExperiences";
 import ManageBookings from "./pages/admin/ManageBookings";
 import ManageUsers from "./pages/admin/ManageUsers";
 import ManageReviews from "./pages/admin/ManageReviews";
@@ -105,15 +108,18 @@ const App = () => {
 
           <Route path='/about' element={<AboutUs />} />
           <Route path='/contact' element={<ContactUs />} />
-        </Route>
 
+          <Route
+            path='/booking/successfull'
+            element={<BookingSuccess />}
+          ></Route>
+        </Route>
         {/* ─── Auth ──────────────────────────────────────── */}
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/reset-password/:token' element={<ResetPassword />} />
         <Route path='/verify-email/:token' element={<VerifyEmail />} />
-
         {/* ─── Customer ──────────────────────────────────── */}
         <Route
           path='/customer/dashboard'
@@ -145,7 +151,6 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
         {/* ─── Admin ─────────────────────────────────────── */}
         <Route
           path='/admin/dashboard'
@@ -157,12 +162,13 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        {/* Tours */}
         <Route
           path='/admin/tours'
           element={
             <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
               <AdminLayout>
-                <ManageTours />
+                <ManageExperiences Type={"tour"} />
               </AdminLayout>
             </ProtectedRoute>
           }
@@ -172,7 +178,7 @@ const App = () => {
           element={
             <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
               <AdminLayout>
-                <TourForm />
+                <TourForm Type={"tour"} />
               </AdminLayout>
             </ProtectedRoute>
           }
@@ -182,11 +188,104 @@ const App = () => {
           element={
             <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
               <AdminLayout>
-                <TourForm />
+                <TourForm Type={"tour"} />
               </AdminLayout>
             </ProtectedRoute>
           }
         />
+        <Route
+          path='/admin/tours/view/:id'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <TourPreview />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        {/* Excursions */}
+        <Route
+          path='/admin/excursions'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <ManageExperiences Type={"excursion"} />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/excursions/create'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <TourForm Type={"excursion"} />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/excursions/edit/:id'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <TourForm Type={"excursion"} />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/excursions/view/:id'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <TourPreview />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        {/* Activities */}
+        <Route
+          path='/admin/activities'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <ManageExperiences Type={"activity"} />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/activities/create'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <TourForm Type={"activity"} />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/activities/edit/:id'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <TourForm Type={"activity"} />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/activities/view/:id'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <TourPreview />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        {/* Bookings */}
         <Route
           path='/admin/bookings'
           element={
@@ -197,6 +296,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        {/* User */}
         <Route
           path='/admin/users'
           Browse
@@ -209,6 +309,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        {/* Reviews */}
         <Route
           path='/admin/reviews'
           element={
@@ -219,7 +320,6 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
         {/* Shared ADMIN - CUSTOMER */}
         <Route
           path='/profile/me'
@@ -228,6 +328,27 @@ const App = () => {
               <SharedLayout>
                 <Profile />
               </SharedLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/booking/view/:id'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN, Roles.CUSTOMER]}>
+              <SharedLayout>
+                <BookingPreview />
+              </SharedLayout>
+            </ProtectedRoute>
+          }
+        />
+        {/* Categories */}
+        <Route
+          path='/categories'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <ManageCategories />
+              </AdminLayout>
             </ProtectedRoute>
           }
         />

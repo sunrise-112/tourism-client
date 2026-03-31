@@ -1,6 +1,23 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Joi from "joi-browser";
+
+// Services
 import userService from "../../services/userService";
+
+// Hooks
+import useForm from "../../hooks/useForm";
+
+// Utils
+import renderImage from "../../utils/renderImage";
+import {
+  renderButton,
+  renderInput,
+  renderSelect,
+} from "../../utils/formRenders";
+
+// Commons
+import ToggleSwitcher from "../../common/ToggleSwitcher";
 
 const Sk = ({ className }) => (
   <div className={`animate-pulse bg-stone-100 rounded-xl ${className}`} />
@@ -47,130 +64,100 @@ const SectionCard = ({ title, eyebrow, children, danger = false }) => (
 );
 
 const Profile = () => {
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    avatar: "",
+    email: "",
+    password: "",
+    phone: "",
+    nationality: "",
+    role: "",
+    active: "",
+    verified: "",
+  });
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [avatarPreview, setAvatarPreview] = useState(null);
-  const [uploadingAvatar, setUploadingAvatar] = useState(false);
-  const fileRef = useRef(null);
-
-  const [infoForm, setInfoForm] = useState({ name: "", email: "" });
-  const [savingInfo, setSavingInfo] = useState(false);
-
-  const [pwForm, setPwForm] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-  const [savingPw, setSavingPw] = useState(false);
-  const [showPw, setShowPw] = useState({
-    current: false,
-    new: false,
-    confirm: false,
-  });
-
-  const [deleteConfirm, setDeleteConfirm] = useState("");
-  const [deletingAccount, setDeletingAccount] = useState(false);
 
   useEffect(() => {
-    userService
-      .getMe()
-      .then((u) => {
-        setUser(u);
-        setInfoForm({ name: u?.name || "", email: u?.email || "" });
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    const fetchUser = async () => {
+      const currentUser = userService.getCurrentUser();
+      const fetchedUser = await userService?.getById(currentUser?.id);
+      setFormData({
+        avatar: fetchedUser?.avatar || "",
+        name: fetchedUser?.name || "",
+        email: fetchedUser?.email || "",
+        password: "",
+        phone: fetchedUser?.phone || "",
+        nationality: fetchedUser?.nationality || "",
+        ...(currentUser?.role === "admin"
+          ? {
+              role: fetchedUser?.role,
+              active: fetchedUser?.active,
+              verified: fetchedUser?.verified,
+            }
+          : {}),
+      });
+      setUser(fetchedUser);
+      console.log("fetchedUser: ", fetchedUser);
+    };
+
+    fetchUser();
   }, []);
 
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setAvatarPreview(URL.createObjectURL(file));
+  const ROLES = ["admin", "customer"];
+
+  const baseSchema = {
+    avatar: Joi.optional(),
+    name: Joi.string().max(100).label("Name"),
+    email: Joi.string().email().max(150).label("Email"),
+    password: Joi.optional().label("Password"),
+    phone: Joi.string().max(20).label("Phone"),
+    nationality: Joi.string().max(100).label("Nationality"),
   };
 
-  const handleAvatarUpload = async () => {
-    const file = fileRef.current?.files[0];
-    if (!file) return;
+  const roleExtensions = {
+    admin: {
+      role: Joi.string()
+        .valid(...ROLES)
+        .label("Role"),
+      verified: Joi.boolean().label("Verified"),
+      active: Joi.boolean().label("Active"),
+    },
+    customer: {},
+  };
+
+  const buildUserSchema = () => {
+    const currentUser = userService.getCurrentUser();
+    if (!roleExtensions[currentUser?.role]) {
+      throw new Error(`Unknown role: "${currentUser?.role}"`);
+    }
+
+    return {
+      ...baseSchema,
+      ...roleExtensions[currentUser?.role],
+    };
+  };
+
+  const doSubmit = async () => {
     try {
-      setUploadingAvatar(true);
-      const formData = new FormData();
-      formData.append("avatar", file);
-      const updated = await userService.updateAvatar(formData);
-      setUser(updated?.data || updated);
-      setAvatarPreview(null);
-      toast.success("Avatar updated successfully!");
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to update avatar");
+      const createData = getFormData();
+      setSubmitting(true);
+      await userService.update(user?.id, createData);
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      console.log("Error: ", error);
+      toast.error("Error updating profile!");
     } finally {
-      setUploadingAvatar(false);
+      setSubmitting(false);
     }
   };
 
-  const handleInfoSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setSavingInfo(true);
-      const updated = await userService.updateMe(infoForm);
-      setUser(updated?.data || updated);
-      toast.success("Profile updated!");
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to update profile");
-    } finally {
-      setSavingInfo(false);
-    }
-  };
+  const { data, errors, handleChange, handleSubmit, validate, getFormData } =
+    useForm(formData, buildUserSchema(), doSubmit);
 
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault();
-    if (pwForm.newPassword !== pwForm.confirmPassword)
-      return toast.error("Passwords do not match");
-    if (pwForm.newPassword.length < 8)
-      return toast.error("Password must be at least 8 characters");
-    try {
-      setSavingPw(true);
-      await userService.updateMe({
-        currentPassword: pwForm.currentPassword,
-        newPassword: pwForm.newPassword,
-      });
-      toast.success("Password changed successfully!");
-      setPwForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to change password");
-    } finally {
-      setSavingPw(false);
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    if (deleteConfirm !== user?.name) return;
-    try {
-      setDeletingAccount(true);
-      await userService.updateMe({ deleteAccount: true });
-      toast.success("Account deleted. Goodbye!");
-      setTimeout(() => (window.location.href = "/"), 1500);
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to delete account");
-    } finally {
-      setDeletingAccount(false);
-    }
-  };
-
-  const avatarSrc =
-    avatarPreview ||
-    (user?.avatar
-      ? `${import.meta.env.VITE_BACK_END_URL}${user.avatar}`
-      : null);
-
-  const pwStrength = Math.min(
-    [
-      pwForm.newPassword.length >= 8,
-      /[A-Z]/.test(pwForm.newPassword),
-      /[0-9]/.test(pwForm.newPassword),
-      /[^A-Za-z0-9]/.test(pwForm.newPassword),
-    ].filter(Boolean).length,
-    4
-  );
-
+  console.log("Validate: ", validate());
   return (
     <div
       className='min-h-screen bg-stone-50 p-6 md:p-8'
@@ -202,15 +189,16 @@ const Profile = () => {
       ) : (
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
           {/* ── Col 1: Avatar + Stats ─────────────────── */}
+
           <div className='space-y-6'>
             {/* Avatar card */}
             <SectionCard eyebrow='Photo' title='Profile Picture'>
               <div className='flex flex-col items-center text-center'>
                 <div className='relative mb-4'>
                   <div className='w-28 h-28 rounded-2xl overflow-hidden bg-stone-100 ring-4 ring-amber-400/20 mx-auto'>
-                    {avatarSrc ? (
+                    {data?.avatar ? (
                       <img
-                        src={avatarSrc}
+                        src={renderImage(data?.avatar)}
                         alt={user?.name}
                         className='w-full h-full object-cover'
                       />
@@ -220,12 +208,23 @@ const Profile = () => {
                       </div>
                     )}
                   </div>
-                  <button
-                    onClick={() => fileRef.current?.click()}
-                    className='absolute -bottom-2 -right-2 w-8 h-8 bg-amber-400 hover:bg-amber-300 rounded-xl flex items-center justify-center shadow-md transition-colors'
-                  >
-                    <i className='fa fa-camera text-amber-900 text-xs' />
-                  </button>
+
+                  <div>
+                    <input
+                      id='avatar'
+                      type='file'
+                      name='avatar'
+                      onChange={handleChange}
+                      accept='image/*'
+                      className='hidden'
+                    />
+
+                    <label htmlFor='avatar'>
+                      <i className='absolute -bottom-2 -right-2 w-8 h-8 bg-amber-400 hover:bg-amber-300 rounded-xl flex items-center justify-center shadow-md transition-colors'>
+                        <i className='fa fa-camera text-amber-900 text-xs' />
+                      </i>
+                    </label>
+                  </div>
                 </div>
 
                 <p className='font-black text-stone-800 text-base'>
@@ -237,51 +236,8 @@ const Profile = () => {
                   {user?.role}
                 </span>
 
-                <input
-                  ref={fileRef}
-                  type='file'
-                  accept='image/*'
-                  className='hidden'
-                  onChange={handleAvatarChange}
-                />
+                <input type='file' accept='image/*' className='hidden' />
 
-                <div className='flex flex-wrap justify-center gap-2 w-full'>
-                  <button
-                    onClick={() => fileRef.current?.click()}
-                    className='flex items-center gap-1.5 text-xs font-semibold text-stone-600 border border-stone-200 hover:bg-stone-50 px-3 py-2 rounded-xl transition-colors'
-                  >
-                    <i className='fa fa-upload text-[10px]' /> Choose Photo
-                  </button>
-                  {avatarPreview && (
-                    <>
-                      <button
-                        onClick={handleAvatarUpload}
-                        disabled={uploadingAvatar}
-                        className='flex items-center gap-1.5 text-xs font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 px-3 py-2 rounded-xl transition-colors'
-                      >
-                        {uploadingAvatar ? (
-                          <>
-                            <i className='fa fa-spinner fa-spin text-[10px]' />{" "}
-                            Saving...
-                          </>
-                        ) : (
-                          <>
-                            <i className='fa fa-check text-[10px]' /> Save
-                          </>
-                        )}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setAvatarPreview(null);
-                          if (fileRef.current) fileRef.current.value = "";
-                        }}
-                        className='text-xs font-semibold text-stone-400 hover:text-red-500 border border-stone-200 hover:border-red-200 px-3 py-2 rounded-xl transition-colors'
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  )}
-                </div>
                 <p className='text-[10px] text-stone-400 mt-3'>
                   JPG, PNG or WebP. Max 5MB.
                 </p>
@@ -337,241 +293,115 @@ const Profile = () => {
             {/* Personal info */}
             <SectionCard eyebrow='Details' title='Personal Information'>
               <form
-                onSubmit={handleInfoSubmit}
+                onSubmit={handleSubmit}
                 className='grid sm:grid-cols-2 gap-4'
               >
                 <div>
                   <label className={labelClass}>Full Name</label>
-                  <input
-                    value={infoForm.name}
-                    onChange={(e) =>
-                      setInfoForm((f) => ({ ...f, name: e.target.value }))
-                    }
-                    placeholder='Your full name'
-                    required
-                    className={inputClass}
-                  />
+                  {renderInput(
+                    "",
+                    "name",
+                    data,
+                    errors,
+                    handleChange,
+                    "text",
+                    true
+                  )}
                 </div>
                 <div>
                   <label className={labelClass}>Email Address</label>
-                  <input
-                    type='email'
-                    value={infoForm.email}
-                    onChange={(e) =>
-                      setInfoForm((f) => ({ ...f, email: e.target.value }))
-                    }
-                    placeholder='your@email.com'
-                    required
-                    className={inputClass}
-                  />
+                  {renderInput(
+                    "",
+                    "email",
+                    data,
+                    errors,
+                    handleChange,
+                    "email",
+                    true
+                  )}
                 </div>
-                <div className='sm:col-span-2'>
-                  <label className={labelClass}>Role</label>
-                  <div className='flex items-center gap-2 px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl'>
-                    <span className='w-2 h-2 rounded-full bg-amber-400' />
-                    <span className='text-sm font-semibold text-stone-600 capitalize'>
-                      {user?.role}
-                    </span>
-                    <span className='text-xs text-stone-400 ml-1'>
-                      (cannot be changed)
-                    </span>
-                  </div>
-                </div>
-                <div className='sm:col-span-2 pt-1'>
-                  <button
-                    type='submit'
-                    disabled={savingInfo}
-                    className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 px-6 py-2.5 rounded-xl transition-colors shadow-sm shadow-amber-200'
-                  >
-                    {savingInfo ? (
-                      <>
-                        <i className='fa fa-spinner fa-spin text-xs' />{" "}
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        <i className='fa fa-check text-xs' /> Save Changes
-                      </>
-                    )}
-                  </button>
-                </div>
-              </form>
-            </SectionCard>
-
-            {/* Password */}
-            <SectionCard eyebrow='Security' title='Change Password'>
-              <form
-                onSubmit={handlePasswordSubmit}
-                className='grid sm:grid-cols-2 gap-4'
-              >
-                {/* Current password spans full width */}
-                <div className='sm:col-span-2'>
-                  <label className={labelClass}>Current Password</label>
-                  <div className='relative'>
-                    <input
-                      type={showPw.current ? "text" : "password"}
-                      value={pwForm.currentPassword}
-                      onChange={(e) =>
-                        setPwForm((f) => ({
-                          ...f,
-                          currentPassword: e.target.value,
-                        }))
-                      }
-                      placeholder='Your current password'
-                      required
-                      className={`${inputClass} pr-10`}
-                    />
-                    <button
-                      type='button'
-                      onClick={() =>
-                        setShowPw((s) => ({ ...s, current: !s.current }))
-                      }
-                      className='absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors'
-                    >
-                      <i
-                        className={`fa ${
-                          showPw.current ? "fa-eye-slash" : "fa-eye"
-                        } text-xs`}
-                      />
-                    </button>
-                  </div>
-                </div>
-
-                {/* New + Confirm side by side */}
-                {[
-                  {
-                    key: "new",
-                    field: "newPassword",
-                    label: "New Password",
-                    placeholder: "Min. 8 characters",
-                  },
-                  {
-                    key: "confirm",
-                    field: "confirmPassword",
-                    label: "Confirm Password",
-                    placeholder: "Repeat new password",
-                  },
-                ].map(({ key, field, label, placeholder }) => (
-                  <div key={key}>
-                    <label className={labelClass}>{label}</label>
-                    <div className='relative'>
-                      <input
-                        type={showPw[key] ? "text" : "password"}
-                        value={pwForm[field]}
-                        onChange={(e) =>
-                          setPwForm((f) => ({ ...f, [field]: e.target.value }))
-                        }
-                        placeholder={placeholder}
-                        required
-                        className={`${inputClass} pr-10`}
-                      />
-                      <button
-                        type='button'
-                        onClick={() =>
-                          setShowPw((s) => ({ ...s, [key]: !s[key] }))
-                        }
-                        className='absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors'
-                      >
-                        <i
-                          className={`fa ${
-                            showPw[key] ? "fa-eye-slash" : "fa-eye"
-                          } text-xs`}
-                        />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Strength bar */}
-                {pwForm.newPassword && (
-                  <div className='sm:col-span-2 flex items-center gap-2'>
-                    {[...Array(4)].map((_, i) => (
-                      <div
-                        key={i}
-                        className={`h-1.5 flex-1 rounded-full transition-colors ${
-                          i < pwStrength
-                            ? [
-                                "bg-red-400",
-                                "bg-amber-400",
-                                "bg-yellow-400",
-                                "bg-emerald-400",
-                              ][pwStrength - 1]
-                            : "bg-stone-100"
-                        }`}
-                      />
-                    ))}
-                    <span className='text-xs text-stone-400 ml-1 w-12'>
-                      {["", "Weak", "Fair", "Good", "Strong"][pwStrength]}
-                    </span>
-                  </div>
-                )}
-
-                <div className='sm:col-span-2 pt-1'>
-                  <button
-                    type='submit'
-                    disabled={savingPw}
-                    className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 px-6 py-2.5 rounded-xl transition-colors shadow-sm shadow-amber-200'
-                  >
-                    {savingPw ? (
-                      <>
-                        <i className='fa fa-spinner fa-spin text-xs' />{" "}
-                        Updating...
-                      </>
-                    ) : (
-                      <>
-                        <i className='fa fa-lock text-xs' /> Update Password
-                      </>
-                    )}
-                  </button>
-                </div>
-              </form>
-            </SectionCard>
-          </div>
-
-          {/* ── Full width: Danger zone ───────────────── */}
-          <div className='lg:col-span-3'>
-            <SectionCard eyebrow='Danger Zone' title='Delete Account' danger>
-              <div className='grid sm:grid-cols-2 gap-6 items-start'>
                 <div>
-                  <p className='text-sm text-stone-400 leading-relaxed'>
-                    This will permanently delete your account, all bookings, and
-                    reviews. This action{" "}
-                    <strong className='text-stone-600'>cannot be undone</strong>
-                    .
-                  </p>
+                  <label className={labelClass}>Password</label>
+                  {renderInput(
+                    "",
+                    "password",
+                    data,
+                    errors,
+                    handleChange,
+                    "password",
+                    true
+                  )}
                 </div>
-                <div className='bg-red-50 border border-red-100 rounded-xl p-4 space-y-3'>
-                  <label className='block text-xs font-bold text-red-500 uppercase tracking-widest'>
-                    Type{" "}
-                    <span className='font-black text-red-600'>
-                      {user?.name}
-                    </span>{" "}
-                    to confirm
-                  </label>
-                  <input
-                    value={deleteConfirm}
-                    onChange={(e) => setDeleteConfirm(e.target.value)}
-                    placeholder={user?.name}
-                    className='w-full px-4 py-2.5 text-sm bg-white border border-red-200 rounded-xl outline-none focus:border-red-400 focus:ring-2 focus:ring-red-400/15 transition-all placeholder-red-200 text-stone-700'
-                  />
-                  <button
-                    onClick={handleDeleteAccount}
-                    disabled={deleteConfirm !== user?.name || deletingAccount}
-                    className='flex items-center gap-2 text-sm font-bold text-white bg-red-500 hover:bg-red-600 disabled:opacity-40 disabled:cursor-not-allowed px-5 py-2.5 rounded-xl transition-colors'
-                  >
-                    {deletingAccount ? (
-                      <>
-                        <i className='fa fa-spinner fa-spin text-xs' />{" "}
-                        Deleting...
-                      </>
-                    ) : (
-                      <>
-                        <i className='fa fa-trash text-xs' /> Delete My Account
-                      </>
-                    )}
-                  </button>
+                <div>
+                  <label className={labelClass}>Phone</label>
+                  {renderInput(
+                    "",
+                    "phone",
+                    data,
+                    errors,
+                    handleChange,
+                    "phone",
+                    true
+                  )}
                 </div>
-              </div>
+                <div>
+                  <label className={labelClass}>Nationality</label>
+                  {renderInput(
+                    "",
+                    "nationality",
+                    data,
+                    errors,
+                    handleChange,
+                    "text",
+                    true
+                  )}
+                </div>
+                <div>
+                  <label className={labelClass}>Role</label>
+                  {renderSelect(
+                    "",
+                    "role",
+                    data,
+                    errors,
+                    handleChange,
+                    [
+                      {
+                        value: "admin",
+                      },
+                      {
+                        value: "customer",
+                      },
+                    ],
+                    "value",
+                    "value"
+                  )}
+                </div>
+                <div className='flex justify-between items-center gap-4'>
+                  <div className='flex-col items-center'>
+                    <label className={labelClass}>Verified</label>
+                    {ToggleSwitcher({
+                      name: "verified",
+                      data,
+                      errors,
+                      onChange: handleChange,
+                      bg_color: "bg-green-400",
+                    })}
+                  </div>
+                  <div className='flex-col items-center'>
+                    <label className={labelClass}>Active</label>
+                    {ToggleSwitcher({
+                      name: "active",
+                      data,
+                      errors,
+                      onChange: handleChange,
+                      bg_color: "bg-blue-400",
+                    })}
+                  </div>
+                </div>
+                <div className='sm:col-span-2 pt-1'>
+                  {renderButton("Save", "submit", validate())}
+                </div>
+              </form>
             </SectionCard>
           </div>
         </div>

@@ -7,6 +7,7 @@ const Button = ({ label, name, disabled, isSubmitting, icon, type }) => {
       disabled={disabled || isSubmitting}
       type={type}
       className='
+      w-full
         relative inline-flex items-center justify-center gap-2.5
         px-7 py-3 min-w-[160px]
         bg-amber-500 text-white hover:bg-amber-400

@@ -36,7 +36,6 @@ const update = async (id, data) => {
 
 const deleteOne = async (id) => {
   await http.delete(`${apiEndPoint}/shared/${id}`);
-  toast.success("Review deleted successfully!");
 };
 
 // ─── Admin ───────────────────────────────────────────────────────────────────
@@ -49,6 +48,7 @@ const getAll = async ({
   skip = 0,
   sortBy,
   order,
+  approve,
   startDate,
   endDate,
 } = {}) => {
@@ -60,12 +60,17 @@ const getAll = async ({
     ...(skip && { skip }),
     ...(sortBy && { sortBy }),
     ...(order && { order }),
+    ...{ approve },
     ...(startDate && { startDate }),
     ...(endDate && { endDate }),
   }).toString();
 
-  const response = await http.get(`${apiEndPoint}/admin?${query}`);
+  const response = await http.get(`${apiEndPoint}/public?${query}`);
   return response.data;
+};
+
+const approve = async (id, approve) => {
+  return await http.put(apiEndPoint + `/admin/approve/${id}`, { approve });
 };
 
 const deleteMany = async (ids) => {
@@ -81,5 +86,6 @@ export default {
   update,
   deleteOne,
   getAll,
+  approve,
   deleteMany,
 };

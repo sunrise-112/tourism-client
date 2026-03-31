@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import reviewService from "../../services/reviewService";
-/* import Pagination from "../../common/Pagination";
 import getTimeAgo from "../../utils/getTimeAgo";
- */
+
+import Pagination from "../../common/Pagination";
+
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
   <div className={`animate-pulse bg-stone-100 rounded-xl ${className}`} />
@@ -48,12 +49,13 @@ const ManageReviews = ({ searchQuery }) => {
       const params = {
         page: pageNumber,
         limit: pageSize,
-        ...(filter === "Approved" && { approved: true }),
-        ...(filter === "Pending" && { approved: false }),
+        ...(filter === "Approved" && { approve: true }),
+        ...(filter === "Pending" && { approve: false }),
+        ...(filter === "All" && { approve: "all" }),
       };
       const res = await reviewService.getAll(params);
-      setReviews(res?.data?.reviews || res?.data || []);
-      setTotalItems(res?.data?.total || 0);
+      setReviews(res?.data);
+      setTotalItems(res?.pagination?.totalItems);
     } catch {
       toast.error("Failed to fetch reviews!");
     } finally {
@@ -74,8 +76,8 @@ const ManageReviews = ({ searchQuery }) => {
       try {
         setLoading(true);
         const res = await reviewService.getAll({ q: searchQuery });
-        setReviews(res?.data?.reviews || res?.data || []);
-        setTotalItems(res?.data?.total || 0);
+        setReviews(res?.data);
+        setTotalItems(res?.pagination?.totalItems);
       } catch {
         setReviews([]);
       } finally {
@@ -86,15 +88,21 @@ const ManageReviews = ({ searchQuery }) => {
   }, [searchQuery]);
 
   const handleApprove = async (review) => {
+    const approved = review?.approve;
+    const originalReviews = [...reviews];
     try {
       setApprovingId(review.id);
-      await reviewService.approve(review.id);
+      await reviewService.approve(review.id, !approved);
       setReviews((prev) =>
-        prev.map((r) => (r.id === review.id ? { ...r, approved: true } : r))
+        prev.map((r) => (r.id === review.id ? { ...r, approve: !approved } : r))
       );
-      toast.success("Review approved!");
+      toast.success(`Review ${!approved ? "approved" : "disapproved"}!`);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to approve review!");
+      setReviews(originalReviews);
+      toast.error(
+        err?.response?.data?.message ||
+          `Failed to ${!approved ? "approved" : "disapproved"} Review!`
+      );
     } finally {
       setApprovingId(null);
     }
@@ -103,7 +111,7 @@ const ManageReviews = ({ searchQuery }) => {
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      await reviewService.deleteById(deleteModal.id);
+      await reviewService.deleteOne(deleteModal.id);
       setReviews((prev) => prev.filter((r) => r.id !== deleteModal.id));
       setTotalItems((n) => n - 1);
       toast.success("Review deleted!");
@@ -116,8 +124,8 @@ const ManageReviews = ({ searchQuery }) => {
   };
 
   const sorted = _.orderBy(reviews, [sortColumn.path], [sortColumn.order]);
-  const approved = reviews.filter((r) => r.approved).length;
-  const pending = reviews.filter((r) => !r.approved).length;
+  const approved = reviews.filter((r) => r.approve).length;
+  const pending = reviews.filter((r) => !r.approve).length;
   const avgRating = reviews.length
     ? (
         reviews.reduce((s, r) => s + (r.rating || 0), 0) / reviews.length
@@ -268,18 +276,18 @@ const ManageReviews = ({ searchQuery }) => {
                               src={`${import.meta.env.VITE_BACK_END_URL}${
                                 r.user.avatar
                               }`}
-                              alt={r.user?.name}
+                              alt={r.user_name}
                               className='w-full h-full object-cover'
                             />
                           ) : (
                             <div className='w-full h-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-xs font-bold'>
-                              {r.user?.name?.charAt(0)?.toUpperCase() || "?"}
+                              {r.user_name?.charAt(0)?.toUpperCase() || "?"}
                             </div>
                           )}
                         </div>
                         <div>
                           <p className='font-semibold text-stone-700 text-xs whitespace-nowrap'>
-                            {r.user?.name || "Anonymous"}
+                            {r.user_name || "Anonymous"}
                           </p>
                           <p className='text-stone-400 text-[10px]'>
                             {r.user?.email}
@@ -290,7 +298,7 @@ const ManageReviews = ({ searchQuery }) => {
                     {/* Tour */}
                     <td className='px-4 py-4'>
                       <p className='text-xs font-semibold text-amber-600 max-w-[140px] truncate'>
-                        {r.tour?.title || "—"}
+                        {r.tour_title || "—"}
                       </p>
                     </td>
                     {/* Rating */}
@@ -312,17 +320,17 @@ const ManageReviews = ({ searchQuery }) => {
                     <td className='px-4 py-4'>
                       <span
                         className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${
-                          r.approved
+                          r.approve
                             ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                             : "bg-yellow-50 text-yellow-700 border-yellow-200"
                         }`}
                       >
                         <span
                           className={`w-1.5 h-1.5 rounded-full ${
-                            r.approved ? "bg-emerald-400" : "bg-yellow-400"
+                            r.approve ? "bg-emerald-400" : "bg-yellow-400"
                           }`}
                         />
-                        {r.approved ? "Approved" : "Pending"}
+                        {r.approve ? "Approved" : "Pending"}
                       </span>
                     </td>
                     {/* Date */}
@@ -332,7 +340,7 @@ const ManageReviews = ({ searchQuery }) => {
                     {/* Actions */}
                     <td className='px-4 py-4'>
                       <div className='flex items-center gap-2'>
-                        {!r.approved && (
+                        {
                           <button
                             onClick={() => handleApprove(r)}
                             title='Approve'
@@ -345,7 +353,7 @@ const ManageReviews = ({ searchQuery }) => {
                               <i className='fa fa-check text-xs' />
                             )}
                           </button>
-                        )}
+                        }
                         <button
                           onClick={() => setDeleteModal(r)}
                           title='Delete'

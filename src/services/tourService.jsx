@@ -6,6 +6,7 @@ const apiEndPoint = import.meta.env.VITE_API_URL + "/tour";
 // ─── Shared (Admin + Customer) ───────────────────────────────────────────────
 
 const getAll = async ({
+  type,
   searchQuery,
   category,
   is_featured,
@@ -18,6 +19,7 @@ const getAll = async ({
   endDate,
 } = {}) => {
   const query = new URLSearchParams({
+    ...(type && { type }),
     ...(searchQuery && { searchQuery }),
     ...(category && { category }),
     ...(is_featured !== undefined && { is_featured }),
@@ -48,19 +50,16 @@ const searchByTitle = async (q) => {
 
 const create = (formData) => {
   const response = http.post(`${apiEndPoint}/admin`, formData);
-  if (response) toast.success("Tour updated successfully!");
   return response.data.data;
 };
 
 const update = async (id, data) => {
   const response = await http.put(`${apiEndPoint}/admin/${id}`, data);
-  if (response) toast.success("Tour updated successfully!");
   return response.data.data;
 };
 
 const deleteOne = async (id) => {
   await http.delete(`${apiEndPoint}/admin/${id}`);
-  toast.success("Tour deleted successfully!");
 };
 
 const deleteMany = async (ids) => {

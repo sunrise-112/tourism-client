@@ -61,7 +61,7 @@ const TableHeader = ({
 
   return (
     <thead>
-      <tr className='bg-base-200/70 border-b border-base-300'>
+      <tr className='bg-base-200/70 '>
         {onSelectAll && (
           <th className='w-12 px-4 py-3'>
             <input
@@ -76,7 +76,7 @@ const TableHeader = ({
           <th
             key={column.path || column.key || index}
             onClick={() => column.path && onSort?.(column)}
-            className={`
+            className={`border border-gray-200
               px-4 py-3 text-xs font-semibold text-base-content/60 uppercase tracking-wider
               whitespace-nowrap select-none
               ${

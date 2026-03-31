@@ -10,6 +10,7 @@ const Input = ({
   selected,
   icon,
   required,
+  max,
   placeholder,
 }) => {
   const hasError = !!errors?.[name];
@@ -53,6 +54,7 @@ const Input = ({
           name={name}
           type={type}
           value={value}
+          max={max}
           onChange={onChange}
           placeholder={placeholder}
           required={required}

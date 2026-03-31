@@ -11,7 +11,7 @@ const getById = async (id) => {
 };
 
 const create = async (data) => {
-  const response = await http.post(`${apiEndPoint}/shared`, data);
+  const response = await http.post(`${apiEndPoint}/public`, data);
   if (response) toast.success("Booking created successfully!");
   return response.data.data;
 };
@@ -55,7 +55,7 @@ const getAll = async ({
   }).toString();
 
   const response = await http.get(`${apiEndPoint}/admin?${query}`);
-  return response.data;
+  return response?.data;
 };
 
 const updateStatus = async (id, status) => {
@@ -68,7 +68,6 @@ const updateStatus = async (id, status) => {
 
 const deleteOne = async (id) => {
   await http.delete(`${apiEndPoint}/admin/${id}`);
-  toast.success("Booking deleted successfully!");
 };
 
 const deleteMany = async (ids) => {

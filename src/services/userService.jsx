@@ -49,8 +49,7 @@ const create = async (data) => {
 
 const update = async (id, data) => {
   const response = await http.put(`${apiEndPoint}/admin/${id}`, data);
-  if (response) toast.success("User updated successfully!");
-  return response.data.data;
+    return response.data.data;
 };
 
 const getMe = async () => {

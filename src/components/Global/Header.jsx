@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import userService from "../../services/userService";
+import renderImage from "../../utils/renderImage";
 
 const Header = ({
   isOpen = false,
@@ -170,10 +171,10 @@ const Header = ({
           className='flex items-center gap-2.5 pl-1 pr-2 py-1 rounded-xl hover:bg-stone-50 border border-transparent hover:border-stone-200 transition-all'
         >
           {/* Avatar */}
-          {user.avatar ? (
+          {user?.avatar ? (
             <div className='w-8 h-8 rounded-xl overflow-hidden ring-2 ring-amber-400/40 ring-offset-1'>
               <img
-                src={`${import.meta.env.VITE_BACK_END_URL}${user.avatar}`}
+                src={renderImage(user?.avatar)}
                 alt='profile'
                 className='w-full h-full object-cover'
               />
