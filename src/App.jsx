@@ -54,6 +54,7 @@ import ManageCategories from "./pages/admin/ManageCategories";
 import UserForm from "./pages/admin/UserForm";
 import UserPreview from "./pages/admin/UserPreview";
 import ManageNotifications from "./pages/admin/notifications/ManageNotifications";
+import Settings from "./pages/settings/Settings";
 
 /* 
 
@@ -363,6 +364,16 @@ const App = () => {
           }
         ></Route>
         {/* Shared ADMIN - CUSTOMER */}
+        <Route
+          path='/settings'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN, Roles.CUSTOMER]}>
+              <SharedLayout>
+                <Settings />
+              </SharedLayout>
+            </ProtectedRoute>
+          }
+        />
         <Route
           path='/profile/me'
           element={
