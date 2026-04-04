@@ -70,7 +70,7 @@ const ReadBadge = ({ is_read }) => (
   </span>
 );
 
-const TYPE_FILTERS = ["All", "info", "success", "warning", "error"];
+const TYPE_FILTERS = ["All", "info", "success", "warning", "error", "promo"];
 const READ_FILTERS = ["All", "Unread", "Read"];
 
 const EMPTY_FORM = { title: "", message: "", type: "info" };
@@ -220,7 +220,7 @@ const ManageNotifications = ({ searchQuery }) => {
           prev.map((n) => (n.id === editTarget.id ? { ...n, ...updated } : n))
         );
       } else {
-        await notificationService.create(form);
+        await notificationService.announce(form);
         setTrigger((t) => !t);
       }
       setFormModal(false);
@@ -419,20 +419,16 @@ const ManageNotifications = ({ searchQuery }) => {
                       className='w-4 h-4 rounded border-stone-300 accent-amber-400 cursor-pointer'
                     />
                   </th>
-                  {[
-                    "Notification",
-                    "Type",
-                    "Status",
-                    "Sent",
-                    "Actions",
-                  ].map((h) => (
-                    <th
-                      key={h}
-                      className='px-4 py-3.5 text-left text-xs font-bold uppercase tracking-widest text-stone-400 whitespace-nowrap'
-                    >
-                      {h}
-                    </th>
-                  ))}
+                  {["Notification", "Type", "Status", "Sent", "Actions"].map(
+                    (h) => (
+                      <th
+                        key={h}
+                        className='px-4 py-3.5 text-left text-xs font-bold uppercase tracking-widest text-stone-400 whitespace-nowrap'
+                      >
+                        {h}
+                      </th>
+                    )
+                  )}
                 </tr>
               </thead>
               <tbody className='divide-y divide-stone-50'>
@@ -596,7 +592,7 @@ const ManageNotifications = ({ searchQuery }) => {
                       }
                       className={inputClass}
                     >
-                      {["info", "success", "warning", "error"].map((t) => (
+                      {[...TYPE_FILTERS].splice(1).map((t) => (
                         <option key={t} value={t}>
                           {t.charAt(0).toUpperCase() + t.slice(1)}
                         </option>

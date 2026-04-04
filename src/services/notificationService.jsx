@@ -33,8 +33,14 @@ const getById = async (id) => {
 };
 
 const create = async (data) => {
-  const response = await http.post(ADMIN, data);
+  const response = await http.post(ADMIN + "/new", data);
   if (response) toast.success("Notification sent successfully!");
+  return response.data.data;
+};
+
+const announce = async (data) => {
+  const response = await http.post(ADMIN + "/announce", data);
+  if (response) toast.success("Announcement sent successfully!");
   return response.data.data;
 };
 
@@ -66,6 +72,7 @@ export default {
   getAll,
   getById,
   create,
+  announce,
   update,
   markRead,
   markAllRead,
