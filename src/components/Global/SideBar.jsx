@@ -1,80 +1,103 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import userService from "../../services/userService";
 import role from "../../constants/role";
+import bookingService from "../../services/bookingService";
 
 const user = userService?.getCurrentUser();
 const isAdmin = user?.role === role.ADMIN;
 const isCustomer = user?.role === role.CUSTOMER;
 
-const NAV = [
-  {
-    section: "Main",
-    items: [
-      {
-        icon: "fa-th-large",
-        label: "Dashboard",
-        path: `${isAdmin ? "/admin/dashboard" : "/customer/dashboard"}`,
-      },
-      {
-        icon: "fa-suitcase-rolling",
-        label: `${isAdmin ? "Bookings" : "My Bookings"}`,
-        path: `${isAdmin ? "/admin/bookings" : "/my-bookings"}`,
-      },
-      ...(isAdmin
-        ? [{ icon: "fa-map-marked-alt", label: "Tours", path: "/admin/tours" }]
-        : []),
-      ...(isAdmin
-        ? [
-            {
-              icon: "fa-hiking",
-              label: "Excursions",
-              path: "/admin/excursions",
-            },
-          ]
-        : []),
-      ...(isAdmin
-        ? [
-            {
-              icon: "fa-running",
-              label: "Activities",
-              path: "/admin/activities",
-            },
-          ]
-        : []),
-      ...(isAdmin
-        ? [
-            {
-              icon: "fa-comments",
-              label: "Reviews",
-              path: `/admin/reviews`,
-            },
-          ]
-        : []),
-      ...(isAdmin
-        ? [
-            {
-              icon: "fa-user",
-              label: "Users",
-              path: "/users",
-            },
-          ]
-        : []),
-      ...(isAdmin
-        ? [
-            {
-              icon: "fa-list",
-              label: "Categoris",
-              path: "/categories",
-            },
-          ]
-        : []),
-      ...(isCustomer
-        ? [{ icon: "fa-heart", label: "Favorites", path: "/favorites" }]
-        : []),
-    ],
-  },
-  /*   {
+const Sidebar = ({
+  collapsed,
+  setCollapsed,
+  user,
+  mobileOpen,
+  setMobileOpen,
+}) => {
+  const location = useLocation();
+  const [bookings, setBookings] = useState([]);
+  const [openSections, setOpenSections] = useState({
+    Main: true,
+    Explore: true,
+    Account: true,
+  });
+
+  const NAV = [
+    {
+      section: "Main",
+      items: [
+        {
+          icon: "fa-th-large",
+          label: "Dashboard",
+          path: `${isAdmin ? "/admin/dashboard" : "/customer/dashboard"}`,
+        },
+        {
+          icon: "fa-suitcase-rolling",
+          label: `${isAdmin ? "Bookings" : "My Bookings"}`,
+          total: parseInt(bookings),
+          path: `${isAdmin ? "/admin/bookings" : "/my-bookings"}`,
+        },
+        ...(isAdmin
+          ? [
+              {
+                icon: "fa-map-marked-alt",
+                label: "Tours",
+                path: "/admin/tours",
+              },
+            ]
+          : []),
+        ...(isAdmin
+          ? [
+              {
+                icon: "fa-hiking",
+                label: "Excursions",
+                path: "/admin/excursions",
+              },
+            ]
+          : []),
+        ...(isAdmin
+          ? [
+              {
+                icon: "fa-running",
+                label: "Activities",
+                path: "/admin/activities",
+              },
+            ]
+          : []),
+        ...(isAdmin
+          ? [
+              {
+                icon: "fa-comments",
+                label: "Reviews",
+                path: `/admin/reviews`,
+              },
+            ]
+          : []),
+        ...(isAdmin
+          ? [
+              {
+                icon: "fa-user",
+                label: "Users",
+                path: "/admin/users",
+              },
+            ]
+          : []),
+        ...(isAdmin
+          ? [
+              {
+                icon: "fa-list",
+                label: "Categoris",
+                path: "/categories",
+              },
+            ]
+          : []),
+        ...(isCustomer
+          ? [{ icon: "fa-heart", label: "Favorites", path: "/favorites" }]
+          : []),
+      ],
+    },
+    /*   {
     section: "Explore",
     items: [
       { icon: "fa-compass", label: "Browse Tours", path: "/tours" },
@@ -86,32 +109,39 @@ const NAV = [
     ],
   },
  */ {
-    section: "Account",
-    items: [
-      { icon: "fa-user-circle", label: "Profile", path: "/profile/me" },
-      { icon: "fa-bell", label: "Notifications", path: "/notifications" },
-      { icon: "fa-cog", label: "Settings", path: "/settings" },
-    ],
-  },
-];
-
-const Sidebar = ({
-  collapsed,
-  setCollapsed,
-  user,
-  mobileOpen,
-  setMobileOpen,
-}) => {
-  const location = useLocation();
-  const [openSections, setOpenSections] = useState({
-    Main: true,
-    Explore: true,
-    Account: true,
-  });
+      section: "Account",
+      items: [
+        { icon: "fa-user-circle", label: "Profile", path: "/profile/me" },
+        {
+          icon: "fa-bell",
+          label: "Notifications",
+          path: "/admin/notifications",
+        },
+        { icon: "fa-cog", label: "Settings", path: "/settings" },
+      ],
+    },
+  ];
 
   const toggleSection = (s) => setOpenSections((p) => ({ ...p, [s]: !p[s] }));
 
   const isActive = (path) => location.pathname === path;
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const bookings = await bookingService.getAll({
+          status: "pending",
+          limit: 1000,
+        });
+        setBookings(bookings?.pagination?.totalItems);
+        console.log("bookings: ", bookings);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+
+    fetchBookings();
+  }, []);
 
   return (
     <>
@@ -194,6 +224,13 @@ const Sidebar = ({
                       <span className='absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-amber-400 rounded-r-full' />
                     )}
                     <i className={`fa ${item.icon} text-sm w-4 text-center`} />
+                    {item.total ? (
+                      <div className='absolute  right-1.5 min-w-[18px] h-[18px] px-1 bg-amber-500 rounded-full text-[10px] font-bold text-white flex items-center justify-center leading-none'>
+                        {item.total}
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
                     {!collapsed && (
                       <span className='text-sm font-medium'>{item.label}</span>
                     )}

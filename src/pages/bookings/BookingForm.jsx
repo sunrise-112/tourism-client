@@ -9,7 +9,10 @@ import {
   renderButton,
   renderTextarea,
   renderSelect,
+  renderCheckBox,
 } from "../../utils/formRenders";
+
+import ToggleSwitcher from '../../common/ToggleSwitcher';
 
 const STEPS = [
   { id: 1, label: "Contact", icon: "fa-user" },

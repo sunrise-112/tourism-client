@@ -5,7 +5,9 @@ import _ from "lodash";
 import userService from "../../services/userService";
 import Pagination from "../../common/Pagination";
 /* import getTimeAgo from "../../utils/getTimeAgo";
- */import Roles from "../../constants/role";
+ */ import Roles from "../../constants/role";
+import getTimeAgo from "../../utils/getTimeAgo";
+import renderImage from "../../utils/renderImage";
 
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
@@ -79,7 +81,7 @@ const StatusDot = ({ active }) => (
   </span>
 );
 
-const ROLE_FILTERS = ["All", Roles.ADMIN, Roles.CUSTOMER, Roles.CARRIER];
+const ROLE_FILTERS = ["All", Roles.ADMIN, Roles.CUSTOMER];
 
 // ─── ManageUsers ──────────────────────────────────────────────
 const ManageUsers = ({ searchQuery, user: currentUser }) => {
@@ -101,12 +103,11 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await userService.getByRole(
-        undefined,
-        roleFilter === "All" ? undefined : roleFilter,
-        pageNumber,
-        pageSize
-      );
+      const res = await userService.getAll({
+        role: roleFilter,
+        page: pageNumber,
+        limit: pageSize,
+      });
       setUsers(res?.users || []);
       setTotalItems(res?.pagination?.totalItems || 0);
     } catch {
@@ -193,7 +194,6 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
           {totalItems} users registered
         </p>
       </div>
-
       {/* ── Stats ──────────────────────────────────── */}
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4 mb-6'>
         {[
@@ -244,7 +244,13 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
           </div>
         ))}
       </div>
-
+      <Link
+        to={`/admin/users/create`}
+        className='inline-flex items-center gap-2 mb-3 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-5 py-2.5 rounded-xl shadow-sm shadow-amber-200 self-start sm:self-auto'
+      >
+        <i className='fa fa-user text-xs' /> Add user
+      </Link>
+      <button></button>
       {/* ── Role filter tabs ────────────────────────── */}
       <div className='flex items-center gap-2 mb-5 flex-wrap'>
         {ROLE_FILTERS.map((r) => (
@@ -276,7 +282,6 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
           </div>
         )}
       </div>
-
       {/* ── Table ──────────────────────────────────── */}
       {loading ? (
         <div className='space-y-3'>
@@ -350,9 +355,7 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
                         <div className='w-9 h-9 rounded-xl overflow-hidden bg-stone-100 shrink-0'>
                           {u.avatar ? (
                             <img
-                              src={`${import.meta.env.VITE_BACK_END_URL}${
-                                u.avatar
-                              }`}
+                              src={renderImage(u?.avatar)}
                               alt={u.name}
                               className='w-full h-full object-cover'
                             />
@@ -406,14 +409,14 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
                     <td className='px-4 py-3'>
                       <div className='flex items-center gap-2'>
                         <Link
-                          to={`/users/preview/${u.id}`}
+                          to={`/admin/users/preview/${u.id}`}
                           title='View'
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-amber-50 hover:text-amber-600 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-eye text-xs' />
                         </Link>
                         <Link
-                          to={`/users/edit/${u.id}`}
+                          to={`/admin/users/edit/${u.id}`}
                           title='Edit'
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-center text-stone-400 transition-colors'
                         >
@@ -447,7 +450,6 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
           </div>
         </div>
       )}
-
       {/* Delete modal */}
       {deleteModal && (
         <div className='fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm'>

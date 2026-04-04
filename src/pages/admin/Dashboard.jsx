@@ -23,9 +23,6 @@ import renderImage from "../../utils/renderImage";
 import DateRangePicker from "../../common/DateRangePicker";
 import getCurrentMonthRange from "../../utils/getCurrentMonthRange";
 
-const DATE_RANGE_KEY = "admin_dashboard_date_range";
-
-// ─── Nationality chart colours ────────────────────────────────
 const NAT_COLORS = [
   "#F59E0B",
   "#FB923C",
@@ -38,6 +35,21 @@ const NAT_COLORS = [
   "#A78BFA",
   "#F472B6",
 ];
+
+// ─── delta() ─────────────────────────────────────────────────
+// Returns null when no compare value exists, otherwise:
+// { pct, up, color, bg, arrow }
+const delta = (primary, compare) => {
+  if (compare == null || compare === 0) return null;
+  const pct = ((primary - compare) / Math.abs(compare)) * 100;
+  return {
+    pct: Math.abs(pct).toFixed(1),
+    up: pct >= 0,
+    color: pct >= 0 ? "text-emerald-600" : "text-red-500",
+    bg: pct >= 0 ? "bg-emerald-50" : "bg-red-50",
+    arrow: pct >= 0 ? "fa-arrow-up" : "fa-arrow-down",
+  };
+};
 
 // ─── Helpers ──────────────────────────────────────────────────
 const STATUS_STYLES = {
@@ -106,6 +118,22 @@ const StarRating = ({ rating }) => (
     ))}
   </div>
 );
+
+// ─── DeltaBadge ───────────────────────────────────────────────
+// Inline pill: ↑ 618.1% vs $726  (shown only when hasCompare)
+const DeltaBadge = ({ primary, compare, formatter = (v) => v }) => {
+  const d = delta(primary, compare);
+  if (!d) return null;
+  return (
+    <span
+      className={`inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-lg ${d.bg} ${d.color}`}
+    >
+      <i className={`fa ${d.arrow} text-[8px]`} />
+      {d.pct}%
+      <span className='font-normal opacity-60'>vs {formatter(compare)}</span>
+    </span>
+  );
+};
 
 // ─── Topbar ───────────────────────────────────────────────────
 const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
@@ -176,6 +204,7 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
         <i className='fa fa-chevron-right text-stone-300 text-[10px]' />
         <span className='font-semibold text-stone-700'>Dashboard</span>
       </div>
+
       <div className='flex-1' />
 
       <div className='hidden md:flex items-center gap-2 bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 w-52'>
@@ -325,6 +354,11 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
 // ─── Custom Tooltip ───────────────────────────────────────────
 const ChartTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
+  const fmt = (name, value) => {
+    if (name === "revenue" || name === "cmpRevenue")
+      return `$${Number(value).toLocaleString()}`;
+    return value;
+  };
   return (
     <div className='bg-[#1C1107] text-white px-3 py-2 rounded-xl text-xs shadow-xl'>
       <p className='text-white/50 mb-1'>{label}</p>
@@ -334,29 +368,13 @@ const ChartTooltip = ({ active, payload, label }) => {
           className='font-black'
           style={{ color: p.color || "#F59E0B" }}
         >
-          {p.name === "revenue" ? `$${p.value.toLocaleString()}` : p.value}{" "}
-          {p.name !== "revenue" && p.name}
+          {fmt(p.name, p.value)}{" "}
+          <span className='font-normal opacity-60'>{p.name}</span>
         </p>
       ))}
     </div>
   );
 };
-
-/* // ─── localStorage helpers ─────────────────────────────────────
-const loadDateRange = (fallback) => {
-  try {
-    const stored = localStorage.getItem(DATE_RANGE_KEY);
-    return stored ? JSON.parse(stored) : fallback;
-  } catch {
-    return fallback;
-  }
-};
-
-const saveDateRange = (range) => {
-  try {
-    localStorage.setItem(DATE_RANGE_KEY, JSON.stringify(range));
-  } catch {}
-}; */
 
 // ─── Admin Dashboard ──────────────────────────────────────────
 const AdminDashboard = () => {
@@ -380,42 +398,29 @@ const AdminDashboard = () => {
     endDate: null,
   });
 
-  const handleRangeSelect = (range) => {
-    console.log("Range: ", range);
+  const handleRangeSelect = (range) => setDateRange(range);
+  const handleCompareDateSelect = (range) => setCompareDateRange(range);
 
-    setDateRange(range);
-  };
-
-  const handleCompareDateSelect = (range) => {
-    console.log("Compare range: ", range)
-    setCompareDateRange(range);
-  };
-
+  // ── Data fetch ────────────────────────────────────────────
   useEffect(() => {
     const fetchAll = async () => {
       try {
         setLoading(true);
-
         const u = await userService.getMe();
         setUser(u);
-
         const b = await bookingService.getAll({ limit: 5, page: 1 });
         setBookings(b.data);
         setBookingsCount(b?.pagination?.totalItems);
-
         const t = await tourService.getAll({ type: "tour", limit: 4 });
         setTours(t?.data);
-
         const r = await reviewService.getAll({ limit: 3, approve: false });
         setReviews(r?.data);
-
         const s = await statsService.getAdminStats({
           startDate: dateRange?.startDate,
           endDate: dateRange?.endDate,
-          compareStartDate: dateRange?.compareStartDate,
-          compareEndDate: dateRange?.compareEndDate,
+          compareStartDate: compareDateRange?.startDate,
+          compareEndDate: compareDateRange?.endDate,
         });
-
         setStats(s?.data);
       } catch (err) {
         console.error("Dashboard fetch error:", err);
@@ -424,7 +429,7 @@ const AdminDashboard = () => {
       }
     };
     fetchAll();
-  }, [dateRange]);
+  }, [dateRange, compareDateRange]); // re-fetch when either range changes
 
   useEffect(() => {
     const handleResize = () => {
@@ -435,9 +440,11 @@ const AdminDashboard = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ── Derived values from stats API ─────────────────────────
+  // ── Derived — primary stats ───────────────────────────────
   const ps = stats?.primaryStats;
-  console.log("ps: ", ps);
+  const cs = stats?.compareStats; // undefined when no compare period selected
+  const hasCompare = !!cs;
+
   const totalRevenue = ps?.totalRevenue ?? 0;
   const confirmedCount = ps?.confirmedBookings ?? 0;
   const pendingCount = ps?.pendingBookings ?? 0;
@@ -446,19 +453,111 @@ const AdminDashboard = () => {
   const avgValue = ps?.avgBookingValue ?? 0;
   const totalPeople = ps?.totalPeople ?? 0;
   const topTours = ps?.topTours ?? [];
+
   const nationalityData = (ps?.nationalityBreakdown ?? []).map((n, i) => ({
     name: n.nationality,
     value: parseInt(n.count),
     color: NAT_COLORS[i % NAT_COLORS.length],
   }));
-  const monthlyData = (ps?.monthlyBreakdown ?? []).map((m) => ({
-    month: m.month,
-    revenue: m.revenue,
-    bookings: m.bookings,
-    people: m.total_people,
+
+  // ── Derived — compare stats ───────────────────────────────
+  const cTotalRevenue = cs?.totalRevenue ?? null;
+  const cTotalBookings = cs?.totalBookings ?? null;
+  const cConfirmed = cs?.confirmedBookings ?? null;
+  const cPending = cs?.pendingBookings ?? null;
+  const cCancelled = cs?.cancelledBookings ?? null;
+  const cAvgValue = cs?.avgBookingValue ?? null;
+  const cTotalPeople = cs?.totalPeople ?? null;
+
+  // Build a lookup for compare nationality counts keyed by nationality string
+  const cNatMap = (cs?.nationalityBreakdown ?? []).reduce((acc, n) => {
+    acc[n.nationality] = parseInt(n.count);
+    return acc;
+  }, {});
+
+  // ── Merge monthly data for charts ─────────────────────────
+  // Align primary + compare by month label into one data array so Recharts
+  // can render both series on the same x-axis.
+  const primaryMonthMap = Object.fromEntries(
+    (ps?.monthlyBreakdown ?? []).map((m) => [m.month, m])
+  );
+  const compareMonthMap = Object.fromEntries(
+    (cs?.monthlyBreakdown ?? []).map((m) => [m.month, m])
+  );
+  const allMonthLabels = Array.from(
+    new Set([
+      ...(ps?.monthlyBreakdown ?? []).map((m) => m.month),
+      ...(cs?.monthlyBreakdown ?? []).map((m) => m.month),
+    ])
+  );
+  const monthlyData = allMonthLabels.map((month) => ({
+    month,
+    revenue: primaryMonthMap[month]?.revenue ?? 0,
+    bookings: primaryMonthMap[month]?.bookings ?? 0,
+    people: primaryMonthMap[month]?.total_people ?? 0,
+    // compare keys are set to undefined (not 0) when no compare period,
+    // so Recharts simply skips rendering those series
+    cmpRevenue: hasCompare ? compareMonthMap[month]?.revenue ?? 0 : undefined,
+    cmpBookings: hasCompare ? compareMonthMap[month]?.bookings ?? 0 : undefined,
   }));
 
   const pendingReviews = reviews.filter((r) => !r.approved).length;
+
+  // ── KPI card definitions ──────────────────────────────────
+  const kpiCards = [
+    {
+      icon: "fa-dollar-sign",
+      label: "Total Revenue",
+      value: loading ? "—" : `$${totalRevenue.toLocaleString()}`,
+      primaryRaw: totalRevenue,
+      compareRaw: cTotalRevenue,
+      formatter: (v) => `$${Number(v).toLocaleString()}`,
+      sub: `Avg $${avgValue} / booking`,
+      color: "from-amber-400 to-orange-500",
+      ring: "ring-amber-200",
+      trend: `$${ps?.confirmedRevenue?.toLocaleString() ?? 0} confirmed`,
+      up: true,
+    },
+    {
+      icon: "fa-suitcase",
+      label: "Total Bookings",
+      value: loading ? "—" : totalBookings,
+      primaryRaw: totalBookings,
+      compareRaw: cTotalBookings,
+      formatter: (v) => v,
+      sub: `${confirmedCount} confirmed · ${pendingCount} pending`,
+      color: "from-emerald-400 to-teal-500",
+      ring: "ring-emerald-200",
+      trend: `${cancelledCount} cancelled`,
+      up: true,
+    },
+    {
+      icon: "fa-users",
+      label: "Total Travellers",
+      value: loading ? "—" : totalPeople.toLocaleString(),
+      primaryRaw: totalPeople,
+      compareRaw: cTotalPeople,
+      formatter: (v) => Number(v).toLocaleString(),
+      sub: "Excl. cancelled bookings",
+      color: "from-blue-400 to-indigo-500",
+      ring: "ring-blue-200",
+      trend: `${topTours.length} tours booked`,
+      up: true,
+    },
+    {
+      icon: "fa-star",
+      label: "Pending Reviews",
+      value: loading ? "—" : pendingReviews,
+      primaryRaw: pendingReviews,
+      compareRaw: null, // not provided by stats API
+      formatter: (v) => v,
+      sub: "Awaiting approval",
+      color: "from-rose-400 to-pink-500",
+      ring: "ring-rose-200",
+      trend: `${pendingReviews} new`,
+      up: false,
+    },
+  ];
 
   return (
     <div
@@ -467,7 +566,7 @@ const AdminDashboard = () => {
     >
       <main className='min-h-screen bg-stone-100'>
         <div className='p-2 md:p-8 max-w-[1400px] space-y-3'>
-          {/* ── Welcome banner ─────────────────────────── */}
+          {/* ── Welcome banner ──────────────────────────── */}
           <div className='relative bg-[#1C1107] rounded-2xl overflow-hidden p-7 flex flex-col md:flex-row md:items-center justify-between gap-6'>
             <div
               className='absolute inset-0 opacity-[0.04]'
@@ -526,17 +625,27 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* ── Date range filter ──────────────────────── */}
+          {/* ── Date range filter ────────────────────────── */}
           <div className='bg-white rounded-2xl border border-stone-100 px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3'>
             <div>
               <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
                 Filter Period
               </p>
-              <p className='text-sm font-semibold text-stone-700'>
-                {dateRange.startDate && dateRange.endDate
-                  ? `${dateRange.startDate} → ${dateRange.endDate}`
-                  : "All time"}
-              </p>
+              <div className='flex items-center gap-2 flex-wrap'>
+                <p className='text-sm font-semibold text-stone-700'>
+                  {dateRange.startDate && dateRange.endDate
+                    ? `${dateRange.startDate} → ${dateRange.endDate}`
+                    : "All time"}
+                </p>
+                {hasCompare && compareDateRange.startDate && (
+                  <span className='text-xs text-stone-400 flex items-center gap-1'>
+                    vs
+                    <span className='font-semibold text-blue-500'>
+                      {compareDateRange.startDate} → {compareDateRange.endDate}
+                    </span>
+                  </span>
+                )}
+              </div>
             </div>
             <DateRangePicker
               setRangeSelect={handleRangeSelect}
@@ -546,52 +655,9 @@ const AdminDashboard = () => {
             />
           </div>
 
-          {/* ── KPI Stats ──────────────────────────────── */}
+          {/* ── KPI Stats ────────────────────────────────── */}
           <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
-            {[
-              {
-                icon: "fa-dollar-sign",
-                label: "Total Revenue",
-                value: loading ? "—" : `$${totalRevenue.toLocaleString()}`,
-                sub: `Avg $${avgValue} / booking`,
-                color: "from-amber-400 to-orange-500",
-                ring: "ring-amber-200",
-                trend: `$${
-                  ps?.confirmedRevenue?.toLocaleString() ?? 0
-                } confirmed`,
-                up: true,
-              },
-              {
-                icon: "fa-suitcase",
-                label: "Total Bookings",
-                value: loading ? "—" : totalBookings,
-                sub: `${confirmedCount} confirmed · ${pendingCount} pending`,
-                color: "from-emerald-400 to-teal-500",
-                ring: "ring-emerald-200",
-                trend: `${cancelledCount} cancelled`,
-                up: true,
-              },
-              {
-                icon: "fa-users",
-                label: "Total Travellers",
-                value: loading ? "—" : totalPeople.toLocaleString(),
-                sub: "Excl. cancelled bookings",
-                color: "from-blue-400 to-indigo-500",
-                ring: "ring-blue-200",
-                trend: `${topTours.length} tours booked`,
-                up: true,
-              },
-              {
-                icon: "fa-star",
-                label: "Pending Reviews",
-                value: loading ? "—" : pendingReviews,
-                sub: "Awaiting approval",
-                color: "from-rose-400 to-pink-500",
-                ring: "ring-rose-200",
-                trend: `${pendingReviews} new`,
-                up: false,
-              },
-            ].map((s) => (
+            {kpiCards.map((s) => (
               <div
                 key={s.label}
                 className='bg-white rounded-2xl border border-stone-100 p-5 hover:shadow-lg hover:shadow-stone-200/60 transition-all group'
@@ -624,15 +690,25 @@ const AdminDashboard = () => {
                   {s.label}
                 </p>
                 <p className='text-xs text-stone-400 mt-0.5'>{s.sub}</p>
+                {/* Compare row — only rendered when a compare period exists */}
+                {!loading && hasCompare && s.compareRaw != null && (
+                  <div className='mt-3 pt-3 border-t border-stone-100 flex items-center gap-2 flex-wrap'>
+                    <DeltaBadge
+                      primary={s.primaryRaw}
+                      compare={s.compareRaw}
+                      formatter={s.formatter}
+                    />
+                  </div>
+                )}
               </div>
             ))}
           </div>
 
-          {/* ── Charts row ─────────────────────────────── */}
+          {/* ── Charts row ───────────────────────────────── */}
           <div className='grid lg:grid-cols-3 gap-6'>
-            {/* Revenue & Bookings — real monthly data */}
+            {/* Revenue & Bookings area chart */}
             <div className='lg:col-span-2 bg-white rounded-2xl border border-stone-100 p-6'>
-              <div className='flex items-center justify-between mb-6'>
+              <div className='flex items-center justify-between mb-6 flex-wrap gap-3'>
                 <div>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-1'>
                     Performance
@@ -641,15 +717,27 @@ const AdminDashboard = () => {
                     Revenue & Bookings
                   </h3>
                 </div>
-                <div className='flex items-center gap-4 text-xs text-stone-400'>
+                <div className='flex items-center gap-3 text-xs text-stone-400 flex-wrap'>
                   <span className='flex items-center gap-1.5'>
-                    <span className='w-2.5 h-2.5 rounded-full bg-amber-400' />
+                    <span className='w-2.5 h-2.5 rounded-full bg-amber-400' />{" "}
                     Revenue
                   </span>
                   <span className='flex items-center gap-1.5'>
-                    <span className='w-2.5 h-2.5 rounded-full bg-blue-400' />
+                    <span className='w-2.5 h-2.5 rounded-full bg-blue-400' />{" "}
                     Bookings
                   </span>
+                  {hasCompare && (
+                    <>
+                      <span className='flex items-center gap-1.5'>
+                        <span className='w-5 border-t-2 border-dashed border-amber-400' />{" "}
+                        Rev (cmp)
+                      </span>
+                      <span className='flex items-center gap-1.5'>
+                        <span className='w-5 border-t-2 border-dashed border-blue-400' />{" "}
+                        Bkgs (cmp)
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
               {loading ? (
@@ -707,6 +795,7 @@ const AdminDashboard = () => {
                       tickLine={false}
                     />
                     <Tooltip content={<ChartTooltip />} />
+                    {/* Primary series */}
                     <Area
                       type='monotone'
                       dataKey='revenue'
@@ -723,12 +812,37 @@ const AdminDashboard = () => {
                       fill='url(#bkGrad)'
                       dot={{ fill: "#60A5FA", strokeWidth: 0, r: 3 }}
                     />
+                    {/* Compare series — dashed, no fill */}
+                    {hasCompare && (
+                      <>
+                        <Area
+                          type='monotone'
+                          dataKey='cmpRevenue'
+                          stroke='#F59E0B'
+                          strokeWidth={1.5}
+                          strokeDasharray='5 4'
+                          fill='none'
+                          dot={false}
+                          name='cmpRevenue'
+                        />
+                        <Area
+                          type='monotone'
+                          dataKey='cmpBookings'
+                          stroke='#60A5FA'
+                          strokeWidth={1.5}
+                          strokeDasharray='5 4'
+                          fill='none'
+                          dot={false}
+                          name='cmpBookings'
+                        />
+                      </>
+                    )}
                   </AreaChart>
                 </ResponsiveContainer>
               )}
             </div>
 
-            {/* Nationality breakdown — real data */}
+            {/* Nationality breakdown */}
             <div className='bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='mb-5'>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-1'>
@@ -765,28 +879,49 @@ const AdminDashboard = () => {
                 </ResponsiveContainer>
               )}
               <div className='space-y-2 mt-3'>
-                {nationalityData.map((c) => (
-                  <div
-                    key={c.name}
-                    className='flex items-center justify-between text-xs'
-                  >
-                    <div className='flex items-center gap-2'>
-                      <span
-                        className='w-2.5 h-2.5 rounded-full shrink-0'
-                        style={{ background: c.color }}
-                      />
-                      <span className='text-stone-500'>{c.name}</span>
+                {nationalityData.map((c) => {
+                  const cVal = hasCompare ? cNatMap[c.name] : null;
+                  const d = cVal != null ? delta(c.value, cVal) : null;
+                  return (
+                    <div
+                      key={c.name}
+                      className='flex items-center justify-between text-xs'
+                    >
+                      <div className='flex items-center gap-2'>
+                        <span
+                          className='w-2.5 h-2.5 rounded-full shrink-0'
+                          style={{ background: c.color }}
+                        />
+                        <span className='text-stone-500'>{c.name}</span>
+                      </div>
+                      <div className='flex items-center gap-2'>
+                        <span className='font-bold text-stone-700'>
+                          {c.value}
+                        </span>
+                        {d && (
+                          <span
+                            className={`text-[10px] font-bold flex items-center gap-0.5 ${d.color}`}
+                          >
+                            <i className={`fa ${d.arrow} text-[8px]`} />
+                            {d.pct}%
+                          </span>
+                        )}
+                        {cVal != null && (
+                          <span className='text-stone-300 text-[10px]'>
+                            ({cVal})
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <span className='font-bold text-stone-700'>{c.value}</span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
 
-          {/* ── Middle row ─────────────────────────────── */}
+          {/* ── Middle row ───────────────────────────────── */}
           <div className='grid lg:grid-cols-3 gap-6'>
-            {/* Recent bookings */}
+            {/* Recent bookings — unchanged, not compare-affected */}
             <div className='lg:col-span-2 bg-white rounded-2xl border border-stone-100 overflow-hidden'>
               <div className='flex items-center justify-between px-6 py-5 border-b border-stone-100'>
                 <div>
@@ -927,57 +1062,125 @@ const AdminDashboard = () => {
                 )}
               </div>
 
-              {/* Quick stats */}
+              {/* Quick stats — with optional compare column */}
               <div className='bg-white rounded-2xl border border-stone-100 p-5'>
-                <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-4'>
-                  Quick Stats
-                </p>
+                <div className='flex items-center justify-between mb-4'>
+                  <p className='text-xs font-bold uppercase tracking-widest text-stone-400'>
+                    Quick Stats
+                  </p>
+                  {hasCompare && (
+                    <div className='flex items-center gap-1 text-[10px] text-stone-400'>
+                      <span className='w-3 border-t-2 border-dashed border-blue-300' />
+                      compare period
+                    </div>
+                  )}
+                </div>
+                {/* Column headers when compare is active */}
+                {hasCompare && (
+                  <div className='flex items-center justify-between mb-2 pb-2 border-b border-stone-100'>
+                    <span className='text-[10px] text-stone-300 flex-1'>
+                      Metric
+                    </span>
+                    <span className='text-[10px] font-bold text-stone-500 w-12 text-right'>
+                      Now
+                    </span>
+                    <span className='text-[10px] font-bold text-blue-400 w-14 text-right'>
+                      Before
+                    </span>
+                    <span className='text-[10px] font-bold text-stone-400 w-12 text-right'>
+                      Δ
+                    </span>
+                  </div>
+                )}
                 <div className='space-y-3'>
                   {[
                     {
                       label: "Confirmed bookings",
-                      value: confirmedCount,
+                      primary: confirmedCount,
+                      compare: cConfirmed,
                       color: "text-emerald-600",
+                      fmt: (v) => v,
                     },
                     {
                       label: "Pending bookings",
-                      value: pendingCount,
+                      primary: pendingCount,
+                      compare: cPending,
                       color: "text-amber-600",
+                      fmt: (v) => v,
                     },
                     {
                       label: "Cancelled bookings",
-                      value: cancelledCount,
+                      primary: cancelledCount,
+                      compare: cCancelled,
                       color: "text-red-500",
+                      fmt: (v) => v,
                     },
                     {
                       label: "Avg booking value",
-                      value: `$${avgValue}`,
+                      primary: avgValue,
+                      compare: cAvgValue,
                       color: "text-blue-600",
+                      fmt: (v) => `$${Number(v).toFixed(2)}`,
                     },
                     {
                       label: "Total travellers",
-                      value: totalPeople,
+                      primary: totalPeople,
+                      compare: cTotalPeople,
                       color: "text-stone-700",
+                      fmt: (v) => Number(v).toLocaleString(),
                     },
-                  ].map((s) => (
-                    <div
-                      key={s.label}
-                      className='flex items-center justify-between'
-                    >
-                      <p className='text-xs text-stone-500'>{s.label}</p>
-                      <p className={`text-sm font-black ${s.color}`}>
-                        {loading ? "—" : s.value}
-                      </p>
-                    </div>
-                  ))}
+                  ].map((s) => {
+                    const d =
+                      hasCompare && s.compare != null
+                        ? delta(s.primary, s.compare)
+                        : null;
+                    return (
+                      <div
+                        key={s.label}
+                        className='flex items-center justify-between gap-1'
+                      >
+                        <p className='text-xs text-stone-500 flex-1 min-w-0 truncate'>
+                          {s.label}
+                        </p>
+                        <p
+                          className={`text-sm font-black ${s.color} w-12 text-right shrink-0`}
+                        >
+                          {loading ? "—" : s.fmt(s.primary)}
+                        </p>
+                        {hasCompare && (
+                          <>
+                            <p className='text-xs font-semibold text-blue-400 w-14 text-right shrink-0'>
+                              {s.compare != null ? s.fmt(s.compare) : "—"}
+                            </p>
+                            <p
+                              className={`text-[10px] font-bold w-12 text-right shrink-0 ${
+                                d ? d.color : "text-stone-300"
+                              }`}
+                            >
+                              {d ? (
+                                <>
+                                  <i
+                                    className={`fa ${d.arrow} text-[8px] mr-0.5`}
+                                  />
+                                  {d.pct}%
+                                </>
+                              ) : (
+                                "—"
+                              )}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* ── Bottom row ─────────────────────────────── */}
+          {/* ── Bottom row ───────────────────────────────── */}
           <div className='grid lg:grid-cols-2 gap-6'>
-            {/* Monthly booking volume bar chart — real data */}
+            {/* Monthly booking volume bar chart */}
             <div className='bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='flex items-center justify-between mb-6'>
                 <div>
@@ -988,9 +1191,17 @@ const AdminDashboard = () => {
                     Booking Volume
                   </h3>
                 </div>
-                <span className='text-xs font-bold text-stone-400 bg-stone-100 px-3 py-1.5 rounded-xl'>
-                  {new Date().getFullYear()}
-                </span>
+                <div className='flex items-center gap-2'>
+                  {hasCompare && (
+                    <span className='text-[10px] text-stone-400 flex items-center gap-1'>
+                      <span className='inline-block w-3 h-3 rounded-sm bg-amber-200 opacity-70' />{" "}
+                      cmp
+                    </span>
+                  )}
+                  <span className='text-xs font-bold text-stone-400 bg-stone-100 px-3 py-1.5 rounded-xl'>
+                    {new Date().getFullYear()}
+                  </span>
+                </div>
               </div>
               {loading ? (
                 <Sk className='h-[180px]' />
@@ -1021,18 +1232,30 @@ const AdminDashboard = () => {
                       tickLine={false}
                     />
                     <Tooltip content={<ChartTooltip />} />
+                    {/* Compare bar behind primary — lighter, no radius so it reads as "behind" */}
+                    {hasCompare && (
+                      <Bar
+                        dataKey='cmpBookings'
+                        name='cmpBookings'
+                        fill='#F59E0B'
+                        opacity={0.25}
+                        radius={[4, 4, 0, 0]}
+                        maxBarSize={32}
+                      />
+                    )}
                     <Bar
                       dataKey='bookings'
+                      name='bookings'
                       fill='#F59E0B'
                       radius={[6, 6, 0, 0]}
-                      maxBarSize={36}
+                      maxBarSize={hasCompare ? 26 : 36}
                     />
                   </BarChart>
                 </ResponsiveContainer>
               )}
             </div>
 
-            {/* Top tours — real data */}
+            {/* Top tours — with per-tour compare delta */}
             <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
               <div className='flex items-center justify-between px-6 py-5 border-b border-stone-100'>
                 <div>
@@ -1065,50 +1288,66 @@ const AdminDashboard = () => {
                     No bookings in this period
                   </div>
                 ) : (
-                  topTours.map((t, i) => (
-                    <div
-                      key={t.tour_id}
-                      className='flex items-center gap-4 px-5 py-3.5 hover:bg-stone-50 transition-colors'
-                    >
-                      {/* Rank */}
-                      <span
-                        className={`text-xs font-black w-5 shrink-0 ${
-                          i === 0
-                            ? "text-amber-500"
-                            : i === 1
-                            ? "text-stone-400"
-                            : "text-stone-300"
-                        }`}
+                  topTours.map((t, i) => {
+                    // Match compare tour by tour_id (not index) to avoid misalignment
+                    const ct = cs?.topTours?.find(
+                      (c) => c.tour_id === t.tour_id
+                    );
+                    const d = ct ? delta(t.revenue, ct.revenue) : null;
+                    return (
+                      <div
+                        key={t.tour_id}
+                        className='flex items-center gap-4 px-5 py-3.5 hover:bg-stone-50 transition-colors'
                       >
-                        #{i + 1}
-                      </span>
-                      {/* Tour name + bookings */}
-                      <div className='flex-1 min-w-0'>
-                        <p className='text-sm font-bold text-stone-800 truncate'>
-                          {t.name}
-                        </p>
-                        <p className='text-xs text-stone-400 mt-0.5'>
-                          <span className='font-semibold text-stone-500'>
-                            {t.total_bookings}
-                          </span>{" "}
-                          bookings ·{" "}
-                          <span className='font-semibold text-stone-500'>
-                            {t.total_people}
-                          </span>{" "}
-                          people
-                        </p>
+                        <span
+                          className={`text-xs font-black w-5 shrink-0 ${
+                            i === 0
+                              ? "text-amber-500"
+                              : i === 1
+                              ? "text-stone-400"
+                              : "text-stone-300"
+                          }`}
+                        >
+                          #{i + 1}
+                        </span>
+                        <div className='flex-1 min-w-0'>
+                          <p className='text-sm font-bold text-stone-800 truncate'>
+                            {t.name}
+                          </p>
+                          <p className='text-xs text-stone-400 mt-0.5'>
+                            <span className='font-semibold text-stone-500'>
+                              {t.total_bookings}
+                            </span>{" "}
+                            bookings ·{" "}
+                            <span className='font-semibold text-stone-500'>
+                              {t.total_people}
+                            </span>{" "}
+                            people
+                          </p>
+                        </div>
+                        <div className='text-right shrink-0'>
+                          <p className='text-sm font-black text-amber-600'>
+                            ${Number(t.revenue).toLocaleString()}
+                          </p>
+                          {d ? (
+                            <p
+                              className={`text-[10px] font-bold mt-0.5 flex items-center justify-end gap-0.5 ${d.color}`}
+                            >
+                              <i className={`fa ${d.arrow} text-[8px]`} />
+                              {d.pct}%{" "}
+                              <span className='text-stone-400 font-normal'>
+                                vs ${Number(ct.revenue).toLocaleString()}
+                              </span>
+                            </p>
+                          ) : (
+                            <p className='text-[10px] text-stone-400 mt-0.5'>
+                              revenue
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      {/* Revenue */}
-                      <div className='text-right shrink-0'>
-                        <p className='text-sm font-black text-amber-600'>
-                          ${Number(t.revenue).toLocaleString()}
-                        </p>
-                        <p className='text-[10px] text-stone-400 mt-0.5'>
-                          revenue
-                        </p>
-                      </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
             </div>

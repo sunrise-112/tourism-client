@@ -24,7 +24,7 @@ const getAdminStats = async (params = {}) => {
 // ─── Customer ─────────────────────────────────────────────────────────────────
 const getCustomerStats = (params = {}) =>
   http
-    .get(`${apiEndPoint}/customer?${buildQuery(params)}`)
+    .get(`${apiEndPoint}/customer/me?${buildQuery(params)}`)
     .then((res) => res.data.data);
 
 export default {

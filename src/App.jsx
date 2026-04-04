@@ -51,6 +51,9 @@ import BookingPreview from "./pages/customer/BookingPreview";
 import TourForm from "./components/tours/TourForm";
 import TourPreview from "./components/tours/TourPreview";
 import ManageCategories from "./pages/admin/ManageCategories";
+import UserForm from "./pages/admin/UserForm";
+import UserPreview from "./pages/admin/UserPreview";
+import ManageNotifications from "./pages/admin/notifications/ManageNotifications";
 
 /* 
 
@@ -299,12 +302,40 @@ const App = () => {
         {/* User */}
         <Route
           path='/admin/users'
-          Browse
-          Tours
           element={
             <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
               <AdminLayout>
                 <ManageUsers />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/users/create'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <UserForm />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />{" "}
+        <Route
+          path='/admin/users/edit/:id'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <UserForm />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/users/preview/:id'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <UserPreview />
               </AdminLayout>
             </ProtectedRoute>
           }
@@ -320,6 +351,17 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        {/* Notifications */}
+        <Route
+          path='/admin/notifications'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <ManageNotifications />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        ></Route>
         {/* Shared ADMIN - CUSTOMER */}
         <Route
           path='/profile/me'
@@ -352,7 +394,6 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
         {/* ─── Fallbacks ─────────────────────────────────── */}
         <Route path='/not-authorized' element={<NotAuthorized />} />
         <Route path='*' element={<NotFound />} />

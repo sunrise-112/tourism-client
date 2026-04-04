@@ -1,7 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+
+// Services
 import userService from "../../services/userService";
+import notificationService from "../../services/notificationService";
+
+// Utils
 import renderImage from "../../utils/renderImage";
+import playNotificationSound from "../../utils/playNotificationSound";
+
+// Hooks
+import useSocketEvent from "../../hooks/useSocketEvent";
+
+// Context
+import { useSocket } from "../../context/SocketContext";
+import role from "../../constants/role";
 
 const Header = ({
   isOpen = false,
@@ -10,13 +23,22 @@ const Header = ({
   setMobileOpen,
   collapsed,
 }) => {
+  const socket = useSocket();
   const [searchParam, setSearchParam] = useSearchParams();
   const [user, setUser] = useState({});
   const [dropOpen, setDropOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [notifs, setNotifs] = useState([]);
   const dropRef = useRef(null);
   const notifRef = useRef(null);
   const navigate = useNavigate();
+  const audioRef = useRef(null);
+
+  const events = ["booking_created", "ad_created"];
+  useEffect(() => {
+    audioRef.current = new Audio("/sounds/notify.mp3");
+    audioRef.current.volume = 0.8;
+  }, []);
 
   const handleIsOpen = (state) => {
     localStorage.setItem("checked", state);
@@ -46,35 +68,26 @@ const Header = ({
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const NOTIFS = [
-    {
-      icon: "fa-check-circle",
-      color: "text-emerald-500",
-      text: "Booking #1042 confirmed!",
-      time: "2 min ago",
-    },
-    {
-      icon: "fa-tag",
-      color: "text-amber-500",
-      text: "Hot deal: 20% off Sahara Trek",
-      time: "1hr ago",
-    },
-    {
-      icon: "fa-star",
-      color: "text-blue-400",
-      text: "Leave a review for your Fez tour",
-      time: "Yesterday",
-    },
-  ];
+  useEffect(() => {
+    const fetchNotifs = async () => {
+      try {
+        const notifs = await notificationService.getAll();
+        console.log("Notifs: ", notifs?.data);
+        setNotifs(notifs?.data);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
 
-  const sidebarWidth =
-    typeof collapsed !== "undefined"
-      ? mobileOpen
-        ? 0
-        : collapsed
-        ? 72
-        : 256
-      : 0;
+    fetchNotifs();
+  }, []);
+
+  events.forEach((event) => {
+    useSocketEvent(event, (data) => {
+      setNotifs((prev) => [data, ...prev]);
+      playNotificationSound(audioRef);
+    });
+  });
 
   return (
     <div
@@ -125,10 +138,14 @@ const Header = ({
             setNotifOpen((o) => !o);
             setDropOpen(false);
           }}
-          className='relative w-9 h-9 flex items-center justify-center rounded-xl border border-stone-200 text-stone-500 hover:bg-stone-50 transition-colors'
+          className='relative cursor-pointer w-9 h-9 flex items-center justify-center rounded-xl border border-stone-200 text-stone-500 hover:bg-stone-50 transition-colors'
         >
           <i className='fa fa-bell text-sm' />
-          <span className='absolute top-1.5 right-1.5 w-2 h-2 bg-amber-400 rounded-full' />
+          {notifs?.filter((n) => !n.is_read).length > 0 && (
+            <span className='absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-400 rounded-full text-[10px] font-bold text-white flex items-center justify-center leading-none'>
+              {notifs.filter((n) => !n.is_read).length}
+            </span>
+          )}
         </button>
 
         {notifOpen && (
@@ -136,28 +153,71 @@ const Header = ({
             <div className='px-4 py-3 border-b border-stone-100 flex items-center justify-between'>
               <p className='font-bold text-stone-800 text-sm'>Notifications</p>
               <span className='text-xs bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded-full'>
-                {NOTIFS.length} new
+                {notifs?.length} new
               </span>
             </div>
-            {NOTIFS.map((n, i) => (
-              <div
-                key={i}
-                className='flex items-start gap-3 px-4 py-3 hover:bg-stone-50 transition-colors cursor-pointer border-b border-stone-50 last:border-0'
-              >
-                <div className='w-8 h-8 rounded-xl bg-stone-100 flex items-center justify-center shrink-0 mt-0.5'>
-                  <i className={`fa ${n.icon} ${n.color} text-xs`} />
+            {notifs?.map((n) => {
+              const iconMap = {
+                info: { icon: "fa-info-circle", color: "text-blue-400" },
+                success: { icon: "fa-check-circle", color: "text-green-400" },
+                warning: {
+                  icon: "fa-exclamation-triangle",
+                  color: "text-yellow-400",
+                },
+                error: { icon: "fa-times-circle", color: "text-red-400" },
+              };
+
+              const { icon, color } = iconMap[n?.type] ?? iconMap.info;
+
+              const getRelativeTime = (dateStr) => {
+                const diff = Math.floor(
+                  (Date.now() - new Date(dateStr)) / 1000
+                ); // seconds ago
+                if (diff < 60) return "Just now";
+                if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+                if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+                if (diff < 86400 * 7) return `${Math.floor(diff / 86400)}d ago`;
+                return new Date(dateStr).toLocaleDateString();
+              };
+
+              return (
+                <div
+                  key={n.id}
+                  className={`flex items-start gap-3 px-4 py-3 hover:bg-stone-50 transition-colors cursor-pointer border-b border-stone-50 last:border-0 ${
+                    !n.is_read ? "bg-blue-50/40" : ""
+                  }`}
+                >
+                  <div className='w-8 h-8 rounded-xl bg-stone-100 flex items-center justify-center shrink-0 mt-0.5'>
+                    <i className={`fa ${icon} ${color} text-xs`} />
+                  </div>
+                  <div className='flex-1 min-w-0'>
+                    <p className='text-xs font-semibold text-stone-700 leading-snug'>
+                      {n?.title}
+                    </p>
+                    <p className='text-xs text-stone-500 leading-snug mt-0.5'>
+                      {n?.message}
+                    </p>
+                    <p className='text-[10px] text-stone-400 mt-0.5'>
+                      {getRelativeTime(n?.created_at)}
+                    </p>
+                  </div>
+                  {!n.is_read && (
+                    <span className='w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 mt-1.5' />
+                  )}
                 </div>
-                <div className='flex-1 min-w-0'>
-                  <p className='text-xs font-semibold text-stone-700 leading-snug'>
-                    {n.text}
-                  </p>
-                  <p className='text-[10px] text-stone-400 mt-0.5'>{n.time}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}{" "}
             <div className='px-4 py-2.5 text-center'>
               <button className='text-xs font-semibold text-amber-600 hover:text-amber-700 transition-colors'>
-                View all notifications
+                {user?.role === role.ADMIN ? (
+                  <Link to={"/admin/notifications"}>
+                    View all notifications
+                  </Link>
+                ) : (
+                  <Link to={"/customer/notifications"}>
+                    View all notifications
+                  </Link>
+                )}{" "}
               </button>
             </div>
           </div>

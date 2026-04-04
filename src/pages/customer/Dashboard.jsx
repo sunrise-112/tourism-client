@@ -18,118 +18,10 @@ import bookingService from "../../services/bookingService";
 import tourService from "../../services/tourService";
 import userService from "../../services/userService";
 import Sidebar from "../../components/Global/SideBar";
-
-// ─── Mock / fallback data ─────────────────────────────────────
-const SPENDING_DATA = [
-  { month: "Oct", amount: 0 },
-  { month: "Nov", amount: 290 },
-  { month: "Dec", amount: 0 },
-  { month: "Jan", amount: 450 },
-  { month: "Feb", amount: 380 },
-  { month: "Mar", amount: 680 },
-];
-
-const CATEGORY_DATA = [
-  { name: "Desert", value: 3, color: "#F59E0B" },
-  { name: "Cultural", value: 5, color: "#FB923C" },
-  { name: "Trekking", value: 2, color: "#FBBF24" },
-  { name: "Coastal", value: 1, color: "#FDE68A" },
-];
-
-const MOCK_BOOKINGS = [
-  {
-    id: 1,
-    tour: {
-      title: "Sahara Desert Camel Trek",
-      destination: "Merzouga",
-      cover_image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Camel_on_Erg_Chebbi.jpg/400px-Camel_on_Erg_Chebbi.jpg",
-      duration_days: 3,
-    },
-    status: "confirmed",
-    total_price: 299,
-    booking_date: "2026-04-12",
-  },
-  {
-    id: 2,
-    tour: {
-      title: "Fez Medina Deep Dive",
-      destination: "Fez",
-      cover_image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Chouara_Tannery%2C_Fes.jpg/400px-Chouara_Tannery%2C_Fes.jpg",
-      duration_days: 3,
-    },
-    status: "pending",
-    total_price: 320,
-    booking_date: "2026-05-03",
-  },
-  {
-    id: 3,
-    tour: {
-      title: "Chefchaouen Blue City",
-      destination: "Chefchaouen",
-      cover_image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Chefchaouen%2C_Morocco_%2844435946544%29.jpg/400px-Chefchaouen%2C_Morocco_%2844435946544%29.jpg",
-      duration_days: 3,
-    },
-    status: "completed",
-    total_price: 280,
-    booking_date: "2026-02-18",
-  },
-  {
-    id: 4,
-    tour: {
-      title: "High Atlas Trekking",
-      destination: "Atlas",
-      cover_image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Toubkal_seen_from_Ouanoukrim.jpg/400px-Toubkal_seen_from_Ouanoukrim.jpg",
-      duration_days: 6,
-    },
-    status: "completed",
-    total_price: 520,
-    booking_date: "2026-01-10",
-  },
-  {
-    id: 5,
-    tour: {
-      title: "Marrakech City Experience",
-      destination: "Marrakech",
-      cover_image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Jamaa_el_Fna_at_dusk.jpg/400px-Jamaa_el_Fna_at_dusk.jpg",
-      duration_days: 3,
-    },
-    status: "cancelled",
-    total_price: 250,
-    booking_date: "2025-12-05",
-  },
-];
-
-const MOCK_FAVORITES = [
-  {
-    id: 6,
-    title: "Essaouira Coastal Escape",
-    destination: "Essaouira",
-    price: 210,
-    cover_image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Essaouira_ramparts.jpg/400px-Essaouira_ramparts.jpg",
-  },
-  {
-    id: 7,
-    title: "Todra Gorges Explorer",
-    destination: "Dades",
-    price: 360,
-    cover_image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Todra_Gorge.jpg/400px-Todra_Gorge.jpg",
-  },
-  {
-    id: 8,
-    title: "Ouzoud Waterfalls Trek",
-    destination: "Middle Atlas",
-    price: 120,
-    cover_image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Cascades_d%27Ouzoud.jpg/400px-Cascades_d%27Ouzoud.jpg",
-  },
-];
+import renderImage from "../../utils/renderImage";
+import statsService from "../../services/statsService";
+import getCurrentMonthRange from "../../utils/getCurrentMonthRange";
+import DateRangePicker from "../../common/DateRangePicker";
 
 // ─── Helpers ──────────────────────────────────────────────────
 const STATUS = {
@@ -190,8 +82,23 @@ const Sk = ({ className }) => (
   <div className={`animate-pulse bg-stone-100 rounded-xl ${className}`} />
 );
 
-// ─── Sidebar nav items ────────────────────────────────────────
-// ─── Sidebar ──────────────────────────────────────────────────
+// ─── Delta badge for compare stats ───────────────────────────
+const Delta = ({ current, previous, prefix = "", suffix = "" }) => {
+  if (previous == null || previous === 0) return null;
+  const diff = current - previous;
+  const pct = Math.round((diff / previous) * 100);
+  const up = diff >= 0;
+  return (
+    <span
+      className={`inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+        up ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-600"
+      }`}
+    >
+      <i className={`fa fa-arrow-${up ? "up" : "down"} text-[8px]`} />
+      {Math.abs(pct)}%
+    </span>
+  );
+};
 
 // ─── Topbar ───────────────────────────────────────────────────
 const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
@@ -201,7 +108,6 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
   const dropRef = useRef(null);
   const notifRef = useRef(null);
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e) => {
       if (dropRef.current && !dropRef.current.contains(e.target))
@@ -243,7 +149,6 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
         fontFamily: "'DM Sans', sans-serif",
       }}
     >
-      {/* Mobile hamburger */}
       <button
         className='lg:hidden w-9 h-9 flex items-center justify-center rounded-xl border border-stone-200 text-stone-500 hover:bg-stone-50 transition-colors'
         onClick={() => setMobileOpen(!mobileOpen)}
@@ -251,7 +156,6 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
         <i className={`fa ${mobileOpen ? "fa-times" : "fa-bars"} text-sm`} />
       </button>
 
-      {/* Breadcrumb */}
       <div className='hidden sm:flex items-center gap-2 text-sm'>
         <span className='text-stone-400'>Dashboard</span>
         <i className='fa fa-chevron-right text-stone-300 text-[10px]' />
@@ -260,7 +164,6 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
 
       <div className='flex-1' />
 
-      {/* Search */}
       <div className='hidden md:flex items-center gap-2 bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 w-48'>
         <i className='fa fa-search text-stone-300 text-xs' />
         <input
@@ -269,7 +172,6 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
         />
       </div>
 
-      {/* Notifications */}
       <div ref={notifRef} className='relative'>
         <button
           onClick={() => {
@@ -281,7 +183,6 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
           <i className='fa fa-bell text-sm' />
           <span className='absolute top-1.5 right-1.5 w-2 h-2 bg-amber-400 rounded-full' />
         </button>
-
         {notifOpen && (
           <div className='absolute right-0 top-12 w-72 bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
             <div className='px-4 py-3 border-b border-stone-100 flex items-center justify-between'>
@@ -315,7 +216,6 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
         )}
       </div>
 
-      {/* User dropdown */}
       <div ref={dropRef} className='relative'>
         <button
           onClick={() => {
@@ -348,7 +248,6 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
             }`}
           />
         </button>
-
         {dropOpen && (
           <div className='absolute right-0 top-12 w-52 bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
             <div className='px-4 py-3 border-b border-stone-100'>
@@ -407,6 +306,20 @@ const ChartTooltip = ({ active, payload, label }) => {
   );
 };
 
+// ─── Derive chart-friendly data from monthlyBreakdown ────────
+/**
+ * Converts the API monthlyBreakdown array into the shape recharts expects.
+ * { month: "Apr", amount: 396, bookings: 1, people: 12 }
+ */
+const toChartData = (monthlyBreakdown = []) =>
+  monthlyBreakdown.map((m) => ({
+    month: m.month?.slice(0, 3) ?? "—", // "Apr 2026" → "Apr"
+    fullMonth: m.month,
+    amount: Number(m.spent ?? 0),
+    bookings: Number(m.bookings ?? 0),
+    people: Number(m.people ?? 0),
+  }));
+
 // ─── Main Dashboard ───────────────────────────────────────────
 const CustomerDashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -415,56 +328,93 @@ const CustomerDashboard = () => {
   const [bookings, setBookings] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState(null);
+
+  const { start, end } = getCurrentMonthRange();
+  const [dateRange, setDateRange] = useState({
+    startDate: start,
+    endDate: end,
+  });
+  const [compareDateRange, setCompareDateRange] = useState({
+    startDate: null,
+    endDate: null,
+  });
+
+  const handleRangeSelect = (range) => setDateRange(range);
+  const handleCompareDateSelect = (range) => setCompareDateRange(range);
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [u, b, f] = await Promise.all([
-          userService.getMe(),
-          bookingService.getMyBookings(),
-          tourService.getFavorites(),
-        ]);
-        setUser(u);
-        setBookings((b?.data || b || []).length ? b?.data || b : MOCK_BOOKINGS);
-        setFavorites(
-          (f?.data || f || []).length ? f?.data || f : MOCK_FAVORITES
-        );
-      } catch {
-        setUser({
-          name: "Karim Benali",
-          email: "karim@example.com",
-          role: "customer",
+        setLoading(true);
+        const fetchedUser = await userService.getMe();
+        setUser(fetchedUser);
+
+        const fetchedBookings = await bookingService.getMyBookings();
+        setBookings(fetchedBookings);
+
+        const fetchedStats = await statsService.getCustomerStats({
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+          compareStartDate: dateRange.compareStartDate,
+          compareEndDate: dateRange.compareEndDate,
         });
-        setBookings(MOCK_BOOKINGS);
-        setFavorites(MOCK_FAVORITES);
+        setStats(fetchedStats);
+      } catch (error) {
+        console.error("Dashboard fetch error:", error);
       } finally {
         setLoading(false);
       }
     };
     fetchAll();
-  }, []);
+  }, [dateRange, compareDateRange]);
 
-  // Stats
-  const totalSpent = bookings
-    .filter((b) => b.status !== "cancelled")
-    .reduce((s, b) => s + Number(b.total_price || 0), 0);
-  const confirmed = bookings.filter((b) => b.status === "confirmed").length;
-  const completed = bookings.filter((b) => b.status === "completed").length;
+  // ── Derive values from stats API ──────────────────────────
+  const primary = stats?.primaryStats ?? {};
+  const compare = stats?.compareStats ?? null;
+
+  const totalBookings = primary.totalBookings ?? 0;
+  const confirmedCount = primary.confirmedBookings ?? 0;
+  const completedCount = primary.totalBookings
+    ? totalBookings -
+      (primary.pendingBookings ?? 0) -
+      (primary.cancelledBookings ?? 0) -
+      confirmedCount
+    : 0;
+  const totalSpent = Number(primary.totalSpent ?? 0);
+  const avgSpend = Number(primary.avgSpend ?? 0);
+  const totalPeople = primary.totalPeople ?? 0;
+  const mostActiveMonth = primary.mostActiveMonth ?? null;
+
+  // Recent bookings list from API (enriched with tour info if available on the booking object)
+  const recentBookings = primary.recentBookings ?? [];
+
+  // Monthly chart data
+  const chartData = toChartData(primary.monthlyBreakdown);
+
+  // Compare values (for delta badges)
+  const cmp = compare
+    ? {
+        totalBookings: compare.totalBookings ?? 0,
+        totalSpent: Number(compare.totalSpent ?? 0),
+        confirmedBookings: compare.confirmedBookings ?? 0,
+      }
+    : null;
+
+  // Upcoming / just-booked derived from bookings list (full list fetched separately)
   const upcoming = bookings.filter((b) =>
     ["confirmed", "pending"].includes(b.status)
   );
-  const recent = [...bookings]
-    .sort((a, b) => new Date(b.booking_date) - new Date(a.booking_date))
-    .slice(0, 4);
   const justBooked = bookings.filter((b) => b.status === "pending").slice(0, 2);
-
-  const sidebarWidth = collapsed ? 72 : 256;
+  const recent =
+    recentBookings.length > 0
+      ? recentBookings
+      : [...bookings]
+          .sort((a, b) => new Date(b.booking_date) - new Date(a.booking_date))
+          .slice(0, 4);
 
   return (
-    <div
-      className={`min-h-screen bg-stone-100 `}
-    >
-      {/* Main content */}
+    <div className='min-h-screen bg-stone-100'>
       <main className='pt-0 min-h-screen transition-all duration-300'>
         <div className='p-2 md:p-8 max-w-[1400px] space-y-2'>
           {/* ── Welcome banner ─────────────────────────── */}
@@ -495,6 +445,16 @@ const CustomerDashboard = () => {
               <p className='text-stone-400 text-sm'>
                 Here's what's happening with your adventures.
               </p>
+              {mostActiveMonth && (
+                <p className='text-stone-500 text-xs mt-1'>
+                  <i className='fa fa-fire text-amber-400 mr-1' />
+                  Most active month:{" "}
+                  <span className='text-amber-400 font-bold'>
+                    {mostActiveMonth.month}
+                  </span>{" "}
+                  — ${Number(mostActiveMonth.spent).toLocaleString()} spent
+                </p>
+              )}
             </div>
             <div className='relative z-10 flex items-center gap-3 shrink-0'>
               <Link
@@ -506,21 +466,31 @@ const CustomerDashboard = () => {
             </div>
           </div>
 
+          {/* ── Date range picker ──────────────────────── */}
+          <DateRangePicker
+            setRangeSelect={handleRangeSelect}
+            setCompareDateRange={handleCompareDateSelect}
+            dateRange={dateRange}
+            enableCompare
+          />
+
           {/* ── Stat cards ─────────────────────────────── */}
           <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
             {[
               {
                 icon: "fa-suitcase-rolling",
                 label: "Total Bookings",
-                value: bookings.length,
-                sub: "All time",
+                value: totalBookings,
+                compareValue: cmp?.totalBookings,
+                sub: `${totalPeople} traveller${totalPeople !== 1 ? "s" : ""}`,
                 color: "from-amber-400 to-orange-500",
                 ring: "ring-amber-200",
               },
               {
                 icon: "fa-check-circle",
                 label: "Confirmed",
-                value: confirmed,
+                value: confirmedCount,
+                compareValue: cmp?.confirmedBookings,
                 sub: "Active tours",
                 color: "from-emerald-400 to-teal-500",
                 ring: "ring-emerald-200",
@@ -528,7 +498,8 @@ const CustomerDashboard = () => {
               {
                 icon: "fa-flag-checkered",
                 label: "Completed",
-                value: completed,
+                value: completedCount,
+                compareValue: null,
                 sub: "Tours finished",
                 color: "from-blue-400 to-indigo-500",
                 ring: "ring-blue-200",
@@ -537,7 +508,11 @@ const CustomerDashboard = () => {
                 icon: "fa-dollar-sign",
                 label: "Total Spent",
                 value: `$${totalSpent.toLocaleString()}`,
-                sub: "Excl. cancelled",
+                rawValue: totalSpent,
+                compareValue: cmp?.totalSpent,
+                sub: avgSpend
+                  ? `Avg $${Number(avgSpend).toLocaleString()} / booking`
+                  : "Excl. cancelled",
                 color: "from-rose-400 to-pink-500",
                 ring: "ring-rose-200",
               },
@@ -551,9 +526,25 @@ const CustomerDashboard = () => {
                 >
                   <i className={`fa ${s.icon} text-white text-sm`} />
                 </div>
-                <p className='text-2xl font-black text-stone-800 mb-0.5'>
-                  {loading ? <Sk className='h-7 w-16 inline-block' /> : s.value}
-                </p>
+                <div className='flex items-center gap-2 mb-0.5'>
+                  <p className='text-2xl font-black text-stone-800'>
+                    {loading ? (
+                      <Sk className='h-7 w-16 inline-block' />
+                    ) : (
+                      s.value
+                    )}
+                  </p>
+                  {/* Delta badge vs compare period */}
+                  {!loading && cmp && s.compareValue != null && (
+                    <Delta
+                      current={
+                        s.rawValue ??
+                        (typeof s.value === "number" ? s.value : null)
+                      }
+                      previous={s.compareValue}
+                    />
+                  )}
+                </div>
                 <p className='text-sm font-semibold text-stone-600'>
                   {s.label}
                 </p>
@@ -564,7 +555,7 @@ const CustomerDashboard = () => {
 
           {/* ── Charts row ─────────────────────────────── */}
           <div className='grid lg:grid-cols-3 gap-6'>
-            {/* Spending area chart */}
+            {/* Spending area chart — driven by monthlyBreakdown */}
             <div className='lg:col-span-2 bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='flex items-center justify-between mb-6'>
                 <div>
@@ -576,12 +567,16 @@ const CustomerDashboard = () => {
                   </h3>
                 </div>
                 <span className='text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl'>
-                  Last 6 months
+                  {chartData.length > 0
+                    ? `${chartData[0].fullMonth} – ${
+                        chartData[chartData.length - 1].fullMonth
+                      }`
+                    : "Selected range"}
                 </span>
               </div>
               <ResponsiveContainer width='100%' height={200}>
                 <AreaChart
-                  data={SPENDING_DATA}
+                  data={chartData}
                   margin={{ top: 5, right: 5, bottom: 0, left: -20 }}
                 >
                   <defs>
@@ -624,20 +619,27 @@ const CustomerDashboard = () => {
               </ResponsiveContainer>
             </div>
 
-            {/* Category pie */}
+            {/* Bookings + People pie (derived from monthlyBreakdown) */}
             <div className='bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='mb-6'>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-1'>
                   Breakdown
                 </p>
                 <h3 className='font-black text-stone-800 text-lg'>
-                  Tour Categories
+                  Monthly Activity
                 </h3>
               </div>
               <ResponsiveContainer width='100%' height={140}>
                 <PieChart>
                   <Pie
-                    data={CATEGORY_DATA}
+                    data={
+                      chartData.length > 0
+                        ? chartData.map((d) => ({
+                            name: d.month,
+                            value: d.amount,
+                          }))
+                        : [{ name: "No data", value: 1 }]
+                    }
                     cx='50%'
                     cy='50%'
                     innerRadius={42}
@@ -645,36 +647,62 @@ const CustomerDashboard = () => {
                     paddingAngle={3}
                     dataKey='value'
                   >
-                    {CATEGORY_DATA.map((entry, i) => (
-                      <Cell key={i} fill={entry.color} />
-                    ))}
+                    {chartData.map((_, i) => {
+                      const COLORS = [
+                        "#F59E0B",
+                        "#FB923C",
+                        "#FBBF24",
+                        "#FDE68A",
+                        "#FCA5A1",
+                        "#6EE7B7",
+                      ];
+                      return <Cell key={i} fill={COLORS[i % COLORS.length]} />;
+                    })}
                   </Pie>
-                  <Tooltip formatter={(v, n) => [v, n]} />
+                  <Tooltip formatter={(v, n) => [`$${v}`, n]} />
                 </PieChart>
               </ResponsiveContainer>
               <div className='space-y-2 mt-3'>
-                {CATEGORY_DATA.map((c) => (
-                  <div
-                    key={c.name}
-                    className='flex items-center justify-between text-xs'
-                  >
-                    <div className='flex items-center gap-2'>
-                      <span
-                        className='w-2.5 h-2.5 rounded-full shrink-0'
-                        style={{ background: c.color }}
-                      />
-                      <span className='text-stone-500'>{c.name}</span>
-                    </div>
-                    <span className='font-bold text-stone-700'>{c.value}</span>
-                  </div>
-                ))}
+                {chartData.length > 0 ? (
+                  chartData.map((d, i) => {
+                    const COLORS = [
+                      "#F59E0B",
+                      "#FB923C",
+                      "#FBBF24",
+                      "#FDE68A",
+                      "#FCA5A1",
+                      "#6EE7B7",
+                    ];
+                    return (
+                      <div
+                        key={d.month}
+                        className='flex items-center justify-between text-xs'
+                      >
+                        <div className='flex items-center gap-2'>
+                          <span
+                            className='w-2.5 h-2.5 rounded-full shrink-0'
+                            style={{ background: COLORS[i % COLORS.length] }}
+                          />
+                          <span className='text-stone-500'>{d.fullMonth}</span>
+                        </div>
+                        <span className='font-bold text-stone-700'>
+                          ${d.amount.toLocaleString()}
+                        </span>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p className='text-xs text-stone-400 text-center py-2'>
+                    No data for period
+                  </p>
+                )}
               </div>
             </div>
           </div>
 
           {/* ── Bottom grid ────────────────────────────── */}
           <div className='grid lg:grid-cols-3 gap-6'>
-            {/* Recent bookings */}
+            {/* Recent bookings — from stats.primaryStats.recentBookings */}
             <div className='lg:col-span-2 bg-white rounded-2xl border border-stone-100 overflow-hidden'>
               <div className='flex items-center justify-between px-6 py-5 border-b border-stone-100'>
                 <div>
@@ -691,54 +719,76 @@ const CustomerDashboard = () => {
                 </Link>
               </div>
               <div className='divide-y divide-stone-50'>
-                {loading
-                  ? [...Array(4)].map((_, i) => (
-                      <div
-                        key={i}
-                        className='flex items-center gap-4 px-6 py-4'
-                      >
-                        <Sk className='w-12 h-12 rounded-xl shrink-0' />
-                        <div className='flex-1 space-y-2'>
-                          <Sk className='h-3 w-2/3' />
-                          <Sk className='h-3 w-1/3' />
-                        </div>
+                {loading ? (
+                  [...Array(4)].map((_, i) => (
+                    <div key={i} className='flex items-center gap-4 px-6 py-4'>
+                      <Sk className='w-12 h-12 rounded-xl shrink-0' />
+                      <div className='flex-1 space-y-2'>
+                        <Sk className='h-3 w-2/3' />
+                        <Sk className='h-3 w-1/3' />
                       </div>
-                    ))
-                  : recent.map((b) => (
-                      <div
-                        key={b.id}
-                        className='flex items-center gap-4 px-6 py-4 hover:bg-stone-50 transition-colors group'
-                      >
-                        <div className='w-12 h-12 rounded-xl overflow-hidden bg-stone-100 shrink-0'>
-                          {b.tour?.cover_image ? (
-                            <img
-                              src={b.tour.cover_image}
-                              alt={b.tour?.title}
-                              className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
-                            />
-                          ) : (
-                            <div className='w-full h-full flex items-center justify-center text-stone-300'>
-                              <i className='fa fa-image text-sm' />
-                            </div>
+                    </div>
+                  ))
+                ) : recent.length === 0 ? (
+                  <div className='px-6 py-10 text-center'>
+                    <i className='fa fa-suitcase text-3xl text-stone-200 mb-2 block' />
+                    <p className='text-xs text-stone-400'>
+                      No bookings found for this period
+                    </p>
+                  </div>
+                ) : (
+                  recent.map((b) => (
+                    <div
+                      key={b.id}
+                      className='flex items-center gap-4 px-6 py-4 hover:bg-stone-50 transition-colors group'
+                    >
+                      {/* Cover image: API recentBookings may not include it — show placeholder gracefully */}
+                      <div className='w-12 h-12 rounded-xl overflow-hidden bg-stone-100 shrink-0'>
+                        {b.tour_cover_image ? (
+                          <img
+                            src={renderImage(b.tour_cover_image)}
+                            alt={b.tour_title}
+                            className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
+                          />
+                        ) : (
+                          <div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50'>
+                            <i className='fa fa-map-marked-alt text-amber-300 text-sm' />
+                          </div>
+                        )}
+                      </div>
+                      <div className='flex-1 min-w-0'>
+                        <p className='text-sm font-bold text-stone-800 truncate'>
+                          {b.tour_title ?? `Booking #${b.id}`}
+                        </p>
+                        <p className='text-xs text-stone-400 flex items-center gap-1 mt-0.5'>
+                          <i className='fa fa-calendar text-[10px]' />
+                          {b.booking_date
+                            ? new Date(b.booking_date).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                }
+                              )
+                            : "—"}
+                          {b.num_people && (
+                            <span className='ml-2 text-stone-400'>
+                              <i className='fa fa-user text-[10px] mr-0.5' />
+                              {b.num_people}
+                            </span>
                           )}
-                        </div>
-                        <div className='flex-1 min-w-0'>
-                          <p className='text-sm font-bold text-stone-800 truncate'>
-                            {b.tour?.title}
-                          </p>
-                          <p className='text-xs text-amber-600 flex items-center gap-1 mt-0.5'>
-                            <i className='fa fa-map-marker-alt text-[10px]' />{" "}
-                            {b.tour?.destination}
-                          </p>
-                        </div>
-                        <div className='text-right shrink-0'>
-                          <p className='text-sm font-black text-stone-800 mb-1'>
-                            ${Number(b.total_price).toLocaleString()}
-                          </p>
-                          <Badge status={b.status} />
-                        </div>
+                        </p>
                       </div>
-                    ))}
+                      <div className='text-right shrink-0'>
+                        <p className='text-sm font-black text-stone-800 mb-1'>
+                          ${Number(b.total_price).toLocaleString()}
+                        </p>
+                        <Badge status={b.status} />
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 
@@ -775,28 +825,28 @@ const CustomerDashboard = () => {
                         className='flex items-center gap-3 p-3 rounded-xl bg-amber-50 border border-amber-100'
                       >
                         <div className='w-10 h-10 rounded-xl overflow-hidden bg-stone-100 shrink-0'>
-                          {b.tour?.cover_image ? (
+                          {b.tour_cover_image ? (
                             <img
-                              src={b.tour.cover_image}
+                              src={renderImage(b.tour_cover_image)}
                               alt=''
                               className='w-full h-full object-cover'
                             />
                           ) : (
-                            <div className='w-full h-full flex items-center justify-center'>
-                              <i className='fa fa-image text-stone-300 text-xs' />
+                            <div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50'>
+                              <i className='fa fa-map-marked-alt text-amber-300 text-xs' />
                             </div>
                           )}
                         </div>
                         <div className='flex-1 min-w-0'>
                           <p className='text-xs font-bold text-stone-800 truncate'>
-                            {b.tour?.title}
+                            {b.tour_title ?? `Booking #${b.id}`}
                           </p>
                           <p className='text-[10px] text-amber-600 font-semibold'>
                             Awaiting confirmation
                           </p>
                         </div>
                         <span className='text-xs font-black text-amber-600'>
-                          ${b.total_price}
+                          ${Number(b.total_price).toLocaleString()}
                         </span>
                       </div>
                     ))}
@@ -841,21 +891,21 @@ const CustomerDashboard = () => {
                         className='flex items-center gap-3 p-3 rounded-xl hover:bg-stone-50 transition-colors'
                       >
                         <div className='w-10 h-10 rounded-xl overflow-hidden bg-stone-100 shrink-0'>
-                          {b.tour?.cover_image ? (
+                          {b.tour_cover_image ? (
                             <img
-                              src={b.tour.cover_image}
+                              src={renderImage(b.tour_cover_image)}
                               alt=''
                               className='w-full h-full object-cover'
                             />
                           ) : (
-                            <div className='w-full h-full flex items-center justify-center'>
-                              <i className='fa fa-image text-stone-300 text-xs' />
+                            <div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50'>
+                              <i className='fa fa-map-marked-alt text-amber-300 text-xs' />
                             </div>
                           )}
                         </div>
                         <div className='flex-1 min-w-0'>
                           <p className='text-xs font-bold text-stone-800 truncate'>
-                            {b.tour?.title}
+                            {b.tour_title ?? `Booking #${b.id}`}
                           </p>
                           <p className='text-[10px] text-stone-400 mt-0.5'>
                             <i className='fa fa-calendar mr-1 text-[9px]' />
@@ -873,6 +923,54 @@ const CustomerDashboard = () => {
                   </div>
                 )}
               </div>
+
+              {/* Period summary card — visible only when stats are loaded */}
+              {!loading && primary.firstBookingDate && (
+                <div className='bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100 p-5'>
+                  <p className='text-xs font-bold uppercase tracking-widest text-amber-500 mb-3'>
+                    Period Summary
+                  </p>
+                  <div className='space-y-2'>
+                    {[
+                      {
+                        label: "Avg spend / booking",
+                        value: `$${Number(avgSpend).toLocaleString()}`,
+                      },
+                      { label: "Total travellers", value: totalPeople },
+                      {
+                        label: "First booking",
+                        value: new Date(
+                          primary.firstBookingDate
+                        ).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        }),
+                      },
+                      {
+                        label: "Last booking",
+                        value: new Date(
+                          primary.lastBookingDate
+                        ).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        }),
+                      },
+                    ].map((row) => (
+                      <div
+                        key={row.label}
+                        className='flex items-center justify-between text-xs'
+                      >
+                        <span className='text-stone-500'>{row.label}</span>
+                        <span className='font-bold text-stone-800'>
+                          {row.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -933,7 +1031,7 @@ const CustomerDashboard = () => {
             </div>
           </div>
 
-          {/* ── Bar chart ───────────────────────────────── */}
+          {/* ── Bar chart — booking counts per month ────── */}
           <div className='bg-white rounded-2xl border border-stone-100 p-6'>
             <div className='flex items-center justify-between mb-6'>
               <div>
@@ -945,12 +1043,16 @@ const CustomerDashboard = () => {
                 </h3>
               </div>
               <span className='text-xs font-bold text-stone-400 bg-stone-100 px-3 py-1.5 rounded-xl'>
-                2026
+                {chartData.length > 0
+                  ? `${chartData[0].fullMonth} – ${
+                      chartData[chartData.length - 1].fullMonth
+                    }`
+                  : "Selected range"}
               </span>
             </div>
             <ResponsiveContainer width='100%' height={180}>
               <BarChart
-                data={SPENDING_DATA}
+                data={chartData}
                 margin={{ top: 5, right: 5, bottom: 0, left: -20 }}
               >
                 <CartesianGrid
@@ -969,9 +1071,32 @@ const CustomerDashboard = () => {
                   axisLine={false}
                   tickLine={false}
                 />
-                <Tooltip content={<ChartTooltip />} />
+                <Tooltip
+                  content={({ active, payload, label }) => {
+                    if (!active || !payload?.length) return null;
+                    const d = payload[0]?.payload;
+                    return (
+                      <div className='bg-[#1C1107] text-white px-3 py-2 rounded-xl text-xs shadow-xl'>
+                        <p className='text-white/50 mb-1'>
+                          {d?.fullMonth ?? label}
+                        </p>
+                        <p className='font-black text-amber-400'>
+                          {d?.bookings} booking{d?.bookings !== 1 ? "s" : ""}
+                        </p>
+                        <p className='text-white/70'>
+                          ${d?.amount?.toLocaleString()} spent
+                        </p>
+                        {d?.people > 0 && (
+                          <p className='text-white/50'>
+                            {d.people} traveller{d.people !== 1 ? "s" : ""}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  }}
+                />
                 <Bar
-                  dataKey='amount'
+                  dataKey='bookings'
                   fill='#F59E0B'
                   radius={[6, 6, 0, 0]}
                   maxBarSize={40}

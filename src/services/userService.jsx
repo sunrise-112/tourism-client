@@ -25,7 +25,7 @@ const getAll = async ({
     ...(endDate && { endDate }),
   }).toString();
 
-  const response = await http.get(`${apiEndPoint}/admin?${query}`);
+  const response = await http.get(`${apiEndPoint}/admin/all?${query}`);
   return response.data.data;
 };
 
@@ -48,8 +48,8 @@ const create = async (data) => {
 };
 
 const update = async (id, data) => {
-  const response = await http.put(`${apiEndPoint}/admin/${id}`, data);
-    return response.data.data;
+  const response = await http.put(`${apiEndPoint}/shared/${id}`, data);
+  return response.data.data;
 };
 
 const getMe = async () => {

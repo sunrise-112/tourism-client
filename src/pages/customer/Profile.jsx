@@ -18,6 +18,7 @@ import {
 
 // Commons
 import ToggleSwitcher from "../../common/ToggleSwitcher";
+import role from "../../constants/role";
 
 const Sk = ({ className }) => (
   <div className={`animate-pulse bg-stone-100 rounded-xl ${className}`} />
@@ -83,24 +84,38 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const currentUser = userService.getCurrentUser();
-      const fetchedUser = await userService?.getById(currentUser?.id);
-      setFormData({
-        avatar: fetchedUser?.avatar || "",
-        name: fetchedUser?.name || "",
-        email: fetchedUser?.email || "",
-        password: "",
-        phone: fetchedUser?.phone || "",
-        nationality: fetchedUser?.nationality || "",
-        ...(currentUser?.role === "admin"
-          ? {
-              role: fetchedUser?.role,
-              active: fetchedUser?.active,
-              verified: fetchedUser?.verified,
-            }
-          : {}),
-      });
-      setUser(fetchedUser);
-      console.log("fetchedUser: ", fetchedUser);
+      if (currentUser?.role === "admin") {
+        const fetchedUser = await userService?.getById(currentUser?.id);
+        setFormData({
+          avatar: fetchedUser?.avatar || "",
+          name: fetchedUser?.name || "",
+          email: fetchedUser?.email || "",
+          password: "",
+          phone: fetchedUser?.phone || "",
+          nationality: fetchedUser?.nationality || "",
+          ...(currentUser?.role === "admin"
+            ? {
+                role: fetchedUser?.role,
+                active: fetchedUser?.active,
+                verified: fetchedUser?.verified,
+              }
+            : {}),
+        });
+        setUser(fetchedUser);
+        console.log("fetchedUser admin: ", fetchedUser);
+      } else {
+        const fetchedUser = await userService.getMe();
+        setFormData({
+          avatar: fetchedUser?.avatar || "",
+          name: fetchedUser?.name || "",
+          email: fetchedUser?.email || "",
+          password: "",
+          phone: fetchedUser?.phone || "",
+          nationality: fetchedUser?.nationality || "",
+        });
+        setUser(fetchedUser);
+        console.log("fetchedUser client: ", fetchedUser);
+      }
     };
 
     fetchUser();
@@ -356,48 +371,52 @@ const Profile = () => {
                     true
                   )}
                 </div>
-                <div>
-                  <label className={labelClass}>Role</label>
-                  {renderSelect(
-                    "",
-                    "role",
-                    data,
-                    errors,
-                    handleChange,
-                    [
-                      {
-                        value: "admin",
-                      },
-                      {
-                        value: "customer",
-                      },
-                    ],
-                    "value",
-                    "value"
-                  )}
-                </div>
-                <div className='flex justify-between items-center gap-4'>
-                  <div className='flex-col items-center'>
-                    <label className={labelClass}>Verified</label>
-                    {ToggleSwitcher({
-                      name: "verified",
+                {user?.role === role.ADMIN && (
+                  <div>
+                    <label className={labelClass}>Role</label>
+                    {renderSelect(
+                      "",
+                      "role",
                       data,
                       errors,
-                      onChange: handleChange,
-                      bg_color: "bg-green-400",
-                    })}
+                      handleChange,
+                      [
+                        {
+                          value: "admin",
+                        },
+                        {
+                          value: "customer",
+                        },
+                      ],
+                      "value",
+                      "value"
+                    )}
                   </div>
-                  <div className='flex-col items-center'>
-                    <label className={labelClass}>Active</label>
-                    {ToggleSwitcher({
-                      name: "active",
-                      data,
-                      errors,
-                      onChange: handleChange,
-                      bg_color: "bg-blue-400",
-                    })}
+                )}
+                {user?.role === role.ADMIN && (
+                  <div className='flex justify-between items-center gap-4'>
+                    <div className='flex-col items-center'>
+                      <label className={labelClass}>Verified</label>
+                      {ToggleSwitcher({
+                        name: "verified",
+                        data,
+                        errors,
+                        onChange: handleChange,
+                        bg_color: "bg-green-400",
+                      })}
+                    </div>
+                    <div className='flex-col items-center'>
+                      <label className={labelClass}>Active</label>
+                      {ToggleSwitcher({
+                        name: "active",
+                        data,
+                        errors,
+                        onChange: handleChange,
+                        bg_color: "bg-blue-400",
+                      })}
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className='sm:col-span-2 pt-1'>
                   {renderButton("Save", "submit", validate())}
                 </div>
