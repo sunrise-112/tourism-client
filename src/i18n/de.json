@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "main": "Hauptmenü",
+    "account": "Konto",
+    "dashboard": "Dashboard",
+    "bookings": "Buchungen",
+    "myBookings": "Meine Buchungen",
+    "tours": "Touren",
+    "excursions": "Ausflüge",
+    "activities": "Aktivitäten",
+    "reviews": "Bewertungen",
+    "users": "Benutzer",
+    "categories": "Kategorien",
+    "favorites": "Favoriten",
+    "profile": "Ihr Profil",
+    "notifications": "Benachrichtigungen",
+    "settings": "Einstellungen"
+  }
+}

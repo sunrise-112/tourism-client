@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "main": "主菜单",
+    "account": "账户",
+    "dashboard": "仪表板",
+    "bookings": "预订管理",
+    "myBookings": "我的预订",
+    "tours": "旅游线路",
+    "excursions": "短途旅行",
+    "activities": "活动",
+    "reviews": "评价",
+    "users": "用户",
+    "categories": "分类",
+    "favorites": "收藏夹",
+    "profile": "个人资料",
+    "notifications": "通知",
+    "settings": "设置"
+  }
+}

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import userService from "../../services/userService";
 import role from "../../constants/role";
 import bookingService from "../../services/bookingService";
+import { useTranslation } from "react-i18next";
 
 const user = userService?.getCurrentUser();
 const isAdmin = user?.role === role.ADMIN;
@@ -15,6 +16,7 @@ const Sidebar = ({
   mobileOpen,
   setMobileOpen,
 }) => {
+  const { t } = useTranslation();
   const location = useLocation();
   const [bookings, setBookings] = useState([]);
   const [openSections, setOpenSections] = useState({
@@ -23,104 +25,89 @@ const Sidebar = ({
     Account: true,
   });
 
-  const NAV = [
-    {
-      section: "Main",
-      items: [
-        {
-          icon: "fa-th-large",
-          label: "Dashboard",
-          path: `${isAdmin ? "/admin/dashboard" : "/customer/dashboard"}`,
-        },
-        {
-          icon: "fa-suitcase-rolling",
-          label: `${isAdmin ? "Bookings" : "My Bookings"}`,
-          total: parseInt(bookings),
-          path: `${isAdmin ? "/admin/bookings" : "/my-bookings"}`,
-        },
-        ...(isAdmin
-          ? [
-              {
-                icon: "fa-map-marked-alt",
-                label: "Tours",
-                path: "/admin/tours",
-              },
-            ]
-          : []),
-        ...(isAdmin
-          ? [
-              {
-                icon: "fa-hiking",
-                label: "Excursions",
-                path: "/admin/excursions",
-              },
-            ]
-          : []),
-        ...(isAdmin
-          ? [
-              {
-                icon: "fa-running",
-                label: "Activities",
-                path: "/admin/activities",
-              },
-            ]
-          : []),
-        ...(isAdmin
-          ? [
-              {
-                icon: "fa-comments",
-                label: "Reviews",
-                path: `/admin/reviews`,
-              },
-            ]
-          : []),
-        ...(isAdmin
-          ? [
-              {
-                icon: "fa-user",
-                label: "Users",
-                path: "/admin/users",
-              },
-            ]
-          : []),
-        ...(isAdmin
-          ? [
-              {
-                icon: "fa-list",
-                label: "Categoris",
-                path: "/categories",
-              },
-            ]
-          : []),
-        ...(isCustomer
-          ? [{ icon: "fa-heart", label: "Favorites", path: "/favorites" }]
-          : []),
-      ],
-    },
-    /*   {
-    section: "Explore",
+const NAV = [
+  {
+    section: t("nav.main"),
     items: [
-      { icon: "fa-compass", label: "Browse Tours", path: "/tours" },
       {
-        icon: "fa-map-marked-alt",
-        label: "Destinations",
-        path: "/tours?view=map",
+        icon: "fa-th-large",
+        label: t("nav.dashboard"),
+        path: isAdmin ? "/admin/dashboard" : "/customer/dashboard",
+      },
+      {
+        icon: "fa-suitcase-rolling",
+        label: isAdmin ? t("nav.bookings") : t("nav.myBookings"),
+        total: parseInt(bookings),
+        path: isAdmin ? "/admin/bookings" : "/my-bookings",
+      },
+
+      ...(isAdmin
+        ? [
+            {
+              icon: "fa-map-marked-alt",
+              label: t("nav.tours"),
+              path: "/admin/tours",
+            },
+            {
+              icon: "fa-hiking",
+              label: t("nav.excursions"),
+              path: "/admin/excursions",
+            },
+            {
+              icon: "fa-running",
+              label: t("nav.activities"),
+              path: "/admin/activities",
+            },
+            {
+              icon: "fa-comments",
+              label: t("nav.reviews"),
+              path: "/admin/reviews",
+            },
+            {
+              icon: "fa-user",
+              label: t("nav.users"),
+              path: "/admin/users",
+            },
+            {
+              icon: "fa-list",
+              label: t("nav.categories"),
+              path: "/categories",
+            },
+          ]
+        : []),
+
+      ...(isCustomer
+        ? [
+            {
+              icon: "fa-heart",
+              label: t("nav.favorites"),
+              path: "/favorites",
+            },
+          ]
+        : []),
+    ],
+  },
+  {
+    section: t("nav.account"),
+    items: [
+      {
+        icon: "fa-user-circle",
+        label: t("nav.profile"),
+        path: "/profile/me",
+      },
+      {
+        icon: "fa-bell",
+        label: t("nav.notifications"),
+        path: "/admin/notifications",
+      },
+      {
+        icon: "fa-cog",
+        label: t("nav.settings"),
+        path: "/settings",
       },
     ],
   },
- */ {
-      section: "Account",
-      items: [
-        { icon: "fa-user-circle", label: "Profile", path: "/profile/me" },
-        {
-          icon: "fa-bell",
-          label: "Notifications",
-          path: "/admin/notifications",
-        },
-        { icon: "fa-cog", label: "Settings", path: "/settings" },
-      ],
-    },
-  ];
+];
 
   const toggleSection = (s) => setOpenSections((p) => ({ ...p, [s]: !p[s] }));
 
@@ -184,10 +171,10 @@ const Sidebar = ({
 
         {/* Nav */}
         <nav className='flex-1 overflow-y-auto py-4 px-2 space-y-1 scrollbar-hide'>
-          {NAV.map(({ section, items }) => (
-            <div key={section} className='mb-2'>
+          {NAV.map(({  items }) => (
+            <div  className='mb-2'>
               {/* Section header */}
-              {!collapsed && (
+            {/*   {!collapsed && (
                 <button
                   onClick={() => toggleSection(section)}
                   className='w-full flex items-center justify-between px-3 py-1.5 mb-1 group'
@@ -201,16 +188,14 @@ const Sidebar = ({
                     }`}
                   />
                 </button>
-              )}
-
-              {(collapsed || openSections[section]) &&
-                items.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    title={collapsed ? item.label : undefined}
-                    onClick={() => setMobileOpen(false)}
-                    className={`
+              )} */}
+              {items.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  title={collapsed ? item.label : undefined}
+                  onClick={() => setMobileOpen(false)}
+                  className={`
                     flex items-center gap-3 px-3 py-2.5 rounded-xl mb-0.5 transition-all duration-150 group relative
                     ${
                       isActive(item.path)
@@ -219,29 +204,29 @@ const Sidebar = ({
                     }
                     ${collapsed ? "justify-center" : ""}
                   `}
-                  >
-                    {isActive(item.path) && (
-                      <span className='absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-amber-400 rounded-r-full' />
-                    )}
-                    <i className={`fa ${item.icon} text-sm w-4 text-center`} />
-                    {item.total ? (
-                      <div className='absolute  right-1.5 min-w-[18px] h-[18px] px-1 bg-amber-500 rounded-full text-[10px] font-bold text-white flex items-center justify-center leading-none'>
-                        {item.total}
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-                    {!collapsed && (
-                      <span className='text-sm font-medium'>{item.label}</span>
-                    )}
-                    {/* Tooltip on collapsed */}
-                    {collapsed && (
-                      <div className='absolute left-full ml-3 px-2.5 py-1.5 bg-stone-800 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-xl'>
-                        {item.label}
-                      </div>
-                    )}
-                  </Link>
-                ))}
+                > 
+                  {isActive(item.path) && (
+                    <span className='absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-amber-400 rounded-r-full' />
+                  )}
+                  <i className={`fa ${item.icon} text-sm w-4 text-center`} />
+                  {item.total ? (
+                    <div className='absolute  right-1.5 min-w-[18px] h-[18px] px-1 bg-amber-500 rounded-full text-[10px] font-bold text-white flex items-center justify-center leading-none'>
+                      {item.total}
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+                  {!collapsed && (
+                    <span className='text-sm font-medium'>{item.label}</span>
+                  )}
+                  {/* Tooltip on collapsed */}
+                  {collapsed && (
+                    <div className='absolute left-full ml-3 px-2.5 py-1.5 bg-stone-800 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-xl'>
+                      {item.label}
+                    </div>
+                  )}
+                </Link>
+              ))}
             </div>
           ))}
         </nav>

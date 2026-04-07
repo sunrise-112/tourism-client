@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "main": "الرئيسية",
+    "account": "الحساب",
+    "dashboard": "لوحة التحكم",
+    "bookings": "الحجوزات",
+    "myBookings": "حجوزاتي",
+    "tours": "الجولات",
+    "excursions": "الرحلات القصيرة",
+    "activities": "الأنشطة",
+    "reviews": "التقييمات",
+    "users": "المستخدمون",
+    "categories": "الفئات",
+    "favorites": "المفضلة",
+    "profile": "الملف الشخصي",
+    "notifications": "الإشعارات",
+    "settings": "الإعدادات"
+  }
+}

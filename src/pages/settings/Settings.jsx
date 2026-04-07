@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import settingsService from "../../services/adminSettings";
+import LanguageSwitcher from "../../common/LanguageSwitcher";
 
 // ─── primitives ───────────────────────────────────────────────────────────────
 
@@ -117,12 +118,8 @@ const PanelSkeleton = () => (
 
 const LanguagePanel = () => (
   <SectionCard eyebrow='Channels' title='Language Notifications'>
-    <div className='rounded-xl border border-amber-100 bg-amber-50 p-4 text-xs text-amber-700 leading-relaxed'>
-      <span className='font-bold'>No channel toggles needed.</span> Language is
-      applied globally to all outgoing communications. Change the display
-      language from your{" "}
-      <span className='font-bold underline cursor-pointer'>Profile</span>{" "}
-      settings.
+    <div className='flex w-auto'>
+      <LanguageSwitcher />
     </div>
   </SectionCard>
 );
