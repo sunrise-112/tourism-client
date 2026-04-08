@@ -110,5 +110,100 @@
       "people": "Personen",
       "revenue": "Umsatz"
     }
+  },
+  "customerDashboard": {
+    "status": {
+      "confirmed": "Bestätigt",
+      "pending": "Ausstehend",
+      "cancelled": "Storniert",
+      "completed": "Abgeschlossen"
+    },
+    "topbar": {
+      "breadcrumbDashboard": "Dashboard",
+      "breadcrumbOverview": "Übersicht",
+      "searchPlaceholder": "Schnellsuche...",
+      "notifications": "Benachrichtigungen",
+      "newBadge": "neu",
+      "viewAllNotifications": "Alle Benachrichtigungen anzeigen",
+      "notif1": "Buchung #1042 bestätigt!",
+      "notif1Time": "Vor 2 Min.",
+      "notif2": "Angebot: 20% Rabatt auf Sahara-Trek",
+      "notif2Time": "Vor 1 Std.",
+      "notif3": "Bewertung für Fes-Tour abgeben",
+      "notif3Time": "Gestern",
+      "defaultName": "Reisende/r",
+      "defaultRole": "Kunde",
+      "myProfile": "Ihr Profil",
+      "myBookings": "Ihre Buchungen",
+      "favorites": "Favoriten",
+      "settings": "Einstellungen",
+      "signOut": "Abmelden"
+    },
+    "banner": {
+      "welcome": "Willkommen zurück, {{name}}",
+      "defaultTraveler": "Reisende/r",
+      "subtitle": "Hier ist, was bei Ihren Abenteuern passiert.",
+      "mostActiveMonth": "Aktivster Monat:",
+      "spent": "ausgegeben",
+      "exploreTours": "Touren entdecken"
+    },
+    "kpi": {
+      "totalBookings": "Gesamtbuchungen",
+      "travellers": "{{count}} Reisende{{s}}",
+      "confirmed": "Bestätigt",
+      "activeTours": "Aktive Touren",
+      "completed": "Abgeschlossen",
+      "toursFinished": "Abgeschlossene Touren",
+      "totalSpent": "Gesamtausgaben",
+      "avgPerBooking": "Ø ${{value}} / Buchung",
+      "exclCancelled": "Ohne stornierte"
+    },
+    "charts": {
+      "spendingOverview": "Ausgabenübersicht",
+      "monthlySpend": "Monatliche Ausgaben",
+      "selectedRange": "Ausgewählter Zeitraum",
+      "breakdown": "Aufschlüsselung",
+      "monthlyActivity": "Monatliche Aktivität",
+      "noData": "Keine Daten",
+      "noDataPeriod": "Keine Daten für diesen Zeitraum"
+    },
+    "bookings": {
+      "history": "Verlauf",
+      "recentBookings": "Aktuelle Buchungen",
+      "viewAll": "Alle anzeigen",
+      "noBookings": "Keine Buchungen für diesen Zeitraum gefunden",
+      "bookingPrefix": "Buchung #"
+    },
+    "justBooked": {
+      "new": "Neu",
+      "title": "Gerade Gebucht",
+      "empty": "Keine ausstehenden Buchungen",
+      "awaitingConfirmation": "Warte auf Bestätigung"
+    },
+    "upcoming": {
+      "nextUp": "Demnächst",
+      "title": "Bevorstehende Touren",
+      "empty": "Keine bevorstehenden Touren",
+      "browseTours": "Touren durchsuchen →"
+    },
+    "summary": {
+      "title": "Zeitraumzusammenfassung",
+      "avgSpend": "Ø Ausgaben / Buchung",
+      "totalTravellers": "Reisende gesamt",
+      "firstBooking": "Erste Buchung",
+      "lastBooking": "Letzte Buchung"
+    },
+    "favorites": {
+      "saved": "Gespeichert",
+      "title": "Lieblingstouren",
+      "exploreMore": "Mehr entdecken"
+    },
+    "activityChart": {
+      "activity": "Aktivität",
+      "title": "Buchungsaktivität",
+      "tooltipBooking": "Buchung(en)",
+      "tooltipSpent": "ausgegeben",
+      "tooltipTraveller": "Reisende(r)"
+    }
   }
 }

@@ -110,5 +110,100 @@
       "people": "أشخاص",
       "revenue": "الإيرادات"
     }
+  },
+  "customerDashboard": {
+    "status": {
+      "confirmed": "مؤكد",
+      "pending": "معلق",
+      "cancelled": "ملغى",
+      "completed": "مكتمل"
+    },
+    "topbar": {
+      "breadcrumbDashboard": "لوحة التحكم",
+      "breadcrumbOverview": "نظرة عامة",
+      "searchPlaceholder": "بحث سريع...",
+      "notifications": "الإشعارات",
+      "newBadge": "جديد",
+      "viewAllNotifications": "عرض جميع الإشعارات",
+      "notif1": "تم تأكيد الحجز #1042!",
+      "notif1Time": "منذ دقيقتين",
+      "notif2": "عرض حصري: خصم 20% على رحلة الصحراء",
+      "notif2Time": "منذ ساعة",
+      "notif3": "أضف تقييمك لجولة فاس",
+      "notif3Time": "أمس",
+      "defaultName": "مسافر",
+      "defaultRole": "عميل",
+      "myProfile": "ملفي الشخصي",
+      "myBookings": "حجوزاتي",
+      "favorites": "المفضلة",
+      "settings": "الإعدادات",
+      "signOut": "تسجيل الخروج"
+    },
+    "banner": {
+      "welcome": "مرحباً بعودتك، {{name}}",
+      "defaultTraveler": "مسافر",
+      "subtitle": "إليك ما يحدث في مغامراتك.",
+      "mostActiveMonth": "الشهر الأكثر نشاطاً:",
+      "spent": "أنفقت",
+      "exploreTours": "استكشاف الجولات"
+    },
+    "kpi": {
+      "totalBookings": "إجمالي الحجوزات",
+      "travellers": "{{count}} مسافر",
+      "confirmed": "مؤكد",
+      "activeTours": "جولات نشطة",
+      "completed": "مكتمل",
+      "toursFinished": "جولات منتهية",
+      "totalSpent": "إجمالي الإنفاق",
+      "avgPerBooking": "متوسط ${{value}} / حجز",
+      "exclCancelled": "باستثناء الملغى"
+    },
+    "charts": {
+      "spendingOverview": "نظرة عامة على الإنفاق",
+      "monthlySpend": "الإنفاق الشهري",
+      "selectedRange": "النطاق المحدد",
+      "breakdown": "تفصيل",
+      "monthlyActivity": "النشاط الشهري",
+      "noData": "لا توجد بيانات",
+      "noDataPeriod": "لا توجد بيانات للفترة"
+    },
+    "bookings": {
+      "history": "السجل",
+      "recentBookings": "الحجوزات الأخيرة",
+      "viewAll": "عرض الكل",
+      "noBookings": "لا توجد حجوزات لهذه الفترة",
+      "bookingPrefix": "حجز #"
+    },
+    "justBooked": {
+      "new": "جديد",
+      "title": "تم الحجز للتو",
+      "empty": "لا توجد حجوزات معلقة",
+      "awaitingConfirmation": "في انتظار التأكيد"
+    },
+    "upcoming": {
+      "nextUp": "القادم",
+      "title": "الجولات القادمة",
+      "empty": "لا توجد جولات قادمة",
+      "browseTours": "تصفح الجولات ←"
+    },
+    "summary": {
+      "title": "ملخص الفترة",
+      "avgSpend": "متوسط الإنفاق / حجز",
+      "totalTravellers": "إجمالي المسافرين",
+      "firstBooking": "أول حجز",
+      "lastBooking": "آخر حجز"
+    },
+    "favorites": {
+      "saved": "المحفوظة",
+      "title": "الجولات المفضلة",
+      "exploreMore": "استكشاف المزيد"
+    },
+    "activityChart": {
+      "activity": "النشاط",
+      "title": "نشاط الحجز",
+      "tooltipBooking": "حجز",
+      "tooltipSpent": "أنفقت",
+      "tooltipTraveller": "مسافر"
+    }
   }
 }

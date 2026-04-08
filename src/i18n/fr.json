@@ -110,5 +110,100 @@
       "people": "personnes",
       "revenue": "revenus"
     }
+  },
+  "customerDashboard": {
+    "status": {
+      "confirmed": "Confirmée",
+      "pending": "En attente",
+      "cancelled": "Annulée",
+      "completed": "Terminée"
+    },
+    "topbar": {
+      "breadcrumbDashboard": "Tableau de bord",
+      "breadcrumbOverview": "Aperçu",
+      "searchPlaceholder": "Recherche rapide...",
+      "notifications": "Notifications",
+      "newBadge": "nouvelles",
+      "viewAllNotifications": "Voir toutes les notifications",
+      "notif1": "Réservation #1042 confirmée !",
+      "notif1Time": "Il y a 2 min",
+      "notif2": "Offre : -20% sur le Trek Sahara",
+      "notif2Time": "Il y a 1h",
+      "notif3": "Laissez un avis pour le circuit de Fès",
+      "notif3Time": "Hier",
+      "defaultName": "Voyageur",
+      "defaultRole": "Client",
+      "myProfile": "Mon Profil",
+      "myBookings": "Mes Réservations",
+      "favorites": "Favoris",
+      "settings": "Paramètres",
+      "signOut": "Se déconnecter"
+    },
+    "banner": {
+      "welcome": "Bon retour, {{name}}",
+      "defaultTraveler": "Voyageur",
+      "subtitle": "Voici ce qui se passe avec vos aventures.",
+      "mostActiveMonth": "Mois le plus actif :",
+      "spent": "dépensé",
+      "exploreTours": "Explorer les circuits"
+    },
+    "kpi": {
+      "totalBookings": "Réservations totales",
+      "travellers": "{{count}} voyageur{{s}}",
+      "confirmed": "Confirmées",
+      "activeTours": "Circuits actifs",
+      "completed": "Terminées",
+      "toursFinished": "Circuits terminés",
+      "totalSpent": "Total dépensé",
+      "avgPerBooking": "Moy. ${{value}} / réservation",
+      "exclCancelled": "Hors annulées"
+    },
+    "charts": {
+      "spendingOverview": "Aperçu des dépenses",
+      "monthlySpend": "Dépenses mensuelles",
+      "selectedRange": "Période sélectionnée",
+      "breakdown": "Répartition",
+      "monthlyActivity": "Activité mensuelle",
+      "noData": "Aucune donnée",
+      "noDataPeriod": "Aucune donnée pour cette période"
+    },
+    "bookings": {
+      "history": "Historique",
+      "recentBookings": "Réservations récentes",
+      "viewAll": "Voir tout",
+      "noBookings": "Aucune réservation trouvée pour cette période",
+      "bookingPrefix": "Réservation #"
+    },
+    "justBooked": {
+      "new": "Nouveau",
+      "title": "Vient d'être réservé",
+      "empty": "Aucune réservation en attente",
+      "awaitingConfirmation": "En attente de confirmation"
+    },
+    "upcoming": {
+      "nextUp": "Prochainement",
+      "title": "Circuits à venir",
+      "empty": "Aucun circuit à venir",
+      "browseTours": "Parcourir les circuits →"
+    },
+    "summary": {
+      "title": "Résumé de la période",
+      "avgSpend": "Dépense moy. / réservation",
+      "totalTravellers": "Total voyageurs",
+      "firstBooking": "Première réservation",
+      "lastBooking": "Dernière réservation"
+    },
+    "favorites": {
+      "saved": "Enregistrés",
+      "title": "Circuits favoris",
+      "exploreMore": "Explorer davantage"
+    },
+    "activityChart": {
+      "activity": "Activité",
+      "title": "Activité de réservation",
+      "tooltipBooking": "réservation(s)",
+      "tooltipSpent": "dépensé",
+      "tooltipTraveller": "voyageur(s)"
+    }
   }
 }

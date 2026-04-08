@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   AreaChart,
   Area,
@@ -24,41 +25,38 @@ import getCurrentMonthRange from "../../utils/getCurrentMonthRange";
 import DateRangePicker from "../../common/DateRangePicker";
 
 // ─── Helpers ──────────────────────────────────────────────────
-const STATUS = {
+const STATUS_KEYS = {
   confirmed: {
     bg: "bg-emerald-100",
     text: "text-emerald-700",
     dot: "bg-emerald-400",
-    label: "Confirmed",
   },
   pending: {
     bg: "bg-amber-100",
     text: "text-amber-700",
     dot: "bg-amber-400",
-    label: "Pending",
   },
   cancelled: {
     bg: "bg-red-100",
     text: "text-red-600",
     dot: "bg-red-400",
-    label: "Cancelled",
   },
   completed: {
     bg: "bg-stone-100",
     text: "text-stone-500",
     dot: "bg-stone-400",
-    label: "Completed",
   },
 };
 
 const Badge = ({ status }) => {
-  const s = STATUS[status] || STATUS.pending;
+  const { t } = useTranslation();
+  const s = STATUS_KEYS[status] || STATUS_KEYS.pending;
   return (
     <span
       className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full ${s.bg} ${s.text}`}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-      {s.label}
+      {t(`customerDashboard.status.${status}`, { defaultValue: status })}
     </span>
   );
 };
@@ -82,8 +80,7 @@ const Sk = ({ className }) => (
   <div className={`animate-pulse bg-stone-100 rounded-xl ${className}`} />
 );
 
-// ─── Delta badge for compare stats ───────────────────────────
-const Delta = ({ current, previous, prefix = "", suffix = "" }) => {
+const Delta = ({ current, previous }) => {
   if (previous == null || previous === 0) return null;
   const diff = current - previous;
   const pct = Math.round((diff / previous) * 100);
@@ -102,6 +99,7 @@ const Delta = ({ current, previous, prefix = "", suffix = "" }) => {
 
 // ─── Topbar ───────────────────────────────────────────────────
 const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [dropOpen, setDropOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
@@ -123,20 +121,20 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
     {
       icon: "fa-check-circle",
       color: "text-emerald-500",
-      text: "Booking #1042 confirmed!",
-      time: "2 min ago",
+      text: t("customerDashboard.topbar.notif1"),
+      time: t("customerDashboard.topbar.notif1Time"),
     },
     {
       icon: "fa-tag",
       color: "text-amber-500",
-      text: "Hot deal: 20% off Sahara Trek",
-      time: "1hr ago",
+      text: t("customerDashboard.topbar.notif2"),
+      time: t("customerDashboard.topbar.notif2Time"),
     },
     {
       icon: "fa-star",
       color: "text-blue-400",
-      text: "Leave a review for Fez tour",
-      time: "Yesterday",
+      text: t("customerDashboard.topbar.notif3"),
+      time: t("customerDashboard.topbar.notif3Time"),
     },
   ];
 
@@ -157,9 +155,13 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
       </button>
 
       <div className='hidden sm:flex items-center gap-2 text-sm'>
-        <span className='text-stone-400'>Dashboard</span>
+        <span className='text-stone-400'>
+          {t("customerDashboard.topbar.breadcrumbDashboard")}
+        </span>
         <i className='fa fa-chevron-right text-stone-300 text-[10px]' />
-        <span className='font-semibold text-stone-700'>Overview</span>
+        <span className='font-semibold text-stone-700'>
+          {t("customerDashboard.topbar.breadcrumbOverview")}
+        </span>
       </div>
 
       <div className='flex-1' />
@@ -167,7 +169,7 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
       <div className='hidden md:flex items-center gap-2 bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 w-48'>
         <i className='fa fa-search text-stone-300 text-xs' />
         <input
-          placeholder='Quick search...'
+          placeholder={t("customerDashboard.topbar.searchPlaceholder")}
           className='bg-transparent text-xs outline-none text-stone-500 placeholder-stone-300 w-full'
         />
       </div>
@@ -186,9 +188,11 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
         {notifOpen && (
           <div className='absolute right-0 top-12 w-72 bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
             <div className='px-4 py-3 border-b border-stone-100 flex items-center justify-between'>
-              <p className='font-bold text-stone-800 text-sm'>Notifications</p>
+              <p className='font-bold text-stone-800 text-sm'>
+                {t("customerDashboard.topbar.notifications")}
+              </p>
               <span className='text-xs bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded-full'>
-                {NOTIFS.length} new
+                {NOTIFS.length} {t("customerDashboard.topbar.newBadge")}
               </span>
             </div>
             {NOTIFS.map((n, i) => (
@@ -209,7 +213,7 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
             ))}
             <div className='px-4 py-2.5 text-center'>
               <button className='text-xs font-semibold text-amber-600 hover:text-amber-700'>
-                View all notifications
+                {t("customerDashboard.topbar.viewAllNotifications")}
               </button>
             </div>
           </div>
@@ -236,10 +240,10 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
           />
           <div className='hidden sm:block text-left'>
             <p className='text-xs font-bold text-stone-700 leading-none mb-0.5'>
-              {user?.name || "Traveler"}
+              {user?.name || t("customerDashboard.topbar.defaultName")}
             </p>
             <p className='text-[10px] text-stone-400 capitalize'>
-              {user?.role || "Customer"}
+              {user?.role || t("customerDashboard.topbar.defaultRole")}
             </p>
           </div>
           <i
@@ -255,14 +259,26 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
               <p className='text-xs text-stone-400 truncate'>{user?.email}</p>
             </div>
             {[
-              { icon: "fa-user", label: "My Profile", path: "/profile/me" },
+              {
+                icon: "fa-user",
+                label: t("customerDashboard.topbar.myProfile"),
+                path: "/profile/me",
+              },
               {
                 icon: "fa-suitcase",
-                label: "My Bookings",
+                label: t("customerDashboard.topbar.myBookings"),
                 path: "/my-bookings",
               },
-              { icon: "fa-heart", label: "Favorites", path: "/favorites" },
-              { icon: "fa-cog", label: "Settings", path: "/settings" },
+              {
+                icon: "fa-heart",
+                label: t("customerDashboard.topbar.favorites"),
+                path: "/favorites",
+              },
+              {
+                icon: "fa-cog",
+                label: t("customerDashboard.topbar.settings"),
+                path: "/settings",
+              },
             ].map((item) => (
               <Link
                 key={item.path}
@@ -285,7 +301,7 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
                 className='w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition-colors text-sm text-red-500 hover:text-red-600'
               >
                 <i className='fa fa-sign-out-alt text-xs w-4 text-center' />
-                Sign Out
+                {t("customerDashboard.topbar.signOut")}
               </button>
             </div>
           </div>
@@ -306,14 +322,9 @@ const ChartTooltip = ({ active, payload, label }) => {
   );
 };
 
-// ─── Derive chart-friendly data from monthlyBreakdown ────────
-/**
- * Converts the API monthlyBreakdown array into the shape recharts expects.
- * { month: "Apr", amount: 396, bookings: 1, people: 12 }
- */
 const toChartData = (monthlyBreakdown = []) =>
   monthlyBreakdown.map((m) => ({
-    month: m.month?.slice(0, 3) ?? "—", // "Apr 2026" → "Apr"
+    month: m.month?.slice(0, 3) ?? "—",
     fullMonth: m.month,
     amount: Number(m.spent ?? 0),
     bookings: Number(m.bookings ?? 0),
@@ -322,6 +333,7 @@ const toChartData = (monthlyBreakdown = []) =>
 
 // ─── Main Dashboard ───────────────────────────────────────────
 const CustomerDashboard = () => {
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -349,10 +361,8 @@ const CustomerDashboard = () => {
         setLoading(true);
         const fetchedUser = await userService.getMe();
         setUser(fetchedUser);
-
         const fetchedBookings = await bookingService.getMyBookings();
         setBookings(fetchedBookings);
-
         const fetchedStats = await statsService.getCustomerStats({
           startDate: dateRange.startDate,
           endDate: dateRange.endDate,
@@ -369,7 +379,6 @@ const CustomerDashboard = () => {
     fetchAll();
   }, [dateRange, compareDateRange]);
 
-  // ── Derive values from stats API ──────────────────────────
   const primary = stats?.primaryStats ?? {};
   const compare = stats?.compareStats ?? null;
 
@@ -385,14 +394,9 @@ const CustomerDashboard = () => {
   const avgSpend = Number(primary.avgSpend ?? 0);
   const totalPeople = primary.totalPeople ?? 0;
   const mostActiveMonth = primary.mostActiveMonth ?? null;
-
-  // Recent bookings list from API (enriched with tour info if available on the booking object)
   const recentBookings = primary.recentBookings ?? [];
-
-  // Monthly chart data
   const chartData = toChartData(primary.monthlyBreakdown);
 
-  // Compare values (for delta badges)
   const cmp = compare
     ? {
         totalBookings: compare.totalBookings ?? 0,
@@ -401,7 +405,6 @@ const CustomerDashboard = () => {
       }
     : null;
 
-  // Upcoming / just-booked derived from bookings list (full list fetched separately)
   const upcoming = bookings.filter((b) =>
     ["confirmed", "pending"].includes(b.status)
   );
@@ -440,19 +443,25 @@ const CustomerDashboard = () => {
                 className='text-2xl md:text-3xl font-black text-white mb-1'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Welcome back, {user?.name?.split(" ")[0] || "Traveler"} 👋
+                {t("customerDashboard.banner.welcome", {
+                  name:
+                    user?.name?.split(" ")[0] ||
+                    t("customerDashboard.banner.defaultTraveler"),
+                })}{" "}
+                👋
               </h1>
               <p className='text-stone-400 text-sm'>
-                Here's what's happening with your adventures.
+                {t("customerDashboard.banner.subtitle")}
               </p>
               {mostActiveMonth && (
                 <p className='text-stone-500 text-xs mt-1'>
                   <i className='fa fa-fire text-amber-400 mr-1' />
-                  Most active month:{" "}
+                  {t("customerDashboard.banner.mostActiveMonth")}{" "}
                   <span className='text-amber-400 font-bold'>
                     {mostActiveMonth.month}
                   </span>{" "}
-                  — ${Number(mostActiveMonth.spent).toLocaleString()} spent
+                  — ${Number(mostActiveMonth.spent).toLocaleString()}{" "}
+                  {t("customerDashboard.banner.spent")}
                 </p>
               )}
             </div>
@@ -461,7 +470,8 @@ const CustomerDashboard = () => {
                 to='/tours'
                 className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-5 py-2.5 rounded-xl shadow-lg shadow-amber-900/30'
               >
-                <i className='fa fa-compass text-xs' /> Explore Tours
+                <i className='fa fa-compass text-xs' />{" "}
+                {t("customerDashboard.banner.exploreTours")}
               </Link>
             </div>
           </div>
@@ -479,40 +489,45 @@ const CustomerDashboard = () => {
             {[
               {
                 icon: "fa-suitcase-rolling",
-                label: "Total Bookings",
+                label: t("customerDashboard.kpi.totalBookings"),
                 value: totalBookings,
                 compareValue: cmp?.totalBookings,
-                sub: `${totalPeople} traveller${totalPeople !== 1 ? "s" : ""}`,
+                sub: t("customerDashboard.kpi.travellers", {
+                  count: totalPeople,
+                  s: totalPeople !== 1 ? "s" : "",
+                }),
                 color: "from-amber-400 to-orange-500",
                 ring: "ring-amber-200",
               },
               {
                 icon: "fa-check-circle",
-                label: "Confirmed",
+                label: t("customerDashboard.kpi.confirmed"),
                 value: confirmedCount,
                 compareValue: cmp?.confirmedBookings,
-                sub: "Active tours",
+                sub: t("customerDashboard.kpi.activeTours"),
                 color: "from-emerald-400 to-teal-500",
                 ring: "ring-emerald-200",
               },
               {
                 icon: "fa-flag-checkered",
-                label: "Completed",
+                label: t("customerDashboard.kpi.completed"),
                 value: completedCount,
                 compareValue: null,
-                sub: "Tours finished",
+                sub: t("customerDashboard.kpi.toursFinished"),
                 color: "from-blue-400 to-indigo-500",
                 ring: "ring-blue-200",
               },
               {
                 icon: "fa-dollar-sign",
-                label: "Total Spent",
+                label: t("customerDashboard.kpi.totalSpent"),
                 value: `$${totalSpent.toLocaleString()}`,
                 rawValue: totalSpent,
                 compareValue: cmp?.totalSpent,
                 sub: avgSpend
-                  ? `Avg $${Number(avgSpend).toLocaleString()} / booking`
-                  : "Excl. cancelled",
+                  ? t("customerDashboard.kpi.avgPerBooking", {
+                      value: Number(avgSpend).toLocaleString(),
+                    })
+                  : t("customerDashboard.kpi.exclCancelled"),
                 color: "from-rose-400 to-pink-500",
                 ring: "ring-rose-200",
               },
@@ -534,7 +549,6 @@ const CustomerDashboard = () => {
                       s.value
                     )}
                   </p>
-                  {/* Delta badge vs compare period */}
                   {!loading && cmp && s.compareValue != null && (
                     <Delta
                       current={
@@ -555,15 +569,14 @@ const CustomerDashboard = () => {
 
           {/* ── Charts row ─────────────────────────────── */}
           <div className='grid lg:grid-cols-3 gap-6'>
-            {/* Spending area chart — driven by monthlyBreakdown */}
             <div className='lg:col-span-2 bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='flex items-center justify-between mb-6'>
                 <div>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-1'>
-                    Spending Overview
+                    {t("customerDashboard.charts.spendingOverview")}
                   </p>
                   <h3 className='font-black text-stone-800 text-lg'>
-                    Monthly Spend
+                    {t("customerDashboard.charts.monthlySpend")}
                   </h3>
                 </div>
                 <span className='text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl'>
@@ -571,7 +584,7 @@ const CustomerDashboard = () => {
                     ? `${chartData[0].fullMonth} – ${
                         chartData[chartData.length - 1].fullMonth
                       }`
-                    : "Selected range"}
+                    : t("customerDashboard.charts.selectedRange")}
                 </span>
               </div>
               <ResponsiveContainer width='100%' height={200}>
@@ -619,14 +632,13 @@ const CustomerDashboard = () => {
               </ResponsiveContainer>
             </div>
 
-            {/* Bookings + People pie (derived from monthlyBreakdown) */}
             <div className='bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='mb-6'>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-1'>
-                  Breakdown
+                  {t("customerDashboard.charts.breakdown")}
                 </p>
                 <h3 className='font-black text-stone-800 text-lg'>
-                  Monthly Activity
+                  {t("customerDashboard.charts.monthlyActivity")}
                 </h3>
               </div>
               <ResponsiveContainer width='100%' height={140}>
@@ -638,7 +650,12 @@ const CustomerDashboard = () => {
                             name: d.month,
                             value: d.amount,
                           }))
-                        : [{ name: "No data", value: 1 }]
+                        : [
+                            {
+                              name: t("customerDashboard.charts.noData"),
+                              value: 1,
+                            },
+                          ]
                     }
                     cx='50%'
                     cy='50%'
@@ -693,7 +710,7 @@ const CustomerDashboard = () => {
                   })
                 ) : (
                   <p className='text-xs text-stone-400 text-center py-2'>
-                    No data for period
+                    {t("customerDashboard.charts.noDataPeriod")}
                   </p>
                 )}
               </div>
@@ -702,20 +719,22 @@ const CustomerDashboard = () => {
 
           {/* ── Bottom grid ────────────────────────────── */}
           <div className='grid lg:grid-cols-3 gap-6'>
-            {/* Recent bookings — from stats.primaryStats.recentBookings */}
             <div className='lg:col-span-2 bg-white rounded-2xl border border-stone-100 overflow-hidden'>
               <div className='flex items-center justify-between px-6 py-5 border-b border-stone-100'>
                 <div>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
-                    History
+                    {t("customerDashboard.bookings.history")}
                   </p>
-                  <h3 className='font-black text-stone-800'>Recent Bookings</h3>
+                  <h3 className='font-black text-stone-800'>
+                    {t("customerDashboard.bookings.recentBookings")}
+                  </h3>
                 </div>
                 <Link
                   to='/my-bookings'
                   className='text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1 transition-colors'
                 >
-                  View all <i className='fa fa-arrow-right text-[10px]' />
+                  {t("customerDashboard.bookings.viewAll")}{" "}
+                  <i className='fa fa-arrow-right text-[10px]' />
                 </Link>
               </div>
               <div className='divide-y divide-stone-50'>
@@ -733,7 +752,7 @@ const CustomerDashboard = () => {
                   <div className='px-6 py-10 text-center'>
                     <i className='fa fa-suitcase text-3xl text-stone-200 mb-2 block' />
                     <p className='text-xs text-stone-400'>
-                      No bookings found for this period
+                      {t("customerDashboard.bookings.noBookings")}
                     </p>
                   </div>
                 ) : (
@@ -742,7 +761,6 @@ const CustomerDashboard = () => {
                       key={b.id}
                       className='flex items-center gap-4 px-6 py-4 hover:bg-stone-50 transition-colors group'
                     >
-                      {/* Cover image: API recentBookings may not include it — show placeholder gracefully */}
                       <div className='w-12 h-12 rounded-xl overflow-hidden bg-stone-100 shrink-0'>
                         {b.tour_cover_image ? (
                           <img
@@ -758,7 +776,10 @@ const CustomerDashboard = () => {
                       </div>
                       <div className='flex-1 min-w-0'>
                         <p className='text-sm font-bold text-stone-800 truncate'>
-                          {b.tour_title ?? `Booking #${b.id}`}
+                          {b.tour_title ??
+                            `${t("customerDashboard.bookings.bookingPrefix")}${
+                              b.id
+                            }`}
                         </p>
                         <p className='text-xs text-stone-400 flex items-center gap-1 mt-0.5'>
                           <i className='fa fa-calendar text-[10px]' />
@@ -798,10 +819,10 @@ const CustomerDashboard = () => {
               <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
                 <div className='px-5 py-4 border-b border-stone-100'>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
-                    New
+                    {t("customerDashboard.justBooked.new")}
                   </p>
                   <h3 className='font-black text-stone-800 text-sm'>
-                    Just Booked
+                    {t("customerDashboard.justBooked.title")}
                   </h3>
                 </div>
                 {loading ? (
@@ -814,7 +835,7 @@ const CustomerDashboard = () => {
                   <div className='px-5 py-8 text-center'>
                     <i className='fa fa-calendar-plus text-3xl text-stone-200 mb-2 block' />
                     <p className='text-xs text-stone-400'>
-                      No pending bookings
+                      {t("customerDashboard.justBooked.empty")}
                     </p>
                   </div>
                 ) : (
@@ -839,10 +860,15 @@ const CustomerDashboard = () => {
                         </div>
                         <div className='flex-1 min-w-0'>
                           <p className='text-xs font-bold text-stone-800 truncate'>
-                            {b.tour_title ?? `Booking #${b.id}`}
+                            {b.tour_title ??
+                              `${t(
+                                "customerDashboard.bookings.bookingPrefix"
+                              )}${b.id}`}
                           </p>
                           <p className='text-[10px] text-amber-600 font-semibold'>
-                            Awaiting confirmation
+                            {t(
+                              "customerDashboard.justBooked.awaitingConfirmation"
+                            )}
                           </p>
                         </div>
                         <span className='text-xs font-black text-amber-600'>
@@ -858,10 +884,10 @@ const CustomerDashboard = () => {
               <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
                 <div className='px-5 py-4 border-b border-stone-100'>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
-                    Next Up
+                    {t("customerDashboard.upcoming.nextUp")}
                   </p>
                   <h3 className='font-black text-stone-800 text-sm'>
-                    Upcoming Tours
+                    {t("customerDashboard.upcoming.title")}
                   </h3>
                 </div>
                 {loading ? (
@@ -874,13 +900,13 @@ const CustomerDashboard = () => {
                   <div className='px-5 py-8 text-center'>
                     <i className='fa fa-map-marked-alt text-3xl text-stone-200 mb-2 block' />
                     <p className='text-xs text-stone-400 mb-3'>
-                      No upcoming tours
+                      {t("customerDashboard.upcoming.empty")}
                     </p>
                     <Link
                       to='/tours'
                       className='text-xs font-bold text-amber-600 hover:text-amber-700'
                     >
-                      Browse tours →
+                      {t("customerDashboard.upcoming.browseTours")}
                     </Link>
                   </div>
                 ) : (
@@ -905,7 +931,10 @@ const CustomerDashboard = () => {
                         </div>
                         <div className='flex-1 min-w-0'>
                           <p className='text-xs font-bold text-stone-800 truncate'>
-                            {b.tour_title ?? `Booking #${b.id}`}
+                            {b.tour_title ??
+                              `${t(
+                                "customerDashboard.bookings.bookingPrefix"
+                              )}${b.id}`}
                           </p>
                           <p className='text-[10px] text-stone-400 mt-0.5'>
                             <i className='fa fa-calendar mr-1 text-[9px]' />
@@ -924,21 +953,24 @@ const CustomerDashboard = () => {
                 )}
               </div>
 
-              {/* Period summary card — visible only when stats are loaded */}
+              {/* Period summary */}
               {!loading && primary.firstBookingDate && (
                 <div className='bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100 p-5'>
                   <p className='text-xs font-bold uppercase tracking-widest text-amber-500 mb-3'>
-                    Period Summary
+                    {t("customerDashboard.summary.title")}
                   </p>
                   <div className='space-y-2'>
                     {[
                       {
-                        label: "Avg spend / booking",
+                        label: t("customerDashboard.summary.avgSpend"),
                         value: `$${Number(avgSpend).toLocaleString()}`,
                       },
-                      { label: "Total travellers", value: totalPeople },
                       {
-                        label: "First booking",
+                        label: t("customerDashboard.summary.totalTravellers"),
+                        value: totalPeople,
+                      },
+                      {
+                        label: t("customerDashboard.summary.firstBooking"),
                         value: new Date(
                           primary.firstBookingDate
                         ).toLocaleDateString("en-US", {
@@ -948,7 +980,7 @@ const CustomerDashboard = () => {
                         }),
                       },
                       {
-                        label: "Last booking",
+                        label: t("customerDashboard.summary.lastBooking"),
                         value: new Date(
                           primary.lastBookingDate
                         ).toLocaleDateString("en-US", {
@@ -979,15 +1011,18 @@ const CustomerDashboard = () => {
             <div className='flex items-center justify-between px-6 py-5 border-b border-stone-100'>
               <div>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
-                  Saved
+                  {t("customerDashboard.favorites.saved")}
                 </p>
-                <h3 className='font-black text-stone-800'>Favorite Tours</h3>
+                <h3 className='font-black text-stone-800'>
+                  {t("customerDashboard.favorites.title")}
+                </h3>
               </div>
               <Link
                 to='/tours'
                 className='text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1 transition-colors'
               >
-                Explore more <i className='fa fa-arrow-right text-[10px]' />
+                {t("customerDashboard.favorites.exploreMore")}{" "}
+                <i className='fa fa-arrow-right text-[10px]' />
               </Link>
             </div>
             <div className='p-5 grid grid-cols-1 sm:grid-cols-3 gap-4'>
@@ -995,16 +1030,16 @@ const CustomerDashboard = () => {
                 ? [...Array(3)].map((_, i) => (
                     <Sk key={i} className='h-44 rounded-xl' />
                   ))
-                : favorites.slice(0, 3).map((t) => (
+                : favorites.slice(0, 3).map((fav) => (
                     <Link
-                      key={t.id}
-                      to={`/tours/${t.id}`}
+                      key={fav.id}
+                      to={`/tours/${fav.id}`}
                       className='group relative rounded-xl overflow-hidden h-44 bg-stone-100 block'
                     >
-                      {t.cover_image && (
+                      {fav.cover_image && (
                         <img
-                          src={t.cover_image}
-                          alt={t.title}
+                          src={fav.cover_image}
+                          alt={fav.title}
                           className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
                         />
                       )}
@@ -1014,15 +1049,15 @@ const CustomerDashboard = () => {
                       </div>
                       <div className='absolute bottom-0 left-0 right-0 p-3'>
                         <p className='text-white font-bold text-xs line-clamp-1 mb-0.5'>
-                          {t.title}
+                          {fav.title}
                         </p>
                         <div className='flex items-center justify-between'>
                           <p className='text-white/60 text-[10px] flex items-center gap-1'>
                             <i className='fa fa-map-marker-alt text-[9px]' />
-                            {t.destination}
+                            {fav.destination}
                           </p>
                           <p className='text-amber-400 font-black text-xs'>
-                            ${t.price}
+                            ${fav.price}
                           </p>
                         </div>
                       </div>
@@ -1031,15 +1066,15 @@ const CustomerDashboard = () => {
             </div>
           </div>
 
-          {/* ── Bar chart — booking counts per month ────── */}
+          {/* ── Bar chart ───────────────────────────────── */}
           <div className='bg-white rounded-2xl border border-stone-100 p-6'>
             <div className='flex items-center justify-between mb-6'>
               <div>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-1'>
-                  Activity
+                  {t("customerDashboard.activityChart.activity")}
                 </p>
                 <h3 className='font-black text-stone-800 text-lg'>
-                  Booking Activity
+                  {t("customerDashboard.activityChart.title")}
                 </h3>
               </div>
               <span className='text-xs font-bold text-stone-400 bg-stone-100 px-3 py-1.5 rounded-xl'>
@@ -1047,7 +1082,7 @@ const CustomerDashboard = () => {
                   ? `${chartData[0].fullMonth} – ${
                       chartData[chartData.length - 1].fullMonth
                     }`
-                  : "Selected range"}
+                  : t("customerDashboard.charts.selectedRange")}
               </span>
             </div>
             <ResponsiveContainer width='100%' height={180}>
@@ -1081,14 +1116,22 @@ const CustomerDashboard = () => {
                           {d?.fullMonth ?? label}
                         </p>
                         <p className='font-black text-amber-400'>
-                          {d?.bookings} booking{d?.bookings !== 1 ? "s" : ""}
+                          {d?.bookings}{" "}
+                          {t("customerDashboard.activityChart.tooltipBooking", {
+                            count: d?.bookings,
+                          })}
                         </p>
                         <p className='text-white/70'>
-                          ${d?.amount?.toLocaleString()} spent
+                          ${d?.amount?.toLocaleString()}{" "}
+                          {t("customerDashboard.activityChart.tooltipSpent")}
                         </p>
                         {d?.people > 0 && (
                           <p className='text-white/50'>
-                            {d.people} traveller{d.people !== 1 ? "s" : ""}
+                            {d.people}{" "}
+                            {t(
+                              "customerDashboard.activityChart.tooltipTraveller",
+                              { count: d?.people }
+                            )}
                           </p>
                         )}
                       </div>

@@ -110,5 +110,100 @@
       "people": "人",
       "revenue": "收入"
     }
+  },
+  "customerDashboard": {
+    "status": {
+      "confirmed": "已确认",
+      "pending": "待处理",
+      "cancelled": "已取消",
+      "completed": "已完成"
+    },
+    "topbar": {
+      "breadcrumbDashboard": "仪表板",
+      "breadcrumbOverview": "概览",
+      "searchPlaceholder": "快速搜索...",
+      "notifications": "通知",
+      "newBadge": "条新消息",
+      "viewAllNotifications": "查看所有通知",
+      "notif1": "预订 #1042 已确认！",
+      "notif1Time": "2 分钟前",
+      "notif2": "热门优惠：撒哈拉徒步八折优惠",
+      "notif2Time": "1 小时前",
+      "notif3": "为非斯之旅留下评价",
+      "notif3Time": "昨天",
+      "defaultName": "旅行者",
+      "defaultRole": "客户",
+      "myProfile": "我的资料",
+      "myBookings": "我的预订",
+      "favorites": "收藏夹",
+      "settings": "设置",
+      "signOut": "退出登录"
+    },
+    "banner": {
+      "welcome": "欢迎回来，{{name}}",
+      "defaultTraveler": "旅行者",
+      "subtitle": "以下是您的旅行动态。",
+      "mostActiveMonth": "最活跃月份：",
+      "spent": "已消费",
+      "exploreTours": "探索旅游"
+    },
+    "kpi": {
+      "totalBookings": "总预订数",
+      "travellers": "{{count}} 位旅客",
+      "confirmed": "已确认",
+      "activeTours": "进行中的旅游",
+      "completed": "已完成",
+      "toursFinished": "已完成的旅游",
+      "totalSpent": "总消费",
+      "avgPerBooking": "平均每次预订 ${{value}}",
+      "exclCancelled": "不含已取消"
+    },
+    "charts": {
+      "spendingOverview": "消费概览",
+      "monthlySpend": "月度消费",
+      "selectedRange": "所选范围",
+      "breakdown": "细分",
+      "monthlyActivity": "月度活动",
+      "noData": "无数据",
+      "noDataPeriod": "此期间无数据"
+    },
+    "bookings": {
+      "history": "历史记录",
+      "recentBookings": "最近预订",
+      "viewAll": "查看全部",
+      "noBookings": "此期间未找到预订",
+      "bookingPrefix": "预订 #"
+    },
+    "justBooked": {
+      "new": "最新",
+      "title": "刚刚预订",
+      "empty": "没有待处理的预订",
+      "awaitingConfirmation": "等待确认"
+    },
+    "upcoming": {
+      "nextUp": "即将到来",
+      "title": "即将出发的旅游",
+      "empty": "暂无即将出发的旅游",
+      "browseTours": "浏览旅游 →"
+    },
+    "summary": {
+      "title": "期间摘要",
+      "avgSpend": "平均每次预订消费",
+      "totalTravellers": "旅客总数",
+      "firstBooking": "首次预订",
+      "lastBooking": "最近预订"
+    },
+    "favorites": {
+      "saved": "已收藏",
+      "title": "收藏的旅游",
+      "exploreMore": "探索更多"
+    },
+    "activityChart": {
+      "activity": "活动",
+      "title": "预订活动",
+      "tooltipBooking": "次预订",
+      "tooltipSpent": "已消费",
+      "tooltipTraveller": "位旅客"
+    }
   }
 }

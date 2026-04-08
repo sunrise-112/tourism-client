@@ -110,5 +110,100 @@
       "people": "personas",
       "revenue": "ingresos"
     }
+  },
+  "customerDashboard": {
+    "status": {
+      "confirmed": "Confirmada",
+      "pending": "Pendiente",
+      "cancelled": "Cancelada",
+      "completed": "Completada"
+    },
+    "topbar": {
+      "breadcrumbDashboard": "Panel",
+      "breadcrumbOverview": "Resumen",
+      "searchPlaceholder": "Búsqueda rápida...",
+      "notifications": "Notificaciones",
+      "newBadge": "nuevas",
+      "viewAllNotifications": "Ver todas las notificaciones",
+      "notif1": "¡Reserva #1042 confirmada!",
+      "notif1Time": "Hace 2 min",
+      "notif2": "Oferta: 20% de descuento en Sahara Trek",
+      "notif2Time": "Hace 1 hora",
+      "notif3": "Deja una reseña para el tour de Fez",
+      "notif3Time": "Ayer",
+      "defaultName": "Viajero",
+      "defaultRole": "Cliente",
+      "myProfile": "Mi Perfil",
+      "myBookings": "Mis Reservas",
+      "favorites": "Favoritos",
+      "settings": "Configuración",
+      "signOut": "Cerrar Sesión"
+    },
+    "banner": {
+      "welcome": "Bienvenido de nuevo, {{name}}",
+      "defaultTraveler": "Viajero",
+      "subtitle": "Esto es lo que está pasando con tus aventuras.",
+      "mostActiveMonth": "Mes más activo:",
+      "spent": "gastado",
+      "exploreTours": "Explorar Tours"
+    },
+    "kpi": {
+      "totalBookings": "Reservas Totales",
+      "travellers": "{{count}} viajero{{s}}",
+      "confirmed": "Confirmadas",
+      "activeTours": "Tours activos",
+      "completed": "Completadas",
+      "toursFinished": "Tours finalizados",
+      "totalSpent": "Total Gastado",
+      "avgPerBooking": "Prom. ${{value}} / reserva",
+      "exclCancelled": "Excl. canceladas"
+    },
+    "charts": {
+      "spendingOverview": "Resumen de Gastos",
+      "monthlySpend": "Gasto Mensual",
+      "selectedRange": "Rango seleccionado",
+      "breakdown": "Desglose",
+      "monthlyActivity": "Actividad Mensual",
+      "noData": "Sin datos",
+      "noDataPeriod": "Sin datos para el período"
+    },
+    "bookings": {
+      "history": "Historial",
+      "recentBookings": "Reservas Recientes",
+      "viewAll": "Ver todas",
+      "noBookings": "No se encontraron reservas para este período",
+      "bookingPrefix": "Reserva #"
+    },
+    "justBooked": {
+      "new": "Nuevo",
+      "title": "Recién Reservado",
+      "empty": "Sin reservas pendientes",
+      "awaitingConfirmation": "Esperando confirmación"
+    },
+    "upcoming": {
+      "nextUp": "Próximo",
+      "title": "Tours Próximos",
+      "empty": "Sin tours próximos",
+      "browseTours": "Explorar tours →"
+    },
+    "summary": {
+      "title": "Resumen del Período",
+      "avgSpend": "Gasto prom. / reserva",
+      "totalTravellers": "Total de viajeros",
+      "firstBooking": "Primera reserva",
+      "lastBooking": "Última reserva"
+    },
+    "favorites": {
+      "saved": "Guardados",
+      "title": "Tours Favoritos",
+      "exploreMore": "Explorar más"
+    },
+    "activityChart": {
+      "activity": "Actividad",
+      "title": "Actividad de Reservas",
+      "tooltipBooking": "reserva{{count !== 1 ? 's' : ''}}",
+      "tooltipSpent": "gastado",
+      "tooltipTraveller": "viajero{{count !== 1 ? 's' : ''}}"
+    }
   }
 }
