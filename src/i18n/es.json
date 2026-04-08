@@ -15,5 +15,100 @@
     "profile": "Perfil",
     "notifications": "Notificaciones",
     "settings": "Configuración"
+  },
+  "dashboard": {
+    "banner": {
+      "adminPanel": "Panel de Administración",
+      "live": "En vivo",
+      "defaultAdmin": "Admin",
+      "overview": "Aquí está el resumen de tu negocio.",
+      "addTour": "Agregar Tour",
+      "viewBookings": "Ver Reservas"
+    },
+    "greeting": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches"
+    },
+    "filter": {
+      "title": "Período de Filtro",
+      "allTime": "Todo el tiempo",
+      "vs": "vs"
+    },
+    "kpi": {
+      "totalRevenue": "Ingresos Totales",
+      "avgPerBooking": "Prom. ${{value}} / reserva",
+      "confirmedRevenue": "${{value}} confirmado",
+      "totalBookings": "Reservas Totales",
+      "confirmedPending": "{{confirmed}} confirmadas · {{pending}} pendientes",
+      "cancelledCount": "{{count}} canceladas",
+      "totalTravellers": "Total de Viajeros",
+      "exclCancelled": "Excl. reservas canceladas",
+      "toursBooked": "{{count}} tours reservados",
+      "pendingReviews": "Reseñas Pendientes",
+      "awaitingApproval": "Esperando aprobación",
+      "newReviews": "{{count}} nuevas"
+    },
+    "status": {
+      "confirmed": "Confirmada",
+      "pending": "Pendiente",
+      "cancelled": "Cancelada",
+      "completed": "Completada"
+    },
+    "delta": {
+      "vs": "vs"
+    },
+    "charts": {
+      "performance": "Rendimiento",
+      "revenueBookings": "Ingresos y Reservas",
+      "revenue": "Ingresos",
+      "bookings": "Reservas",
+      "revCmp": "Ing. (comp)",
+      "bkgsCmp": "Res. (comp)",
+      "noData": "Sin datos para este período"
+    },
+    "nationality": {
+      "breakdown": "Desglose",
+      "title": "Reservas por Nacionalidad"
+    },
+    "bookings": {
+      "latest": "Últimas",
+      "recentBookings": "Reservas Recientes",
+      "manageAll": "Gestionar todas"
+    },
+    "reviews": {
+      "awaiting": "En espera",
+      "pendingReviews": "Reseñas Pendientes",
+      "viewAll": "Ver todas",
+      "allApproved": "¡Todas las reseñas aprobadas!",
+      "reviewAction": "Revisar"
+    },
+    "quickStats": {
+      "title": "Estadísticas Rápidas",
+      "comparePeriod": "período de comparación",
+      "metric": "Métrica",
+      "now": "Ahora",
+      "before": "Antes",
+      "delta": "Δ",
+      "confirmedBookings": "Reservas confirmadas",
+      "pendingBookings": "Reservas pendientes",
+      "cancelledBookings": "Reservas canceladas",
+      "avgBookingValue": "Valor promedio de reserva",
+      "totalTravellers": "Total de viajeros"
+    },
+    "volume": {
+      "monthly": "Mensual",
+      "title": "Volumen de Reservas",
+      "cmp": "comp"
+    },
+    "topTours": {
+      "topPerformers": "Mejores Resultados",
+      "title": "Tours con Mayores Ingresos",
+      "manage": "Gestionar",
+      "noBookings": "Sin reservas en este período",
+      "bookings": "reservas",
+      "people": "personas",
+      "revenue": "ingresos"
+    }
   }
 }

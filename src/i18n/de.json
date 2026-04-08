@@ -15,5 +15,100 @@
     "profile": "Ihr Profil",
     "notifications": "Benachrichtigungen",
     "settings": "Einstellungen"
+  },
+  "dashboard": {
+    "banner": {
+      "adminPanel": "Adminbereich",
+      "live": "Live",
+      "defaultAdmin": "Admin",
+      "overview": "Hier ist Ihre Geschäftsübersicht.",
+      "addTour": "Tour hinzufügen",
+      "viewBookings": "Buchungen anzeigen"
+    },
+    "greeting": {
+      "morning": "Guten Morgen",
+      "afternoon": "Guten Tag",
+      "evening": "Guten Abend"
+    },
+    "filter": {
+      "title": "Filterzeitraum",
+      "allTime": "Gesamter Zeitraum",
+      "vs": "vs."
+    },
+    "kpi": {
+      "totalRevenue": "Gesamtumsatz",
+      "avgPerBooking": "Ø ${{value}} / Buchung",
+      "confirmedRevenue": "${{value}} bestätigt",
+      "totalBookings": "Gesamtbuchungen",
+      "confirmedPending": "{{confirmed}} bestätigt · {{pending}} ausstehend",
+      "cancelledCount": "{{count}} storniert",
+      "totalTravellers": "Reisende gesamt",
+      "exclCancelled": "Ohne stornierte Buchungen",
+      "toursBooked": "{{count}} Touren gebucht",
+      "pendingReviews": "Ausstehende Bewertungen",
+      "awaitingApproval": "Warten auf Genehmigung",
+      "newReviews": "{{count}} neue"
+    },
+    "status": {
+      "confirmed": "Bestätigt",
+      "pending": "Ausstehend",
+      "cancelled": "Storniert",
+      "completed": "Abgeschlossen"
+    },
+    "delta": {
+      "vs": "vs."
+    },
+    "charts": {
+      "performance": "Leistung",
+      "revenueBookings": "Umsatz & Buchungen",
+      "revenue": "Umsatz",
+      "bookings": "Buchungen",
+      "revCmp": "Ums. (Vgl.)",
+      "bkgsCmp": "Buch. (Vgl.)",
+      "noData": "Keine Daten für diesen Zeitraum"
+    },
+    "nationality": {
+      "breakdown": "Aufschlüsselung",
+      "title": "Buchungen nach Nationalität"
+    },
+    "bookings": {
+      "latest": "Aktuell",
+      "recentBookings": "Aktuelle Buchungen",
+      "manageAll": "Alle verwalten"
+    },
+    "reviews": {
+      "awaiting": "Ausstehend",
+      "pendingReviews": "Ausstehende Bewertungen",
+      "viewAll": "Alle anzeigen",
+      "allApproved": "Alle Bewertungen genehmigt!",
+      "reviewAction": "Prüfen"
+    },
+    "quickStats": {
+      "title": "Schnellübersicht",
+      "comparePeriod": "Vergleichszeitraum",
+      "metric": "Kennzahl",
+      "now": "Aktuell",
+      "before": "Vorher",
+      "delta": "Δ",
+      "confirmedBookings": "Bestätigte Buchungen",
+      "pendingBookings": "Ausstehende Buchungen",
+      "cancelledBookings": "Stornierte Buchungen",
+      "avgBookingValue": "Ø Buchungswert",
+      "totalTravellers": "Reisende gesamt"
+    },
+    "volume": {
+      "monthly": "Monatlich",
+      "title": "Buchungsvolumen",
+      "cmp": "Vgl."
+    },
+    "topTours": {
+      "topPerformers": "Top-Performer",
+      "title": "Touren nach Umsatz",
+      "manage": "Verwalten",
+      "noBookings": "Keine Buchungen in diesem Zeitraum",
+      "bookings": "Buchungen",
+      "people": "Personen",
+      "revenue": "Umsatz"
+    }
   }
 }

@@ -15,5 +15,100 @@
     "profile": "个人资料",
     "notifications": "通知",
     "settings": "设置"
+  },
+  "dashboard": {
+    "banner": {
+      "adminPanel": "管理面板",
+      "live": "实时",
+      "defaultAdmin": "管理员",
+      "overview": "以下是您的业务概览。",
+      "addTour": "添加旅游",
+      "viewBookings": "查看预订"
+    },
+    "greeting": {
+      "morning": "早上好",
+      "afternoon": "下午好",
+      "evening": "晚上好"
+    },
+    "filter": {
+      "title": "筛选周期",
+      "allTime": "全部时间",
+      "vs": "对比"
+    },
+    "kpi": {
+      "totalRevenue": "总收入",
+      "avgPerBooking": "平均每次预订 ${{value}}",
+      "confirmedRevenue": "${{value}} 已确认",
+      "totalBookings": "总预订数",
+      "confirmedPending": "{{confirmed}} 已确认 · {{pending}} 待处理",
+      "cancelledCount": "{{count}} 已取消",
+      "totalTravellers": "旅客总数",
+      "exclCancelled": "不含已取消的预订",
+      "toursBooked": "已预订 {{count}} 个旅游",
+      "pendingReviews": "待审评价",
+      "awaitingApproval": "等待审批",
+      "newReviews": "{{count}} 条新评价"
+    },
+    "status": {
+      "confirmed": "已确认",
+      "pending": "待处理",
+      "cancelled": "已取消",
+      "completed": "已完成"
+    },
+    "delta": {
+      "vs": "对比"
+    },
+    "charts": {
+      "performance": "表现",
+      "revenueBookings": "收入与预订",
+      "revenue": "收入",
+      "bookings": "预订",
+      "revCmp": "收入（对比）",
+      "bkgsCmp": "预订（对比）",
+      "noData": "此期间无数据"
+    },
+    "nationality": {
+      "breakdown": "细分",
+      "title": "按国籍的预订情况"
+    },
+    "bookings": {
+      "latest": "最新",
+      "recentBookings": "最近预订",
+      "manageAll": "管理全部"
+    },
+    "reviews": {
+      "awaiting": "待处理",
+      "pendingReviews": "待审评价",
+      "viewAll": "查看全部",
+      "allApproved": "所有评价已审批！",
+      "reviewAction": "审核"
+    },
+    "quickStats": {
+      "title": "快速统计",
+      "comparePeriod": "对比周期",
+      "metric": "指标",
+      "now": "当前",
+      "before": "之前",
+      "delta": "Δ",
+      "confirmedBookings": "已确认预订",
+      "pendingBookings": "待处理预订",
+      "cancelledBookings": "已取消预订",
+      "avgBookingValue": "平均预订价值",
+      "totalTravellers": "旅客总数"
+    },
+    "volume": {
+      "monthly": "月度",
+      "title": "预订量",
+      "cmp": "对比"
+    },
+    "topTours": {
+      "topPerformers": "表现最佳",
+      "title": "收入最高的旅游",
+      "manage": "管理",
+      "noBookings": "此期间无预订",
+      "bookings": "次预订",
+      "people": "人",
+      "revenue": "收入"
+    }
   }
 }

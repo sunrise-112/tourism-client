@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   AreaChart,
   Area,
@@ -36,9 +37,6 @@ const NAT_COLORS = [
   "#F472B6",
 ];
 
-// ─── delta() ─────────────────────────────────────────────────
-// Returns null when no compare value exists, otherwise:
-// { pct, up, color, bg, arrow }
 const delta = (primary, compare) => {
   if (compare == null || compare === 0) return null;
   const pct = ((primary - compare) / Math.abs(compare)) * 100;
@@ -51,7 +49,6 @@ const delta = (primary, compare) => {
   };
 };
 
-// ─── Helpers ──────────────────────────────────────────────────
 const STATUS_STYLES = {
   confirmed: {
     bg: "bg-emerald-50",
@@ -80,13 +77,16 @@ const STATUS_STYLES = {
 };
 
 const StatusBadge = ({ status }) => {
+  const { t } = useTranslation();
   const s = STATUS_STYLES[status] || STATUS_STYLES.pending;
   return (
     <span
       className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${s.bg} ${s.text} ${s.border}`}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-      {status?.charAt(0).toUpperCase() + status?.slice(1)}
+      {t(`dashboard.status.${status}`, {
+        defaultValue: status?.charAt(0).toUpperCase() + status?.slice(1),
+      })}
     </span>
   );
 };
@@ -119,9 +119,8 @@ const StarRating = ({ rating }) => (
   </div>
 );
 
-// ─── DeltaBadge ───────────────────────────────────────────────
-// Inline pill: ↑ 618.1% vs $726  (shown only when hasCompare)
 const DeltaBadge = ({ primary, compare, formatter = (v) => v }) => {
+  const { t } = useTranslation();
   const d = delta(primary, compare);
   if (!d) return null;
   return (
@@ -130,228 +129,13 @@ const DeltaBadge = ({ primary, compare, formatter = (v) => v }) => {
     >
       <i className={`fa ${d.arrow} text-[8px]`} />
       {d.pct}%
-      <span className='font-normal opacity-60'>vs {formatter(compare)}</span>
+      <span className='font-normal opacity-60'>
+        {t("dashboard.delta.vs")} {formatter(compare)}
+      </span>
     </span>
   );
 };
 
-// ─── Topbar ───────────────────────────────────────────────────
-const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
-  const navigate = useNavigate();
-  const [dropOpen, setDropOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
-  const dropRef = useRef(null);
-  const notifRef = useRef(null);
-
-  useEffect(() => {
-    const handler = (e) => {
-      if (dropRef.current && !dropRef.current.contains(e.target))
-        setDropOpen(false);
-      if (notifRef.current && !notifRef.current.contains(e.target))
-        setNotifOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  const NOTIFS = [
-    {
-      icon: "fa-user-plus",
-      color: "text-blue-500",
-      text: "New user registered",
-      time: "5 min ago",
-    },
-    {
-      icon: "fa-suitcase",
-      color: "text-amber-500",
-      text: "New booking #1043 received",
-      time: "12 min ago",
-    },
-    {
-      icon: "fa-star",
-      color: "text-yellow-500",
-      text: "3 reviews awaiting approval",
-      time: "1hr ago",
-    },
-    {
-      icon: "fa-exclamation-circle",
-      color: "text-red-500",
-      text: "Booking #1039 cancelled",
-      time: "2hr ago",
-    },
-  ];
-
-  const sidebarWidth = mobileOpen ? 0 : collapsed ? 72 : 256;
-
-  return (
-    <header
-      className='fixed top-0 right-0 z-20 h-16 bg-white border-b border-stone-100 flex items-center px-4 gap-3'
-      style={{
-        left: `${sidebarWidth}px`,
-        transition: "left 300ms ease",
-        fontFamily: "'DM Sans', sans-serif",
-      }}
-    >
-      <button
-        className='lg:hidden w-9 h-9 flex items-center justify-center rounded-xl border border-stone-200 text-stone-500 hover:bg-stone-50 transition-colors'
-        onClick={() => setMobileOpen(!mobileOpen)}
-      >
-        <i className={`fa ${mobileOpen ? "fa-times" : "fa-bars"} text-sm`} />
-      </button>
-
-      <div className='hidden sm:flex items-center gap-2 text-sm'>
-        <span className='text-stone-400'>Admin</span>
-        <i className='fa fa-chevron-right text-stone-300 text-[10px]' />
-        <span className='font-semibold text-stone-700'>Dashboard</span>
-      </div>
-
-      <div className='flex-1' />
-
-      <div className='hidden md:flex items-center gap-2 bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 w-52'>
-        <i className='fa fa-search text-stone-300 text-xs' />
-        <input
-          placeholder='Search tours, users...'
-          className='bg-transparent text-xs outline-none text-stone-500 placeholder-stone-300 w-full'
-        />
-      </div>
-
-      <Link
-        to='/admin/tours/create'
-        className='hidden sm:flex items-center gap-1.5 text-xs font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-3 py-2 rounded-xl shadow-sm shadow-amber-200'
-      >
-        <i className='fa fa-plus text-[10px]' /> New Tour
-      </Link>
-
-      {/* Notifications */}
-      <div ref={notifRef} className='relative'>
-        <button
-          onClick={() => {
-            setNotifOpen((o) => !o);
-            setDropOpen(false);
-          }}
-          className='relative w-9 h-9 flex items-center justify-center rounded-xl border border-stone-200 text-stone-500 hover:bg-stone-50 transition-colors'
-        >
-          <i className='fa fa-bell text-sm' />
-          <span className='absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full' />
-        </button>
-        {notifOpen && (
-          <div
-            className='absolute right-0 top-12 bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'
-            style={{ width: "300px" }}
-          >
-            <div className='px-4 py-3 border-b border-stone-100 flex items-center justify-between'>
-              <p className='font-bold text-stone-800 text-sm'>Notifications</p>
-              <span className='text-xs bg-red-100 text-red-600 font-bold px-2 py-0.5 rounded-full'>
-                {NOTIFS.length} new
-              </span>
-            </div>
-            {NOTIFS.map((n, i) => (
-              <div
-                key={i}
-                className='flex items-start gap-3 px-4 py-3 hover:bg-stone-50 transition-colors cursor-pointer border-b border-stone-50 last:border-0'
-              >
-                <div className='w-8 h-8 rounded-xl bg-stone-100 flex items-center justify-center shrink-0 mt-0.5'>
-                  <i className={`fa ${n.icon} ${n.color} text-xs`} />
-                </div>
-                <div className='flex-1 min-w-0'>
-                  <p className='text-xs font-semibold text-stone-700 leading-snug'>
-                    {n.text}
-                  </p>
-                  <p className='text-[10px] text-stone-400 mt-0.5'>{n.time}</p>
-                </div>
-              </div>
-            ))}
-            <div className='px-4 py-2.5 text-center'>
-              <button className='text-xs font-semibold text-amber-600 hover:text-amber-700'>
-                View all notifications
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* User dropdown */}
-      <div ref={dropRef} className='relative'>
-        <button
-          onClick={() => {
-            setDropOpen((o) => !o);
-            setNotifOpen(false);
-          }}
-          className='flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-xl hover:bg-stone-50 border border-transparent hover:border-stone-200 transition-all'
-        >
-          <Avatar
-            name={user?.name}
-            src={
-              user?.avatar
-                ? `${import.meta.env.VITE_BACK_END_URL}${user.avatar}`
-                : null
-            }
-            size='w-8 h-8'
-            textSize='text-xs'
-          />
-          <div className='hidden sm:block text-left'>
-            <p className='text-xs font-bold text-stone-700 leading-none mb-0.5'>
-              {user?.name || "Admin"}
-            </p>
-            <p className='text-[10px] text-amber-600 font-bold uppercase tracking-widest'>
-              Administrator
-            </p>
-          </div>
-          <i
-            className={`fa fa-chevron-down text-stone-400 text-[10px] transition-transform ${
-              dropOpen ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-        {dropOpen && (
-          <div className='absolute right-0 top-12 w-52 bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
-            <div className='px-4 py-3 border-b border-stone-100'>
-              <p className='font-bold text-stone-800 text-sm'>{user?.name}</p>
-              <p className='text-[10px] text-amber-600 font-bold uppercase tracking-widest mt-0.5'>
-                Administrator
-              </p>
-            </div>
-            {[
-              { icon: "fa-th-large", label: "Dashboard", path: "/admin" },
-              {
-                icon: "fa-user-shield",
-                label: "My Profile",
-                path: "/profile/me",
-              },
-              { icon: "fa-cog", label: "Settings", path: "/admin/settings" },
-            ].map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setDropOpen(false)}
-                className='flex items-center gap-3 px-4 py-2.5 hover:bg-stone-50 transition-colors text-sm text-stone-600 hover:text-stone-800'
-              >
-                <i
-                  className={`fa ${item.icon} text-stone-400 w-4 text-center text-xs`}
-                />
-                {item.label}
-              </Link>
-            ))}
-            <div className='border-t border-stone-100'>
-              <button
-                onClick={() => {
-                  setDropOpen(false);
-                  navigate("/login");
-                }}
-                className='w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition-colors text-sm text-red-500 hover:text-red-600'
-              >
-                <i className='fa fa-sign-out-alt text-xs w-4 text-center' />
-                Sign Out
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    </header>
-  );
-};
-
-// ─── Custom Tooltip ───────────────────────────────────────────
 const ChartTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   const fmt = (name, value) => {
@@ -376,8 +160,8 @@ const ChartTooltip = ({ active, payload, label }) => {
   );
 };
 
-// ─── Admin Dashboard ──────────────────────────────────────────
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -401,7 +185,6 @@ const AdminDashboard = () => {
   const handleRangeSelect = (range) => setDateRange(range);
   const handleCompareDateSelect = (range) => setCompareDateRange(range);
 
-  // ── Data fetch ────────────────────────────────────────────
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -429,7 +212,7 @@ const AdminDashboard = () => {
       }
     };
     fetchAll();
-  }, [dateRange, compareDateRange]); // re-fetch when either range changes
+  }, [dateRange, compareDateRange]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -440,9 +223,8 @@ const AdminDashboard = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ── Derived — primary stats ───────────────────────────────
   const ps = stats?.primaryStats;
-  const cs = stats?.compareStats; // undefined when no compare period selected
+  const cs = stats?.compareStats;
   const hasCompare = !!cs;
 
   const totalRevenue = ps?.totalRevenue ?? 0;
@@ -460,7 +242,6 @@ const AdminDashboard = () => {
     color: NAT_COLORS[i % NAT_COLORS.length],
   }));
 
-  // ── Derived — compare stats ───────────────────────────────
   const cTotalRevenue = cs?.totalRevenue ?? null;
   const cTotalBookings = cs?.totalBookings ?? null;
   const cConfirmed = cs?.confirmedBookings ?? null;
@@ -469,15 +250,11 @@ const AdminDashboard = () => {
   const cAvgValue = cs?.avgBookingValue ?? null;
   const cTotalPeople = cs?.totalPeople ?? null;
 
-  // Build a lookup for compare nationality counts keyed by nationality string
   const cNatMap = (cs?.nationalityBreakdown ?? []).reduce((acc, n) => {
     acc[n.nationality] = parseInt(n.count);
     return acc;
   }, {});
 
-  // ── Merge monthly data for charts ─────────────────────────
-  // Align primary + compare by month label into one data array so Recharts
-  // can render both series on the same x-axis.
   const primaryMonthMap = Object.fromEntries(
     (ps?.monthlyBreakdown ?? []).map((m) => [m.month, m])
   );
@@ -495,66 +272,75 @@ const AdminDashboard = () => {
     revenue: primaryMonthMap[month]?.revenue ?? 0,
     bookings: primaryMonthMap[month]?.bookings ?? 0,
     people: primaryMonthMap[month]?.total_people ?? 0,
-    // compare keys are set to undefined (not 0) when no compare period,
-    // so Recharts simply skips rendering those series
     cmpRevenue: hasCompare ? compareMonthMap[month]?.revenue ?? 0 : undefined,
     cmpBookings: hasCompare ? compareMonthMap[month]?.bookings ?? 0 : undefined,
   }));
 
   const pendingReviews = reviews.filter((r) => !r.approved).length;
 
-  // ── KPI card definitions ──────────────────────────────────
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return t("dashboard.greeting.morning");
+    if (hour < 18) return t("dashboard.greeting.afternoon");
+    return t("dashboard.greeting.evening");
+  };
+
   const kpiCards = [
     {
       icon: "fa-dollar-sign",
-      label: "Total Revenue",
+      label: t("dashboard.kpi.totalRevenue"),
       value: loading ? "—" : `$${totalRevenue.toLocaleString()}`,
       primaryRaw: totalRevenue,
       compareRaw: cTotalRevenue,
       formatter: (v) => `$${Number(v).toLocaleString()}`,
-      sub: `Avg $${avgValue} / booking`,
+      sub: t("dashboard.kpi.avgPerBooking", { value: avgValue }),
       color: "from-amber-400 to-orange-500",
       ring: "ring-amber-200",
-      trend: `$${ps?.confirmedRevenue?.toLocaleString() ?? 0} confirmed`,
+      trend: t("dashboard.kpi.confirmedRevenue", {
+        value: ps?.confirmedRevenue?.toLocaleString() ?? 0,
+      }),
       up: true,
     },
     {
       icon: "fa-suitcase",
-      label: "Total Bookings",
+      label: t("dashboard.kpi.totalBookings"),
       value: loading ? "—" : totalBookings,
       primaryRaw: totalBookings,
       compareRaw: cTotalBookings,
       formatter: (v) => v,
-      sub: `${confirmedCount} confirmed · ${pendingCount} pending`,
+      sub: t("dashboard.kpi.confirmedPending", {
+        confirmed: confirmedCount,
+        pending: pendingCount,
+      }),
       color: "from-emerald-400 to-teal-500",
       ring: "ring-emerald-200",
-      trend: `${cancelledCount} cancelled`,
+      trend: t("dashboard.kpi.cancelledCount", { count: cancelledCount }),
       up: true,
     },
     {
       icon: "fa-users",
-      label: "Total Travellers",
+      label: t("dashboard.kpi.totalTravellers"),
       value: loading ? "—" : totalPeople.toLocaleString(),
       primaryRaw: totalPeople,
       compareRaw: cTotalPeople,
       formatter: (v) => Number(v).toLocaleString(),
-      sub: "Excl. cancelled bookings",
+      sub: t("dashboard.kpi.exclCancelled"),
       color: "from-blue-400 to-indigo-500",
       ring: "ring-blue-200",
-      trend: `${topTours.length} tours booked`,
+      trend: t("dashboard.kpi.toursBooked", { count: topTours.length }),
       up: true,
     },
     {
       icon: "fa-star",
-      label: "Pending Reviews",
+      label: t("dashboard.kpi.pendingReviews"),
       value: loading ? "—" : pendingReviews,
       primaryRaw: pendingReviews,
-      compareRaw: null, // not provided by stats API
+      compareRaw: null,
       formatter: (v) => v,
-      sub: "Awaiting approval",
+      sub: t("dashboard.kpi.awaitingApproval"),
       color: "from-rose-400 to-pink-500",
       ring: "ring-rose-200",
-      trend: `${pendingReviews} new`,
+      trend: t("dashboard.kpi.newReviews", { count: pendingReviews }),
       up: false,
     },
   ];
@@ -581,24 +367,21 @@ const AdminDashboard = () => {
             <div className='relative z-10'>
               <div className='flex items-center gap-2 mb-2'>
                 <span className='text-xs font-bold uppercase tracking-[0.2em] text-amber-400'>
-                  Admin Panel
+                  {t("dashboard.banner.adminPanel")}
                 </span>
                 <span className='w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse' />
                 <span className='text-[10px] text-emerald-400 font-semibold'>
-                  Live
+                  {t("dashboard.banner.live")}
                 </span>
               </div>
               <h1
                 className='text-2xl md:text-3xl font-black text-white mb-1'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Good{" "}
-                {new Date().getHours() < 12
-                  ? "Morning"
-                  : new Date().getHours() < 18
-                  ? "Afternoon"
-                  : "Evening"}
-                , {user?.name?.split(" ")[0] || "Admin"} 👋
+                {getGreeting()},{" "}
+                {user?.name?.split(" ")[0] ||
+                  t("dashboard.banner.defaultAdmin")}{" "}
+                👋
               </h1>
               <p className='text-stone-400 text-sm'>
                 {new Date().toLocaleDateString("en-US", {
@@ -606,7 +389,7 @@ const AdminDashboard = () => {
                   month: "long",
                   day: "numeric",
                 })}{" "}
-                — Here's your business overview.
+                — {t("dashboard.banner.overview")}
               </p>
             </div>
             <div className='relative z-10 flex items-center gap-3 shrink-0 flex-wrap'>
@@ -614,13 +397,15 @@ const AdminDashboard = () => {
                 to='/admin/tours/create'
                 className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-5 py-2.5 rounded-xl shadow-lg shadow-amber-900/30'
               >
-                <i className='fa fa-plus text-xs' /> Add Tour
+                <i className='fa fa-plus text-xs' />{" "}
+                {t("dashboard.banner.addTour")}
               </Link>
               <Link
                 to='/admin/bookings'
                 className='flex items-center gap-2 text-sm font-semibold text-stone-300 hover:text-white border border-white/15 hover:border-white/30 px-5 py-2.5 rounded-xl transition-all'
               >
-                <i className='fa fa-suitcase text-xs' /> View Bookings
+                <i className='fa fa-suitcase text-xs' />{" "}
+                {t("dashboard.banner.viewBookings")}
               </Link>
             </div>
           </div>
@@ -629,17 +414,17 @@ const AdminDashboard = () => {
           <div className='bg-white rounded-2xl border border-stone-100 px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3'>
             <div>
               <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
-                Filter Period
+                {t("dashboard.filter.title")}
               </p>
               <div className='flex items-center gap-2 flex-wrap'>
                 <p className='text-sm font-semibold text-stone-700'>
                   {dateRange.startDate && dateRange.endDate
                     ? `${dateRange.startDate} → ${dateRange.endDate}`
-                    : "All time"}
+                    : t("dashboard.filter.allTime")}
                 </p>
                 {hasCompare && compareDateRange.startDate && (
                   <span className='text-xs text-stone-400 flex items-center gap-1'>
-                    vs
+                    {t("dashboard.filter.vs")}
                     <span className='font-semibold text-blue-500'>
                       {compareDateRange.startDate} → {compareDateRange.endDate}
                     </span>
@@ -690,7 +475,6 @@ const AdminDashboard = () => {
                   {s.label}
                 </p>
                 <p className='text-xs text-stone-400 mt-0.5'>{s.sub}</p>
-                {/* Compare row — only rendered when a compare period exists */}
                 {!loading && hasCompare && s.compareRaw != null && (
                   <div className='mt-3 pt-3 border-t border-stone-100 flex items-center gap-2 flex-wrap'>
                     <DeltaBadge
@@ -706,35 +490,34 @@ const AdminDashboard = () => {
 
           {/* ── Charts row ───────────────────────────────── */}
           <div className='grid lg:grid-cols-3 gap-6'>
-            {/* Revenue & Bookings area chart */}
             <div className='lg:col-span-2 bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='flex items-center justify-between mb-6 flex-wrap gap-3'>
                 <div>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-1'>
-                    Performance
+                    {t("dashboard.charts.performance")}
                   </p>
                   <h3 className='font-black text-stone-800 text-lg'>
-                    Revenue & Bookings
+                    {t("dashboard.charts.revenueBookings")}
                   </h3>
                 </div>
                 <div className='flex items-center gap-3 text-xs text-stone-400 flex-wrap'>
                   <span className='flex items-center gap-1.5'>
                     <span className='w-2.5 h-2.5 rounded-full bg-amber-400' />{" "}
-                    Revenue
+                    {t("dashboard.charts.revenue")}
                   </span>
                   <span className='flex items-center gap-1.5'>
                     <span className='w-2.5 h-2.5 rounded-full bg-blue-400' />{" "}
-                    Bookings
+                    {t("dashboard.charts.bookings")}
                   </span>
                   {hasCompare && (
                     <>
                       <span className='flex items-center gap-1.5'>
                         <span className='w-5 border-t-2 border-dashed border-amber-400' />{" "}
-                        Rev (cmp)
+                        {t("dashboard.charts.revCmp")}
                       </span>
                       <span className='flex items-center gap-1.5'>
                         <span className='w-5 border-t-2 border-dashed border-blue-400' />{" "}
-                        Bkgs (cmp)
+                        {t("dashboard.charts.bkgsCmp")}
                       </span>
                     </>
                   )}
@@ -744,7 +527,7 @@ const AdminDashboard = () => {
                 <Sk className='h-[210px]' />
               ) : monthlyData.length === 0 ? (
                 <div className='h-[210px] flex items-center justify-center text-stone-300 text-sm'>
-                  No data for this period
+                  {t("dashboard.charts.noData")}
                 </div>
               ) : (
                 <ResponsiveContainer width='100%' height={210}>
@@ -795,7 +578,6 @@ const AdminDashboard = () => {
                       tickLine={false}
                     />
                     <Tooltip content={<ChartTooltip />} />
-                    {/* Primary series */}
                     <Area
                       type='monotone'
                       dataKey='revenue'
@@ -812,7 +594,6 @@ const AdminDashboard = () => {
                       fill='url(#bkGrad)'
                       dot={{ fill: "#60A5FA", strokeWidth: 0, r: 3 }}
                     />
-                    {/* Compare series — dashed, no fill */}
                     {hasCompare && (
                       <>
                         <Area
@@ -846,17 +627,17 @@ const AdminDashboard = () => {
             <div className='bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='mb-5'>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-1'>
-                  Breakdown
+                  {t("dashboard.nationality.breakdown")}
                 </p>
                 <h3 className='font-black text-stone-800 text-lg'>
-                  Bookings by Nationality
+                  {t("dashboard.nationality.title")}
                 </h3>
               </div>
               {loading ? (
                 <Sk className='h-[150px]' />
               ) : nationalityData.length === 0 ? (
                 <div className='h-[150px] flex items-center justify-center text-stone-300 text-sm'>
-                  No data
+                  {t("dashboard.charts.noData")}
                 </div>
               ) : (
                 <ResponsiveContainer width='100%' height={150}>
@@ -921,20 +702,22 @@ const AdminDashboard = () => {
 
           {/* ── Middle row ───────────────────────────────── */}
           <div className='grid lg:grid-cols-3 gap-6'>
-            {/* Recent bookings — unchanged, not compare-affected */}
             <div className='lg:col-span-2 bg-white rounded-2xl border border-stone-100 overflow-hidden'>
               <div className='flex items-center justify-between px-6 py-5 border-b border-stone-100'>
                 <div>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
-                    Latest
+                    {t("dashboard.bookings.latest")}
                   </p>
-                  <h3 className='font-black text-stone-800'>Recent Bookings</h3>
+                  <h3 className='font-black text-stone-800'>
+                    {t("dashboard.bookings.recentBookings")}
+                  </h3>
                 </div>
                 <Link
                   to='/admin/bookings'
                   className='text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1 transition-colors'
                 >
-                  Manage all <i className='fa fa-arrow-right text-[10px]' />
+                  {t("dashboard.bookings.manageAll")}{" "}
+                  <i className='fa fa-arrow-right text-[10px]' />
                 </Link>
               </div>
               <div className='divide-y divide-stone-50'>
@@ -995,22 +778,21 @@ const AdminDashboard = () => {
 
             {/* Right column */}
             <div className='space-y-5'>
-              {/* Pending reviews */}
               <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
                 <div className='flex items-center justify-between px-5 py-4 border-b border-stone-100'>
                   <div>
                     <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
-                      Awaiting
+                      {t("dashboard.reviews.awaiting")}
                     </p>
                     <h3 className='font-black text-stone-800 text-sm'>
-                      Pending Reviews
+                      {t("dashboard.reviews.pendingReviews")}
                     </h3>
                   </div>
                   <Link
                     to='/admin/reviews'
                     className='text-xs font-semibold text-amber-600 hover:text-amber-700 transition-colors'
                   >
-                    View all{" "}
+                    {t("dashboard.reviews.viewAll")}{" "}
                     <i className='fa fa-arrow-right text-[9px] ml-0.5' />
                   </Link>
                 </div>
@@ -1024,7 +806,7 @@ const AdminDashboard = () => {
                   <div className='px-5 py-8 text-center'>
                     <i className='fa fa-check-circle text-3xl text-emerald-200 mb-2 block' />
                     <p className='text-xs text-stone-400'>
-                      All reviews approved!
+                      {t("dashboard.reviews.allApproved")}
                     </p>
                   </div>
                 ) : (
@@ -1053,7 +835,7 @@ const AdminDashboard = () => {
                               to='/admin/reviews'
                               className='flex-1 text-center text-[10px] font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 px-2 py-1.5 rounded-lg transition-colors'
                             >
-                              Review
+                              {t("dashboard.reviews.reviewAction")}
                             </Link>
                           </div>
                         </div>
@@ -1062,68 +844,67 @@ const AdminDashboard = () => {
                 )}
               </div>
 
-              {/* Quick stats — with optional compare column */}
+              {/* Quick stats */}
               <div className='bg-white rounded-2xl border border-stone-100 p-5'>
                 <div className='flex items-center justify-between mb-4'>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400'>
-                    Quick Stats
+                    {t("dashboard.quickStats.title")}
                   </p>
                   {hasCompare && (
                     <div className='flex items-center gap-1 text-[10px] text-stone-400'>
                       <span className='w-3 border-t-2 border-dashed border-blue-300' />
-                      compare period
+                      {t("dashboard.quickStats.comparePeriod")}
                     </div>
                   )}
                 </div>
-                {/* Column headers when compare is active */}
                 {hasCompare && (
                   <div className='flex items-center justify-between mb-2 pb-2 border-b border-stone-100'>
                     <span className='text-[10px] text-stone-300 flex-1'>
-                      Metric
+                      {t("dashboard.quickStats.metric")}
                     </span>
                     <span className='text-[10px] font-bold text-stone-500 w-12 text-right'>
-                      Now
+                      {t("dashboard.quickStats.now")}
                     </span>
                     <span className='text-[10px] font-bold text-blue-400 w-14 text-right'>
-                      Before
+                      {t("dashboard.quickStats.before")}
                     </span>
                     <span className='text-[10px] font-bold text-stone-400 w-12 text-right'>
-                      Δ
+                      {t("dashboard.quickStats.delta")}
                     </span>
                   </div>
                 )}
                 <div className='space-y-3'>
                   {[
                     {
-                      label: "Confirmed bookings",
+                      label: t("dashboard.quickStats.confirmedBookings"),
                       primary: confirmedCount,
                       compare: cConfirmed,
                       color: "text-emerald-600",
                       fmt: (v) => v,
                     },
                     {
-                      label: "Pending bookings",
+                      label: t("dashboard.quickStats.pendingBookings"),
                       primary: pendingCount,
                       compare: cPending,
                       color: "text-amber-600",
                       fmt: (v) => v,
                     },
                     {
-                      label: "Cancelled bookings",
+                      label: t("dashboard.quickStats.cancelledBookings"),
                       primary: cancelledCount,
                       compare: cCancelled,
                       color: "text-red-500",
                       fmt: (v) => v,
                     },
                     {
-                      label: "Avg booking value",
+                      label: t("dashboard.quickStats.avgBookingValue"),
                       primary: avgValue,
                       compare: cAvgValue,
                       color: "text-blue-600",
                       fmt: (v) => `$${Number(v).toFixed(2)}`,
                     },
                     {
-                      label: "Total travellers",
+                      label: t("dashboard.quickStats.totalTravellers"),
                       primary: totalPeople,
                       compare: cTotalPeople,
                       color: "text-stone-700",
@@ -1180,22 +961,21 @@ const AdminDashboard = () => {
 
           {/* ── Bottom row ───────────────────────────────── */}
           <div className='grid lg:grid-cols-2 gap-6'>
-            {/* Monthly booking volume bar chart */}
             <div className='bg-white rounded-2xl border border-stone-100 p-6'>
               <div className='flex items-center justify-between mb-6'>
                 <div>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-1'>
-                    Monthly
+                    {t("dashboard.volume.monthly")}
                   </p>
                   <h3 className='font-black text-stone-800 text-lg'>
-                    Booking Volume
+                    {t("dashboard.volume.title")}
                   </h3>
                 </div>
                 <div className='flex items-center gap-2'>
                   {hasCompare && (
                     <span className='text-[10px] text-stone-400 flex items-center gap-1'>
                       <span className='inline-block w-3 h-3 rounded-sm bg-amber-200 opacity-70' />{" "}
-                      cmp
+                      {t("dashboard.volume.cmp")}
                     </span>
                   )}
                   <span className='text-xs font-bold text-stone-400 bg-stone-100 px-3 py-1.5 rounded-xl'>
@@ -1207,7 +987,7 @@ const AdminDashboard = () => {
                 <Sk className='h-[180px]' />
               ) : monthlyData.length === 0 ? (
                 <div className='h-[180px] flex items-center justify-center text-stone-300 text-sm'>
-                  No data for this period
+                  {t("dashboard.charts.noData")}
                 </div>
               ) : (
                 <ResponsiveContainer width='100%' height={180}>
@@ -1232,7 +1012,6 @@ const AdminDashboard = () => {
                       tickLine={false}
                     />
                     <Tooltip content={<ChartTooltip />} />
-                    {/* Compare bar behind primary — lighter, no radius so it reads as "behind" */}
                     {hasCompare && (
                       <Bar
                         dataKey='cmpBookings'
@@ -1255,22 +1034,23 @@ const AdminDashboard = () => {
               )}
             </div>
 
-            {/* Top tours — with per-tour compare delta */}
+            {/* Top tours */}
             <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
               <div className='flex items-center justify-between px-6 py-5 border-b border-stone-100'>
                 <div>
                   <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
-                    Top Performers
+                    {t("dashboard.topTours.topPerformers")}
                   </p>
                   <h3 className='font-black text-stone-800'>
-                    Top Tours by Revenue
+                    {t("dashboard.topTours.title")}
                   </h3>
                 </div>
                 <Link
                   to='/admin/tours'
                   className='text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1 transition-colors'
                 >
-                  Manage <i className='fa fa-arrow-right text-[10px]' />
+                  {t("dashboard.topTours.manage")}{" "}
+                  <i className='fa fa-arrow-right text-[10px]' />
                 </Link>
               </div>
               <div className='divide-y divide-stone-50'>
@@ -1285,18 +1065,17 @@ const AdminDashboard = () => {
                   ))
                 ) : topTours.length === 0 ? (
                   <div className='px-6 py-10 text-center text-stone-300 text-sm'>
-                    No bookings in this period
+                    {t("dashboard.topTours.noBookings")}
                   </div>
                 ) : (
-                  topTours.map((t, i) => {
-                    // Match compare tour by tour_id (not index) to avoid misalignment
+                  topTours.map((tour, i) => {
                     const ct = cs?.topTours?.find(
-                      (c) => c.tour_id === t.tour_id
+                      (c) => c.tour_id === tour.tour_id
                     );
-                    const d = ct ? delta(t.revenue, ct.revenue) : null;
+                    const d = ct ? delta(tour.revenue, ct.revenue) : null;
                     return (
                       <div
-                        key={t.tour_id}
+                        key={tour.tour_id}
                         className='flex items-center gap-4 px-5 py-3.5 hover:bg-stone-50 transition-colors'
                       >
                         <span
@@ -1312,22 +1091,22 @@ const AdminDashboard = () => {
                         </span>
                         <div className='flex-1 min-w-0'>
                           <p className='text-sm font-bold text-stone-800 truncate'>
-                            {t.name}
+                            {tour.name}
                           </p>
                           <p className='text-xs text-stone-400 mt-0.5'>
                             <span className='font-semibold text-stone-500'>
-                              {t.total_bookings}
+                              {tour.total_bookings}
                             </span>{" "}
-                            bookings ·{" "}
+                            {t("dashboard.topTours.bookings")} ·{" "}
                             <span className='font-semibold text-stone-500'>
-                              {t.total_people}
+                              {tour.total_people}
                             </span>{" "}
-                            people
+                            {t("dashboard.topTours.people")}
                           </p>
                         </div>
                         <div className='text-right shrink-0'>
                           <p className='text-sm font-black text-amber-600'>
-                            ${Number(t.revenue).toLocaleString()}
+                            ${Number(tour.revenue).toLocaleString()}
                           </p>
                           {d ? (
                             <p
@@ -1336,12 +1115,13 @@ const AdminDashboard = () => {
                               <i className={`fa ${d.arrow} text-[8px]`} />
                               {d.pct}%{" "}
                               <span className='text-stone-400 font-normal'>
-                                vs ${Number(ct.revenue).toLocaleString()}
+                                {tour("dashboard.delta.vs")} $
+                                {Number(ct.revenue).toLocaleString()}
                               </span>
                             </p>
                           ) : (
                             <p className='text-[10px] text-stone-400 mt-0.5'>
-                              revenue
+                              {t("dashboard.topTours.revenue")}
                             </p>
                           )}
                         </div>

@@ -15,5 +15,100 @@
     "profile": "Profile",
     "notifications": "Notifications",
     "settings": "Settings"
+  },
+  "dashboard": {
+    "banner": {
+      "adminPanel": "Admin Panel",
+      "live": "Live",
+      "defaultAdmin": "Admin",
+      "overview": "Here's your business overview.",
+      "addTour": "Add Tour",
+      "viewBookings": "View Bookings"
+    },
+    "greeting": {
+      "morning": "Good Morning",
+      "afternoon": "Good Afternoon",
+      "evening": "Good Evening"
+    },
+    "filter": {
+      "title": "Filter Period",
+      "allTime": "All time",
+      "vs": "vs"
+    },
+    "kpi": {
+      "totalRevenue": "Total Revenue",
+      "avgPerBooking": "Avg ${{value}} / booking",
+      "confirmedRevenue": "${{value}} confirmed",
+      "totalBookings": "Total Bookings",
+      "confirmedPending": "{{confirmed}} confirmed · {{pending}} pending",
+      "cancelledCount": "{{count}} cancelled",
+      "totalTravellers": "Total Travellers",
+      "exclCancelled": "Excl. cancelled bookings",
+      "toursBooked": "{{count}} tours booked",
+      "pendingReviews": "Pending Reviews",
+      "awaitingApproval": "Awaiting approval",
+      "newReviews": "{{count}} new"
+    },
+    "status": {
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "delta": {
+      "vs": "vs"
+    },
+    "charts": {
+      "performance": "Performance",
+      "revenueBookings": "Revenue & Bookings",
+      "revenue": "Revenue",
+      "bookings": "Bookings",
+      "revCmp": "Rev (cmp)",
+      "bkgsCmp": "Bkgs (cmp)",
+      "noData": "No data for this period"
+    },
+    "nationality": {
+      "breakdown": "Breakdown",
+      "title": "Bookings by Nationality"
+    },
+    "bookings": {
+      "latest": "Latest",
+      "recentBookings": "Recent Bookings",
+      "manageAll": "Manage all"
+    },
+    "reviews": {
+      "awaiting": "Awaiting",
+      "pendingReviews": "Pending Reviews",
+      "viewAll": "View all",
+      "allApproved": "All reviews approved!",
+      "reviewAction": "Review"
+    },
+    "quickStats": {
+      "title": "Quick Stats",
+      "comparePeriod": "compare period",
+      "metric": "Metric",
+      "now": "Now",
+      "before": "Before",
+      "delta": "Δ",
+      "confirmedBookings": "Confirmed bookings",
+      "pendingBookings": "Pending bookings",
+      "cancelledBookings": "Cancelled bookings",
+      "avgBookingValue": "Avg booking value",
+      "totalTravellers": "Total travellers"
+    },
+    "volume": {
+      "monthly": "Monthly",
+      "title": "Booking Volume",
+      "cmp": "cmp"
+    },
+    "topTours": {
+      "topPerformers": "Top Performers",
+      "title": "Top Tours by Revenue",
+      "manage": "Manage",
+      "noBookings": "No bookings in this period",
+      "bookings": "bookings",
+      "people": "people",
+      "revenue": "revenue"
+    }
   }
 }

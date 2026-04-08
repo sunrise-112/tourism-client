@@ -15,5 +15,100 @@
     "profile": "الملف الشخصي",
     "notifications": "الإشعارات",
     "settings": "الإعدادات"
+  },
+  "dashboard": {
+    "banner": {
+      "adminPanel": "لوحة الإدارة",
+      "live": "مباشر",
+      "defaultAdmin": "المدير",
+      "overview": "إليك نظرة عامة على أعمالك.",
+      "addTour": "إضافة جولة",
+      "viewBookings": "عرض الحجوزات"
+    },
+    "greeting": {
+      "morning": "صباح الخير",
+      "afternoon": "مساء الخير",
+      "evening": "مساء الخير"
+    },
+    "filter": {
+      "title": "فترة التصفية",
+      "allTime": "كل الوقت",
+      "vs": "مقابل"
+    },
+    "kpi": {
+      "totalRevenue": "إجمالي الإيرادات",
+      "avgPerBooking": "متوسط ${{value}} / حجز",
+      "confirmedRevenue": "${{value}} مؤكد",
+      "totalBookings": "إجمالي الحجوزات",
+      "confirmedPending": "{{confirmed}} مؤكد · {{pending}} معلق",
+      "cancelledCount": "{{count}} ملغى",
+      "totalTravellers": "إجمالي المسافرين",
+      "exclCancelled": "باستثناء الحجوزات الملغاة",
+      "toursBooked": "{{count}} جولات محجوزة",
+      "pendingReviews": "التقييمات المعلقة",
+      "awaitingApproval": "في انتظار الموافقة",
+      "newReviews": "{{count}} جديد"
+    },
+    "status": {
+      "confirmed": "مؤكد",
+      "pending": "معلق",
+      "cancelled": "ملغى",
+      "completed": "مكتمل"
+    },
+    "delta": {
+      "vs": "مقابل"
+    },
+    "charts": {
+      "performance": "الأداء",
+      "revenueBookings": "الإيرادات والحجوزات",
+      "revenue": "الإيرادات",
+      "bookings": "الحجوزات",
+      "revCmp": "الإيرادات (مق)",
+      "bkgsCmp": "الحجوزات (مق)",
+      "noData": "لا توجد بيانات لهذه الفترة"
+    },
+    "nationality": {
+      "breakdown": "تفصيل",
+      "title": "الحجوزات حسب الجنسية"
+    },
+    "bookings": {
+      "latest": "الأحدث",
+      "recentBookings": "الحجوزات الأخيرة",
+      "manageAll": "إدارة الكل"
+    },
+    "reviews": {
+      "awaiting": "في الانتظار",
+      "pendingReviews": "التقييمات المعلقة",
+      "viewAll": "عرض الكل",
+      "allApproved": "تمت الموافقة على جميع التقييمات!",
+      "reviewAction": "مراجعة"
+    },
+    "quickStats": {
+      "title": "إحصاءات سريعة",
+      "comparePeriod": "فترة المقارنة",
+      "metric": "المقياس",
+      "now": "الآن",
+      "before": "قبل",
+      "delta": "Δ",
+      "confirmedBookings": "الحجوزات المؤكدة",
+      "pendingBookings": "الحجوزات المعلقة",
+      "cancelledBookings": "الحجوزات الملغاة",
+      "avgBookingValue": "متوسط قيمة الحجز",
+      "totalTravellers": "إجمالي المسافرين"
+    },
+    "volume": {
+      "monthly": "شهري",
+      "title": "حجم الحجوزات",
+      "cmp": "مق"
+    },
+    "topTours": {
+      "topPerformers": "الأفضل أداءً",
+      "title": "أفضل الجولات من حيث الإيرادات",
+      "manage": "إدارة",
+      "noBookings": "لا توجد حجوزات في هذه الفترة",
+      "bookings": "حجوزات",
+      "people": "أشخاص",
+      "revenue": "الإيرادات"
+    }
   }
 }
