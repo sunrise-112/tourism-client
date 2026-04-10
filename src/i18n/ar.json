@@ -344,5 +344,47 @@
       "cancelBooking": "إلغاء الحجز",
       "downloadVoucher": "تحميل القسيمة"
     }
+  },
+  "manageExperiences": {
+    "header": {
+      "eyebrow": "المشرف",
+      "title": "إدارة {{type}}",
+      "subtitle": "{{count}} {{type}} في المجموع",
+      "addNew": "إضافة {{type}} جديد"
+    },
+    "stats": {
+      "total": "إجمالي {{type}}",
+      "featured": "مميز",
+      "hotDeals": "عروض ساخنة",
+      "thisPage": "هذه الصفحة"
+    },
+    "table": {
+      "cover": "الغلاف",
+      "title": "العنوان",
+      "destination": "الوجهة",
+      "price": "السعر",
+      "featured": "مميز",
+      "hotDeal": "عرض ساخن",
+      "category": "الفئة",
+      "actions": "الإجراءات"
+    },
+    "actions": {
+      "edit": "تعديل",
+      "view": "عرض",
+      "delete": "حذف"
+    },
+    "empty": {
+      "title": "لم يتم العثور على {{type}}",
+      "subtitle": "حاول تعديل البحث أو إضافة {{type}} جديد."
+    },
+    "deleteModal": {
+      "title": "حذف {{type}}",
+      "message": "هل أنت متأكد من حذف هذا {{type}}؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "errors": {
+      "fetchFailed": "فشل تحميل البيانات!",
+      "deleteSuccess": "تم حذف {{type}} بنجاح!",
+      "deleteFailed": "فشل حذف العنصر!"
+    }
   }
 }

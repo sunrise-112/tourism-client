@@ -344,5 +344,47 @@
       "cancelBooking": "Cancel Booking",
       "downloadVoucher": "Download Voucher"
     }
+  },
+  "manageExperiences": {
+    "header": {
+      "eyebrow": "Admin",
+      "title": "Manage {{type}}",
+      "subtitle": "{{count}} {{type}} in total",
+      "addNew": "Add New {{type}}"
+    },
+    "stats": {
+      "total": "Total {{type}}",
+      "featured": "Featured",
+      "hotDeals": "Hot Deals",
+      "thisPage": "This Page"
+    },
+    "table": {
+      "cover": "Cover",
+      "title": "Title",
+      "destination": "Destination",
+      "price": "Price",
+      "featured": "Featured",
+      "hotDeal": "Hot Deal",
+      "category": "Category",
+      "actions": "Actions"
+    },
+    "actions": {
+      "edit": "Edit",
+      "view": "View",
+      "delete": "Delete"
+    },
+    "empty": {
+      "title": "No {{type}} found",
+      "subtitle": "Try adjusting your search or add a new {{type}}."
+    },
+    "deleteModal": {
+      "title": "Delete {{type}}",
+      "message": "Are you sure you want to delete this {{type}}? This action cannot be undone."
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch tours!",
+      "deleteSuccess": "{{type}} deleted successfully!",
+      "deleteFailed": "Failed to delete tour!"
+    }
   }
 }

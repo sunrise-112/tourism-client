@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import _ from "lodash";
+import { useTranslation } from "react-i18next";
 
 // Services
 import tourService from "../../services/tourService";
@@ -20,6 +21,7 @@ import role from "../../constants/role";
 import paginate from "../../utils/paginate";
 
 const ManageExperiences = ({ Type }) => {
+  const { t } = useTranslation();
   const [searchParam] = useSearchParams();
   const q = searchParam.get("q");
 
@@ -35,9 +37,12 @@ const ManageExperiences = ({ Type }) => {
   const [deleteModal, setDeleteModal] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
+  // Derive the pluralised type key once — used for routes and display
+  const typePlural = Type === "activity" ? "activities" : Type + "s";
+
   const columns = [
     {
-      label: "Cover",
+      label: t("manageExperiences.table.cover"),
       content: (item) =>
         item?.cover_image ? (
           <img
@@ -54,11 +59,11 @@ const ManageExperiences = ({ Type }) => {
         ),
     },
     {
-      label: "Title",
+      label: t("manageExperiences.table.title"),
       path: "title",
     },
     {
-      label: "Destination",
+      label: t("manageExperiences.table.destination"),
       content: (item) => (
         <div>
           <i className='fa fa-map-marker-alt text-[13px] text-amber-700 mr-3' />
@@ -67,22 +72,22 @@ const ManageExperiences = ({ Type }) => {
       ),
     },
     {
-      label: "Price",
+      label: t("manageExperiences.table.price"),
       path: "price",
       content: (item) => <div>${Number(item.price).toFixed(0)}</div>,
     },
     {
-      label: "Featured",
+      label: t("manageExperiences.table.featured"),
       path: "is_featured",
       content: (item) => <Badge active={item.is_featured} />,
     },
     {
-      label: "Hot Deal",
+      label: t("manageExperiences.table.hotDeal"),
       path: "is_hot_deal",
       content: (item) => <Badge active={item.is_hot_deal} />,
     },
     {
-      label: "Category",
+      label: t("manageExperiences.table.category"),
       path: "category",
       content: (item) => (
         <div className='rounded-2xl border text-center border-amber-800 text-amber-800 bg-amber-100'>
@@ -91,7 +96,7 @@ const ManageExperiences = ({ Type }) => {
       ),
     },
     {
-      label: "Actions",
+      label: t("manageExperiences.table.actions"),
       content: (item) => renderActions(item),
     },
   ];
@@ -105,33 +110,34 @@ const ManageExperiences = ({ Type }) => {
     const canDelete = isAdmin;
 
     const editIcon = (
-      <Link
-        to={`/admin/${Type === "activity" ? "activities" : Type + "s"}/edit/${
-          item.id
-        }`}
-      >
-        <i className='fas fa-edit text-blue-500 transition-colors ml-4'></i>
+      <Link to={`/admin/${typePlural}/edit/${item.id}`}>
+        <i
+          className='fas fa-edit text-blue-500 transition-colors ml-4'
+          title={t("manageExperiences.actions.edit")}
+        />
       </Link>
     );
 
     const viewIcon = (
-      <Link
-        to={`/admin/${Type === "activity" ? "activities" : Type + "s"}/view/${
-          item.id
-        }`}
-      >
-        <i className='fas fa-eye  text-yellow-500 transition-colors ml-4'></i>
+      <Link to={`/admin/${typePlural}/view/${item.id}`}>
+        <i
+          className='fas fa-eye text-yellow-500 transition-colors ml-4'
+          title={t("manageExperiences.actions.view")}
+        />
       </Link>
     );
 
     const deleteIcon = (
       <button onClick={() => setDeleteModal(item)}>
-        <i className='fas fa-trash text-red-500 transition-colors ml-4'></i>
+        <i
+          className='fas fa-trash text-red-500 transition-colors ml-4'
+          title={t("manageExperiences.actions.delete")}
+        />
       </button>
     );
 
     return (
-      <div className='flex items-center justify-between '>
+      <div className='flex items-center justify-between'>
         {canEdit && editIcon}
         {canView && viewIcon}
         {canDelete && deleteIcon}
@@ -156,7 +162,7 @@ const ManageExperiences = ({ Type }) => {
       setTours(res.data);
       setTotalItems(q ? res.data?.length : res.pagination.totalItems);
     } catch (err) {
-      toast.error("Failed to fetch tours!");
+      toast.error(t("manageExperiences.errors.fetchFailed"));
     } finally {
       setLoading(false);
     }
@@ -177,13 +183,14 @@ const ManageExperiences = ({ Type }) => {
       setTours((prev) => prev.filter((t) => t.id !== deleteModal.id));
       setTotalItems((n) => n - 1);
       toast.success(
-        `${
-          String(Type[0]).toUpperCase() + String(Type).slice(1).toLowerCase()
-        } deleted successfully!`
+        t("manageExperiences.errors.deleteSuccess", { type: Type })
       );
       setDeleteModal(null);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to delete tour!");
+      toast.error(
+        err?.response?.data?.message ||
+          t("manageExperiences.errors.deleteFailed")
+      );
     } finally {
       setDeleting(false);
     }
@@ -191,7 +198,6 @@ const ManageExperiences = ({ Type }) => {
 
   const renderPageData = () => {
     const sorted = _.orderBy(tours, [sortColumn.path], [sortColumn.order]);
-    /*const paginated = paginate(sorted, pageNumber, pageSize);*/
     return { data: sorted };
   };
 
@@ -200,6 +206,37 @@ const ManageExperiences = ({ Type }) => {
   // Stats
   const featured = tours.filter((t) => t.is_featured).length;
   const hotDeals = tours.filter((t) => t.is_hot_deal).length;
+
+  const stats = [
+    {
+      icon: "fa-map-marked-alt",
+      label: t("manageExperiences.stats.total", { type: typePlural }),
+      value: totalItems,
+      color: "from-amber-400 to-orange-500",
+      ring: "ring-amber-200",
+    },
+    {
+      icon: "fa-star",
+      label: t("manageExperiences.stats.featured"),
+      value: featured,
+      color: "from-blue-400 to-indigo-500",
+      ring: "ring-blue-200",
+    },
+    {
+      icon: "fa-fire",
+      label: t("manageExperiences.stats.hotDeals"),
+      value: hotDeals,
+      color: "from-red-400 to-rose-500",
+      ring: "ring-red-200",
+    },
+    {
+      icon: "fa-eye",
+      label: t("manageExperiences.stats.thisPage"),
+      value: data.length,
+      color: "from-emerald-400 to-teal-500",
+      ring: "ring-emerald-200",
+    },
+  ];
 
   return (
     <div
@@ -210,65 +247,35 @@ const ManageExperiences = ({ Type }) => {
       <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8'>
         <div>
           <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
-            Admin
+            {t("manageExperiences.header.eyebrow")}
           </p>
           <h1
             className='text-3xl font-black text-stone-800'
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            <div>
-              <div className='capitalize'>
-                Manage {Type === "activity" ? "activities" : Type + "s"}
-              </div>
+            <div className='capitalize'>
+              {t("manageExperiences.header.title", { type: typePlural })}
             </div>
           </h1>
           <p className='text-stone-400 text-sm mt-1'>
-            {totalItems} {Type === "activity" ? "activities" : Type + "s"} in
-            total
+            {t("manageExperiences.header.subtitle", {
+              count: totalItems,
+              type: typePlural,
+            })}
           </p>
         </div>
         <Link
-          to={`/admin/${
-            Type === "activity" ? "activities" : Type + "s"
-          }/create`}
+          to={`/admin/${typePlural}/create`}
           className='inline-flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-5 py-2.5 rounded-xl shadow-sm shadow-amber-200 self-start sm:self-auto'
         >
-          <i className='fa fa-plus text-xs' /> Add New {Type}
+          <i className='fa fa-plus text-xs' />
+          {t("manageExperiences.header.addNew", { type: Type })}
         </Link>
       </div>
 
       {/* ── Stats ──────────────────────────────────── */}
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4 mb-6'>
-        {[
-          {
-            icon: "fa-map-marked-alt",
-            label: `Total ${Type === "activity" ? "activities" : Type + "s"}`,
-            value: totalItems,
-            color: "from-amber-400 to-orange-500",
-            ring: "ring-amber-200",
-          },
-          {
-            icon: "fa-star",
-            label: "Featured",
-            value: featured,
-            color: "from-blue-400 to-indigo-500",
-            ring: "ring-blue-200",
-          },
-          {
-            icon: "fa-fire",
-            label: "Hot Deals",
-            value: hotDeals,
-            color: "from-red-400 to-rose-500",
-            ring: "ring-red-200",
-          },
-          {
-            icon: "fa-eye",
-            label: "This Page",
-            value: data.length,
-            color: "from-emerald-400 to-teal-500",
-            ring: "ring-emerald-200",
-          },
-        ].map((s) => (
+        {stats.map((s) => (
           <div
             key={s.label}
             className='bg-white rounded-2xl border border-stone-100 p-5'
@@ -298,9 +305,11 @@ const ManageExperiences = ({ Type }) => {
       ) : data.length === 0 ? (
         <div className='bg-white rounded-2xl border border-stone-100 py-20 text-center'>
           <i className='fa fa-map text-5xl text-stone-200 mb-4 block' />
-          <p className='font-bold text-stone-500 mb-1'>No {Type} found</p>
+          <p className='font-bold text-stone-500 mb-1'>
+            {t("manageExperiences.empty.title", { type: Type })}
+          </p>
           <p className='text-sm text-stone-400'>
-            Try adjusting your search or add a new {Type}.
+            {t("manageExperiences.empty.subtitle", { type: Type })}
           </p>
         </div>
       ) : (
@@ -311,7 +320,6 @@ const ManageExperiences = ({ Type }) => {
             onSort={handleSort}
             sortColumn={sortColumn}
           />
-          {/* Pagination */}
           <div className='border-t border-stone-100 px-6 py-4'>
             <Pagination
               itemsCount={totalItems}
@@ -332,8 +340,8 @@ const ManageExperiences = ({ Type }) => {
       {/* Delete modal */}
       {deleteModal && (
         <ConfirmModal
-          title={`Delete ${Type}`}
-          message={`Are you sure you want to delete "${Type}"? This action cannot be undone.`}
+          title={t("manageExperiences.deleteModal.title", { type: Type })}
+          message={t("manageExperiences.deleteModal.message", { type: Type })}
           onConfirm={handleDelete}
           tourId={deleteModal?.id}
           onClose={() => setDeleteModal(null)}

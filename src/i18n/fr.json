@@ -344,5 +344,47 @@
       "cancelBooking": "Annuler la réservation",
       "downloadVoucher": "Télécharger le bon"
     }
+  },
+  "manageExperiences": {
+    "header": {
+      "eyebrow": "Administration",
+      "title": "Gérer les {{type}}",
+      "subtitle": "{{count}} {{type}} au total",
+      "addNew": "Ajouter un(e) {{type}}"
+    },
+    "stats": {
+      "total": "Total {{type}}",
+      "featured": "En vedette",
+      "hotDeals": "Bons plans",
+      "thisPage": "Cette page"
+    },
+    "table": {
+      "cover": "Couverture",
+      "title": "Titre",
+      "destination": "Destination",
+      "price": "Prix",
+      "featured": "En vedette",
+      "hotDeal": "Bon plan",
+      "category": "Catégorie",
+      "actions": "Actions"
+    },
+    "actions": {
+      "edit": "Modifier",
+      "view": "Voir",
+      "delete": "Supprimer"
+    },
+    "empty": {
+      "title": "Aucun(e) {{type}} trouvé(e)",
+      "subtitle": "Essayez d'affiner votre recherche ou ajoutez un(e) nouveau/nouvelle {{type}}."
+    },
+    "deleteModal": {
+      "title": "Supprimer {{type}}",
+      "message": "Êtes-vous sûr(e) de vouloir supprimer ce(tte) {{type}} ? Cette action est irréversible."
+    },
+    "errors": {
+      "fetchFailed": "Impossible de charger les données.",
+      "deleteSuccess": "{{type}} supprimé(e) avec succès !",
+      "deleteFailed": "Échec de la suppression."
+    }
   }
 }

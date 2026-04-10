@@ -344,5 +344,47 @@
       "cancelBooking": "Cancelar reserva",
       "downloadVoucher": "Descargar bono"
     }
+  },
+  "manageExperiences": {
+    "header": {
+      "eyebrow": "Administrador",
+      "title": "Gestionar {{type}}",
+      "subtitle": "{{count}} {{type}} en total",
+      "addNew": "Añadir nuevo {{type}}"
+    },
+    "stats": {
+      "total": "Total {{type}}",
+      "featured": "Destacados",
+      "hotDeals": "Ofertas especiales",
+      "thisPage": "Esta página"
+    },
+    "table": {
+      "cover": "Portada",
+      "title": "Título",
+      "destination": "Destino",
+      "price": "Precio",
+      "featured": "Destacado",
+      "hotDeal": "Oferta especial",
+      "category": "Categoría",
+      "actions": "Acciones"
+    },
+    "actions": {
+      "edit": "Editar",
+      "view": "Ver",
+      "delete": "Eliminar"
+    },
+    "empty": {
+      "title": "No se encontró ningún {{type}}",
+      "subtitle": "Intenta ajustar la búsqueda o añade un nuevo {{type}}."
+    },
+    "deleteModal": {
+      "title": "Eliminar {{type}}",
+      "message": "¿Estás seguro de que deseas eliminar este {{type}}? Esta acción no se puede deshacer."
+    },
+    "errors": {
+      "fetchFailed": "Error al cargar los datos.",
+      "deleteSuccess": "¡{{type}} eliminado correctamente!",
+      "deleteFailed": "Error al eliminar el elemento."
+    }
   }
 }

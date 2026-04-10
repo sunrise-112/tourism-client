@@ -344,5 +344,47 @@
       "cancelBooking": "Buchung stornieren",
       "downloadVoucher": "Voucher herunterladen"
     }
+  },
+  "manageExperiences": {
+    "header": {
+      "eyebrow": "Administration",
+      "title": "{{type}} verwalten",
+      "subtitle": "{{count}} {{type}} insgesamt",
+      "addNew": "Neue(n) {{type}} hinzufügen"
+    },
+    "stats": {
+      "total": "{{type}} gesamt",
+      "featured": "Empfohlen",
+      "hotDeals": "Hot Deals",
+      "thisPage": "Diese Seite"
+    },
+    "table": {
+      "cover": "Bild",
+      "title": "Titel",
+      "destination": "Reiseziel",
+      "price": "Preis",
+      "featured": "Empfohlen",
+      "hotDeal": "Hot Deal",
+      "category": "Kategorie",
+      "actions": "Aktionen"
+    },
+    "actions": {
+      "edit": "Bearbeiten",
+      "view": "Ansehen",
+      "delete": "Löschen"
+    },
+    "empty": {
+      "title": "Kein {{type}} gefunden",
+      "subtitle": "Bitte passen Sie Ihre Suche an oder fügen Sie einen neuen {{type}} hinzu."
+    },
+    "deleteModal": {
+      "title": "{{type}} löschen",
+      "message": "Möchten Sie diesen {{type}} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "errors": {
+      "fetchFailed": "Daten konnten nicht geladen werden.",
+      "deleteSuccess": "{{type}} wurde erfolgreich gelöscht.",
+      "deleteFailed": "Löschen fehlgeschlagen."
+    }
   }
 }

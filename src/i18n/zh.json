@@ -344,5 +344,47 @@
       "cancelBooking": "取消预订",
       "downloadVoucher": "下载凭证"
     }
+  },
+  "manageExperiences": {
+    "header": {
+      "eyebrow": "管理员",
+      "title": "管理{{type}}",
+      "subtitle": "共 {{count}} 条{{type}}",
+      "addNew": "添加新{{type}}"
+    },
+    "stats": {
+      "total": "{{type}}总计",
+      "featured": "精选",
+      "hotDeals": "热门优惠",
+      "thisPage": "本页"
+    },
+    "table": {
+      "cover": "封面",
+      "title": "标题",
+      "destination": "目的地",
+      "price": "价格",
+      "featured": "精选",
+      "hotDeal": "热门优惠",
+      "category": "类别",
+      "actions": "操作"
+    },
+    "actions": {
+      "edit": "编辑",
+      "view": "查看",
+      "delete": "删除"
+    },
+    "empty": {
+      "title": "未找到{{type}}",
+      "subtitle": "请尝试调整搜索条件或添加新的{{type}}。"
+    },
+    "deleteModal": {
+      "title": "删除{{type}}",
+      "message": "确定要删除此{{type}}吗？此操作无法撤销。"
+    },
+    "errors": {
+      "fetchFailed": "获取数据失败！",
+      "deleteSuccess": "{{type}}已成功删除！",
+      "deleteFailed": "删除失败！"
+    }
   }
 }
