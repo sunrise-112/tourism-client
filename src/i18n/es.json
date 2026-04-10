@@ -292,5 +292,57 @@
       "deleteFailed": "Error al eliminar la reserva.",
       "deleteSuccess": "¡Reserva eliminada!"
     }
+  },
+  "bookingPreview": {
+    "statuses": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmado",
+      "cancelled": "Cancelado",
+      "completed": "Completado"
+    },
+    "error": {
+      "title": "Reserva no encontrada",
+      "message": "La reserva no fue encontrada o no se pudo cargar.",
+      "fallback": "Esta reserva no existe o ha sido eliminada."
+    },
+    "nav": {
+      "allBookings": "Todas las reservas",
+      "backToBookings": "Volver a las reservas"
+    },
+    "header": {
+      "title": "Reserva",
+      "createdOn": "Creada el"
+    },
+    "tourCard": {
+      "days": "{{count}} días",
+      "hours": "{{count}} horas",
+      "maxPeople": "Máx. {{count}} personas",
+      "viewTour": "Ver tour"
+    },
+    "sections": {
+      "bookingDetails": "Detalles de la reserva",
+      "guestDetails": "Datos del cliente",
+      "pricingSummary": "Resumen de precios"
+    },
+    "fields": {
+      "bookingDate": "Fecha de reserva",
+      "bookingTime": "Hora de reserva",
+      "numberOfPeople": "Número de personas",
+      "pickupLocation": "Lugar de recogida",
+      "specialRequests": "Peticiones especiales",
+      "fullName": "Nombre completo",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "nationality": "Nacionalidad"
+    },
+    "pricing": {
+      "pricePerPerson": "Precio por persona × {{count}}",
+      "totalPrice": "Precio total"
+    },
+    "actions": {
+      "editBooking": "Editar reserva",
+      "cancelBooking": "Cancelar reserva",
+      "downloadVoucher": "Descargar bono"
+    }
   }
 }

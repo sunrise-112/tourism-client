@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import bookingService from "../../services/bookingService";
 
 const StatusBadge = ({ status }) => {
+  const { t } = useTranslation();
   const config = {
     pending: {
       color: "bg-amber-50 text-amber-600 border-amber-200",
       icon: "fa-clock",
-      label: "Pending",
+      label: t("bookingPreview.statuses.pending"),
     },
     confirmed: {
       color: "bg-emerald-50 text-emerald-600 border-emerald-200",
       icon: "fa-check-circle",
-      label: "Confirmed",
+      label: t("bookingPreview.statuses.confirmed"),
     },
     cancelled: {
       color: "bg-red-50 text-red-500 border-red-200",
       icon: "fa-times-circle",
-      label: "Cancelled",
+      label: t("bookingPreview.statuses.cancelled"),
     },
     completed: {
       color: "bg-sky-50 text-sky-600 border-sky-200",
       icon: "fa-flag-checkered",
-      label: "Completed",
+      label: t("bookingPreview.statuses.completed"),
     },
   };
 
@@ -69,6 +71,7 @@ const Section = ({ title, children }) => (
 );
 
 const BookingPreview = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -81,7 +84,7 @@ const BookingPreview = () => {
         setBooking(data);
         console.log("Data: ", data);
       } catch {
-        setError("Booking not found or could not be loaded.");
+        setError(t("bookingPreview.error.message"));
       } finally {
         setLoading(false);
       }
@@ -108,16 +111,17 @@ const BookingPreview = () => {
       <div className='min-h-screen bg-stone-50 flex flex-col items-center justify-center text-center px-6'>
         <i className='fa fa-calendar-times text-5xl text-stone-200 mb-4' />
         <h2 className='text-xl font-bold text-stone-600 mb-2'>
-          Booking not found
+          {t("bookingPreview.error.title")}
         </h2>
         <p className='text-stone-400 text-sm mb-6'>
-          {error || "This booking doesn't exist or has been removed."}
+          {error || t("bookingPreview.error.fallback")}
         </p>
         <Link
           to='/bookings'
           className='flex items-center gap-2 text-sm font-bold text-amber-700 bg-amber-50 border border-amber-200 px-5 py-2.5 rounded-xl hover:bg-amber-100 transition-colors'
         >
-          <i className='fa fa-arrow-left text-xs' /> Back to Bookings
+          <i className='fa fa-arrow-left text-xs' />{" "}
+          {t("bookingPreview.nav.backToBookings")}
         </Link>
       </div>
     );
@@ -139,16 +143,17 @@ const BookingPreview = () => {
               to='/bookings'
               className='inline-flex items-center gap-1.5 text-xs font-semibold text-stone-400 hover:text-stone-600 transition-colors mb-3'
             >
-              <i className='fa fa-arrow-left text-[10px]' /> All Bookings
+              <i className='fa fa-arrow-left text-[10px]' />{" "}
+              {t("bookingPreview.nav.allBookings")}
             </Link>
             <h1 className='text-2xl md:text-3xl font-black text-stone-800'>
-              Booking{" "}
+              {t("bookingPreview.header.title")}{" "}
               <span className='text-amber-500'>
                 #{String(booking.id).padStart(4, "0")}
               </span>
             </h1>
             <p className='text-sm text-stone-400 mt-1'>
-              Created on{" "}
+              {t("bookingPreview.header.createdOn")}{" "}
               {new Date(booking.created_at).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
@@ -198,19 +203,25 @@ const BookingPreview = () => {
                 {booking.duration_days && (
                   <span className='flex items-center gap-1.5'>
                     <i className='fa fa-clock text-amber-400' />
-                    {booking.duration_days} days
+                    {t("bookingPreview.tourCard.days", {
+                      count: booking.duration_days,
+                    })}
                   </span>
                 )}
                 {booking.duration_hours && (
                   <span className='flex items-center gap-1.5'>
                     <i className='fa fa-clock text-amber-400' />
-                    {booking.duration_hours} hours
+                    {t("bookingPreview.tourCard.hours", {
+                      count: booking.duration_hours,
+                    })}
                   </span>
                 )}
                 {booking.max_group_size && (
                   <span className='flex items-center gap-1.5'>
                     <i className='fa fa-users text-amber-400' />
-                    Max {booking.max_group_size} people
+                    {t("bookingPreview.tourCard.maxPeople", {
+                      count: booking.max_group_size,
+                    })}
                   </span>
                 )}
               </div>
@@ -218,7 +229,8 @@ const BookingPreview = () => {
                 to={`/tours/${booking.tour_id}`}
                 className='inline-flex items-center gap-1.5 mt-4 text-xs font-bold text-amber-600 hover:text-amber-700 transition-colors'
               >
-                View Tour <i className='fa fa-arrow-right text-[10px]' />
+                {t("bookingPreview.tourCard.viewTour")}{" "}
+                <i className='fa fa-arrow-right text-[10px]' />
               </Link>
             </div>
           </div>
@@ -226,10 +238,10 @@ const BookingPreview = () => {
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           {/* ── Booking Details ───────────────────────── */}
-          <Section title='Booking Details'>
+          <Section title={t("bookingPreview.sections.bookingDetails")}>
             <InfoRow
               icon='fa-calendar'
-              label='Booking Date'
+              label={t("bookingPreview.fields.bookingDate")}
               value={new Date(booking.booking_date).toLocaleDateString(
                 "en-US",
                 {
@@ -242,40 +254,48 @@ const BookingPreview = () => {
             />
             <InfoRow
               icon='fa-clock'
-              label='Booking Time'
+              label={t("bookingPreview.fields.bookingTime")}
               value={booking.booking_time}
             />
             <InfoRow
               icon='fa-users'
-              label='Number of People'
+              label={t("bookingPreview.fields.numberOfPeople")}
               value={booking.num_people}
             />
             <InfoRow
               icon='fa-map-marker-alt'
-              label='Pickup Location'
+              label={t("bookingPreview.fields.pickupLocation")}
               value={booking.pickup_location}
             />
             {booking.special_requests && (
               <InfoRow
                 icon='fa-comment-alt'
-                label='Special Requests'
+                label={t("bookingPreview.fields.specialRequests")}
                 value={booking.special_requests}
               />
             )}
           </Section>
 
           {/* ── Guest Details ─────────────────────────── */}
-          <Section title='Guest Details'>
+          <Section title={t("bookingPreview.sections.guestDetails")}>
             <InfoRow
               icon='fa-user'
-              label='Full Name'
+              label={t("bookingPreview.fields.fullName")}
               value={booking.full_name}
             />
-            <InfoRow icon='fa-envelope' label='Email' value={booking.email} />
-            <InfoRow icon='fa-phone' label='Phone' value={booking.phone} />
+            <InfoRow
+              icon='fa-envelope'
+              label={t("bookingPreview.fields.email")}
+              value={booking.email}
+            />
+            <InfoRow
+              icon='fa-phone'
+              label={t("bookingPreview.fields.phone")}
+              value={booking.phone}
+            />
             <InfoRow
               icon='fa-flag'
-              label='Nationality'
+              label={t("bookingPreview.fields.nationality")}
               value={booking.nationality}
             />
           </Section>
@@ -285,14 +305,16 @@ const BookingPreview = () => {
         <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
           <div className='px-6 py-4 border-b border-stone-100 bg-stone-50/50'>
             <h3 className='text-xs font-bold uppercase tracking-widest text-stone-400'>
-              Pricing Summary
+              {t("bookingPreview.sections.pricingSummary")}
             </h3>
           </div>
           <div className='p-6 space-y-3'>
             {pricePerPerson && (
               <div className='flex items-center justify-between text-sm'>
                 <span className='text-stone-400'>
-                  Price per person × {booking.num_people}
+                  {t("bookingPreview.pricing.pricePerPerson", {
+                    count: booking.num_people,
+                  })}
                 </span>
                 <span className='font-semibold text-stone-600'>
                   ${pricePerPerson} × {booking.num_people}
@@ -301,7 +323,7 @@ const BookingPreview = () => {
             )}
             <div className='flex items-center justify-between pt-3 border-t border-stone-100'>
               <span className='text-base font-black text-stone-800'>
-                Total Price
+                {t("bookingPreview.pricing.totalPrice")}
               </span>
               <span className='text-2xl font-black text-amber-600'>
                 ${Number(booking.total_price).toLocaleString()}
@@ -316,16 +338,19 @@ const BookingPreview = () => {
             to={`/bookings/${id}/edit`}
             className='flex items-center gap-2 text-sm font-bold text-stone-600 bg-white border border-stone-200 hover:border-stone-300 px-5 py-2.5 rounded-xl transition-colors'
           >
-            <i className='fa fa-edit text-xs' /> Edit Booking
+            <i className='fa fa-edit text-xs' />{" "}
+            {t("bookingPreview.actions.editBooking")}
           </Link>
           {booking.status !== "cancelled" && booking.status !== "completed" && (
             <button className='flex items-center gap-2 text-sm font-bold text-red-600 bg-red-50 border border-red-200 hover:bg-red-100 px-5 py-2.5 rounded-xl transition-colors'>
-              <i className='fa fa-times text-xs' /> Cancel Booking
+              <i className='fa fa-times text-xs' />{" "}
+              {t("bookingPreview.actions.cancelBooking")}
             </button>
           )}
           {booking.status === "confirmed" && (
             <button className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 px-5 py-2.5 rounded-xl transition-colors shadow-lg shadow-amber-100'>
-              <i className='fa fa-download text-xs' /> Download Voucher
+              <i className='fa fa-download text-xs' />{" "}
+              {t("bookingPreview.actions.downloadVoucher")}
             </button>
           )}
         </div>

@@ -292,5 +292,57 @@
       "deleteFailed": "Failed to delete booking!",
       "deleteSuccess": "Booking deleted!"
     }
+  },
+  "bookingPreview": {
+    "statuses": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "error": {
+      "title": "Booking not found",
+      "message": "Booking not found or could not be loaded.",
+      "fallback": "This booking doesn't exist or has been removed."
+    },
+    "nav": {
+      "allBookings": "All Bookings",
+      "backToBookings": "Back to Bookings"
+    },
+    "header": {
+      "title": "Booking",
+      "createdOn": "Created on"
+    },
+    "tourCard": {
+      "days": "{{count}} days",
+      "hours": "{{count}} hours",
+      "maxPeople": "Max {{count}} people",
+      "viewTour": "View Tour"
+    },
+    "sections": {
+      "bookingDetails": "Booking Details",
+      "guestDetails": "Guest Details",
+      "pricingSummary": "Pricing Summary"
+    },
+    "fields": {
+      "bookingDate": "Booking Date",
+      "bookingTime": "Booking Time",
+      "numberOfPeople": "Number of People",
+      "pickupLocation": "Pickup Location",
+      "specialRequests": "Special Requests",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "nationality": "Nationality"
+    },
+    "pricing": {
+      "pricePerPerson": "Price per person × {{count}}",
+      "totalPrice": "Total Price"
+    },
+    "actions": {
+      "editBooking": "Edit Booking",
+      "cancelBooking": "Cancel Booking",
+      "downloadVoucher": "Download Voucher"
+    }
   }
 }

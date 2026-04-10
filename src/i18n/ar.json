@@ -292,5 +292,57 @@
       "deleteFailed": "فشل حذف الحجز!",
       "deleteSuccess": "تم حذف الحجز!"
     }
+  },
+  "bookingPreview": {
+    "statuses": {
+      "pending": "معلق",
+      "confirmed": "مؤكد",
+      "cancelled": "ملغى",
+      "completed": "مكتمل"
+    },
+    "error": {
+      "title": "الحجز غير موجود",
+      "message": "الحجز غير موجود أو تعذّر تحميله.",
+      "fallback": "هذا الحجز غير موجود أو تمت إزالته."
+    },
+    "nav": {
+      "allBookings": "جميع الحجوزات",
+      "backToBookings": "العودة إلى الحجوزات"
+    },
+    "header": {
+      "title": "الحجز",
+      "createdOn": "أُنشئ في"
+    },
+    "tourCard": {
+      "days": "{{count}} أيام",
+      "hours": "{{count}} ساعات",
+      "maxPeople": "الحد الأقصى {{count}} أشخاص",
+      "viewTour": "عرض الجولة"
+    },
+    "sections": {
+      "bookingDetails": "تفاصيل الحجز",
+      "guestDetails": "بيانات الضيف",
+      "pricingSummary": "ملخص الأسعار"
+    },
+    "fields": {
+      "bookingDate": "تاريخ الحجز",
+      "bookingTime": "وقت الحجز",
+      "numberOfPeople": "عدد الأشخاص",
+      "pickupLocation": "موقع الاستلام",
+      "specialRequests": "طلبات خاصة",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "nationality": "الجنسية"
+    },
+    "pricing": {
+      "pricePerPerson": "السعر للفرد × {{count}}",
+      "totalPrice": "السعر الإجمالي"
+    },
+    "actions": {
+      "editBooking": "تعديل الحجز",
+      "cancelBooking": "إلغاء الحجز",
+      "downloadVoucher": "تحميل القسيمة"
+    }
   }
 }

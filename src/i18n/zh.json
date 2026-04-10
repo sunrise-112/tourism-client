@@ -292,5 +292,57 @@
       "deleteFailed": "删除预订失败！",
       "deleteSuccess": "预订已删除！"
     }
+  },
+  "bookingPreview": {
+    "statuses": {
+      "pending": "待处理",
+      "confirmed": "已确认",
+      "cancelled": "已取消",
+      "completed": "已完成"
+    },
+    "error": {
+      "title": "未找到预订",
+      "message": "未找到预订或无法加载。",
+      "fallback": "此预订不存在或已被删除。"
+    },
+    "nav": {
+      "allBookings": "所有预订",
+      "backToBookings": "返回预订列表"
+    },
+    "header": {
+      "title": "预订",
+      "createdOn": "创建于"
+    },
+    "tourCard": {
+      "days": "{{count}} 天",
+      "hours": "{{count}} 小时",
+      "maxPeople": "最多 {{count}} 人",
+      "viewTour": "查看行程"
+    },
+    "sections": {
+      "bookingDetails": "预订详情",
+      "guestDetails": "客人信息",
+      "pricingSummary": "价格摘要"
+    },
+    "fields": {
+      "bookingDate": "预订日期",
+      "bookingTime": "预订时间",
+      "numberOfPeople": "人数",
+      "pickupLocation": "接送地点",
+      "specialRequests": "特殊要求",
+      "fullName": "姓名",
+      "email": "电子邮件",
+      "phone": "电话",
+      "nationality": "国籍"
+    },
+    "pricing": {
+      "pricePerPerson": "每人价格 × {{count}}",
+      "totalPrice": "总价"
+    },
+    "actions": {
+      "editBooking": "编辑预订",
+      "cancelBooking": "取消预订",
+      "downloadVoucher": "下载凭证"
+    }
   }
 }

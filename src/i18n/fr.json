@@ -292,5 +292,57 @@
       "deleteFailed": "Impossible de supprimer la réservation.",
       "deleteSuccess": "Réservation supprimée !"
     }
+  },
+  "bookingPreview": {
+    "statuses": {
+      "pending": "En attente",
+      "confirmed": "Confirmé",
+      "cancelled": "Annulé",
+      "completed": "Terminé"
+    },
+    "error": {
+      "title": "Réservation introuvable",
+      "message": "La réservation est introuvable ou n'a pas pu être chargée.",
+      "fallback": "Cette réservation n'existe pas ou a été supprimée."
+    },
+    "nav": {
+      "allBookings": "Toutes les réservations",
+      "backToBookings": "Retour aux réservations"
+    },
+    "header": {
+      "title": "Réservation",
+      "createdOn": "Créée le"
+    },
+    "tourCard": {
+      "days": "{{count}} jours",
+      "hours": "{{count}} heures",
+      "maxPeople": "Max. {{count}} personnes",
+      "viewTour": "Voir le circuit"
+    },
+    "sections": {
+      "bookingDetails": "Détails de la réservation",
+      "guestDetails": "Informations du client",
+      "pricingSummary": "Récapitulatif des prix"
+    },
+    "fields": {
+      "bookingDate": "Date de réservation",
+      "bookingTime": "Heure de réservation",
+      "numberOfPeople": "Nombre de personnes",
+      "pickupLocation": "Lieu de prise en charge",
+      "specialRequests": "Demandes spéciales",
+      "fullName": "Nom complet",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "nationality": "Nationalité"
+    },
+    "pricing": {
+      "pricePerPerson": "Prix par personne × {{count}}",
+      "totalPrice": "Prix total"
+    },
+    "actions": {
+      "editBooking": "Modifier la réservation",
+      "cancelBooking": "Annuler la réservation",
+      "downloadVoucher": "Télécharger le bon"
+    }
   }
 }

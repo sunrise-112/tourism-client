@@ -292,5 +292,57 @@
       "deleteFailed": "Buchung konnte nicht gelöscht werden.",
       "deleteSuccess": "Buchung wurde gelöscht."
     }
+  },
+  "bookingPreview": {
+    "statuses": {
+      "pending": "Ausstehend",
+      "confirmed": "Bestätigt",
+      "cancelled": "Storniert",
+      "completed": "Abgeschlossen"
+    },
+    "error": {
+      "title": "Buchung nicht gefunden",
+      "message": "Die Buchung wurde nicht gefunden oder konnte nicht geladen werden.",
+      "fallback": "Diese Buchung existiert nicht oder wurde entfernt."
+    },
+    "nav": {
+      "allBookings": "Alle Buchungen",
+      "backToBookings": "Zurück zu den Buchungen"
+    },
+    "header": {
+      "title": "Buchung",
+      "createdOn": "Erstellt am"
+    },
+    "tourCard": {
+      "days": "{{count}} Tage",
+      "hours": "{{count}} Stunden",
+      "maxPeople": "Max. {{count}} Personen",
+      "viewTour": "Tour ansehen"
+    },
+    "sections": {
+      "bookingDetails": "Buchungsdetails",
+      "guestDetails": "Gastdaten",
+      "pricingSummary": "Preisübersicht"
+    },
+    "fields": {
+      "bookingDate": "Buchungsdatum",
+      "bookingTime": "Buchungszeit",
+      "numberOfPeople": "Personenanzahl",
+      "pickupLocation": "Abholort",
+      "specialRequests": "Besondere Wünsche",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "nationality": "Nationalität"
+    },
+    "pricing": {
+      "pricePerPerson": "Preis pro Person × {{count}}",
+      "totalPrice": "Gesamtpreis"
+    },
+    "actions": {
+      "editBooking": "Buchung bearbeiten",
+      "cancelBooking": "Buchung stornieren",
+      "downloadVoucher": "Voucher herunterladen"
+    }
   }
 }
