@@ -1,4 +1,31 @@
 {
+  "header": {
+    "breadcrumb": {
+      "dashboard": "Tableau de bord"
+    },
+    "search": {
+      "placeholder": "Recherche rapide..."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "newCount": "{{count}} nouvelle(s)",
+      "viewAll": "Voir toutes les notifications",
+      "time": {
+        "justNow": "À l'instant",
+        "minutesAgo": "Il y a {{count}} min",
+        "hoursAgo": "Il y a {{count}} h",
+        "daysAgo": "Il y a {{count}} jour(s)"
+      }
+    },
+    "userMenu": {
+      "avatarAlt": "photo de profil",
+      "myProfile": "Mon profil",
+      "bookings": "Réservations",
+      "myBookings": "Mes réservations",
+      "settings": "Paramètres",
+      "signOut": "Se déconnecter"
+    }
+  },
   "nav": {
     "main": "Principal",
     "account": "Compte",

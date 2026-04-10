@@ -25,89 +25,89 @@ const Sidebar = ({
     Account: true,
   });
 
-const NAV = [
-  {
-    section: t("nav.main"),
-    items: [
-      {
-        icon: "fa-th-large",
-        label: t("nav.dashboard"),
-        path: isAdmin ? "/admin/dashboard" : "/customer/dashboard",
-      },
-      {
-        icon: "fa-suitcase-rolling",
-        label: isAdmin ? t("nav.bookings") : t("nav.myBookings"),
-        total: parseInt(bookings),
-        path: isAdmin ? "/admin/bookings" : "/my-bookings",
-      },
+  const NAV = [
+    {
+      section: t("nav.main"),
+      items: [
+        {
+          icon: "fa-th-large",
+          label: t("nav.dashboard"),
+          path: isAdmin ? "/admin/dashboard" : "/customer/dashboard",
+        },
+        {
+          icon: "fa-suitcase-rolling",
+          label: isAdmin ? t("nav.bookings") : t("nav.myBookings"),
+          total: parseInt(bookings),
+          path: isAdmin ? "/admin/bookings" : "/my-bookings",
+        },
 
-      ...(isAdmin
-        ? [
-            {
-              icon: "fa-map-marked-alt",
-              label: t("nav.tours"),
-              path: "/admin/tours",
-            },
-            {
-              icon: "fa-hiking",
-              label: t("nav.excursions"),
-              path: "/admin/excursions",
-            },
-            {
-              icon: "fa-running",
-              label: t("nav.activities"),
-              path: "/admin/activities",
-            },
-            {
-              icon: "fa-comments",
-              label: t("nav.reviews"),
-              path: "/admin/reviews",
-            },
-            {
-              icon: "fa-user",
-              label: t("nav.users"),
-              path: "/admin/users",
-            },
-            {
-              icon: "fa-list",
-              label: t("nav.categories"),
-              path: "/categories",
-            },
-          ]
-        : []),
+        ...(isAdmin
+          ? [
+              {
+                icon: "fa-map-marked-alt",
+                label: t("nav.tours"),
+                path: "/admin/tours",
+              },
+              {
+                icon: "fa-hiking",
+                label: t("nav.excursions"),
+                path: "/admin/excursions",
+              },
+              {
+                icon: "fa-running",
+                label: t("nav.activities"),
+                path: "/admin/activities",
+              },
+              {
+                icon: "fa-comments",
+                label: t("nav.reviews"),
+                path: "/admin/reviews",
+              },
+              {
+                icon: "fa-user",
+                label: t("nav.users"),
+                path: "/admin/users",
+              },
+              {
+                icon: "fa-list",
+                label: t("nav.categories"),
+                path: "/categories",
+              },
+            ]
+          : []),
 
-      ...(isCustomer
-        ? [
-            {
-              icon: "fa-heart",
-              label: t("nav.favorites"),
-              path: "/favorites",
-            },
-          ]
-        : []),
-    ],
-  },
-  {
-    section: t("nav.account"),
-    items: [
-      {
-        icon: "fa-user-circle",
-        label: t("nav.profile"),
-        path: "/profile/me",
-      },
-      {
-        icon: "fa-bell",
-        label: t("nav.notifications"),
-        path: "/admin/notifications",
-      },
-      {
-        icon: "fa-cog",
-        label: t("nav.settings"),
-        path: "/settings",
-      },
-    ],
-  },
-];
+        ...(isCustomer
+          ? [
+              {
+                icon: "fa-heart",
+                label: t("nav.favorites"),
+                path: "/favorites",
+              },
+            ]
+          : []),
+      ],
+    },
+    {
+      section: t("nav.account"),
+      items: [
+        {
+          icon: "fa-user-circle",
+          label: t("nav.profile"),
+          path: "/profile/me",
+        },
+        {
+          icon: "fa-bell",
+          label: t("nav.notifications"),
+          path: "/admin/notifications",
+        },
+        {
+          icon: "fa-cog",
+          label: t("nav.settings"),
+          path: "/settings",
+        },
+      ],
+    },
+  ];
 
   const toggleSection = (s) => setOpenSections((p) => ({ ...p, [s]: !p[s] }));
 
@@ -171,10 +171,10 @@ const NAV = [
 
         {/* Nav */}
         <nav className='flex-1 overflow-y-auto py-4 px-2 space-y-1 scrollbar-hide'>
-          {NAV.map(({  items }) => (
-            <div  className='mb-2'>
+          {NAV.map(({ items }) => (
+            <div className='mb-2'>
               {/* Section header */}
-            {/*   {!collapsed && (
+              {/*   {!collapsed && (
                 <button
                   onClick={() => toggleSection(section)}
                   className='w-full flex items-center justify-between px-3 py-1.5 mb-1 group'
@@ -204,7 +204,7 @@ const NAV = [
                     }
                     ${collapsed ? "justify-center" : ""}
                   `}
-                > 
+                >
                   {isActive(item.path) && (
                     <span className='absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-amber-400 rounded-r-full' />
                   )}

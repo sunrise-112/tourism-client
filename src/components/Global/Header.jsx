@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // Services
 import userService from "../../services/userService";
@@ -23,6 +24,7 @@ const Header = ({
   setMobileOpen,
   collapsed,
 }) => {
+  const { t } = useTranslation();
   const socket = useSocket();
   const [searchParam, setSearchParam] = useSearchParams();
   const [user, setUser] = useState({});
@@ -33,6 +35,8 @@ const Header = ({
   const notifRef = useRef(null);
   const navigate = useNavigate();
   const audioRef = useRef(null);
+
+  const isAdmin = user?.role === role.ADMIN;
 
   const events = ["booking_created", "ad_created"];
   useEffect(() => {
@@ -71,7 +75,10 @@ const Header = ({
   useEffect(() => {
     const fetchNotifs = async () => {
       try {
-        const notifs = await notificationService.getAll({ is_read: false , limit: 6});
+        const notifs = await notificationService.getAll({
+          is_read: false,
+          limit: 6,
+        });
         console.log("Notifs: ", notifs?.data);
         setNotifs(notifs?.data);
       } catch (error) {
@@ -114,7 +121,9 @@ const Header = ({
       {/* Breadcrumb — desktop only */}
       <div className='hidden lg:flex items-center gap-2 text-sm'>
         <i className='fa fa-chevron-right text-stone-300 text-[10px]' />
-        <span className='font-semibold text-stone-700'>Dashboard</span>
+        <span className='font-semibold text-stone-700'>
+          {t("header.breadcrumb.dashboard")}
+        </span>
       </div>
 
       <div className='flex-1 hidden lg:block' />
@@ -123,7 +132,7 @@ const Header = ({
       <div className='hidden md:flex items-center gap-2 bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 w-48'>
         <i className='fa fa-search text-stone-300 text-xs' />
         <input
-          placeholder='Quick search...'
+          placeholder={t("header.search.placeholder")}
           onChange={(e) => {
             setSearchParam({ q: e.currentTarget.value });
           }}
@@ -151,9 +160,11 @@ const Header = ({
         {notifOpen && (
           <div className='absolute right-0 top-12 w-72 bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
             <div className='px-4 py-3 border-b border-stone-100 flex items-center justify-between'>
-              <p className='font-bold text-stone-800 text-sm'>Notifications</p>
+              <p className='font-bold text-stone-800 text-sm'>
+                {t("header.notifications.title")}
+              </p>
               <span className='text-xs bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded-full'>
-                {notifs?.length} new
+                {t("header.notifications.newCount", { count: notifs?.length })}
               </span>
             </div>
             {notifs?.map((n) => {
@@ -172,11 +183,20 @@ const Header = ({
               const getRelativeTime = (dateStr) => {
                 const diff = Math.floor(
                   (Date.now() - new Date(dateStr)) / 1000
-                ); // seconds ago
-                if (diff < 60) return "Just now";
-                if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-                if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-                if (diff < 86400 * 7) return `${Math.floor(diff / 86400)}d ago`;
+                );
+                if (diff < 60) return t("header.notifications.time.justNow");
+                if (diff < 3600)
+                  return t("header.notifications.time.minutesAgo", {
+                    count: Math.floor(diff / 60),
+                  });
+                if (diff < 86400)
+                  return t("header.notifications.time.hoursAgo", {
+                    count: Math.floor(diff / 3600),
+                  });
+                if (diff < 86400 * 7)
+                  return t("header.notifications.time.daysAgo", {
+                    count: Math.floor(diff / 86400),
+                  });
                 return new Date(dateStr).toLocaleDateString();
               };
 
@@ -211,11 +231,11 @@ const Header = ({
               <button className='text-xs font-semibold text-amber-600 hover:text-amber-700 transition-colors'>
                 {user?.role === role.ADMIN ? (
                   <Link to={"/admin/notifications"}>
-                    View all notifications
+                    {t("header.notifications.viewAll")}
                   </Link>
                 ) : (
                   <Link to={"/customer/notifications"}>
-                    View all notifications
+                    {t("header.notifications.viewAll")}
                   </Link>
                 )}{" "}
               </button>
@@ -241,7 +261,7 @@ const Header = ({
             <div className='w-8 h-8 rounded-xl overflow-hidden ring-2 ring-amber-400/40 ring-offset-1'>
               <img
                 src={renderImage(user?.avatar)}
-                alt='profile'
+                alt={t("header.userMenu.avatarAlt")}
                 className='w-full h-full object-cover'
               />
             </div>
@@ -275,14 +295,23 @@ const Header = ({
               <p className='text-xs text-stone-400 truncate'>{user.email}</p>
             </div>
             {[
-              { icon: "fa-user", label: "My Profile", path: "/profile/me" },
+              {
+                icon: "fa-user",
+                label: t("header.userMenu.myProfile"),
+                path: "/profile/me",
+              },
               {
                 icon: "fa-suitcase",
-                label: "My Bookings",
-                path: "/my-bookings",
+                label: isAdmin
+                  ? t("header.userMenu.bookings")
+                  : t("header.userMenu.myBookings"),
+                path: isAdmin ? "/admin/bookings" : "/my-bookings",
               },
-              { icon: "fa-heart", label: "Favorites", path: "/favorites" },
-              { icon: "fa-cog", label: "Settings", path: "/settings" },
+              {
+                icon: "fa-cog",
+                label: t("header.userMenu.settings"),
+                path: "/settings",
+              },
             ].map((item) => (
               <Link
                 key={item.path}
@@ -305,7 +334,7 @@ const Header = ({
                 className='w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition-colors text-sm text-red-500 hover:text-red-600'
               >
                 <i className='fa fa-sign-out-alt text-xs w-4 text-center' />
-                Sign Out
+                {t("header.userMenu.signOut")}
               </button>
             </div>
           </div>

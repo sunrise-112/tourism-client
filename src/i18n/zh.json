@@ -1,4 +1,31 @@
 {
+  "header": {
+    "breadcrumb": {
+      "dashboard": "仪表板"
+    },
+    "search": {
+      "placeholder": "快速搜索..."
+    },
+    "notifications": {
+      "title": "通知",
+      "newCount": "{{count}} 条新消息",
+      "viewAll": "查看所有通知",
+      "time": {
+        "justNow": "刚刚",
+        "minutesAgo": "{{count}} 分钟前",
+        "hoursAgo": "{{count}} 小时前",
+        "daysAgo": "{{count}} 天前"
+      }
+    },
+    "userMenu": {
+      "avatarAlt": "头像",
+      "myProfile": "我的资料",
+      "bookings": "预订管理",
+      "myBookings": "我的预订",
+      "settings": "设置",
+      "signOut": "退出登录"
+    }
+  },
   "nav": {
     "main": "主菜单",
     "account": "账户",

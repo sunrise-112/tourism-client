@@ -1,4 +1,31 @@
 {
+  "header": {
+    "breadcrumb": {
+      "dashboard": "لوحة التحكم"
+    },
+    "search": {
+      "placeholder": "بحث سريع..."
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "newCount": "{{count}} جديد",
+      "viewAll": "عرض جميع الإشعارات",
+      "time": {
+        "justNow": "الآن",
+        "minutesAgo": "منذ {{count}} دقيقة",
+        "hoursAgo": "منذ {{count}} ساعة",
+        "daysAgo": "منذ {{count}} يوم"
+      }
+    },
+    "userMenu": {
+      "avatarAlt": "الصورة الشخصية",
+      "myProfile": "ملفي الشخصي",
+      "bookings": "الحجوزات",
+      "myBookings": "حجوزاتي",
+      "settings": "الإعدادات",
+      "signOut": "تسجيل الخروج"
+    }
+  },
   "nav": {
     "main": "الرئيسية",
     "account": "الحساب",

@@ -1,4 +1,31 @@
 {
+  "header": {
+    "breadcrumb": {
+      "dashboard": "Dashboard"
+    },
+    "search": {
+      "placeholder": "Quick search..."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "newCount": "{{count}} new",
+      "viewAll": "View all notifications",
+      "time": {
+        "justNow": "Just now",
+        "minutesAgo": "{{count}}m ago",
+        "hoursAgo": "{{count}}h ago",
+        "daysAgo": "{{count}}d ago"
+      }
+    },
+    "userMenu": {
+      "avatarAlt": "profile",
+      "myProfile": "My Profile",
+      "bookings": "Bookings",
+      "myBookings": "My Bookings",
+      "settings": "Settings",
+      "signOut": "Sign Out"
+    }
+  },
   "nav": {
     "main": "Main",
     "account": "Account",
