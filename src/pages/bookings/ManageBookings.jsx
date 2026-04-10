@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import _ from "lodash";
+import { useTranslation } from "react-i18next";
 import bookingService from "../../services/bookingService";
 import Pagination from "../../common/Pagination";
 import { Link } from "react-router-dom";
@@ -40,21 +41,23 @@ const STATUS_STYLES = {
 };
 
 const StatusBadge = ({ status }) => {
+  const { t } = useTranslation();
   const s = STATUS_STYLES[status] || STATUS_STYLES.pending;
   return (
     <span
       className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${s.bg} ${s.text} ${s.border}`}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-      {status?.charAt(0).toUpperCase() + status?.slice(1)}
+      {t(`manageBookings.statuses.${status}`, {
+        defaultValue: status?.charAt(0).toUpperCase() + status?.slice(1),
+      })}
     </span>
   );
 };
 
-const STATUSES = ["All", "Pending", "Confirmed", "Completed", "Cancelled"];
-
 // ─── Status Modal ─────────────────────────────────────────────
 const StatusModal = ({ booking, onConfirm, onClose, loading }) => {
+  const { t } = useTranslation();
   const [selected, setSelected] = useState(booking?.status || "pending");
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm'>
@@ -65,10 +68,10 @@ const StatusModal = ({ booking, onConfirm, onClose, loading }) => {
             className='font-black text-stone-800 text-lg mb-1'
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Update Status
+            {t("manageBookings.statusModal.title")}
           </h3>
           <p className='text-sm text-stone-400 mb-5'>
-            Change status for{" "}
+            {t("manageBookings.statusModal.description")}{" "}
             <span className='font-semibold text-stone-600'>
               {booking?.tour?.title}
             </span>
@@ -87,7 +90,7 @@ const StatusModal = ({ booking, onConfirm, onClose, loading }) => {
                   }`}
                 >
                   <span className={`w-2 h-2 rounded-full ${style.dot}`} />
-                  {s}
+                  {t(`manageBookings.statuses.${s}`)}
                 </button>
               );
             })}
@@ -97,7 +100,7 @@ const StatusModal = ({ booking, onConfirm, onClose, loading }) => {
               onClick={onClose}
               className='flex-1 py-2.5 rounded-xl text-sm font-semibold text-stone-600 border border-stone-200 hover:bg-stone-50 transition-colors'
             >
-              Cancel
+              {t("manageBookings.actions.cancel")}
             </button>
             <button
               onClick={() => onConfirm(selected)}
@@ -107,10 +110,10 @@ const StatusModal = ({ booking, onConfirm, onClose, loading }) => {
               {loading ? (
                 <>
                   <i className='fa fa-spinner fa-spin mr-1.5' />
-                  Saving...
+                  {t("manageBookings.statusModal.saving")}
                 </>
               ) : (
-                "Save Status"
+                t("manageBookings.statusModal.saveButton")
               )}
             </button>
           </div>
@@ -122,6 +125,7 @@ const StatusModal = ({ booking, onConfirm, onClose, loading }) => {
 
 // ─── ManageBookings ───────────────────────────────────────────
 const ManageBookings = ({ searchQuery }) => {
+  const { t } = useTranslation();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -138,6 +142,14 @@ const ManageBookings = ({ searchQuery }) => {
   const [deleting, setDeleting] = useState(false);
   const [trigger, setTrigger] = useState(false);
 
+  const STATUSES = [
+    { key: "All", label: t("manageBookings.filterTabs.all") },
+    { key: "Pending", label: t("manageBookings.statuses.pending") },
+    { key: "Confirmed", label: t("manageBookings.statuses.confirmed") },
+    { key: "Completed", label: t("manageBookings.statuses.completed") },
+    { key: "Cancelled", label: t("manageBookings.statuses.cancelled") },
+  ];
+
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -150,7 +162,7 @@ const ManageBookings = ({ searchQuery }) => {
       setBookings(res?.data);
       setTotalItems(res?.data?.length || 0);
     } catch {
-      toast.error("Failed to fetch bookings!");
+      toast.error(t("manageBookings.errors.fetchFailed"));
     } finally {
       setLoading(false);
     }
@@ -191,7 +203,9 @@ const ManageBookings = ({ searchQuery }) => {
       );
       setStatusModal(null);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to update status!");
+      toast.error(
+        err?.response?.data?.message || t("manageBookings.errors.updateFailed")
+      );
     } finally {
       setUpdatingStatus(false);
     }
@@ -203,10 +217,12 @@ const ManageBookings = ({ searchQuery }) => {
       await bookingService.deleteOne(deleteModal.id);
       setBookings((prev) => prev.filter((b) => b.id !== deleteModal.id));
       setTotalItems((n) => n - 1);
-      toast.success("Booking deleted!");
+      toast.success(t("manageBookings.errors.deleteSuccess"));
       setDeleteModal(null);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to delete booking!");
+      toast.error(
+        err?.response?.data?.message || t("manageBookings.errors.deleteFailed")
+      );
     } finally {
       setDeleting(false);
     }
@@ -221,6 +237,47 @@ const ManageBookings = ({ searchQuery }) => {
     .filter((b) => b.status !== "cancelled")
     .reduce((s, b) => s + Number(b.total_price || 0), 0);
 
+  const stats = [
+    {
+      icon: "fa-suitcase",
+      label: t("manageBookings.stats.total"),
+      value: totalItems,
+      color: "from-amber-400 to-orange-500",
+      ring: "ring-amber-200",
+    },
+    {
+      icon: "fa-check-circle",
+      label: t("manageBookings.stats.confirmed"),
+      value: confirmed,
+      color: "from-emerald-400 to-teal-500",
+      ring: "ring-emerald-200",
+    },
+    {
+      icon: "fa-clock",
+      label: t("manageBookings.stats.pending"),
+      value: pending,
+      color: "from-yellow-400 to-amber-500",
+      ring: "ring-yellow-200",
+    },
+    {
+      icon: "fa-dollar-sign",
+      label: t("manageBookings.stats.revenue"),
+      value: `$${revenue.toLocaleString()}`,
+      color: "from-blue-400 to-indigo-500",
+      ring: "ring-blue-200",
+    },
+  ];
+
+  const tableHeaders = [
+    t("manageBookings.table.tour"),
+    t("manageBookings.table.customer"),
+    t("manageBookings.table.date"),
+    t("manageBookings.table.duration"),
+    t("manageBookings.table.total"),
+    t("manageBookings.table.status"),
+    t("manageBookings.table.actions"),
+  ];
+
   return (
     <div
       className='min-h-screen bg-stone-50 p-6 md:p-8'
@@ -229,51 +286,22 @@ const ManageBookings = ({ searchQuery }) => {
       {/* ── Header ─────────────────────────────────── */}
       <div className='mb-8'>
         <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
-          Admin
+          {t("manageBookings.header.eyebrow")}
         </p>
         <h1
           className='text-3xl font-black text-stone-800'
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          Manage Bookings
+          {t("manageBookings.header.title")}
         </h1>
         <p className='text-stone-400 text-sm mt-1'>
-          {totalItems} bookings in total
+          {t("manageBookings.header.subtitle", { count: totalItems })}
         </p>
       </div>
 
       {/* ── Stats ──────────────────────────────────── */}
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4 mb-6'>
-        {[
-          {
-            icon: "fa-suitcase",
-            label: "Total",
-            value: totalItems,
-            color: "from-amber-400 to-orange-500",
-            ring: "ring-amber-200",
-          },
-          {
-            icon: "fa-check-circle",
-            label: "Confirmed",
-            value: confirmed,
-            color: "from-emerald-400 to-teal-500",
-            ring: "ring-emerald-200",
-          },
-          {
-            icon: "fa-clock",
-            label: "Pending",
-            value: pending,
-            color: "from-yellow-400 to-amber-500",
-            ring: "ring-yellow-200",
-          },
-          {
-            icon: "fa-dollar-sign",
-            label: "Revenue",
-            value: `$${revenue.toLocaleString()}`,
-            color: "from-blue-400 to-indigo-500",
-            ring: "ring-blue-200",
-          },
-        ].map((s) => (
+        {stats.map((s) => (
           <div
             key={s.label}
             className='bg-white rounded-2xl border border-stone-100 p-5'
@@ -297,18 +325,18 @@ const ManageBookings = ({ searchQuery }) => {
       <div className='flex items-center gap-2 mb-5 flex-wrap'>
         {STATUSES.map((s) => (
           <button
-            key={s}
+            key={s.key}
             onClick={() => {
-              setStatusFilter(s);
+              setStatusFilter(s.key);
               setPageNumber(1);
             }}
             className={`text-xs font-bold px-4 py-2 rounded-xl border transition-colors ${
-              statusFilter === s
+              statusFilter === s.key
                 ? "bg-amber-50 text-amber-700 border-amber-200"
                 : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"
             }`}
           >
-            {s}
+            {s.label}
           </button>
         ))}
       </div>
@@ -323,9 +351,11 @@ const ManageBookings = ({ searchQuery }) => {
       ) : sorted.length === 0 ? (
         <div className='bg-white rounded-2xl border border-stone-100 py-20 text-center'>
           <i className='fa fa-calendar-times text-5xl text-stone-200 mb-4 block' />
-          <p className='font-bold text-stone-500 mb-1'>No bookings found</p>
+          <p className='font-bold text-stone-500 mb-1'>
+            {t("manageBookings.empty.title")}
+          </p>
           <p className='text-sm text-stone-400'>
-            Try a different filter or search term.
+            {t("manageBookings.empty.subtitle")}
           </p>
         </div>
       ) : (
@@ -334,15 +364,7 @@ const ManageBookings = ({ searchQuery }) => {
             <table className='w-full text-sm'>
               <thead>
                 <tr className='border-b border-stone-100 bg-stone-50'>
-                  {[
-                    "Tour",
-                    "Customer",
-                    "Date",
-                    "Duration",
-                    "Total",
-                    "Status",
-                    "Actions",
-                  ].map((h) => (
+                  {tableHeaders.map((h) => (
                     <th
                       key={h}
                       className='px-4 py-3.5 text-left text-xs font-bold uppercase tracking-widest text-stone-400 whitespace-nowrap'
@@ -392,7 +414,11 @@ const ManageBookings = ({ searchQuery }) => {
                     </td>
                     {/* Duration */}
                     <td className='px-4 py-3 text-xs text-stone-500 whitespace-nowrap'>
-                      {b.duration_days ? `${b.duration_days}d` : "—"}
+                      {b.duration_days
+                        ? t("manageBookings.table.durationValue", {
+                            count: b.duration_days,
+                          })
+                        : "—"}
                     </td>
                     {/* Total */}
                     <td className='px-4 py-3'>
@@ -409,13 +435,13 @@ const ManageBookings = ({ searchQuery }) => {
                       <div className='flex items-center gap-2'>
                         <button
                           onClick={() => setStatusModal(b)}
-                          title='Update Status'
+                          title={t("manageBookings.actions.updateStatus")}
                           className='cursor-pointer w-8 h-8 rounded-xl bg-stone-100 hover:bg-amber-50 hover:text-amber-600 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-exchange-alt text-xs' />
                         </button>
                         <button
-                          title='View Booking'
+                          title={t("manageBookings.actions.view")}
                           className='cursor-pointer w-8 h-8 rounded-xl bg-stone-100 hover:bg-amber-50 hover:text-amber-600 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <Link to={`/booking/view/${b.id}`}>
@@ -424,7 +450,7 @@ const ManageBookings = ({ searchQuery }) => {
                         </button>
                         <button
                           onClick={() => setDeleteModal(b)}
-                          title='Delete'
+                          title={t("manageBookings.actions.delete")}
                           className='cursor-pointer w-8 h-8 rounded-xl bg-stone-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-trash text-xs' />
@@ -472,10 +498,10 @@ const ManageBookings = ({ searchQuery }) => {
                 className='font-black text-stone-800 text-lg mb-1'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Delete Booking?
+                {t("manageBookings.deleteModal.title")}
               </h3>
               <p className='text-sm text-stone-500 mb-6'>
-                This will permanently remove the booking for{" "}
+                {t("manageBookings.deleteModal.description")}{" "}
                 <strong>{deleteModal?.tour?.title}</strong>.
               </p>
               <div className='flex gap-3'>
@@ -483,7 +509,7 @@ const ManageBookings = ({ searchQuery }) => {
                   onClick={() => setDeleteModal(null)}
                   className='flex-1 py-2.5 rounded-xl text-sm font-semibold text-stone-600 border border-stone-200 hover:bg-stone-50 transition-colors'
                 >
-                  Cancel
+                  {t("manageBookings.actions.cancel")}
                 </button>
                 <button
                   onClick={handleDelete}
@@ -493,10 +519,10 @@ const ManageBookings = ({ searchQuery }) => {
                   {deleting ? (
                     <>
                       <i className='fa fa-spinner fa-spin mr-1.5' />
-                      Deleting...
+                      {t("manageBookings.deleteModal.deleting")}
                     </>
                   ) : (
-                    "Delete"
+                    t("manageBookings.deleteModal.deleteButton")
                   )}
                 </button>
               </div>

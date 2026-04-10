@@ -232,5 +232,65 @@
       "tooltipSpent": "gastado",
       "tooltipTraveller": "viajero{{count !== 1 ? 's' : ''}}"
     }
+  },
+  "manageBookings": {
+    "header": {
+      "eyebrow": "Administrador",
+      "title": "Gestionar Reservas",
+      "subtitle": "{{count}} reservas en total"
+    },
+    "stats": {
+      "total": "Total",
+      "confirmed": "Confirmadas",
+      "pending": "Pendientes",
+      "revenue": "Ingresos"
+    },
+    "filterTabs": {
+      "all": "Todas"
+    },
+    "statuses": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmado",
+      "completed": "Completado",
+      "cancelled": "Cancelado"
+    },
+    "table": {
+      "tour": "Tour",
+      "customer": "Cliente",
+      "date": "Fecha",
+      "duration": "Duración",
+      "durationValue": "{{count}}d",
+      "total": "Total",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "empty": {
+      "title": "No se encontraron reservas",
+      "subtitle": "Prueba con otro filtro o término de búsqueda."
+    },
+    "actions": {
+      "cancel": "Cancelar",
+      "updateStatus": "Actualizar estado",
+      "view": "Ver reserva",
+      "delete": "Eliminar"
+    },
+    "statusModal": {
+      "title": "Actualizar Estado",
+      "description": "Cambiar estado de",
+      "saveButton": "Guardar estado",
+      "saving": "Guardando..."
+    },
+    "deleteModal": {
+      "title": "¿Eliminar reserva?",
+      "description": "Esto eliminará permanentemente la reserva de",
+      "deleteButton": "Eliminar",
+      "deleting": "Eliminando..."
+    },
+    "errors": {
+      "fetchFailed": "Error al cargar las reservas.",
+      "updateFailed": "Error al actualizar el estado.",
+      "deleteFailed": "Error al eliminar la reserva.",
+      "deleteSuccess": "¡Reserva eliminada!"
+    }
   }
 }

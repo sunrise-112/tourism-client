@@ -232,5 +232,65 @@
       "tooltipSpent": "已消费",
       "tooltipTraveller": "位旅客"
     }
+  },
+  "manageBookings": {
+    "header": {
+      "eyebrow": "管理员",
+      "title": "管理预订",
+      "subtitle": "共 {{count}} 条预订"
+    },
+    "stats": {
+      "total": "总计",
+      "confirmed": "已确认",
+      "pending": "待处理",
+      "revenue": "收入"
+    },
+    "filterTabs": {
+      "all": "全部"
+    },
+    "statuses": {
+      "pending": "待处理",
+      "confirmed": "已确认",
+      "completed": "已完成",
+      "cancelled": "已取消"
+    },
+    "table": {
+      "tour": "行程",
+      "customer": "客户",
+      "date": "日期",
+      "duration": "时长",
+      "durationValue": "{{count}} 天",
+      "total": "总价",
+      "status": "状态",
+      "actions": "操作"
+    },
+    "empty": {
+      "title": "未找到预订",
+      "subtitle": "请尝试不同的筛选条件或搜索词。"
+    },
+    "actions": {
+      "cancel": "取消",
+      "updateStatus": "更新状态",
+      "view": "查看预订",
+      "delete": "删除"
+    },
+    "statusModal": {
+      "title": "更新状态",
+      "description": "更改状态：",
+      "saveButton": "保存状态",
+      "saving": "保存中..."
+    },
+    "deleteModal": {
+      "title": "删除预订？",
+      "description": "此操作将永久删除以下预订：",
+      "deleteButton": "删除",
+      "deleting": "删除中..."
+    },
+    "errors": {
+      "fetchFailed": "获取预订失败！",
+      "updateFailed": "更新状态失败！",
+      "deleteFailed": "删除预订失败！",
+      "deleteSuccess": "预订已删除！"
+    }
   }
 }

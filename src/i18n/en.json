@@ -232,5 +232,65 @@
       "tooltipSpent": "spent",
       "tooltipTraveller": "traveller{{count !== 1 ? 's' : ''}}"
     }
+  },
+  "manageBookings": {
+    "header": {
+      "eyebrow": "Admin",
+      "title": "Manage Bookings",
+      "subtitle": "{{count}} bookings in total"
+    },
+    "stats": {
+      "total": "Total",
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "revenue": "Revenue"
+    },
+    "filterTabs": {
+      "all": "All"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "table": {
+      "tour": "Tour",
+      "customer": "Customer",
+      "date": "Date",
+      "duration": "Duration",
+      "durationValue": "{{count}}d",
+      "total": "Total",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "empty": {
+      "title": "No bookings found",
+      "subtitle": "Try a different filter or search term."
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "updateStatus": "Update Status",
+      "view": "View Booking",
+      "delete": "Delete"
+    },
+    "statusModal": {
+      "title": "Update Status",
+      "description": "Change status for",
+      "saveButton": "Save Status",
+      "saving": "Saving..."
+    },
+    "deleteModal": {
+      "title": "Delete Booking?",
+      "description": "This will permanently remove the booking for",
+      "deleteButton": "Delete",
+      "deleting": "Deleting..."
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch bookings!",
+      "updateFailed": "Failed to update status!",
+      "deleteFailed": "Failed to delete booking!",
+      "deleteSuccess": "Booking deleted!"
+    }
   }
 }

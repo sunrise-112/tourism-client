@@ -232,5 +232,65 @@
       "tooltipSpent": "ausgegeben",
       "tooltipTraveller": "Reisende(r)"
     }
+  },
+  "manageBookings": {
+    "header": {
+      "eyebrow": "Administration",
+      "title": "Buchungen verwalten",
+      "subtitle": "{{count}} Buchungen insgesamt"
+    },
+    "stats": {
+      "total": "Gesamt",
+      "confirmed": "Bestätigt",
+      "pending": "Ausstehend",
+      "revenue": "Umsatz"
+    },
+    "filterTabs": {
+      "all": "Alle"
+    },
+    "statuses": {
+      "pending": "Ausstehend",
+      "confirmed": "Bestätigt",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert"
+    },
+    "table": {
+      "tour": "Tour",
+      "customer": "Kunde",
+      "date": "Datum",
+      "duration": "Dauer",
+      "durationValue": "{{count}} T.",
+      "total": "Gesamt",
+      "status": "Status",
+      "actions": "Aktionen"
+    },
+    "empty": {
+      "title": "Keine Buchungen gefunden",
+      "subtitle": "Bitte versuchen Sie einen anderen Filter oder Suchbegriff."
+    },
+    "actions": {
+      "cancel": "Abbrechen",
+      "updateStatus": "Status aktualisieren",
+      "view": "Buchung ansehen",
+      "delete": "Löschen"
+    },
+    "statusModal": {
+      "title": "Status aktualisieren",
+      "description": "Status ändern für",
+      "saveButton": "Status speichern",
+      "saving": "Wird gespeichert..."
+    },
+    "deleteModal": {
+      "title": "Buchung löschen?",
+      "description": "Diese Buchung wird unwiderruflich gelöscht für",
+      "deleteButton": "Löschen",
+      "deleting": "Wird gelöscht..."
+    },
+    "errors": {
+      "fetchFailed": "Buchungen konnten nicht geladen werden.",
+      "updateFailed": "Status konnte nicht aktualisiert werden.",
+      "deleteFailed": "Buchung konnte nicht gelöscht werden.",
+      "deleteSuccess": "Buchung wurde gelöscht."
+    }
   }
 }

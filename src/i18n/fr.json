@@ -232,5 +232,65 @@
       "tooltipSpent": "dépensé",
       "tooltipTraveller": "voyageur(s)"
     }
+  },
+  "manageBookings": {
+    "header": {
+      "eyebrow": "Administration",
+      "title": "Gérer les réservations",
+      "subtitle": "{{count}} réservations au total"
+    },
+    "stats": {
+      "total": "Total",
+      "confirmed": "Confirmées",
+      "pending": "En attente",
+      "revenue": "Revenus"
+    },
+    "filterTabs": {
+      "all": "Toutes"
+    },
+    "statuses": {
+      "pending": "En attente",
+      "confirmed": "Confirmé",
+      "completed": "Terminé",
+      "cancelled": "Annulé"
+    },
+    "table": {
+      "tour": "Circuit",
+      "customer": "Client",
+      "date": "Date",
+      "duration": "Durée",
+      "durationValue": "{{count}}j",
+      "total": "Total",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "empty": {
+      "title": "Aucune réservation trouvée",
+      "subtitle": "Essayez un autre filtre ou terme de recherche."
+    },
+    "actions": {
+      "cancel": "Annuler",
+      "updateStatus": "Mettre à jour le statut",
+      "view": "Voir la réservation",
+      "delete": "Supprimer"
+    },
+    "statusModal": {
+      "title": "Mettre à jour le statut",
+      "description": "Modifier le statut de",
+      "saveButton": "Enregistrer le statut",
+      "saving": "Enregistrement..."
+    },
+    "deleteModal": {
+      "title": "Supprimer la réservation ?",
+      "description": "Ceci supprimera définitivement la réservation pour",
+      "deleteButton": "Supprimer",
+      "deleting": "Suppression..."
+    },
+    "errors": {
+      "fetchFailed": "Impossible de charger les réservations.",
+      "updateFailed": "Impossible de mettre à jour le statut.",
+      "deleteFailed": "Impossible de supprimer la réservation.",
+      "deleteSuccess": "Réservation supprimée !"
+    }
   }
 }

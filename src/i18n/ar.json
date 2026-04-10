@@ -232,5 +232,65 @@
       "tooltipSpent": "أنفقت",
       "tooltipTraveller": "مسافر"
     }
+  },
+  "manageBookings": {
+    "header": {
+      "eyebrow": "المشرف",
+      "title": "إدارة الحجوزات",
+      "subtitle": "{{count}} حجز في المجموع"
+    },
+    "stats": {
+      "total": "الإجمالي",
+      "confirmed": "مؤكدة",
+      "pending": "معلقة",
+      "revenue": "الإيرادات"
+    },
+    "filterTabs": {
+      "all": "الكل"
+    },
+    "statuses": {
+      "pending": "معلق",
+      "confirmed": "مؤكد",
+      "completed": "مكتمل",
+      "cancelled": "ملغى"
+    },
+    "table": {
+      "tour": "الجولة",
+      "customer": "العميل",
+      "date": "التاريخ",
+      "duration": "المدة",
+      "durationValue": "{{count}} يوم",
+      "total": "الإجمالي",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "empty": {
+      "title": "لا توجد حجوزات",
+      "subtitle": "جرّب فلتراً مختلفاً أو كلمة بحث أخرى."
+    },
+    "actions": {
+      "cancel": "إلغاء",
+      "updateStatus": "تحديث الحالة",
+      "view": "عرض الحجز",
+      "delete": "حذف"
+    },
+    "statusModal": {
+      "title": "تحديث الحالة",
+      "description": "تغيير حالة",
+      "saveButton": "حفظ الحالة",
+      "saving": "جارٍ الحفظ..."
+    },
+    "deleteModal": {
+      "title": "حذف الحجز؟",
+      "description": "سيتم حذف الحجز نهائياً لـ",
+      "deleteButton": "حذف",
+      "deleting": "جارٍ الحذف..."
+    },
+    "errors": {
+      "fetchFailed": "فشل تحميل الحجوزات!",
+      "updateFailed": "فشل تحديث الحالة!",
+      "deleteFailed": "فشل حذف الحجز!",
+      "deleteSuccess": "تم حذف الحجز!"
+    }
   }
 }
