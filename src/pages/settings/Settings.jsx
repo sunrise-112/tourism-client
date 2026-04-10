@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import settingsService from "../../services/adminSettings";
+import userService from "../../services/userService";
 import LanguageSwitcher from "../../common/LanguageSwitcher";
+import role from "../../constants/role";
 
 // ─── primitives ───────────────────────────────────────────────────────────────
 
@@ -168,22 +170,6 @@ const EmailPanel = ({ settings, onToggle, saving }) => (
 
 // ─── tabs config ──────────────────────────────────────────────────────────────
 
-const TABS = [
-  {
-    id: "language",
-    label: "Language",
-    icon: "fa-globe",
-    eyebrow: "Localisation",
-  },
-  { id: "sms", label: "SMS", icon: "fa-comment-alt", eyebrow: "Notifications" },
-  {
-    id: "email",
-    label: "Email",
-    icon: "fa-envelope",
-    eyebrow: "Notifications",
-  },
-];
-
 // ─── Settings ─────────────────────────────────────────────────────────────────
 
 const Settings = ({ className = "" }) => {
@@ -191,11 +177,47 @@ const Settings = ({ className = "" }) => {
   const [settings, setSettings] = useState({ smtp: false, sms: false });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [user, setUser] = useState({});
+
+  const isAdmin = user?.role === role.ADMIN;
+
+  console.log("isAdmin: ", isAdmin);
+  console.log("user?.role: ", user?.role);
+  console.log("role.ADMIN: ", role.ADMIN);
+  const TABS = [
+    {
+      id: "language",
+      label: "Language",
+      icon: "fa-globe",
+      eyebrow: "Localisation",
+    },
+    ...(isAdmin
+      ? [
+          {
+            id: "sms",
+            label: "SMS",
+            icon: "fa-comment-alt",
+            eyebrow: "Notifications",
+          },
+          {
+            id: "email",
+            label: "Email",
+            icon: "fa-envelope",
+            eyebrow: "Notifications",
+          },
+        ]
+      : []),
+  ];
 
   // ── fetch on mount ──────────────────────────────────────────────────────────
   useEffect(() => {
     const fetchSettings = async () => {
       try {
+        const currentUser = userService.getCurrentUser();
+        setUser(currentUser);
+        console.log("CurrentUser: ", currentUser)
+        if (currentUser?.role !== role.ADMIN) return;
+
         const data = await settingsService.get();
         setSettings({ smtp: data.smtp, sms: data.sms });
       } catch {
@@ -232,11 +254,11 @@ const Settings = ({ className = "" }) => {
     if (loading) return <PanelSkeleton />;
 
     if (activeTab === "language") return <LanguagePanel />;
-    if (activeTab === "sms")
+    if (activeTab === "sms" && user?.role === role?.ADMIN)
       return (
         <SMSPanel settings={settings} onToggle={handleToggle} saving={saving} />
       );
-    if (activeTab === "email")
+    if (activeTab === "email" && user?.role === role?.ADMIN)
       return (
         <EmailPanel
           settings={settings}
