@@ -1241,5 +1241,73 @@
       "terms": "Conditions d'utilisation",
       "sitemap": "Plan du site"
     }
+  },
+  "aboutUs": {
+    "hero": {
+      "eyebrow": "Notre histoire",
+      "titleLine1": "Nous vivons et",
+      "titleLine2": "respirons le Maroc",
+      "subtitle": "Fondée par une équipe de Marocains passionnés, nous créons des voyages inoubliables à travers notre patrie depuis plus d'une décennie — un voyageur à la fois."
+    },
+    "stats": {
+      "destinations": "Destinations",
+      "happyTravelers": "Voyageurs heureux",
+      "avgRating": "Note moyenne",
+      "experience": "Expérience"
+    },
+    "mission": {
+      "eyebrow": "Notre mission",
+      "title": "Plus qu'un circuit — Une transformation",
+      "paragraph1": "Nous croyons que voyager devrait vous changer. Pas seulement votre fil Instagram — mais votre perspective, votre empathie, votre compréhension de ce que signifie être humain. Le Maroc a ce pouvoir comme peu d'endroits sur terre.",
+      "paragraph2": "C'est pourquoi nous allons plus loin. Nous vous emmenons à la coopérative d'argan familiale dans la vallée du Souss, à la médersa vieille de 900 ans à Fès, au feu du berger berbère dans le Haut Atlas. Le Maroc qui n'est pas dans les guides touristiques.",
+      "button": "Découvrez nos circuits",
+      "badge": "Années d'excellence"
+    },
+    "values": {
+      "eyebrow": "Ce qui nous motive",
+      "title": "Nos valeurs fondamentales",
+      "authentic": {
+        "title": "Expériences authentiques",
+        "desc": "Nous allons au-delà de la carte postale. Chaque itinéraire est conçu pour vous connecter à de vraies personnes, une vraie culture et un vrai Maroc."
+      },
+      "responsible": {
+        "title": "Tourisme responsable",
+        "desc": "Nous nous associons aux communautés locales, minimisons l'impact environnemental et veillons à ce que le tourisme profite aux personnes qui appellent le Maroc leur maison."
+      },
+      "safety": {
+        "title": "La sécurité d'abord",
+        "desc": "Tous nos guides sont agréés et formés aux premiers secours. Votre sécurité et votre confort sont notre priorité absolue lors de chaque voyage."
+      },
+      "quality": {
+        "title": "Qualité exceptionnelle",
+        "desc": "Des riads soigneusement sélectionnés aux camps privés dans le désert — nous nous préoccupons de chaque détail pour que vous puissiez vous concentrer sur l'aventure."
+      }
+    },
+    "team": {
+      "eyebrow": "Les personnes derrière la magie",
+      "title": "Rencontrez notre équipe",
+      "youssef": {
+        "name": "Youssef El Amrani",
+        "role": "Fondateur et guide principal",
+        "bio": "Né dans les montagnes de l'Atlas, Youssef a passé 15 ans à créer des voyages marocains immersifs qui vont bien au-delà des sentiers touristiques."
+      },
+      "fatima": {
+        "name": "Fatima Benali",
+        "role": "Responsable des opérations",
+        "bio": "Fatima veille à ce que chaque circuit se déroule parfaitement — des réservations d'hôtel aux passages frontaliers. Elle parle cinq langues et connaît chaque riad de Fès."
+      },
+      "karim": {
+        "name": "Karim Tazi",
+        "role": "Expert désert et trekking",
+        "bio": "Karim a grandi à Merzouga et a dirigé des centaines d'expéditions dans le désert. Sa connaissance du Sahara est inégalée."
+      }
+    },
+    "cta": {
+      "eyebrow": "Prêt à explorer ?",
+      "title": "Planifions votre voyage",
+      "subtitle": "Notre équipe est prête à créer votre aventure marocaine parfaite.",
+      "browseButton": "Parcourir les circuits",
+      "contactButton": "Contactez-nous"
+    }
   }
 }

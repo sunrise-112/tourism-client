@@ -1306,5 +1306,73 @@
       "terms": "Términos de servicio",
       "sitemap": "Mapa del sitio"
     }
+  },
+  "aboutUs": {
+    "hero": {
+      "eyebrow": "Nuestra Historia",
+      "titleLine1": "Vivimos y",
+      "titleLine2": "Respiramos Marruecos",
+      "subtitle": "Fundado por un equipo de apasionados marroquíes locales, hemos estado creando viajes inolvidables a través de nuestra patria durante más de una década — un viajero a la vez."
+    },
+    "stats": {
+      "destinations": "Destinos",
+      "happyTravelers": "Viajeros felices",
+      "avgRating": "Puntuación media",
+      "experience": "Experiencia"
+    },
+    "mission": {
+      "eyebrow": "Nuestra Misión",
+      "title": "Más que un tour — Una transformación",
+      "paragraph1": "Creemos que viajar debería cambiarte. No solo tu feed de Instagram — sino tu perspectiva, tu empatía, tu comprensión de lo que significa ser humano. Marruecos tiene ese poder como pocos lugares en la tierra.",
+      "paragraph2": "Por eso vamos más allá. Te llevamos a la cooperativa de argán familiar en el Valle del Souss, la madraza de 900 años en Fez, el fuego del pastor bereber en el Alto Atlas. El Marruecos que no está en las guías turísticas.",
+      "button": "Explora nuestros tours",
+      "badge": "Años de excelencia"
+    },
+    "values": {
+      "eyebrow": "Lo que nos impulsa",
+      "title": "Nuestros valores fundamentales",
+      "authentic": {
+        "title": "Experiencias auténticas",
+        "desc": "Vamos más allá de la postal. Cada itinerario está diseñado para conectarte con personas reales, cultura real y Marruecos real."
+      },
+      "responsible": {
+        "title": "Turismo responsable",
+        "desc": "Nos asociamos con comunidades locales, minimizamos el impacto ambiental y garantizamos que el turismo beneficie a las personas que llaman hogar a Marruecos."
+      },
+      "safety": {
+        "title": "La seguridad primero",
+        "desc": "Todos nuestros guías están licenciados y capacitados en primeros auxilios. Su seguridad y comodidad son nuestra máxima prioridad en cada viaje."
+      },
+      "quality": {
+        "title": "Calidad excepcional",
+        "desc": "Desde riads seleccionados a mano hasta campamentos privados en el desierto — nos obsesionamos con cada detalle para que puedas concentrarte en la aventura."
+      }
+    },
+    "team": {
+      "eyebrow": "Las personas detrás de la magia",
+      "title": "Conoce a nuestro equipo",
+      "youssef": {
+        "name": "Youssef El Amrani",
+        "role": "Fundador y guía principal",
+        "bio": "Nacido en las montañas del Atlas, Youssef ha pasado 15 años creando viajes marroquíes inmersivos que van mucho más allá del sendero turístico."
+      },
+      "fatima": {
+        "name": "Fatima Benali",
+        "role": "Jefa de Operaciones",
+        "bio": "Fatima asegura que cada tour funcione perfectamente — desde reservas de hotel hasta cruces fronterizos. Habla cinco idiomas y conoce cada riad en Fez."
+      },
+      "karim": {
+        "name": "Karim Tazi",
+        "role": "Experto en desierto y senderismo",
+        "bio": "Karim creció en Merzouga y ha liderado cientos de expediciones al desierto. Su conocimiento del Sahara es insuperable."
+      }
+    },
+    "cta": {
+      "eyebrow": "¿Listo para explorar?",
+      "title": "Planifiquemos tu viaje",
+      "subtitle": "Nuestro equipo está listo para crear tu aventura marroquí perfecta.",
+      "browseButton": "Ver tours",
+      "contactButton": "Contáctanos"
+    }
   }
 }

@@ -1241,5 +1241,73 @@
       "terms": "Terms of Service",
       "sitemap": "Sitemap"
     }
+  },
+  "aboutUs": {
+    "hero": {
+      "eyebrow": "Our Story",
+      "titleLine1": "We Live &",
+      "titleLine2": "Breathe Morocco",
+      "subtitle": "Founded by a team of passionate Moroccan locals, we've been crafting unforgettable journeys through our homeland for over a decade — one traveler at a time."
+    },
+    "stats": {
+      "destinations": "Destinations",
+      "happyTravelers": "Happy Travelers",
+      "avgRating": "Average Rating",
+      "experience": "Experience"
+    },
+    "mission": {
+      "eyebrow": "Our Mission",
+      "title": "More Than a Tour — A Transformation",
+      "paragraph1": "We believe travel should change you. Not just your Instagram feed — but your perspective, your empathy, your understanding of what it means to be human. Morocco has that power like few places on earth.",
+      "paragraph2": "That's why we go deeper. We take you to the family-run argan cooperative in the Souss Valley, the 900-year-old madrasa in Fez, the Berber shepherd's fire in the High Atlas. The Morocco that isn't in the guidebooks.",
+      "button": "Explore Our Tours",
+      "badge": "Years of excellence"
+    },
+    "values": {
+      "eyebrow": "What Drives Us",
+      "title": "Our Core Values",
+      "authentic": {
+        "title": "Authentic Experiences",
+        "desc": "We go beyond the postcard. Every itinerary is designed to connect you with real people, real culture, and real Morocco."
+      },
+      "responsible": {
+        "title": "Responsible Tourism",
+        "desc": "We partner with local communities, minimize environmental impact, and ensure tourism benefits the people who call Morocco home."
+      },
+      "safety": {
+        "title": "Safety First",
+        "desc": "All our guides are licensed and trained in first aid. Your safety and comfort are our absolute top priority on every trip."
+      },
+      "quality": {
+        "title": "Exceptional Quality",
+        "desc": "From hand-picked riads to private desert camps — we obsess over every detail so you can focus on the adventure."
+      }
+    },
+    "team": {
+      "eyebrow": "The People Behind the Magic",
+      "title": "Meet Our Team",
+      "youssef": {
+        "name": "Youssef El Amrani",
+        "role": "Founder & Lead Guide",
+        "bio": "Born in the Atlas Mountains, Youssef has spent 15 years crafting immersive Moroccan journeys that go far beyond the tourist trail."
+      },
+      "fatima": {
+        "name": "Fatima Benali",
+        "role": "Head of Operations",
+        "bio": "Fatima ensures every tour runs flawlessly — from hotel bookings to border crossings. She speaks five languages and knows every riad in Fez."
+      },
+      "karim": {
+        "name": "Karim Tazi",
+        "role": "Desert & Trekking Expert",
+        "bio": "Karim grew up in Merzouga and has led hundreds of desert expeditions. His knowledge of the Sahara is second to none."
+      }
+    },
+    "cta": {
+      "eyebrow": "Ready to explore?",
+      "title": "Let's Plan Your Journey",
+      "subtitle": "Our team is ready to craft your perfect Moroccan adventure.",
+      "browseButton": "Browse Tours",
+      "contactButton": "Contact Us"
+    }
   }
 }

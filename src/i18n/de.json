@@ -1241,5 +1241,73 @@
       "terms": "Nutzungsbedingungen",
       "sitemap": "Sitemap"
     }
+  },
+  "aboutUs": {
+    "hero": {
+      "eyebrow": "Unsere Geschichte",
+      "titleLine1": "Wir leben und",
+      "titleLine2": "atmen Marokko",
+      "subtitle": "Gegründet von einem Team leidenschaftlicher marokkanischer Einheimischer, gestalten wir seit über einem Jahrzehnt unvergessliche Reisen durch unser Heimatland – einen Reisenden nach dem anderen."
+    },
+    "stats": {
+      "destinations": "Reiseziele",
+      "happyTravelers": "Zufriedene Reisende",
+      "avgRating": "Durchschnittliche Bewertung",
+      "experience": "Erfahrung"
+    },
+    "mission": {
+      "eyebrow": "Unsere Mission",
+      "title": "Mehr als eine Tour – Eine Transformation",
+      "paragraph1": "Wir glauben, dass Reisen Sie verändern sollten. Nicht nur Ihren Instagram-Feed – sondern Ihre Perspektive, Ihr Einfühlungsvermögen, Ihr Verständnis dafür, was es bedeutet, Mensch zu sein. Marokko hat diese Kraft wie nur wenige Orte auf der Erde.",
+      "paragraph2": "Deshalb gehen wir tiefer. Wir bringen Sie zur familiengeführten Argan-Kooperative im Souss-Tal, zur 900 Jahre alten Medresse in Fès, zum Feuer des Berberhirten im Hohen Atlas. Das Marokko, das nicht in den Reiseführern steht.",
+      "button": "Entdecken Sie unsere Touren",
+      "badge": "Jahre der Exzellenz"
+    },
+    "values": {
+      "eyebrow": "Was uns antreibt",
+      "title": "Unsere Kernwerte",
+      "authentic": {
+        "title": "Authentische Erlebnisse",
+        "desc": "Wir gehen über die Postkarte hinaus. Jede Reiseroute ist darauf ausgerichtet, Sie mit echten Menschen, echter Kultur und echtem Marokko zu verbinden."
+      },
+      "responsible": {
+        "title": "Verantwortungsvoller Tourismus",
+        "desc": "Wir arbeiten mit lokalen Gemeinschaften zusammen, minimieren die Umweltbelastung und stellen sicher, dass der Tourismus den Menschen zugutekommt, die Marokko ihr Zuhause nennen."
+      },
+      "safety": {
+        "title": "Sicherheit zuerst",
+        "desc": "Alle unsere Guides sind lizenziert und in Erster Hilfe ausgebildet. Ihre Sicherheit und Ihr Komfort sind auf jeder Reise unsere oberste Priorität."
+      },
+      "quality": {
+        "title": "Außergewöhnliche Qualität",
+        "desc": "Von handverlesenen Riads bis hin zu privaten Wüstencamps – wir kümmern uns um jedes Detail, damit Sie sich auf das Abenteuer konzentrieren können."
+      }
+    },
+    "team": {
+      "eyebrow": "Die Menschen hinter der Magie",
+      "title": "Lernen Sie unser Team kennen",
+      "youssef": {
+        "name": "Youssef El Amrani",
+        "role": "Gründer & Leitfaden",
+        "bio": "Youssef wurde im Atlasgebirge geboren und hat 15 Jahre damit verbracht, immersive marokkanische Reisen zu gestalten, die weit über die Touristenpfade hinausgehen."
+      },
+      "fatima": {
+        "name": "Fatima Benali",
+        "role": "Leiterin der Betriebsabläufe",
+        "bio": "Fatima sorgt dafür, dass jede Tour einwandfrei läuft – von Hotelbuchungen bis zu Grenzübergängen. Sie spricht fünf Sprachen und kennt jedes Riad in Fès."
+      },
+      "karim": {
+        "name": "Karim Tazi",
+        "role": "Wüsten- & Trekking-Experte",
+        "bio": "Karim wuchs in Merzouga auf und hat Hunderte von Wüstenexpeditionen geleitet. Sein Wissen über die Sahara ist unübertroffen."
+      }
+    },
+    "cta": {
+      "eyebrow": "Bereit zu entdecken?",
+      "title": "Lassen Sie uns Ihre Reise planen",
+      "subtitle": "Unser Team ist bereit, Ihr perfektes marokkanisches Abenteuer zu gestalten.",
+      "browseButton": "Touren durchstöbern",
+      "contactButton": "Kontaktieren Sie uns"
+    }
   }
 }
