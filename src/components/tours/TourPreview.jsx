@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import tourService from "../../services/tourService";
 import renderImage from "../../utils/renderImage";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const TYPE_CONFIG = {
   tour: {
-    label: "Tour",
+    labelKey: "tourPreview.types.tour",
     icon: "🌍",
     gradient: "from-amber-500 to-orange-500",
     badge: "bg-amber-100 text-amber-800 border-amber-200",
   },
   excursion: {
-    label: "Excursion",
+    labelKey: "tourPreview.types.excursion",
     icon: "🧭",
     gradient: "from-sky-500 to-blue-600",
     badge: "bg-sky-100 text-sky-800 border-sky-200",
   },
   activity: {
-    label: "Activity",
+    labelKey: "tourPreview.types.activity",
     icon: "⚡",
     gradient: "from-emerald-500 to-teal-600",
     badge: "bg-emerald-100 text-emerald-800 border-emerald-200",
@@ -70,11 +71,15 @@ const InfoRow = ({ icon, label, value }) => (
 
 // ─── Gallery ──────────────────────────────────────────────────────────────────
 const GallerySection = ({ images }) => {
+  const { t } = useTranslation();
   const [active, setActive] = useState(0);
   if (!images?.length) return null;
   return (
     <div>
-      <SectionTitle>Gallery · {images.length} photos</SectionTitle>
+      <SectionTitle>
+        {t("tourPreview.gallery.title")} · {images.length}{" "}
+        {t("tourPreview.gallery.photos")}
+      </SectionTitle>
       <div className='rounded-2xl overflow-hidden aspect-video bg-gray-100 mb-2'>
         <img
           key={active}
@@ -109,12 +114,13 @@ const GallerySection = ({ images }) => {
 
 // ─── Inclusions / Exclusions ──────────────────────────────────────────────────
 const InclusionsExclusions = ({ inclusions, exclusions }) => {
+  const { t } = useTranslation();
   if (!inclusions?.length && !exclusions?.length) return null;
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
       {inclusions?.length > 0 && (
         <div>
-          <SectionTitle>Inclusions</SectionTitle>
+          <SectionTitle>{t("tourPreview.inclusions.title")}</SectionTitle>
           <div className='space-y-2'>
             {inclusions.map((inc, i) => (
               <div key={i} className='flex items-center gap-2.5'>
@@ -131,7 +137,7 @@ const InclusionsExclusions = ({ inclusions, exclusions }) => {
       )}
       {exclusions?.length > 0 && (
         <div>
-          <SectionTitle>Exclusions</SectionTitle>
+          <SectionTitle>{t("tourPreview.exclusions.title")}</SectionTitle>
           <div className='space-y-2'>
             {exclusions.map((exc, i) => (
               <div key={i} className='flex items-center gap-2.5'>
@@ -151,254 +157,323 @@ const InclusionsExclusions = ({ inclusions, exclusions }) => {
 };
 
 // ─── Type-specific main content ───────────────────────────────────────────────
-const TourDetails = ({ tour }) => (
-  <>
-    <div className='grid grid-cols-3 gap-3'>
-      <StatCard
-        icon='📅'
-        label='Duration'
-        value={tour.duration_days ? `${tour.duration_days} days` : null}
-      />
-      <StatCard icon='👥' label='Max Group' value={tour.max_group_size} />
-      <StatCard
-        icon='💰'
-        label='Per Day'
-        value={
-          tour.price && tour.duration_days
-            ? `$${Math.round(tour.price / tour.duration_days)}`
-            : null
-        }
-      />
-    </div>
+const TourDetails = ({ tour }) => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <div className='grid grid-cols-3 gap-3'>
+        <StatCard
+          icon='📅'
+          label={t("tourPreview.stats.duration")}
+          value={
+            tour.duration_days
+              ? `${tour.duration_days} ${t("tourPreview.units.days")}`
+              : null
+          }
+        />
+        <StatCard
+          icon='👥'
+          label={t("tourPreview.stats.maxGroup")}
+          value={tour.max_group_size}
+        />
+        <StatCard
+          icon='💰'
+          label={t("tourPreview.stats.perDay")}
+          value={
+            tour.price && tour.duration_days
+              ? `$${Math.round(tour.price / tour.duration_days)}`
+              : null
+          }
+        />
+      </div>
 
-    {tour.itineraries?.length > 0 && (
-      <div>
-        <SectionTitle>Itinerary · {tour.itineraries.length} days</SectionTitle>
-        <div className='relative'>
-          <div className='absolute left-[18px] top-0 bottom-0 w-px bg-amber-100' />
-          <div className='space-y-4'>
-            {tour.itineraries.map((day, i) => (
-              <div key={i} className='flex gap-4 relative'>
-                <div className='w-9 h-9 rounded-full bg-amber-400 flex items-center justify-center text-amber-900 font-black text-xs shrink-0 z-10 shadow-sm shadow-amber-200'>
-                  {day.day}
-                </div>
-                <div className='flex-1 bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm'>
-                  {day.image && (
-                    <img
-                      src={renderImage(day.image)}
-                      alt={day.title}
-                      className='w-full h-28 object-cover'
-                    />
-                  )}
-                  <div className='p-3'>
-                    <p className='font-bold text-gray-800 text-sm'>
-                      {day.title}
-                    </p>
-                    {day.location && (
-                      <p className='text-xs text-gray-400 flex items-center gap-1 mt-0.5'>
-                        <svg
-                          className='w-3 h-3 flex-shrink-0'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth={2}
-                            d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
-                          />
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth={2}
-                            d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'
-                          />
-                        </svg>
-                        {day.location}
-                      </p>
+      {tour.itineraries?.length > 0 && (
+        <div>
+          <SectionTitle>
+            {t("tourPreview.itinerary.title")} · {tour.itineraries.length}{" "}
+            {t("tourPreview.units.days")}
+          </SectionTitle>
+          <div className='relative'>
+            <div className='absolute left-[18px] top-0 bottom-0 w-px bg-amber-100' />
+            <div className='space-y-4'>
+              {tour.itineraries.map((day, i) => (
+                <div key={i} className='flex gap-4 relative'>
+                  <div className='w-9 h-9 rounded-full bg-amber-400 flex items-center justify-center text-amber-900 font-black text-xs shrink-0 z-10 shadow-sm shadow-amber-200'>
+                    {day.day}
+                  </div>
+                  <div className='flex-1 bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm'>
+                    {day.image && (
+                      <img
+                        src={renderImage(day.image)}
+                        alt={day.title}
+                        className='w-full h-28 object-cover'
+                      />
                     )}
-                    {day.description && (
-                      <p className='text-xs text-gray-500 mt-1.5 leading-relaxed line-clamp-2'>
-                        {day.description}
+                    <div className='p-3'>
+                      <p className='font-bold text-gray-800 text-sm'>
+                        {day.title}
                       </p>
-                    )}
+                      {day.location && (
+                        <p className='text-xs text-gray-400 flex items-center gap-1 mt-0.5'>
+                          <svg
+                            className='w-3 h-3 flex-shrink-0'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            stroke='currentColor'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth={2}
+                              d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
+                            />
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth={2}
+                              d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'
+                            />
+                          </svg>
+                          {day.location}
+                        </p>
+                      )}
+                      {day.description && (
+                        <p className='text-xs text-gray-500 mt-1.5 leading-relaxed line-clamp-2'>
+                          {day.description}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    )}
-  </>
-);
+      )}
+    </>
+  );
+};
 
-const ExcursionDetails = ({ tour }) => (
-  <>
-    <div className='grid grid-cols-3 gap-3'>
-      <StatCard
-        icon='⏱️'
-        label='Duration'
-        value={tour.duration_hours ? `${tour.duration_hours}h` : null}
-      />
-      <StatCard icon='👥' label='Max Group' value={tour.max_group_size} />
-      <StatCard
-        icon='💰'
-        label='Price'
-        value={tour.price ? `$${Number(tour.price).toLocaleString()}` : null}
-      />
-    </div>
-    <div>
-      <SectionTitle>Logistics</SectionTitle>
-      <div className='bg-white rounded-2xl border border-gray-100 shadow-sm px-4'>
-        {tour.departure_time && (
-          <InfoRow icon='🕗' label='Departure' value={tour.departure_time} />
-        )}
-        {tour.return_time && (
-          <InfoRow icon='🕕' label='Return' value={tour.return_time} />
-        )}
-        {tour.meeting_point && (
-          <InfoRow icon='📍' label='Meeting Point' value={tour.meeting_point} />
-        )}
-        <InfoRow
-          icon={tour.guide_included ? "✅" : "❌"}
-          label='Guide'
-          value={tour.guide_included ? "Included" : "Not included"}
+const ExcursionDetails = ({ tour }) => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <div className='grid grid-cols-3 gap-3'>
+        <StatCard
+          icon='⏱️'
+          label={t("tourPreview.stats.duration")}
+          value={tour.duration_hours ? `${tour.duration_hours}h` : null}
+        />
+        <StatCard
+          icon='👥'
+          label={t("tourPreview.stats.maxGroup")}
+          value={tour.max_group_size}
+        />
+        <StatCard
+          icon='💰'
+          label={t("tourPreview.stats.price")}
+          value={tour.price ? `$${Number(tour.price).toLocaleString()}` : null}
         />
       </div>
-    </div>
-  </>
-);
+      <div>
+        <SectionTitle>{t("tourPreview.logistics.title")}</SectionTitle>
+        <div className='bg-white rounded-2xl border border-gray-100 shadow-sm px-4'>
+          {tour.departure_time && (
+            <InfoRow
+              icon='🕗'
+              label={t("tourPreview.logistics.departure")}
+              value={tour.departure_time}
+            />
+          )}
+          {tour.return_time && (
+            <InfoRow
+              icon='🕕'
+              label={t("tourPreview.logistics.return")}
+              value={tour.return_time}
+            />
+          )}
+          {tour.meeting_point && (
+            <InfoRow
+              icon='📍'
+              label={t("tourPreview.logistics.meetingPoint")}
+              value={tour.meeting_point}
+            />
+          )}
+          <InfoRow
+            icon={tour.guide_included ? "✅" : "❌"}
+            label={t("tourPreview.logistics.guide")}
+            value={
+              tour.guide_included
+                ? t("tourPreview.logistics.included")
+                : t("tourPreview.logistics.notIncluded")
+            }
+          />
+        </div>
+      </div>
+    </>
+  );
+};
 
-const ActivityDetails = ({ tour }) => (
-  <>
-    <div className='grid grid-cols-3 gap-3'>
-      <StatCard
-        icon='⏱️'
-        label='Duration'
-        value={tour.duration_hours ? `${tour.duration_hours}h` : null}
-      />
-      <StatCard icon='👥' label='Max Group' value={tour.max_group_size} />
-      <StatCard
-        icon='💰'
-        label='Price'
-        value={tour.price ? `$${Number(tour.price).toLocaleString()}` : null}
-      />
-    </div>
-    <div>
-      <SectionTitle>Details</SectionTitle>
-      <div className='bg-white rounded-2xl border border-gray-100 shadow-sm px-4'>
-        {tour.difficulty_level && (
-          <div className='flex items-center gap-3 py-3 border-b border-gray-50'>
-            <span className='text-base w-6 text-center'>📊</span>
-            <span className='text-sm text-gray-500'>Difficulty</span>
-            <span
-              className={`ml-auto text-xs font-bold px-3 py-1 rounded-full border capitalize ${
-                DIFFICULTY_CONFIG[tour.difficulty_level]?.color
-              }`}
-            >
-              {tour.difficulty_level}
-            </span>
-          </div>
-        )}
-        <InfoRow
-          icon={tour.equipment_included ? "✅" : "❌"}
-          label='Equipment'
-          value={tour.equipment_included ? "Included" : "Not included"}
+const ActivityDetails = ({ tour }) => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <div className='grid grid-cols-3 gap-3'>
+        <StatCard
+          icon='⏱️'
+          label={t("tourPreview.stats.duration")}
+          value={tour.duration_hours ? `${tour.duration_hours}h` : null}
+        />
+        <StatCard
+          icon='👥'
+          label={t("tourPreview.stats.maxGroup")}
+          value={tour.max_group_size}
+        />
+        <StatCard
+          icon='💰'
+          label={t("tourPreview.stats.price")}
+          value={tour.price ? `$${Number(tour.price).toLocaleString()}` : null}
         />
       </div>
-    </div>
-  </>
-);
+      <div>
+        <SectionTitle>{t("tourPreview.activityDetails.title")}</SectionTitle>
+        <div className='bg-white rounded-2xl border border-gray-100 shadow-sm px-4'>
+          {tour.difficulty_level && (
+            <div className='flex items-center gap-3 py-3 border-b border-gray-50'>
+              <span className='text-base w-6 text-center'>📊</span>
+              <span className='text-sm text-gray-500'>
+                {t("tourPreview.activityDetails.difficulty")}
+              </span>
+              <span
+                className={`ml-auto text-xs font-bold px-3 py-1 rounded-full border capitalize ${
+                  DIFFICULTY_CONFIG[tour.difficulty_level]?.color
+                }`}
+              >
+                {t(`tourPreview.difficulty.${tour.difficulty_level}`)}
+              </span>
+            </div>
+          )}
+          <InfoRow
+            icon={tour.equipment_included ? "✅" : "❌"}
+            label={t("tourPreview.activityDetails.equipment")}
+            value={
+              tour.equipment_included
+                ? t("tourPreview.logistics.included")
+                : t("tourPreview.logistics.notIncluded")
+            }
+          />
+        </div>
+      </div>
+    </>
+  );
+};
 
 // ─── Sticky booking card ──────────────────────────────────────────────────────
-const BookingCard = ({ tour, config }) => (
-  <div className='bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden sticky top-6'>
-    <div className={`bg-gradient-to-r ${config.gradient} px-5 py-4`}>
-      {/*       <p className='text-white/75 text-xs font-medium mb-0.5'>Starting from</p>
-       */}{" "}
-      <p className='text-white text-3xl font-black leading-none'>
-        ${Number(tour.price ?? 0).toLocaleString()}
-      </p>
-    </div>
-
-    <div className='p-5 space-y-4'>
-      <div className='space-y-2.5'>
-        {tour.duration_days && (
-          <div className='flex justify-between text-sm'>
-            <span className='text-gray-500'>Duration</span>
-            <span className='font-semibold text-gray-800'>
-              {tour.duration_days} days
-            </span>
-          </div>
-        )}
-        {tour.duration_hours && (
-          <div className='flex justify-between text-sm'>
-            <span className='text-gray-500'>Duration</span>
-            <span className='font-semibold text-gray-800'>
-              {tour.duration_hours} hours
-            </span>
-          </div>
-        )}
-        {tour.max_group_size && (
-          <div className='flex justify-between text-sm'>
-            <span className='text-gray-500'>Max group</span>
-            <span className='font-semibold text-gray-800'>
-              {tour.max_group_size} people
-            </span>
-          </div>
-        )}
-        {tour.category && (
-          <div className='flex justify-between text-sm'>
-            <span className='text-gray-500'>Category</span>
-            <span className='font-semibold text-gray-800'>{tour.category}</span>
-          </div>
-        )}
-        {tour.departure_time && (
-          <div className='flex justify-between text-sm'>
-            <span className='text-gray-500'>Departure</span>
-            <span className='font-semibold text-gray-800'>
-              {tour.departure_time}
-            </span>
-          </div>
-        )}
-        {tour.meeting_point && (
-          <div className='flex justify-between text-sm'>
-            <span className='text-gray-500'>Meet at</span>
-            <span className='font-semibold text-gray-800 text-right max-w-[150px] truncate'>
-              {tour.meeting_point}
-            </span>
-          </div>
-        )}
-        {tour.difficulty_level && (
-          <div className='flex justify-between text-sm items-center'>
-            <span className='text-gray-500'>Difficulty</span>
-            <span
-              className={`text-xs font-bold px-2.5 py-0.5 rounded-full border capitalize ${
-                DIFFICULTY_CONFIG[tour.difficulty_level]?.color
-              }`}
-            >
-              {tour.difficulty_level}
-            </span>
-          </div>
-        )}
+const BookingCard = ({ tour, config }) => {
+  const { t } = useTranslation();
+  return (
+    <div className='bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden sticky top-6'>
+      <div className={`bg-gradient-to-r ${config.gradient} px-5 py-4`}>
+        {/*       <p className='text-white/75 text-xs font-medium mb-0.5'>Starting from</p>
+         */}{" "}
+        <p className='text-white text-3xl font-black leading-none'>
+          ${Number(tour.price ?? 0).toLocaleString()}
+        </p>
       </div>
 
-      {/* <div className='border-t border-gray-100 pt-4 space-y-2'>
-        <button
-          type='button'
-          className={`w-full py-3.5 rounded-xl font-bold text-sm text-white uppercase tracking-wide bg-gradient-to-r ${config.gradient} hover:opacity-90 active:scale-[0.98] transition-all duration-150 shadow-sm`}
-        >
-          Book Now
-        </button>
-        <p className='text-[11px] text-gray-400 text-center'>
-          Free cancellation · No hidden fees
-        </p>
-      </div> */}
+      <div className='p-5 space-y-4'>
+        <div className='space-y-2.5'>
+          {tour.duration_days && (
+            <div className='flex justify-between text-sm'>
+              <span className='text-gray-500'>
+                {t("tourPreview.bookingCard.duration")}
+              </span>
+              <span className='font-semibold text-gray-800'>
+                {tour.duration_days} {t("tourPreview.units.days")}
+              </span>
+            </div>
+          )}
+          {tour.duration_hours && (
+            <div className='flex justify-between text-sm'>
+              <span className='text-gray-500'>
+                {t("tourPreview.bookingCard.duration")}
+              </span>
+              <span className='font-semibold text-gray-800'>
+                {tour.duration_hours} {t("tourPreview.units.hours")}
+              </span>
+            </div>
+          )}
+          {tour.max_group_size && (
+            <div className='flex justify-between text-sm'>
+              <span className='text-gray-500'>
+                {t("tourPreview.bookingCard.maxGroup")}
+              </span>
+              <span className='font-semibold text-gray-800'>
+                {tour.max_group_size} {t("tourPreview.units.people")}
+              </span>
+            </div>
+          )}
+          {tour.category && (
+            <div className='flex justify-between text-sm'>
+              <span className='text-gray-500'>
+                {t("tourPreview.bookingCard.category")}
+              </span>
+              <span className='font-semibold text-gray-800'>
+                {tour.category}
+              </span>
+            </div>
+          )}
+          {tour.departure_time && (
+            <div className='flex justify-between text-sm'>
+              <span className='text-gray-500'>
+                {t("tourPreview.bookingCard.departure")}
+              </span>
+              <span className='font-semibold text-gray-800'>
+                {tour.departure_time}
+              </span>
+            </div>
+          )}
+          {tour.meeting_point && (
+            <div className='flex justify-between text-sm'>
+              <span className='text-gray-500'>
+                {t("tourPreview.bookingCard.meetAt")}
+              </span>
+              <span className='font-semibold text-gray-800 text-right max-w-[150px] truncate'>
+                {tour.meeting_point}
+              </span>
+            </div>
+          )}
+          {tour.difficulty_level && (
+            <div className='flex justify-between text-sm items-center'>
+              <span className='text-gray-500'>
+                {t("tourPreview.bookingCard.difficulty")}
+              </span>
+              <span
+                className={`text-xs font-bold px-2.5 py-0.5 rounded-full border capitalize ${
+                  DIFFICULTY_CONFIG[tour.difficulty_level]?.color
+                }`}
+              >
+                {t(`tourPreview.difficulty.${tour.difficulty_level}`)}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* <div className='border-t border-gray-100 pt-4 space-y-2'>
+          <button
+            type='button'
+            className={`w-full py-3.5 rounded-xl font-bold text-sm text-white uppercase tracking-wide bg-gradient-to-r ${config.gradient} hover:opacity-90 active:scale-[0.98] transition-all duration-150 shadow-sm`}
+          >
+            {t("tourPreview.bookingCard.bookNow")}
+          </button>
+          <p className='text-[11px] text-gray-400 text-center'>
+            {t("tourPreview.bookingCard.cancellationNote")}
+          </p>
+        </div> */}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 const Skeleton = () => (
@@ -428,6 +503,7 @@ const Skeleton = () => (
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 const TourPreview = ({ tourId }) => {
+  const { t } = useTranslation();
   const params = useParams();
   const id = tourId ?? params.id;
 
@@ -443,7 +519,7 @@ const TourPreview = ({ tourId }) => {
         const data = await tourService.getById(id);
         setTour(data);
       } catch (err) {
-        setError("Failed to load. Please try again.");
+        setError(t("tourPreview.error.failedToLoad"));
         console.error(err);
       } finally {
         setLoading(false);
@@ -500,16 +576,16 @@ const TourPreview = ({ tourId }) => {
           <span
             className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border backdrop-blur-sm ${config.badge}`}
           >
-            {config.icon} {config.label}
+            {config.icon} {t(config.labelKey)}
           </span>
           {tour.is_featured && (
             <span className='bg-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow'>
-              ⭐ Featured
+              ⭐ {t("tourPreview.badges.featured")}
             </span>
           )}
           {tour.is_hot_deal && (
             <span className='bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow'>
-              🔥 Hot Deal
+              🔥 {t("tourPreview.badges.hotDeal")}
             </span>
           )}
         </div>
@@ -562,7 +638,7 @@ const TourPreview = ({ tourId }) => {
           <div className='space-y-10 min-w-0'>
             {tour.description && (
               <div>
-                <SectionTitle>About</SectionTitle>
+                <SectionTitle>{t("tourPreview.about.title")}</SectionTitle>
                 <p className='text-gray-600 leading-relaxed'>
                   {tour.description}
                 </p>
@@ -593,7 +669,9 @@ const TourPreview = ({ tourId }) => {
       {/* Mobile sticky bottom CTA */}
       <div className='lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 flex items-center justify-between shadow-lg z-30'>
         <div>
-          <p className='text-xs text-gray-400 font-medium'>Starting from</p>
+          <p className='text-xs text-gray-400 font-medium'>
+            {t("tourPreview.mobileCta.startingFrom")}
+          </p>
           <p className='text-xl font-black text-gray-900'>
             ${Number(tour.price ?? 0).toLocaleString()}
           </p>
@@ -602,7 +680,7 @@ const TourPreview = ({ tourId }) => {
           type='button'
           className={`bg-gradient-to-r ${config.gradient} text-white font-bold text-sm px-8 py-3 rounded-xl shadow active:scale-95 transition-all`}
         >
-          Book Now
+          {t("tourPreview.mobileCta.bookNow")}
         </button>
       </div>
       <div className='lg:hidden h-20' />

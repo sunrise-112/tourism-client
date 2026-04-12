@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Joi from "joi-browser";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // Hooks
 import useForm from "../../hooks/useForm";
@@ -33,10 +34,10 @@ import { toast } from "react-toastify";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const DIFFICULTY_OPTIONS = [
-  { id: "easy", name: "Easy" },
-  { id: "moderate", name: "Moderate" },
-  { id: "hard", name: "Hard" },
-  { id: "expert", name: "Expert" },
+  { id: "easy", name: "easy" },
+  { id: "moderate", name: "moderate" },
+  { id: "hard", name: "hard" },
+  { id: "expert", name: "expert" },
 ];
 
 const DIFFICULTY_COLORS = {
@@ -48,17 +49,17 @@ const DIFFICULTY_COLORS = {
 
 const TYPE_META = {
   tour: {
-    label: "Tour",
+    labelKey: "tourForm.types.tour",
     icon: "🌍",
     color: "bg-blue-100 text-blue-700 border-blue-200",
   },
   excursion: {
-    label: "Excursion",
+    labelKey: "tourForm.types.excursion",
     icon: "🧭",
     color: "bg-amber-100 text-amber-700 border-amber-200",
   },
   activity: {
-    label: "Activity",
+    labelKey: "tourForm.types.activity",
     icon: "⚡",
     color: "bg-green-100 text-green-700 border-green-200",
   },
@@ -72,28 +73,55 @@ const getImageSrc = (value) => {
   return null;
 };
 
-const getCompletenessFields = (data, itineraryData, activeType) => {
+const getCompletenessFields = (data, itineraryData, activeType, t) => {
   const common = [
-    { label: "Title", done: !!data?.title },
-    { label: "Description", done: !!data?.description },
-    { label: "Destination", done: !!data?.destination },
-    { label: "Price", done: !!data?.price },
-    { label: "Cover", done: !!data?.cover_image },
-    { label: "Gallery", done: (data?.gallery?.length ?? 0) > 0 },
+    { label: t("tourForm.completeness.title"), done: !!data?.title },
+    {
+      label: t("tourForm.completeness.description"),
+      done: !!data?.description,
+    },
+    {
+      label: t("tourForm.completeness.destination"),
+      done: !!data?.destination,
+    },
+    { label: t("tourForm.completeness.price"), done: !!data?.price },
+    { label: t("tourForm.completeness.cover"), done: !!data?.cover_image },
+    {
+      label: t("tourForm.completeness.gallery"),
+      done: (data?.gallery?.length ?? 0) > 0,
+    },
   ];
   const byType = {
     tour: [
-      { label: "Duration", done: !!data?.duration_days },
-      { label: "Itinerary", done: (itineraryData?.length ?? 0) > 0 },
+      {
+        label: t("tourForm.completeness.duration"),
+        done: !!data?.duration_days,
+      },
+      {
+        label: t("tourForm.completeness.itinerary"),
+        done: (itineraryData?.length ?? 0) > 0,
+      },
     ],
     excursion: [
-      { label: "Departure", done: !!data?.departure_time },
-      { label: "Return", done: !!data?.return_time },
-      { label: "Meet Point", done: !!data?.meeting_point },
+      {
+        label: t("tourForm.completeness.departure"),
+        done: !!data?.departure_time,
+      },
+      { label: t("tourForm.completeness.return"), done: !!data?.return_time },
+      {
+        label: t("tourForm.completeness.meetPoint"),
+        done: !!data?.meeting_point,
+      },
     ],
     activity: [
-      { label: "Duration", done: !!data?.duration_hours },
-      { label: "Difficulty", done: !!data?.difficulty_level },
+      {
+        label: t("tourForm.completeness.duration"),
+        done: !!data?.duration_hours,
+      },
+      {
+        label: t("tourForm.completeness.difficulty"),
+        done: !!data?.difficulty_level,
+      },
     ],
   };
   return [...common, ...(byType[activeType] ?? [])];
@@ -122,117 +150,124 @@ const FormSection = ({ title, description, children, icon }) => (
 );
 
 // ─── Type-specific form sections ──────────────────────────────────────────────
-const ExcursionFields = ({ data, errors, handleChange }) => (
-  <FormSection
-    title='Excursion Details'
-    description='Timing and logistics'
-    icon='🧭'
-  >
-    <TwoCol>
-      <div>
-        {renderTimeInput(
-          "Departure Time",
-          "departure_time",
+const ExcursionFields = ({ data, errors, handleChange }) => {
+  const { t } = useTranslation();
+  return (
+    <FormSection
+      title={t("tourForm.excursionDetails.title")}
+      description={t("tourForm.excursionDetails.description")}
+      icon='🧭'
+    >
+      <TwoCol>
+        <div>
+          {renderTimeInput(
+            t("tourForm.excursionDetails.departureTime"),
+            "departure_time",
+            data,
+            errors,
+            handleChange
+          )}
+        </div>
+        <div>
+          {renderTimeInput(
+            t("tourForm.excursionDetails.returnTime"),
+            "return_time",
+            data,
+            errors,
+            handleChange
+          )}
+        </div>
+      </TwoCol>
+      <TwoCol>
+        <div>
+          {renderInput(
+            t("tourForm.excursionDetails.durationHours"),
+            "duration_hours",
+            data,
+            errors,
+            handleChange,
+            "number",
+            false
+          )}
+        </div>
+        <div>
+          {renderInput(
+            t("tourForm.excursionDetails.meetingPoint"),
+            "meeting_point",
+            data,
+            errors,
+            handleChange,
+            "text",
+            false
+          )}
+        </div>
+      </TwoCol>
+      <div className='bg-gray-50 rounded-xl px-4 py-3 border border-gray-100'>
+        {ToggleSwitcher({
+          label: t("tourForm.excursionDetails.guideIncluded"),
+          name: "guide_included",
           data,
           errors,
-          handleChange
-        )}
+          onChange: handleChange,
+          bg_color: "bg-blue-400",
+        })}
       </div>
-      <div>
-        {renderTimeInput(
-          "Return Time",
-          "return_time",
-          data,
-          errors,
-          handleChange
-        )}
-      </div>
-    </TwoCol>
-    <TwoCol>
-      <div>
-        {renderInput(
-          "Duration (hours)",
-          "duration_hours",
-          data,
-          errors,
-          handleChange,
-          "number",
-          false
-        )}
-      </div>
-      <div>
-        {renderInput(
-          "Meeting Point",
-          "meeting_point",
-          data,
-          errors,
-          handleChange,
-          "text",
-          false
-        )}
-      </div>
-    </TwoCol>
-    <div className='bg-gray-50 rounded-xl px-4 py-3 border border-gray-100'>
-      {ToggleSwitcher({
-        label: "Guide Included",
-        name: "guide_included",
-        data,
-        errors,
-        onChange: handleChange,
-        bg_color: "bg-blue-400",
-      })}
-    </div>
-  </FormSection>
-);
+    </FormSection>
+  );
+};
 
-const ActivityFields = ({ data, errors, handleChange }) => (
-  <FormSection
-    title='Activity Details'
-    description='Duration and requirements'
-    icon='⚡'
-  >
-    <TwoCol>
-      <div>
-        {renderInput(
-          "Duration (hours)",
-          "duration_hours",
+const ActivityFields = ({ data, errors, handleChange }) => {
+  const { t } = useTranslation();
+  return (
+    <FormSection
+      title={t("tourForm.activityDetails.title")}
+      description={t("tourForm.activityDetails.description")}
+      icon='⚡'
+    >
+      <TwoCol>
+        <div>
+          {renderInput(
+            t("tourForm.activityDetails.durationHours"),
+            "duration_hours",
+            data,
+            errors,
+            handleChange,
+            "number",
+            false
+          )}
+        </div>
+        <div>
+          {renderSelect(
+            t("tourForm.activityDetails.difficultyLevel"),
+            "difficulty_level",
+            data,
+            errors,
+            handleChange,
+            DIFFICULTY_OPTIONS,
+            "name",
+            "id"
+          )}
+        </div>
+      </TwoCol>
+      <div className='bg-gray-50 rounded-xl px-4 py-3 border border-gray-100'>
+        {renderCheckBox(
+          t("tourForm.activityDetails.equipmentIncluded"),
+          "equipment_included",
           data,
           errors,
           handleChange,
-          "number",
-          false
+          null,
+          null,
+          t("tourForm.activityDetails.equipmentIncludedHint")
         )}
       </div>
-      <div>
-        {renderSelect(
-          "Difficulty Level",
-          "difficulty_level",
-          data,
-          errors,
-          handleChange,
-          DIFFICULTY_OPTIONS,
-          "name",
-          "id"
-        )}
-      </div>
-    </TwoCol>
-    <div className='bg-gray-50 rounded-xl px-4 py-3 border border-gray-100'>
-      {renderCheckBox(
-        "Equipment Included",
-        "equipment_included",
-        data,
-        errors,
-        handleChange,
-        null,
-        null,
-        "All necessary equipment is provided"
-      )}
-    </div>
-  </FormSection>
-);
+    </FormSection>
+  );
+};
 
 // ─── Type-specific preview blocks ─────────────────────────────────────────────
 const ExcursionPreview = ({ data }) => {
+  const { t } = useTranslation();
   if (
     !data?.departure_time &&
     !data?.return_time &&
@@ -241,18 +276,30 @@ const ExcursionPreview = ({ data }) => {
   )
     return null;
   const rows = [
-    { icon: "🕗", label: "Departs", value: data?.departure_time },
-    { icon: "🕕", label: "Returns", value: data?.return_time },
+    {
+      icon: "🕗",
+      label: t("tourForm.preview.departs"),
+      value: data?.departure_time,
+    },
+    {
+      icon: "🕕",
+      label: t("tourForm.preview.returns"),
+      value: data?.return_time,
+    },
     {
       icon: "⏱️",
-      label: "Duration",
+      label: t("tourForm.preview.duration"),
       value: data?.duration_hours ? `${data.duration_hours}h` : null,
     },
-    { icon: "📍", label: "Meet at", value: data?.meeting_point },
+    {
+      icon: "📍",
+      label: t("tourForm.preview.meetAt"),
+      value: data?.meeting_point,
+    },
     {
       icon: "👤",
-      label: "Guide",
-      value: data?.guide_included ? "Included" : null,
+      label: t("tourForm.preview.guide"),
+      value: data?.guide_included ? t("tourForm.preview.included") : null,
       green: true,
     },
   ].filter((r) => r.value);
@@ -260,7 +307,7 @@ const ExcursionPreview = ({ data }) => {
   return (
     <div>
       <p className='text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2'>
-        Excursion Info
+        {t("tourForm.preview.excursionInfo")}
       </p>
       <div className='space-y-1.5'>
         {rows.map(({ icon, label, value, green }) => (
@@ -282,17 +329,20 @@ const ExcursionPreview = ({ data }) => {
 };
 
 const ActivityPreview = ({ data }) => {
+  const { t } = useTranslation();
   if (!data?.difficulty_level && !data?.duration_hours) return null;
   return (
     <div>
       <p className='text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2'>
-        Activity Info
+        {t("tourForm.preview.activityInfo")}
       </p>
       <div className='space-y-1.5'>
         {data?.duration_hours && (
           <div className='flex items-center gap-2 text-xs'>
             <span className='text-base'>⏱️</span>
-            <span className='text-gray-500'>Duration</span>
+            <span className='text-gray-500'>
+              {t("tourForm.preview.duration")}
+            </span>
             <span className='font-semibold text-gray-700 ml-auto'>
               {data.duration_hours}h
             </span>
@@ -301,22 +351,26 @@ const ActivityPreview = ({ data }) => {
         {data?.difficulty_level && (
           <div className='flex items-center gap-2 text-xs'>
             <span className='text-base'>📊</span>
-            <span className='text-gray-500'>Difficulty</span>
+            <span className='text-gray-500'>
+              {t("tourForm.preview.difficulty")}
+            </span>
             <span
               className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full border capitalize ${
                 DIFFICULTY_COLORS[data.difficulty_level]
               }`}
             >
-              {data.difficulty_level}
+              {t(`tourForm.difficulty.${data.difficulty_level}`)}
             </span>
           </div>
         )}
         {data?.equipment_included && (
           <div className='flex items-center gap-2 text-xs'>
             <span className='text-base'>🎒</span>
-            <span className='text-gray-500'>Equipment</span>
+            <span className='text-gray-500'>
+              {t("tourForm.preview.equipment")}
+            </span>
             <span className='font-semibold text-green-600 ml-auto'>
-              Included
+              {t("tourForm.preview.included")}
             </span>
           </div>
         )}
@@ -327,12 +381,21 @@ const ActivityPreview = ({ data }) => {
 
 // ─── Stats row per type ───────────────────────────────────────────────────────
 const PreviewStats = ({ data, activeType }) => {
+  const { t } = useTranslation();
   const statsByType = {
     tour: [
-      { label: "Days", value: data?.duration_days, icon: "📅" },
-      { label: "Max Group", value: data?.max_group_size, icon: "👥" },
       {
-        label: "Per day",
+        label: t("tourForm.stats.days"),
+        value: data?.duration_days,
+        icon: "📅",
+      },
+      {
+        label: t("tourForm.stats.maxGroup"),
+        value: data?.max_group_size,
+        icon: "👥",
+      },
+      {
+        label: t("tourForm.stats.perDay"),
         value:
           data?.price && data?.duration_days
             ? `$${Math.round(data.price / data.duration_days)}`
@@ -342,27 +405,37 @@ const PreviewStats = ({ data, activeType }) => {
     ],
     excursion: [
       {
-        label: "Hours",
+        label: t("tourForm.stats.hours"),
         value: data?.duration_hours ? `${data.duration_hours}h` : null,
         icon: "⏱️",
       },
-      { label: "Max Group", value: data?.max_group_size, icon: "👥" },
       {
-        label: "Price",
+        label: t("tourForm.stats.maxGroup"),
+        value: data?.max_group_size,
+        icon: "👥",
+      },
+      {
+        label: t("tourForm.stats.price"),
         value: data?.price ? `$${Number(data.price).toLocaleString()}` : null,
         icon: "💰",
       },
     ],
     activity: [
       {
-        label: "Hours",
+        label: t("tourForm.stats.hours"),
         value: data?.duration_hours ? `${data.duration_hours}h` : null,
         icon: "⏱️",
       },
-      { label: "Max Group", value: data?.max_group_size, icon: "👥" },
       {
-        label: "Difficulty",
-        value: data?.difficulty_level ?? null,
+        label: t("tourForm.stats.maxGroup"),
+        value: data?.max_group_size,
+        icon: "👥",
+      },
+      {
+        label: t("tourForm.stats.difficulty"),
+        value: data?.difficulty_level
+          ? t(`tourForm.difficulty.${data.difficulty_level}`)
+          : null,
         icon: "📊",
       },
     ],
@@ -380,8 +453,8 @@ const PreviewStats = ({ data, activeType }) => {
           <p className='text-base'>{icon}</p>
           <p
             className={`text-xs font-bold mt-0.5 capitalize ${
-              label === "Difficulty" && value
-                ? DIFFICULTY_COLORS[value]?.split(" ")[1]
+              label === t("tourForm.stats.difficulty") && value
+                ? DIFFICULTY_COLORS[data?.difficulty_level]?.split(" ")[1]
                 : "text-gray-800"
             }`}
           >
@@ -403,6 +476,7 @@ const LivePreview = ({
   id,
   Type,
 }) => {
+  const { t } = useTranslation();
   const activeType = data?.type || Type?.toLowerCase();
   const meta = TYPE_META[activeType] ?? TYPE_META.tour;
   const coverSrc = getImageSrc(data?.cover_image);
@@ -410,7 +484,7 @@ const LivePreview = ({
     .slice(0, 4)
     .map(getImageSrc)
     .filter(Boolean);
-  const fields = getCompletenessFields(data, itineraryData, activeType);
+  const fields = getCompletenessFields(data, itineraryData, activeType, t);
   const pct = Math.round(
     (fields.filter((f) => f.done).length / fields.length) * 100
   );
@@ -423,7 +497,7 @@ const LivePreview = ({
           {coverSrc ? (
             <img
               src={coverSrc}
-              alt='cover'
+              alt={t("tourForm.preview.coverAlt")}
               className='w-full h-full object-cover transition-all duration-500'
             />
           ) : (
@@ -441,7 +515,9 @@ const LivePreview = ({
                   d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
                 />
               </svg>
-              <span className='text-xs font-medium'>No cover image</span>
+              <span className='text-xs font-medium'>
+                {t("tourForm.preview.noCoverImage")}
+              </span>
             </div>
           )}
 
@@ -449,16 +525,16 @@ const LivePreview = ({
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${meta.color}`}
             >
-              {meta.icon} {meta.label}
+              {meta.icon} {t(meta.labelKey)}
             </span>
             {data?.is_featured && (
               <span className='bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm'>
-                ⭐ Featured
+                ⭐ {t("tourForm.badges.featured")}
               </span>
             )}
             {data?.is_hot_deal && (
               <span className='bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm'>
-                🔥 Hot Deal
+                🔥 {t("tourForm.badges.hotDeal")}
               </span>
             )}
           </div>
@@ -474,7 +550,7 @@ const LivePreview = ({
           {data?.price && (
             <div className='absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm rounded-xl px-3 py-1.5 shadow'>
               <span className='text-[10px] text-gray-400 font-medium block'>
-                From
+                {t("tourForm.preview.from")}
               </span>
               <p className='text-base font-bold text-gray-900 leading-none'>
                 ${Number(data.price).toLocaleString()}
@@ -489,7 +565,9 @@ const LivePreview = ({
             <h3 className='font-bold text-gray-900 text-lg leading-snug'>
               {data?.title || (
                 <span className='text-gray-300 font-normal italic text-base'>
-                  {meta.label} title…
+                  {t("tourForm.preview.titlePlaceholder", {
+                    type: t(meta.labelKey),
+                  })}
                 </span>
               )}
             </h3>
@@ -533,8 +611,10 @@ const LivePreview = ({
           {galleryPreviews.length > 0 && (
             <div>
               <p className='text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2'>
-                Gallery · {data.gallery.length} photo
-                {data.gallery.length !== 1 ? "s" : ""}
+                {t("tourForm.preview.gallery")} · {data.gallery.length}{" "}
+                {data.gallery.length !== 1
+                  ? t("tourForm.preview.photos")
+                  : t("tourForm.preview.photo")}
               </p>
               <div className='grid grid-cols-4 gap-1 rounded-xl overflow-hidden'>
                 {galleryPreviews.map((src, i) => (
@@ -561,8 +641,10 @@ const LivePreview = ({
           {activeType === "tour" && itineraryData?.length > 0 && (
             <div>
               <p className='text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2'>
-                Itinerary · {itineraryData.length} day
-                {itineraryData.length !== 1 ? "s" : ""}
+                {t("tourForm.preview.itinerary")} · {itineraryData.length}{" "}
+                {itineraryData.length !== 1
+                  ? t("tourForm.preview.days")
+                  : t("tourForm.preview.day")}
               </p>
               <div className='space-y-1.5'>
                 {itineraryData.slice(0, 3).map((day, i) => (
@@ -571,7 +653,7 @@ const LivePreview = ({
                       {day.day}
                     </span>
                     <span className='text-gray-600 truncate'>
-                      {day.title || "Untitled day"}
+                      {day.title || t("tourForm.preview.untitledDay")}
                     </span>
                     {day.location && (
                       <span className='text-gray-300 text-[10px] ml-auto flex-shrink-0 truncate max-w-[80px]'>
@@ -582,7 +664,7 @@ const LivePreview = ({
                 ))}
                 {itineraryData.length > 3 && (
                   <p className='text-[10px] text-gray-400 pl-7'>
-                    +{itineraryData.length - 3} more days
+                    +{itineraryData.length - 3} {t("tourForm.preview.moreDays")}
                   </p>
                 )}
               </div>
@@ -595,7 +677,7 @@ const LivePreview = ({
       <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-4 space-y-3'>
         <div className='flex items-center justify-between'>
           <p className='text-[11px] font-bold text-gray-400 uppercase tracking-widest'>
-            Completeness
+            {t("tourForm.completeness.label")}
           </p>
           <span
             className={`text-xs font-bold ${
@@ -664,12 +746,12 @@ const LivePreview = ({
                 d='M4 12a8 8 0 018-8v8H4z'
               />
             </svg>
-            Processing…
+            {t("tourForm.actions.processing")}
           </>
         ) : id ? (
-          `Update ${Type}`
+          t("tourForm.actions.update", { type: Type })
         ) : (
-          `Publish ${Type}`
+          t("tourForm.actions.publish", { type: Type })
         )}
       </button>
     </div>
@@ -678,6 +760,7 @@ const LivePreview = ({
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 const TourForm = ({ Type }) => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const activeType = Type;
 
@@ -693,10 +776,10 @@ const TourForm = ({ Type }) => {
   const [exclusions, setExclusions] = useState([]);
 
   const CATEGORIES = [
-    { id: 1, name: "Adventure" },
-    { id: 2, name: "Cultural" },
-    { id: 3, name: "Coastal" },
-    { id: 4, name: "Historical" },
+    { id: 1, name: t("tourForm.categories.adventure") },
+    { id: 2, name: t("tourForm.categories.cultural") },
+    { id: 3, name: t("tourForm.categories.coastal") },
+    { id: 4, name: t("tourForm.categories.historical") },
   ];
 
   const getSchema = (activeType) => {
@@ -895,7 +978,11 @@ const TourForm = ({ Type }) => {
 
       const label =
         activeType[0].toUpperCase() + activeType.slice(1).toLowerCase();
-      toast.success(`${label} ${id ? "updated" : "created"} successfully!`);
+      toast.success(
+        id
+          ? t("tourForm.toast.updated", { type: label })
+          : t("tourForm.toast.created", { type: label })
+      );
     } catch (err) {
       toast.error(err.response.data.message);
     } finally {
@@ -931,7 +1018,9 @@ const TourForm = ({ Type }) => {
               d='M4 12a8 8 0 018-8v8H4z'
             />
           </svg>
-          <p className='text-sm text-gray-400 font-medium'>Loading {Type}…</p>
+          <p className='text-sm text-gray-400 font-medium'>
+            {t("tourForm.loading", { type: Type })}
+          </p>
         </div>
       </div>
     );
@@ -951,10 +1040,14 @@ const TourForm = ({ Type }) => {
               </div>
               <div>
                 <h1 className='text-sm font-bold text-gray-900'>
-                  {id ? `Edit ${Type}` : `New ${Type}`}
+                  {id
+                    ? t("tourForm.header.edit", { type: Type })
+                    : t("tourForm.header.new", { type: Type })}
                 </h1>
                 <p className='text-[11px] text-gray-400'>
-                  {id ? `Update ${Type} details` : "Fill in details to publish"}
+                  {id
+                    ? t("tourForm.header.editSubtitle", { type: Type })
+                    : t("tourForm.header.newSubtitle")}
                 </p>
               </div>
             </div>
@@ -962,7 +1055,7 @@ const TourForm = ({ Type }) => {
               type='button'
               className='text-sm text-gray-400 hover:text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors font-medium'
             >
-              Cancel
+              {t("tourForm.actions.cancel")}
             </button>
           </div>
         </div>
@@ -974,12 +1067,14 @@ const TourForm = ({ Type }) => {
             <div className='space-y-6 min-w-0'>
               {/* ── Common ── */}
               <FormSection
-                title='Basic Information'
-                description={`Core ${Type} details`}
+                title={t("tourForm.sections.basicInfo")}
+                description={t("tourForm.sections.basicInfoDesc", {
+                  type: Type,
+                })}
                 icon='📋'
               >
                 {renderInput(
-                  "Title",
+                  t("tourForm.fields.title"),
                   "title",
                   data,
                   errors,
@@ -988,14 +1083,14 @@ const TourForm = ({ Type }) => {
                   true
                 )}
                 {renderTextarea(
-                  "Description",
+                  t("tourForm.fields.description"),
                   "description",
                   data,
                   errors,
                   handleChange
                 )}
                 {renderInput(
-                  "Destination",
+                  t("tourForm.fields.destination"),
                   "destination",
                   data,
                   errors,
@@ -1006,14 +1101,14 @@ const TourForm = ({ Type }) => {
               </FormSection>
 
               <FormSection
-                title='Pricing & Logistics'
-                description='Capacity, duration and cost'
+                title={t("tourForm.sections.pricingLogistics")}
+                description={t("tourForm.sections.pricingLogisticsDesc")}
                 icon='💼'
               >
                 <TwoCol>
                   <div>
                     {renderInput(
-                      "Price ($)",
+                      t("tourForm.fields.price"),
                       "price",
                       data,
                       errors,
@@ -1022,11 +1117,10 @@ const TourForm = ({ Type }) => {
                       true
                     )}
                   </div>
-                  {/* duration_days only relevant for tours */}
                   {activeType === "tour" ? (
                     <div>
                       {renderInput(
-                        "Duration (days)",
+                        t("tourForm.fields.durationDays"),
                         "duration_days",
                         data,
                         errors,
@@ -1038,7 +1132,7 @@ const TourForm = ({ Type }) => {
                   ) : (
                     <div>
                       {renderInput(
-                        "Max Group Size",
+                        t("tourForm.fields.maxGroupSize"),
                         "max_group_size",
                         data,
                         errors,
@@ -1053,7 +1147,7 @@ const TourForm = ({ Type }) => {
                   <TwoCol>
                     <div>
                       {renderInput(
-                        "Max Group Size",
+                        t("tourForm.fields.maxGroupSize"),
                         "max_group_size",
                         data,
                         errors,
@@ -1064,7 +1158,7 @@ const TourForm = ({ Type }) => {
                     </div>
                     <div>
                       {renderSelect(
-                        "Category",
+                        t("tourForm.fields.category"),
                         "category",
                         data,
                         errors,
@@ -1078,7 +1172,7 @@ const TourForm = ({ Type }) => {
                 ) : (
                   <div>
                     {renderSelect(
-                      "Category",
+                      t("tourForm.fields.category"),
                       "category",
                       data,
                       errors,
@@ -1091,11 +1185,11 @@ const TourForm = ({ Type }) => {
                 )}
               </FormSection>
 
-              <FormSection title='Visibility' icon='🏷️'>
+              <FormSection title={t("tourForm.sections.visibility")} icon='🏷️'>
                 <div className='flex flex-col sm:flex-row gap-4'>
                   <div className='flex-1 bg-gray-50 rounded-xl px-4 py-3 border border-gray-100'>
                     {ToggleSwitcher({
-                      label: "Featured",
+                      label: t("tourForm.fields.featured"),
                       name: "is_featured",
                       data,
                       errors,
@@ -1105,7 +1199,7 @@ const TourForm = ({ Type }) => {
                   </div>
                   <div className='flex-1 bg-gray-50 rounded-xl px-4 py-3 border border-gray-100'>
                     {ToggleSwitcher({
-                      label: "Hot Deal",
+                      label: t("tourForm.fields.hotDeal"),
                       name: "is_hot_deal",
                       data,
                       errors,
@@ -1134,38 +1228,38 @@ const TourForm = ({ Type }) => {
 
               {/* ── Common ── */}
               <FormSection
-                title='Media'
-                description='Cover image and gallery'
+                title={t("tourForm.sections.media")}
+                description={t("tourForm.sections.mediaDesc")}
                 icon='🖼️'
               >
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                   <div>
                     <p className='text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2'>
-                      Cover Image
+                      {t("tourForm.fields.coverImage")}
                     </p>
                     {renderImageUpload(
-                      "Cover Image",
+                      t("tourForm.fields.coverImage"),
                       "cover_image",
                       data,
                       errors,
                       handleChange,
                       true,
-                      "Select thumbnail"
+                      t("tourForm.fields.selectThumbnail")
                     )}
                   </div>
                   <div>
                     <p className='text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2'>
-                      Gallery
+                      {t("tourForm.fields.gallery")}
                     </p>
                     {renderDraggableImages(
-                      "Gallery",
+                      t("tourForm.fields.gallery"),
                       "gallery",
                       data,
                       errors,
                       handleChange,
                       true,
                       20,
-                      "Upload gallery images · Max 20"
+                      t("tourForm.fields.galleryHint")
                     )}
                   </div>
                 </div>
@@ -1180,14 +1274,14 @@ const TourForm = ({ Type }) => {
               )}
 
               <FormSection
-                title='Inclusions & Exclusions'
-                description="What's covered and what's not"
+                title={t("tourForm.sections.inclusionsExclusions")}
+                description={t("tourForm.sections.inclusionsExclusionsDesc")}
                 icon='✅'
               >
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                   <div>
                     {renderMultiSelect(
-                      "Inclusions",
+                      t("tourForm.fields.inclusions"),
                       "inclusions",
                       data,
                       errors,
@@ -1204,7 +1298,7 @@ const TourForm = ({ Type }) => {
                   </div>
                   <div>
                     {renderMultiSelect(
-                      "Exclusions",
+                      t("tourForm.fields.exclusions"),
                       "exclusions",
                       data,
                       errors,
@@ -1230,10 +1324,10 @@ const TourForm = ({ Type }) => {
                   className='w-full py-3.5 rounded-xl font-bold text-sm uppercase bg-amber-500 hover:bg-amber-400 disabled:bg-gray-200 disabled:text-gray-400 text-white transition-all duration-200 flex items-center justify-center gap-2'
                 >
                   {isSubmitting
-                    ? "Processing…"
+                    ? t("tourForm.actions.processing")
                     : id
-                    ? `Update ${Type}`
-                    : `Publish ${Type}`}
+                    ? t("tourForm.actions.update", { type: Type })
+                    : t("tourForm.actions.publish", { type: Type })}
                 </button>
               </div>
             </div>
@@ -1243,11 +1337,11 @@ const TourForm = ({ Type }) => {
               <div className='sticky top-24'>
                 <div className='flex items-center justify-between mb-3'>
                   <p className='text-[11px] font-bold text-gray-400 uppercase tracking-widest'>
-                    Live Preview
+                    {t("tourForm.preview.livePreview")}
                   </p>
                   <span className='inline-flex items-center gap-1.5 text-[10px] text-green-600 font-semibold bg-green-50 border border-green-100 px-2.5 py-1 rounded-full'>
                     <span className='w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse' />
-                    Live
+                    {t("tourForm.preview.live")}
                   </span>
                 </div>
                 <LivePreview

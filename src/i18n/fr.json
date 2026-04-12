@@ -386,5 +386,214 @@
       "deleteSuccess": "{{type}} supprimé(e) avec succès !",
       "deleteFailed": "Échec de la suppression."
     }
+  },
+  "tourForm": {
+    "types": {
+      "tour": "Circuit",
+      "excursion": "Excursion",
+      "activity": "Activité"
+    },
+    "difficulty": {
+      "easy": "Facile",
+      "moderate": "Modéré",
+      "hard": "Difficile",
+      "expert": "Expert"
+    },
+    "categories": {
+      "adventure": "Aventure",
+      "cultural": "Culturel",
+      "coastal": "Côtier",
+      "historical": "Historique"
+    },
+    "header": {
+      "edit": "Modifier {{type}}",
+      "new": "Nouveau {{type}}",
+      "editSubtitle": "Mettre à jour les détails de {{type}}",
+      "newSubtitle": "Remplissez les détails pour publier"
+    },
+    "loading": "Chargement de {{type}}…",
+    "sections": {
+      "basicInfo": "Informations de Base",
+      "basicInfoDesc": "Détails essentiels de {{type}}",
+      "pricingLogistics": "Tarification & Logistique",
+      "pricingLogisticsDesc": "Capacité, durée et coût",
+      "visibility": "Visibilité",
+      "media": "Médias",
+      "mediaDesc": "Image de couverture et galerie",
+      "inclusionsExclusions": "Inclusions & Exclusions",
+      "inclusionsExclusionsDesc": "Ce qui est inclus et ce qui ne l'est pas"
+    },
+    "fields": {
+      "title": "Titre",
+      "description": "Description",
+      "destination": "Destination",
+      "price": "Prix ($)",
+      "durationDays": "Durée (jours)",
+      "maxGroupSize": "Taille maximale du groupe",
+      "category": "Catégorie",
+      "featured": "En vedette",
+      "hotDeal": "Bonne affaire",
+      "coverImage": "Image de couverture",
+      "selectThumbnail": "Sélectionner la miniature",
+      "gallery": "Galerie",
+      "galleryHint": "Télécharger des images de galerie · Max. 20",
+      "inclusions": "Inclusions",
+      "exclusions": "Exclusions"
+    },
+    "excursionDetails": {
+      "title": "Détails de l'Excursion",
+      "description": "Horaires et logistique",
+      "departureTime": "Heure de départ",
+      "returnTime": "Heure de retour",
+      "durationHours": "Durée (heures)",
+      "meetingPoint": "Point de rendez-vous",
+      "guideIncluded": "Guide inclus"
+    },
+    "activityDetails": {
+      "title": "Détails de l'Activité",
+      "description": "Durée et exigences",
+      "durationHours": "Durée (heures)",
+      "difficultyLevel": "Niveau de difficulté",
+      "equipmentIncluded": "Équipement inclus",
+      "equipmentIncludedHint": "Tout l'équipement nécessaire est fourni"
+    },
+    "preview": {
+      "livePreview": "Aperçu en Direct",
+      "live": "En direct",
+      "coverAlt": "couverture",
+      "noCoverImage": "Pas d'image de couverture",
+      "from": "À partir de",
+      "titlePlaceholder": "Titre de {{type}}…",
+      "excursionInfo": "Infos Excursion",
+      "activityInfo": "Infos Activité",
+      "departs": "Départ",
+      "returns": "Retour",
+      "duration": "Durée",
+      "meetAt": "Rendez-vous",
+      "guide": "Guide",
+      "difficulty": "Difficulté",
+      "equipment": "Équipement",
+      "included": "Inclus",
+      "gallery": "Galerie",
+      "photo": "photo",
+      "photos": "photos",
+      "itinerary": "Itinéraire",
+      "day": "jour",
+      "days": "jours",
+      "untitledDay": "Jour sans titre",
+      "moreDays": "jours supplémentaires"
+    },
+    "stats": {
+      "days": "Jours",
+      "maxGroup": "Max. Groupe",
+      "perDay": "Par jour",
+      "hours": "Heures",
+      "price": "Prix",
+      "difficulty": "Difficulté"
+    },
+    "badges": {
+      "featured": "En vedette",
+      "hotDeal": "Bonne Affaire"
+    },
+    "completeness": {
+      "label": "Complétude",
+      "title": "Titre",
+      "description": "Description",
+      "destination": "Destination",
+      "price": "Prix",
+      "cover": "Couverture",
+      "gallery": "Galerie",
+      "duration": "Durée",
+      "itinerary": "Itinéraire",
+      "departure": "Départ",
+      "return": "Retour",
+      "meetPoint": "Point de rendez-vous",
+      "difficulty": "Difficulté"
+    },
+    "actions": {
+      "cancel": "Annuler",
+      "processing": "Traitement en cours…",
+      "update": "Mettre à jour {{type}}",
+      "publish": "Publier {{type}}"
+    },
+    "toast": {
+      "created": "{{type}} créé avec succès !",
+      "updated": "{{type}} mis à jour avec succès !"
+    }
+  },
+  "tourPreview": {
+    "types": {
+      "tour": "Circuit",
+      "excursion": "Excursion",
+      "activity": "Activité"
+    },
+    "difficulty": {
+      "easy": "Facile",
+      "moderate": "Modéré",
+      "hard": "Difficile",
+      "expert": "Expert"
+    },
+    "badges": {
+      "featured": "En vedette",
+      "hotDeal": "Bonne Affaire"
+    },
+    "units": {
+      "days": "jours",
+      "hours": "heures",
+      "people": "personnes"
+    },
+    "about": {
+      "title": "À propos"
+    },
+    "stats": {
+      "duration": "Durée",
+      "maxGroup": "Max. Groupe",
+      "perDay": "Par jour",
+      "price": "Prix"
+    },
+    "itinerary": {
+      "title": "Itinéraire"
+    },
+    "logistics": {
+      "title": "Logistique",
+      "departure": "Départ",
+      "return": "Retour",
+      "meetingPoint": "Point de rendez-vous",
+      "guide": "Guide",
+      "included": "Inclus",
+      "notIncluded": "Non inclus"
+    },
+    "activityDetails": {
+      "title": "Détails",
+      "difficulty": "Difficulté",
+      "equipment": "Équipement"
+    },
+    "gallery": {
+      "title": "Galerie",
+      "photos": "photos"
+    },
+    "inclusions": {
+      "title": "Inclusions"
+    },
+    "exclusions": {
+      "title": "Exclusions"
+    },
+    "bookingCard": {
+      "duration": "Durée",
+      "maxGroup": "Max. groupe",
+      "category": "Catégorie",
+      "departure": "Départ",
+      "meetAt": "Rendez-vous",
+      "difficulty": "Difficulté",
+      "bookNow": "Réserver maintenant",
+      "cancellationNote": "Annulation gratuite · Sans frais cachés"
+    },
+    "mobileCta": {
+      "startingFrom": "À partir de",
+      "bookNow": "Réserver maintenant"
+    },
+    "error": {
+      "failedToLoad": "Échec du chargement. Veuillez réessayer."
+    }
   }
 }

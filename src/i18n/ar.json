@@ -386,5 +386,214 @@
       "deleteSuccess": "تم حذف {{type}} بنجاح!",
       "deleteFailed": "فشل حذف العنصر!"
     }
+  },
+  "tourForm": {
+    "types": {
+      "tour": "جولة",
+      "excursion": "رحلة قصيرة",
+      "activity": "نشاط"
+    },
+    "difficulty": {
+      "easy": "سهل",
+      "moderate": "متوسط",
+      "hard": "صعب",
+      "expert": "خبير"
+    },
+    "categories": {
+      "adventure": "مغامرة",
+      "cultural": "ثقافي",
+      "coastal": "ساحلي",
+      "historical": "تاريخي"
+    },
+    "header": {
+      "edit": "تعديل {{type}}",
+      "new": "{{type}} جديد",
+      "editSubtitle": "تحديث تفاصيل {{type}}",
+      "newSubtitle": "أدخل التفاصيل للنشر"
+    },
+    "loading": "جارٍ تحميل {{type}}…",
+    "sections": {
+      "basicInfo": "المعلومات الأساسية",
+      "basicInfoDesc": "تفاصيل {{type}} الرئيسية",
+      "pricingLogistics": "التسعير واللوجستيات",
+      "pricingLogisticsDesc": "الطاقة الاستيعابية والمدة والتكلفة",
+      "visibility": "الظهور",
+      "media": "الوسائط",
+      "mediaDesc": "صورة الغلاف والمعرض",
+      "inclusionsExclusions": "الشاملات والمستثنيات",
+      "inclusionsExclusionsDesc": "ما هو مشمول وما هو غير مشمول"
+    },
+    "fields": {
+      "title": "العنوان",
+      "description": "الوصف",
+      "destination": "الوجهة",
+      "price": "السعر ($)",
+      "durationDays": "المدة (أيام)",
+      "maxGroupSize": "الحد الأقصى لحجم المجموعة",
+      "category": "الفئة",
+      "featured": "مميز",
+      "hotDeal": "عرض ساخن",
+      "coverImage": "صورة الغلاف",
+      "selectThumbnail": "اختر الصورة المصغرة",
+      "gallery": "المعرض",
+      "galleryHint": "رفع صور المعرض · الحد الأقصى 20",
+      "inclusions": "الشاملات",
+      "exclusions": "المستثنيات"
+    },
+    "excursionDetails": {
+      "title": "تفاصيل الرحلة القصيرة",
+      "description": "التوقيت واللوجستيات",
+      "departureTime": "وقت المغادرة",
+      "returnTime": "وقت العودة",
+      "durationHours": "المدة (ساعات)",
+      "meetingPoint": "نقطة التجمع",
+      "guideIncluded": "المرشد مشمول"
+    },
+    "activityDetails": {
+      "title": "تفاصيل النشاط",
+      "description": "المدة والمتطلبات",
+      "durationHours": "المدة (ساعات)",
+      "difficultyLevel": "مستوى الصعوبة",
+      "equipmentIncluded": "المعدات مشمولة",
+      "equipmentIncludedHint": "جميع المعدات اللازمة متوفرة"
+    },
+    "preview": {
+      "livePreview": "معاينة مباشرة",
+      "live": "مباشر",
+      "coverAlt": "غلاف",
+      "noCoverImage": "لا توجد صورة غلاف",
+      "from": "من",
+      "titlePlaceholder": "عنوان {{type}}…",
+      "excursionInfo": "معلومات الرحلة القصيرة",
+      "activityInfo": "معلومات النشاط",
+      "departs": "المغادرة",
+      "returns": "العودة",
+      "duration": "المدة",
+      "meetAt": "نقطة التجمع",
+      "guide": "المرشد",
+      "difficulty": "الصعوبة",
+      "equipment": "المعدات",
+      "included": "مشمول",
+      "gallery": "المعرض",
+      "photo": "صورة",
+      "photos": "صور",
+      "itinerary": "جدول الرحلة",
+      "day": "يوم",
+      "days": "أيام",
+      "untitledDay": "يوم بدون عنوان",
+      "moreDays": "أيام أخرى"
+    },
+    "stats": {
+      "days": "أيام",
+      "maxGroup": "الحد الأقصى",
+      "perDay": "في اليوم",
+      "hours": "ساعات",
+      "price": "السعر",
+      "difficulty": "الصعوبة"
+    },
+    "badges": {
+      "featured": "مميز",
+      "hotDeal": "عرض ساخن"
+    },
+    "completeness": {
+      "label": "اكتمال",
+      "title": "العنوان",
+      "description": "الوصف",
+      "destination": "الوجهة",
+      "price": "السعر",
+      "cover": "الغلاف",
+      "gallery": "المعرض",
+      "duration": "المدة",
+      "itinerary": "جدول الرحلة",
+      "departure": "المغادرة",
+      "return": "العودة",
+      "meetPoint": "نقطة التجمع",
+      "difficulty": "الصعوبة"
+    },
+    "actions": {
+      "cancel": "إلغاء",
+      "processing": "جارٍ المعالجة…",
+      "update": "تحديث {{type}}",
+      "publish": "نشر {{type}}"
+    },
+    "toast": {
+      "created": "تم إنشاء {{type}} بنجاح!",
+      "updated": "تم تحديث {{type}} بنجاح!"
+    }
+  },
+  "tourPreview": {
+    "types": {
+      "tour": "جولة",
+      "excursion": "رحلة قصيرة",
+      "activity": "نشاط"
+    },
+    "difficulty": {
+      "easy": "سهل",
+      "moderate": "متوسط",
+      "hard": "صعب",
+      "expert": "خبير"
+    },
+    "badges": {
+      "featured": "مميز",
+      "hotDeal": "عرض ساخن"
+    },
+    "units": {
+      "days": "أيام",
+      "hours": "ساعات",
+      "people": "أشخاص"
+    },
+    "about": {
+      "title": "حول"
+    },
+    "stats": {
+      "duration": "المدة",
+      "maxGroup": "الحد الأقصى",
+      "perDay": "في اليوم",
+      "price": "السعر"
+    },
+    "itinerary": {
+      "title": "جدول الرحلة"
+    },
+    "logistics": {
+      "title": "اللوجستيات",
+      "departure": "المغادرة",
+      "return": "العودة",
+      "meetingPoint": "نقطة التجمع",
+      "guide": "المرشد",
+      "included": "مشمول",
+      "notIncluded": "غير مشمول"
+    },
+    "activityDetails": {
+      "title": "التفاصيل",
+      "difficulty": "الصعوبة",
+      "equipment": "المعدات"
+    },
+    "gallery": {
+      "title": "المعرض",
+      "photos": "صور"
+    },
+    "inclusions": {
+      "title": "الشاملات"
+    },
+    "exclusions": {
+      "title": "المستثنيات"
+    },
+    "bookingCard": {
+      "duration": "المدة",
+      "maxGroup": "الحد الأقصى للمجموعة",
+      "category": "الفئة",
+      "departure": "المغادرة",
+      "meetAt": "نقطة التجمع",
+      "difficulty": "الصعوبة",
+      "bookNow": "احجز الآن",
+      "cancellationNote": "إلغاء مجاني · لا رسوم خفية"
+    },
+    "mobileCta": {
+      "startingFrom": "ابتداءً من",
+      "bookNow": "احجز الآن"
+    },
+    "error": {
+      "failedToLoad": "فشل التحميل. يرجى المحاولة مرة أخرى."
+    }
   }
 }

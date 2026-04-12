@@ -386,5 +386,214 @@
       "deleteSuccess": "{{type}} deleted successfully!",
       "deleteFailed": "Failed to delete tour!"
     }
+  },
+  "tourForm": {
+    "types": {
+      "tour": "Tour",
+      "excursion": "Excursion",
+      "activity": "Activity"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "moderate": "Moderate",
+      "hard": "Hard",
+      "expert": "Expert"
+    },
+    "categories": {
+      "adventure": "Adventure",
+      "cultural": "Cultural",
+      "coastal": "Coastal",
+      "historical": "Historical"
+    },
+    "header": {
+      "edit": "Edit {{type}}",
+      "new": "New {{type}}",
+      "editSubtitle": "Update {{type}} details",
+      "newSubtitle": "Fill in details to publish"
+    },
+    "loading": "Loading {{type}}…",
+    "sections": {
+      "basicInfo": "Basic Information",
+      "basicInfoDesc": "Core {{type}} details",
+      "pricingLogistics": "Pricing & Logistics",
+      "pricingLogisticsDesc": "Capacity, duration and cost",
+      "visibility": "Visibility",
+      "media": "Media",
+      "mediaDesc": "Cover image and gallery",
+      "inclusionsExclusions": "Inclusions & Exclusions",
+      "inclusionsExclusionsDesc": "What's covered and what's not"
+    },
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "destination": "Destination",
+      "price": "Price ($)",
+      "durationDays": "Duration (days)",
+      "maxGroupSize": "Max Group Size",
+      "category": "Category",
+      "featured": "Featured",
+      "hotDeal": "Hot Deal",
+      "coverImage": "Cover Image",
+      "selectThumbnail": "Select thumbnail",
+      "gallery": "Gallery",
+      "galleryHint": "Upload gallery images · Max 20",
+      "inclusions": "Inclusions",
+      "exclusions": "Exclusions"
+    },
+    "excursionDetails": {
+      "title": "Excursion Details",
+      "description": "Timing and logistics",
+      "departureTime": "Departure Time",
+      "returnTime": "Return Time",
+      "durationHours": "Duration (hours)",
+      "meetingPoint": "Meeting Point",
+      "guideIncluded": "Guide Included"
+    },
+    "activityDetails": {
+      "title": "Activity Details",
+      "description": "Duration and requirements",
+      "durationHours": "Duration (hours)",
+      "difficultyLevel": "Difficulty Level",
+      "equipmentIncluded": "Equipment Included",
+      "equipmentIncludedHint": "All necessary equipment is provided"
+    },
+    "preview": {
+      "livePreview": "Live Preview",
+      "live": "Live",
+      "coverAlt": "cover",
+      "noCoverImage": "No cover image",
+      "from": "From",
+      "titlePlaceholder": "{{type}} title…",
+      "excursionInfo": "Excursion Info",
+      "activityInfo": "Activity Info",
+      "departs": "Departs",
+      "returns": "Returns",
+      "duration": "Duration",
+      "meetAt": "Meet at",
+      "guide": "Guide",
+      "difficulty": "Difficulty",
+      "equipment": "Equipment",
+      "included": "Included",
+      "gallery": "Gallery",
+      "photo": "photo",
+      "photos": "photos",
+      "itinerary": "Itinerary",
+      "day": "day",
+      "days": "days",
+      "untitledDay": "Untitled day",
+      "moreDays": "more days"
+    },
+    "stats": {
+      "days": "Days",
+      "maxGroup": "Max Group",
+      "perDay": "Per day",
+      "hours": "Hours",
+      "price": "Price",
+      "difficulty": "Difficulty"
+    },
+    "badges": {
+      "featured": "Featured",
+      "hotDeal": "Hot Deal"
+    },
+    "completeness": {
+      "label": "Completeness",
+      "title": "Title",
+      "description": "Description",
+      "destination": "Destination",
+      "price": "Price",
+      "cover": "Cover",
+      "gallery": "Gallery",
+      "duration": "Duration",
+      "itinerary": "Itinerary",
+      "departure": "Departure",
+      "return": "Return",
+      "meetPoint": "Meet Point",
+      "difficulty": "Difficulty"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "processing": "Processing…",
+      "update": "Update {{type}}",
+      "publish": "Publish {{type}}"
+    },
+    "toast": {
+      "created": "{{type}} created successfully!",
+      "updated": "{{type}} updated successfully!"
+    }
+  },
+  "tourPreview": {
+    "types": {
+      "tour": "Tour",
+      "excursion": "Excursion",
+      "activity": "Activity"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "moderate": "Moderate",
+      "hard": "Hard",
+      "expert": "Expert"
+    },
+    "badges": {
+      "featured": "Featured",
+      "hotDeal": "Hot Deal"
+    },
+    "units": {
+      "days": "days",
+      "hours": "hours",
+      "people": "people"
+    },
+    "about": {
+      "title": "About"
+    },
+    "stats": {
+      "duration": "Duration",
+      "maxGroup": "Max Group",
+      "perDay": "Per Day",
+      "price": "Price"
+    },
+    "itinerary": {
+      "title": "Itinerary"
+    },
+    "logistics": {
+      "title": "Logistics",
+      "departure": "Departure",
+      "return": "Return",
+      "meetingPoint": "Meeting Point",
+      "guide": "Guide",
+      "included": "Included",
+      "notIncluded": "Not included"
+    },
+    "activityDetails": {
+      "title": "Details",
+      "difficulty": "Difficulty",
+      "equipment": "Equipment"
+    },
+    "gallery": {
+      "title": "Gallery",
+      "photos": "photos"
+    },
+    "inclusions": {
+      "title": "Inclusions"
+    },
+    "exclusions": {
+      "title": "Exclusions"
+    },
+    "bookingCard": {
+      "duration": "Duration",
+      "maxGroup": "Max group",
+      "category": "Category",
+      "departure": "Departure",
+      "meetAt": "Meet at",
+      "difficulty": "Difficulty",
+      "bookNow": "Book Now",
+      "cancellationNote": "Free cancellation · No hidden fees"
+    },
+    "mobileCta": {
+      "startingFrom": "Starting from",
+      "bookNow": "Book Now"
+    },
+    "error": {
+      "failedToLoad": "Failed to load. Please try again."
+    }
   }
 }

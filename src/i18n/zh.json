@@ -386,5 +386,214 @@
       "deleteSuccess": "{{type}}已成功删除！",
       "deleteFailed": "删除失败！"
     }
+  },
+  "tourForm": {
+    "types": {
+      "tour": "旅游",
+      "excursion": "短途游",
+      "activity": "活动"
+    },
+    "difficulty": {
+      "easy": "简单",
+      "moderate": "中等",
+      "hard": "困难",
+      "expert": "专家级"
+    },
+    "categories": {
+      "adventure": "探险",
+      "cultural": "文化",
+      "coastal": "海滨",
+      "historical": "历史"
+    },
+    "header": {
+      "edit": "编辑{{type}}",
+      "new": "新建{{type}}",
+      "editSubtitle": "更新{{type}}详情",
+      "newSubtitle": "填写详情以发布"
+    },
+    "loading": "正在加载{{type}}…",
+    "sections": {
+      "basicInfo": "基本信息",
+      "basicInfoDesc": "{{type}}核心详情",
+      "pricingLogistics": "定价与物流",
+      "pricingLogisticsDesc": "容量、时长与费用",
+      "visibility": "可见性",
+      "media": "媒体",
+      "mediaDesc": "封面图片与相册",
+      "inclusionsExclusions": "含项与不含项",
+      "inclusionsExclusionsDesc": "包含与不包含的内容"
+    },
+    "fields": {
+      "title": "标题",
+      "description": "描述",
+      "destination": "目的地",
+      "price": "价格（$）",
+      "durationDays": "时长（天）",
+      "maxGroupSize": "最大团队人数",
+      "category": "类别",
+      "featured": "推荐",
+      "hotDeal": "热门优惠",
+      "coverImage": "封面图片",
+      "selectThumbnail": "选择缩略图",
+      "gallery": "相册",
+      "galleryHint": "上传相册图片 · 最多 20 张",
+      "inclusions": "含项",
+      "exclusions": "不含项"
+    },
+    "excursionDetails": {
+      "title": "短途游详情",
+      "description": "时间安排与物流",
+      "departureTime": "出发时间",
+      "returnTime": "返回时间",
+      "durationHours": "时长（小时）",
+      "meetingPoint": "集合地点",
+      "guideIncluded": "含导游"
+    },
+    "activityDetails": {
+      "title": "活动详情",
+      "description": "时长与要求",
+      "durationHours": "时长（小时）",
+      "difficultyLevel": "难度等级",
+      "equipmentIncluded": "含设备",
+      "equipmentIncludedHint": "提供所有必要设备"
+    },
+    "preview": {
+      "livePreview": "实时预览",
+      "live": "实时",
+      "coverAlt": "封面",
+      "noCoverImage": "暂无封面图片",
+      "from": "起价",
+      "titlePlaceholder": "{{type}}标题…",
+      "excursionInfo": "短途游信息",
+      "activityInfo": "活动信息",
+      "departs": "出发",
+      "returns": "返回",
+      "duration": "时长",
+      "meetAt": "集合地点",
+      "guide": "导游",
+      "difficulty": "难度",
+      "equipment": "设备",
+      "included": "已含",
+      "gallery": "相册",
+      "photo": "张照片",
+      "photos": "张照片",
+      "itinerary": "行程",
+      "day": "天",
+      "days": "天",
+      "untitledDay": "无标题日程",
+      "moreDays": "天以上"
+    },
+    "stats": {
+      "days": "天数",
+      "maxGroup": "最大团队",
+      "perDay": "每天",
+      "hours": "小时",
+      "price": "价格",
+      "difficulty": "难度"
+    },
+    "badges": {
+      "featured": "推荐",
+      "hotDeal": "热门优惠"
+    },
+    "completeness": {
+      "label": "完整度",
+      "title": "标题",
+      "description": "描述",
+      "destination": "目的地",
+      "price": "价格",
+      "cover": "封面",
+      "gallery": "相册",
+      "duration": "时长",
+      "itinerary": "行程",
+      "departure": "出发",
+      "return": "返回",
+      "meetPoint": "集合地点",
+      "difficulty": "难度"
+    },
+    "actions": {
+      "cancel": "取消",
+      "processing": "处理中…",
+      "update": "更新{{type}}",
+      "publish": "发布{{type}}"
+    },
+    "toast": {
+      "created": "{{type}}创建成功！",
+      "updated": "{{type}}更新成功！"
+    }
+  },
+  "tourPreview": {
+    "types": {
+      "tour": "旅游",
+      "excursion": "短途游",
+      "activity": "活动"
+    },
+    "difficulty": {
+      "easy": "简单",
+      "moderate": "中等",
+      "hard": "困难",
+      "expert": "专家级"
+    },
+    "badges": {
+      "featured": "推荐",
+      "hotDeal": "热门优惠"
+    },
+    "units": {
+      "days": "天",
+      "hours": "小时",
+      "people": "人"
+    },
+    "about": {
+      "title": "关于"
+    },
+    "stats": {
+      "duration": "时长",
+      "maxGroup": "最大团队",
+      "perDay": "每天",
+      "price": "价格"
+    },
+    "itinerary": {
+      "title": "行程"
+    },
+    "logistics": {
+      "title": "行程安排",
+      "departure": "出发",
+      "return": "返回",
+      "meetingPoint": "集合地点",
+      "guide": "导游",
+      "included": "已含",
+      "notIncluded": "不含"
+    },
+    "activityDetails": {
+      "title": "详情",
+      "difficulty": "难度",
+      "equipment": "设备"
+    },
+    "gallery": {
+      "title": "相册",
+      "photos": "张照片"
+    },
+    "inclusions": {
+      "title": "含项"
+    },
+    "exclusions": {
+      "title": "不含项"
+    },
+    "bookingCard": {
+      "duration": "时长",
+      "maxGroup": "最大团队人数",
+      "category": "类别",
+      "departure": "出发时间",
+      "meetAt": "集合地点",
+      "difficulty": "难度",
+      "bookNow": "立即预订",
+      "cancellationNote": "免费取消 · 无隐藏费用"
+    },
+    "mobileCta": {
+      "startingFrom": "起价",
+      "bookNow": "立即预订"
+    },
+    "error": {
+      "failedToLoad": "加载失败，请重试。"
+    }
   }
 }
