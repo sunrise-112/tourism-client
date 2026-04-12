@@ -1424,5 +1424,37 @@
       "subtitle": "Passen Sie Ihre Filter an",
       "clearButton": "Alle Filter löschen"
     }
+  },
+  "login": {
+    "welcomeBack": "Willkommen zurück",
+    "signInPrompt": "Melden Sie sich bei Ihrem Konto an",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "loginButton": "Anmelden",
+    "noAccount": "Sie haben noch kein Konto?",
+    "createOne": "Konto erstellen",
+    "schema": {
+      "email": "E-Mail",
+      "password": "Passwort"
+    }
+  },
+  "register": {
+    "createAccount": "Konto erstellen",
+    "joinPrompt": "Werden Sie Mitglied und entdecken Sie Touren",
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "phone": "Telefon",
+    "nationality": "Nationalität",
+    "createButton": "Konto erstellen",
+    "haveAccount": "Sie haben bereits ein Konto?",
+    "signIn": "Anmelden",
+    "schema": {
+      "name": "Name",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "phone": "Telefon",
+      "nationality": "Nationalität"
+    }
   }
 }

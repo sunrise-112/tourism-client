@@ -1424,5 +1424,37 @@
       "subtitle": "Try adjusting your filters",
       "clearButton": "Clear all filters"
     }
+  },
+  "login": {
+    "welcomeBack": "Welcome back",
+    "signInPrompt": "Sign in to your account",
+    "email": "Email",
+    "password": "Password",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "createOne": "Create one",
+    "schema": {
+      "email": "Email",
+      "password": "Password"
+    }
+  },
+  "register": {
+    "createAccount": "Create account",
+    "joinPrompt": "Join us and start exploring tours",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "phone": "Phone",
+    "nationality": "Nationality",
+    "createButton": "Create Account",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "schema": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "phone": "Phone",
+      "nationality": "Nationality"
+    }
   }
 }

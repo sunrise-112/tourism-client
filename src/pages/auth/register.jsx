@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import Joi from "joi-browser";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 // Services
 import authService from "../../services/authService";
 // Hooks
@@ -10,6 +11,7 @@ import useForm from "../../hooks/useForm";
 import { renderInput, renderButton } from "../../utils/formRenders";
 
 const Register = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isSubmtting, setIsSubmitting] = useState(false);
   const [formData] = useState({
@@ -21,11 +23,19 @@ const Register = () => {
   });
 
   const schema = {
-    name: Joi.string().max(100).required().label("Name"),
-    email: Joi.string().email().max(150).required().label("Email"),
-    password: Joi.string().min(8).max(255).required().label("Password"),
-    phone: Joi.string().max(20).label("Phone"),
-    nationality: Joi.string().max(100).label("Nationality"),
+    name: Joi.string().max(100).required().label(t("register.schema.name")),
+    email: Joi.string()
+      .email()
+      .max(150)
+      .required()
+      .label(t("register.schema.email")),
+    password: Joi.string()
+      .min(8)
+      .max(255)
+      .required()
+      .label(t("register.schema.password")),
+    phone: Joi.string().max(20).label(t("register.schema.phone")),
+    nationality: Joi.string().max(100).label(t("register.schema.nationality")),
   };
 
   const doSubmit = async () => {
@@ -74,16 +84,18 @@ const Register = () => {
                 />
               </svg>
             </div>
-            <h1 className='text-2xl font-bold text-gray-800'>Create account</h1>
+            <h1 className='text-2xl font-bold text-gray-800'>
+              {t("register.createAccount")}
+            </h1>
             <p className='text-gray-400 text-sm mt-1'>
-              Join us and start exploring tours
+              {t("register.joinPrompt")}
             </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className='space-y-4'>
             {renderInput(
-              "Name",
+              t("register.name"),
               "name",
               data,
               errors,
@@ -92,7 +104,7 @@ const Register = () => {
               true
             )}
             {renderInput(
-              "Email",
+              t("register.email"),
               "email",
               data,
               errors,
@@ -101,16 +113,22 @@ const Register = () => {
               true
             )}
             {renderInput(
-              "Password",
+              t("register.password"),
               "password",
               data,
               errors,
               handleChange,
               "password"
             )}
-            {renderInput("Phone", "phone", data, errors, handleChange)}
             {renderInput(
-              "Nationality",
+              t("register.phone"),
+              "phone",
+              data,
+              errors,
+              handleChange
+            )}
+            {renderInput(
+              t("register.nationality"),
               "nationality",
               data,
               errors,
@@ -118,7 +136,7 @@ const Register = () => {
             )}
             <div className='pt-2'>
               {renderButton(
-                "Create Account",
+                t("register.createButton"),
                 "register",
                 validate,
                 isSubmtting,
@@ -130,13 +148,13 @@ const Register = () => {
 
           {/* Footer */}
           <p className='text-center text-sm text-gray-400 mt-6'>
-            Already have an account?{" "}
+            {t("register.haveAccount")}{" "}
             <button
               type='button'
               onClick={() => navigate("/login")}
               className='text-orange-500 hover:text-orange-600 font-medium transition-colors'
             >
-              Sign in
+              {t("register.signIn")}
             </button>
           </p>
         </div>

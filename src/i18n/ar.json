@@ -1433,5 +1433,37 @@
       "subtitle": "حاول تعديل الفلاتر",
       "clearButton": "مسح جميع الفلاتر"
     }
+  },
+  "login": {
+    "welcomeBack": "مرحباً بعودتك",
+    "signInPrompt": "تسجيل الدخول إلى حسابك",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "loginButton": "تسجيل الدخول",
+    "noAccount": "ليس لديك حساب؟",
+    "createOne": "إنشاء حساب",
+    "schema": {
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور"
+    }
+  },
+  "register": {
+    "createAccount": "إنشاء حساب",
+    "joinPrompt": "انضم إلينا وابدأ في استكشاف الجولات",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "phone": "الهاتف",
+    "nationality": "الجنسية",
+    "createButton": "إنشاء حساب",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "signIn": "تسجيل الدخول",
+    "schema": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "phone": "الهاتف",
+      "nationality": "الجنسية"
+    }
   }
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import Joi from "joi-browser";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 // Services
 import authService from "../../services/authService";
 // Hooks
@@ -10,13 +11,18 @@ import useForm from "../../hooks/useForm";
 import { renderInput, renderButton } from "../../utils/formRenders";
 
 const Login = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isSubmtting, setIsSubmitting] = useState(false);
   const [formData] = useState({ email: "", password: "" });
 
   const schema = {
-    email: Joi.string().email().required().label("Email"),
-    password: Joi.string().min(8).max(1024).required().label("Password"),
+    email: Joi.string().email().required().label(t("login.schema.email")),
+    password: Joi.string()
+      .min(8)
+      .max(1024)
+      .required()
+      .label(t("login.schema.password")),
   };
 
   const doSubmit = async () => {
@@ -65,16 +71,18 @@ const Login = () => {
                 />
               </svg>
             </div>
-            <h1 className='text-2xl font-bold text-gray-800'>Welcome back</h1>
+            <h1 className='text-2xl font-bold text-gray-800'>
+              {t("login.welcomeBack")}
+            </h1>
             <p className='text-gray-400 text-sm mt-1'>
-              Sign in to your account
+              {t("login.signInPrompt")}
             </p>
           </div>
 
           {/* Form — renderInput & renderButton untouched */}
           <form onSubmit={handleSubmit} className='space-y-4'>
             {renderInput(
-              "Email",
+              t("login.email"),
               "email",
               data,
               errors,
@@ -83,7 +91,7 @@ const Login = () => {
               true
             )}
             {renderInput(
-              "Password",
+              t("login.password"),
               "password",
               data,
               errors,
@@ -94,7 +102,7 @@ const Login = () => {
 
             <div className='pt-2'>
               {renderButton(
-                "Login",
+                t("login.loginButton"),
                 "login",
                 validate,
                 isSubmtting,
@@ -106,13 +114,13 @@ const Login = () => {
 
           {/* Footer */}
           <p className='text-center text-sm text-gray-400 mt-6'>
-            Don't have an account?{" "}
+            {t("login.noAccount")}{" "}
             <button
               type='button'
               onClick={() => navigate("/register")}
               className='text-orange-500 hover:text-orange-600 font-medium transition-colors'
             >
-              Create one
+              {t("login.createOne")}
             </button>
           </p>
         </div>

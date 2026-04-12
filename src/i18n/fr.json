@@ -1424,5 +1424,37 @@
       "subtitle": "Essayez d'ajuster vos filtres",
       "clearButton": "Effacer tous les filtres"
     }
+  },
+  "login": {
+    "welcomeBack": "Bon retour",
+    "signInPrompt": "Connectez-vous à votre compte",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "loginButton": "Se connecter",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "createOne": "Créer un compte",
+    "schema": {
+      "email": "E-mail",
+      "password": "Mot de passe"
+    }
+  },
+  "register": {
+    "createAccount": "Créer un compte",
+    "joinPrompt": "Rejoignez-nous et commencez à explorer les circuits",
+    "name": "Nom",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "phone": "Téléphone",
+    "nationality": "Nationalité",
+    "createButton": "Créer un compte",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "signIn": "Se connecter",
+    "schema": {
+      "name": "Nom",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "phone": "Téléphone",
+      "nationality": "Nationalité"
+    }
   }
 }

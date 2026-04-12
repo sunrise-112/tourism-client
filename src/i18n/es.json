@@ -1489,5 +1489,37 @@
       "subtitle": "Intenta ajustar tus filtros",
       "clearButton": "Borrar todos los filtros"
     }
+  },
+  "login": {
+    "welcomeBack": "Bienvenido de nuevo",
+    "signInPrompt": "Inicia sesión en tu cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "loginButton": "Iniciar sesión",
+    "noAccount": "¿No tienes una cuenta?",
+    "createOne": "Crear una",
+    "schema": {
+      "email": "Correo electrónico",
+      "password": "Contraseña"
+    }
+  },
+  "register": {
+    "createAccount": "Crear cuenta",
+    "joinPrompt": "Únete y comienza a explorar tours",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "phone": "Teléfono",
+    "nationality": "Nacionalidad",
+    "createButton": "Crear cuenta",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "schema": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "phone": "Teléfono",
+      "nationality": "Nacionalidad"
+    }
   }
 }

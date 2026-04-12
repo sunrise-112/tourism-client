@@ -1425,5 +1425,37 @@
       "subtitle": "请尝试调整筛选条件",
       "clearButton": "清除所有筛选条件"
     }
+  },
+  "login": {
+    "welcomeBack": "欢迎回来",
+    "signInPrompt": "登录您的账户",
+    "email": "电子邮箱",
+    "password": "密码",
+    "loginButton": "登录",
+    "noAccount": "还没有账户？",
+    "createOne": "创建账户",
+    "schema": {
+      "email": "电子邮箱",
+      "password": "密码"
+    }
+  },
+  "register": {
+    "createAccount": "创建账户",
+    "joinPrompt": "加入我们，开始探索行程",
+    "name": "姓名",
+    "email": "电子邮箱",
+    "password": "密码",
+    "phone": "电话",
+    "nationality": "国籍",
+    "createButton": "创建账户",
+    "haveAccount": "已有账户？",
+    "signIn": "登录",
+    "schema": {
+      "name": "姓名",
+      "email": "电子邮箱",
+      "password": "密码",
+      "phone": "电话",
+      "nationality": "国籍"
+    }
   }
 }
