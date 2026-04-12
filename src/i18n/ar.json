@@ -794,5 +794,70 @@
       "admin": "مدير",
       "customer": "عميل"
     }
+  },
+  "locale": "ar-EG",
+  "userPreview": {
+    "errors": {
+      "loadFailed": "المستخدم غير موجود أو فشل التحميل."
+    },
+    "error": {
+      "title": "حدث خطأ ما",
+      "goBack": "العودة"
+    },
+    "header": {
+      "breadcrumb": "المشرف / المستخدمين",
+      "title": "ملف المستخدم",
+      "editButton": "تعديل المستخدم"
+    },
+    "memberSince": "عضو منذ",
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "verified": "موثق",
+      "unverified": "غير موثق"
+    },
+    "details": {
+      "profile": "الملف الشخصي",
+      "title": "التفاصيل الشخصية",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "nationality": "الجنسية",
+      "joined": "تاريخ الانضمام",
+      "lastUpdated": "آخر تحديث"
+    },
+    "account": {
+      "permissions": "الصلاحيات",
+      "title": "حالة الحساب",
+      "roleLabel": "الدور",
+      "accountLabel": "الحساب",
+      "verificationLabel": "التوثيق"
+    },
+    "bookings": {
+      "history": "السجل",
+      "title": "الحجوزات الأخيرة",
+      "viewAll": "عرض الكل",
+      "noBookings": "لا توجد حجوزات بعد",
+      "noBookingsDesc": "لم يقم هذا المستخدم بأي حجوزات",
+      "booking": "حجز"
+    },
+    "bookingStatus": {
+      "confirmed": "مؤكد",
+      "pending": "قيد الانتظار",
+      "cancelled": "ملغي",
+      "completed": "مكتمل"
+    },
+    "danger": {
+      "caution": "تحذير",
+      "title": "منطقة الخطر",
+      "deleteLabel": "حذف هذا المستخدم",
+      "deleteDescription": "إزالة هذا الحساب وجميع البيانات المرتبطة به بشكل دائم. لا يمكن التراجع عن هذا الإجراء.",
+      "deleteButton": "حذف المستخدم"
+    },
+    "roles": {
+      "admin": "مدير",
+      "guide": "مرشد",
+      "customer": "عميل"
+    }
   }
 }

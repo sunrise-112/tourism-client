@@ -794,5 +794,70 @@
       "admin": "Administrator",
       "customer": "Kunde"
     }
+  },
+  "locale": "de-DE",
+  "userPreview": {
+    "errors": {
+      "loadFailed": "Benutzer nicht gefunden oder Laden fehlgeschlagen."
+    },
+    "error": {
+      "title": "Etwas ist schiefgelaufen",
+      "goBack": "Zurück"
+    },
+    "header": {
+      "breadcrumb": "Administrator / Benutzer",
+      "title": "Benutzerprofil",
+      "editButton": "Benutzer bearbeiten"
+    },
+    "memberSince": "Mitglied seit",
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "verified": "Verifiziert",
+      "unverified": "Nicht verifiziert"
+    },
+    "details": {
+      "profile": "Profil",
+      "title": "Persönliche Daten",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "nationality": "Nationalität",
+      "joined": "Beigetreten",
+      "lastUpdated": "Zuletzt aktualisiert"
+    },
+    "account": {
+      "permissions": "Berechtigungen",
+      "title": "Kontostatus",
+      "roleLabel": "Rolle",
+      "accountLabel": "Konto",
+      "verificationLabel": "Verifizierung"
+    },
+    "bookings": {
+      "history": "Verlauf",
+      "title": "Letzte Buchungen",
+      "viewAll": "Alle anzeigen",
+      "noBookings": "Noch keine Buchungen",
+      "noBookingsDesc": "Dieser Benutzer hat noch keine Buchungen getätigt",
+      "booking": "Buchung"
+    },
+    "bookingStatus": {
+      "confirmed": "Bestätigt",
+      "pending": "Ausstehend",
+      "cancelled": "Storniert",
+      "completed": "Abgeschlossen"
+    },
+    "danger": {
+      "caution": "Vorsicht",
+      "title": "Gefahrenzone",
+      "deleteLabel": "Diesen Benutzer löschen",
+      "deleteDescription": "Dieses Konto und alle zugehörigen Daten dauerhaft entfernen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "deleteButton": "Benutzer löschen"
+    },
+    "roles": {
+      "admin": "Administrator",
+      "guide": "Reiseführer",
+      "customer": "Kunde"
+    }
   }
 }

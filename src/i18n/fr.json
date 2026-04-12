@@ -794,5 +794,70 @@
       "admin": "Administrateur",
       "customer": "Client"
     }
+  },
+  "locale": "fr-FR",
+  "userPreview": {
+    "errors": {
+      "loadFailed": "Utilisateur introuvable ou chargement échoué."
+    },
+    "error": {
+      "title": "Une erreur s'est produite",
+      "goBack": "Retour"
+    },
+    "header": {
+      "breadcrumb": "Administrateur / Utilisateurs",
+      "title": "Profil utilisateur",
+      "editButton": "Modifier l'utilisateur"
+    },
+    "memberSince": "Membre depuis",
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "verified": "Vérifié",
+      "unverified": "Non vérifié"
+    },
+    "details": {
+      "profile": "Profil",
+      "title": "Coordonnées personnelles",
+      "fullName": "Nom complet",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "nationality": "Nationalité",
+      "joined": "Inscrit le",
+      "lastUpdated": "Dernière mise à jour"
+    },
+    "account": {
+      "permissions": "Autorisations",
+      "title": "Statut du compte",
+      "roleLabel": "Rôle",
+      "accountLabel": "Compte",
+      "verificationLabel": "Vérification"
+    },
+    "bookings": {
+      "history": "Historique",
+      "title": "Réservations récentes",
+      "viewAll": "Voir tout",
+      "noBookings": "Aucune réservation pour le moment",
+      "noBookingsDesc": "Cet utilisateur n'a effectué aucune réservation",
+      "booking": "Réservation"
+    },
+    "bookingStatus": {
+      "confirmed": "Confirmée",
+      "pending": "En attente",
+      "cancelled": "Annulée",
+      "completed": "Terminée"
+    },
+    "danger": {
+      "caution": "Attention",
+      "title": "Zone dangereuse",
+      "deleteLabel": "Supprimer cet utilisateur",
+      "deleteDescription": "Supprimer définitivement ce compte et toutes les données associées. Cette action est irréversible.",
+      "deleteButton": "Supprimer l'utilisateur"
+    },
+    "roles": {
+      "admin": "Administrateur",
+      "guide": "Guide",
+      "customer": "Client"
+    }
   }
 }

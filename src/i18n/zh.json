@@ -794,5 +794,70 @@
       "admin": "管理员",
       "customer": "客户"
     }
+  },
+  "locale": "zh-CN",
+  "userPreview": {
+    "errors": {
+      "loadFailed": "用户未找到或加载失败。"
+    },
+    "error": {
+      "title": "出错了",
+      "goBack": "返回"
+    },
+    "header": {
+      "breadcrumb": "管理员 / 用户",
+      "title": "用户资料",
+      "editButton": "编辑用户"
+    },
+    "memberSince": "加入于",
+    "status": {
+      "active": "活跃",
+      "inactive": "未激活",
+      "verified": "已验证",
+      "unverified": "未验证"
+    },
+    "details": {
+      "profile": "个人资料",
+      "title": "个人信息",
+      "fullName": "全名",
+      "email": "电子邮箱",
+      "phone": "电话",
+      "nationality": "国籍",
+      "joined": "加入时间",
+      "lastUpdated": "最后更新"
+    },
+    "account": {
+      "permissions": "权限",
+      "title": "账户状态",
+      "roleLabel": "角色",
+      "accountLabel": "账户",
+      "verificationLabel": "验证"
+    },
+    "bookings": {
+      "history": "历史记录",
+      "title": "最近预订",
+      "viewAll": "查看全部",
+      "noBookings": "暂无预订",
+      "noBookingsDesc": "该用户尚未进行任何预订",
+      "booking": "预订"
+    },
+    "bookingStatus": {
+      "confirmed": "已确认",
+      "pending": "待处理",
+      "cancelled": "已取消",
+      "completed": "已完成"
+    },
+    "danger": {
+      "caution": "警告",
+      "title": "危险区域",
+      "deleteLabel": "删除此用户",
+      "deleteDescription": "永久删除此账户及其所有关联数据。此操作不可撤销。",
+      "deleteButton": "删除用户"
+    },
+    "roles": {
+      "admin": "管理员",
+      "guide": "导游",
+      "customer": "客户"
+    }
   }
 }

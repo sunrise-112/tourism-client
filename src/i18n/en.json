@@ -794,5 +794,70 @@
       "admin": "Admin",
       "customer": "Customer"
     }
+  },
+  "locale": "en-US",
+  "userPreview": {
+    "errors": {
+      "loadFailed": "User not found or failed to load."
+    },
+    "error": {
+      "title": "Something went wrong",
+      "goBack": "Go back"
+    },
+    "header": {
+      "breadcrumb": "Admin / Users",
+      "title": "User Profile",
+      "editButton": "Edit User"
+    },
+    "memberSince": "Member since",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "verified": "Verified",
+      "unverified": "Unverified"
+    },
+    "details": {
+      "profile": "Profile",
+      "title": "Personal Details",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "nationality": "Nationality",
+      "joined": "Joined",
+      "lastUpdated": "Last Updated"
+    },
+    "account": {
+      "permissions": "Permissions",
+      "title": "Account Status",
+      "roleLabel": "Role",
+      "accountLabel": "Account",
+      "verificationLabel": "Verification"
+    },
+    "bookings": {
+      "history": "History",
+      "title": "Recent Bookings",
+      "viewAll": "View all",
+      "noBookings": "No bookings yet",
+      "noBookingsDesc": "This user hasn't made any bookings",
+      "booking": "Booking"
+    },
+    "bookingStatus": {
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "danger": {
+      "caution": "Caution",
+      "title": "Danger Zone",
+      "deleteLabel": "Delete this user",
+      "deleteDescription": "Permanently remove this account and all associated data. This action cannot be undone.",
+      "deleteButton": "Delete User"
+    },
+    "roles": {
+      "admin": "Admin",
+      "guide": "Guide",
+      "customer": "Customer"
+    }
   }
 }

@@ -794,5 +794,70 @@
       "admin": "Administrador",
       "customer": "Cliente"
     }
+  },
+  "locale": "es-ES",
+  "userPreview": {
+    "errors": {
+      "loadFailed": "Usuario no encontrado o error al cargar."
+    },
+    "error": {
+      "title": "Algo salió mal",
+      "goBack": "Volver"
+    },
+    "header": {
+      "breadcrumb": "Administrador / Usuarios",
+      "title": "Perfil de usuario",
+      "editButton": "Editar usuario"
+    },
+    "memberSince": "Miembro desde",
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "verified": "Verificado",
+      "unverified": "No verificado"
+    },
+    "details": {
+      "profile": "Perfil",
+      "title": "Detalles personales",
+      "fullName": "Nombre completo",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "nationality": "Nacionalidad",
+      "joined": "Registrado",
+      "lastUpdated": "Última actualización"
+    },
+    "account": {
+      "permissions": "Permisos",
+      "title": "Estado de la cuenta",
+      "roleLabel": "Rol",
+      "accountLabel": "Cuenta",
+      "verificationLabel": "Verificación"
+    },
+    "bookings": {
+      "history": "Historial",
+      "title": "Reservas recientes",
+      "viewAll": "Ver todas",
+      "noBookings": "Aún no hay reservas",
+      "noBookingsDesc": "Este usuario no ha realizado ninguna reserva",
+      "booking": "Reserva"
+    },
+    "bookingStatus": {
+      "confirmed": "Confirmada",
+      "pending": "Pendiente",
+      "cancelled": "Cancelada",
+      "completed": "Completada"
+    },
+    "danger": {
+      "caution": "Precaución",
+      "title": "Zona peligrosa",
+      "deleteLabel": "Eliminar este usuario",
+      "deleteDescription": "Eliminar permanentemente esta cuenta y todos los datos asociados. Esta acción no se puede deshacer.",
+      "deleteButton": "Eliminar usuario"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "guide": "Guía",
+      "customer": "Cliente"
+    }
   }
 }
