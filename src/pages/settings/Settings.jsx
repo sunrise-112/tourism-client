@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import settingsService from "../../services/adminSettings";
 import userService from "../../services/userService";
 import LanguageSwitcher from "../../common/LanguageSwitcher";
@@ -118,21 +119,27 @@ const PanelSkeleton = () => (
 
 // ─── tab panels ───────────────────────────────────────────────────────────────
 
-const LanguagePanel = () => (
-  <SectionCard eyebrow='Channels' title='Language Notifications'>
+const LanguagePanel = ({ t }) => (
+  <SectionCard
+    eyebrow={t("settings.language.eyebrow")}
+    title={t("settings.language.title")}
+  >
     <div className='flex w-auto'>
       <LanguageSwitcher />
     </div>
   </SectionCard>
 );
 
-const SMSPanel = ({ settings, onToggle, saving }) => (
-  <SectionCard eyebrow='Activation' title='SMS Channel'>
+const SMSPanel = ({ settings, onToggle, saving, t }) => (
+  <SectionCard
+    eyebrow={t("settings.sms.eyebrow")}
+    title={t("settings.sms.title")}
+  >
     <div className='space-y-3'>
       <ToggleRow
         icon='fa-comment-alt'
-        label='Enable SMS'
-        desc='Allow the platform to send SMS notifications to users'
+        label={t("settings.sms.toggleLabel")}
+        desc={t("settings.sms.toggleDesc")}
         checked={settings.sms}
         onChange={(val) => onToggle("sms", val)}
         color='bg-amber-400'
@@ -140,20 +147,23 @@ const SMSPanel = ({ settings, onToggle, saving }) => (
       />
       <StatusBadge
         active={settings.sms}
-        activeText='SMS is active. Booking confirmations, reminders, and alerts will be delivered via SMS.'
-        inactiveText='SMS is disabled. No SMS messages will be sent to users.'
+        activeText={t("settings.sms.activeText")}
+        inactiveText={t("settings.sms.inactiveText")}
       />
     </div>
   </SectionCard>
 );
 
-const EmailPanel = ({ settings, onToggle, saving }) => (
-  <SectionCard eyebrow='Activation' title='Email Channel'>
+const EmailPanel = ({ settings, onToggle, saving, t }) => (
+  <SectionCard
+    eyebrow={t("settings.email.eyebrow")}
+    title={t("settings.email.title")}
+  >
     <div className='space-y-3'>
       <ToggleRow
         icon='fa-envelope'
-        label='Enable SMTP / Email'
-        desc='Allow the platform to send transactional emails to users'
+        label={t("settings.email.toggleLabel")}
+        desc={t("settings.email.toggleDesc")}
         checked={settings.smtp}
         onChange={(val) => onToggle("smtp", val)}
         color='bg-orange-400'
@@ -161,18 +171,17 @@ const EmailPanel = ({ settings, onToggle, saving }) => (
       />
       <StatusBadge
         active={settings.smtp}
-        activeText='SMTP is active. Booking emails, newsletters, and account notices will be sent.'
-        inactiveText='Email is disabled. No emails will be sent to users.'
+        activeText={t("settings.email.activeText")}
+        inactiveText={t("settings.email.inactiveText")}
       />
     </div>
   </SectionCard>
 );
 
-// ─── tabs config ──────────────────────────────────────────────────────────────
-
 // ─── Settings ─────────────────────────────────────────────────────────────────
 
 const Settings = ({ className = "" }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("language");
   const [settings, setSettings] = useState({ smtp: false, sms: false });
   const [loading, setLoading] = useState(true);
@@ -181,29 +190,26 @@ const Settings = ({ className = "" }) => {
 
   const isAdmin = user?.role === role.ADMIN;
 
-  console.log("isAdmin: ", isAdmin);
-  console.log("user?.role: ", user?.role);
-  console.log("role.ADMIN: ", role.ADMIN);
   const TABS = [
     {
       id: "language",
-      label: "Language",
+      label: t("settings.tabs.language.label"),
       icon: "fa-globe",
-      eyebrow: "Localisation",
+      eyebrow: t("settings.tabs.language.eyebrow"),
     },
     ...(isAdmin
       ? [
           {
             id: "sms",
-            label: "SMS",
+            label: t("settings.tabs.sms.label"),
             icon: "fa-comment-alt",
-            eyebrow: "Notifications",
+            eyebrow: t("settings.tabs.sms.eyebrow"),
           },
           {
             id: "email",
-            label: "Email",
+            label: t("settings.tabs.email.label"),
             icon: "fa-envelope",
-            eyebrow: "Notifications",
+            eyebrow: t("settings.tabs.email.eyebrow"),
           },
         ]
       : []),
@@ -215,20 +221,20 @@ const Settings = ({ className = "" }) => {
       try {
         const currentUser = userService.getCurrentUser();
         setUser(currentUser);
-        console.log("CurrentUser: ", currentUser)
+        console.log("CurrentUser: ", currentUser);
         if (currentUser?.role !== role.ADMIN) return;
 
         const data = await settingsService.get();
         setSettings({ smtp: data.smtp, sms: data.sms });
       } catch {
-        toast.error("Failed to load settings.");
+        toast.error(t("settings.errors.loadFailed"));
       } finally {
         setLoading(false);
       }
     };
 
     fetchSettings();
-  }, []);
+  }, [t]);
 
   // ── optimistic toggle ───────────────────────────────────────────────────────
   const handleToggle = async (key, value) => {
@@ -239,11 +245,13 @@ const Settings = ({ className = "" }) => {
       const updated = await settingsService.update({ [key]: value });
       setSettings({ smtp: updated.smtp, sms: updated.sms });
       toast.success(
-        `${key.toUpperCase()} ${value ? "enabled" : "disabled"} successfully.`
+        value
+          ? t("settings.toasts.enabled", { channel: key.toUpperCase() })
+          : t("settings.toasts.disabled", { channel: key.toUpperCase() })
       );
     } catch {
       setSettings((prev) => ({ ...prev, [key]: !value })); // rollback
-      toast.error("Failed to update setting.");
+      toast.error(t("settings.errors.updateFailed"));
     } finally {
       setSaving(false);
     }
@@ -253,10 +261,15 @@ const Settings = ({ className = "" }) => {
   const renderPanel = () => {
     if (loading) return <PanelSkeleton />;
 
-    if (activeTab === "language") return <LanguagePanel />;
+    if (activeTab === "language") return <LanguagePanel t={t} />;
     if (activeTab === "sms" && user?.role === role?.ADMIN)
       return (
-        <SMSPanel settings={settings} onToggle={handleToggle} saving={saving} />
+        <SMSPanel
+          settings={settings}
+          onToggle={handleToggle}
+          saving={saving}
+          t={t}
+        />
       );
     if (activeTab === "email" && user?.role === role?.ADMIN)
       return (
@@ -264,6 +277,7 @@ const Settings = ({ className = "" }) => {
           settings={settings}
           onToggle={handleToggle}
           saving={saving}
+          t={t}
         />
       );
   };
@@ -295,16 +309,16 @@ const Settings = ({ className = "" }) => {
       {/* page header */}
       <div className='mb-8'>
         <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
-          Admin
+          {t("settings.admin")}
         </p>
         <h1
           className='text-3xl font-black text-stone-800'
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          Settings
+          {t("settings.title")}
         </h1>
         <p className='text-stone-400 text-sm mt-1'>
-          Manage platform-wide communication channels
+          {t("settings.description")}
         </p>
       </div>
 
@@ -363,14 +377,16 @@ const Settings = ({ className = "" }) => {
         {/* dynamic panel */}
         <main className='lg:col-span-3'>
           <div className='flex items-center gap-2 mb-5'>
-            <span className='text-xs text-stone-400'>Settings</span>
+            <span className='text-xs text-stone-400'>
+              {t("settings.breadcrumb.settings")}
+            </span>
             <i className='fa fa-chevron-right text-[9px] text-stone-300' />
             <span className='text-xs font-bold text-amber-600'>
-              {current.label}
+              {current?.label}
             </span>
             {saving && (
               <span className='ml-auto text-[10px] font-bold uppercase tracking-widest text-amber-500 animate-pulse'>
-                Saving…
+                {t("settings.savingIndicator")}
               </span>
             )}
           </div>

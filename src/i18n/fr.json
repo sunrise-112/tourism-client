@@ -1070,5 +1070,56 @@
       "bulkDeleteFailed": "Échec de la suppression groupée.",
       "saveFailed": "Échec de l'enregistrement."
     }
+  },
+  "settings": {
+    "admin": "Administrateur",
+    "title": "Paramètres",
+    "description": "Gérer les canaux de communication de la plateforme",
+    "breadcrumb": {
+      "settings": "Paramètres"
+    },
+    "savingIndicator": "Enregistrement…",
+    "tabs": {
+      "language": {
+        "label": "Langue",
+        "eyebrow": "Localisation"
+      },
+      "sms": {
+        "label": "SMS",
+        "eyebrow": "Notifications"
+      },
+      "email": {
+        "label": "E-mail",
+        "eyebrow": "Notifications"
+      }
+    },
+    "language": {
+      "eyebrow": "Canaux",
+      "title": "Notifications linguistiques"
+    },
+    "sms": {
+      "eyebrow": "Activation",
+      "title": "Canal SMS",
+      "toggleLabel": "Activer les SMS",
+      "toggleDesc": "Autoriser la plateforme à envoyer des notifications SMS aux utilisateurs",
+      "activeText": "Les SMS sont actifs. Les confirmations de réservation, rappels et alertes seront envoyés par SMS.",
+      "inactiveText": "Les SMS sont désactivés. Aucun SMS ne sera envoyé aux utilisateurs."
+    },
+    "email": {
+      "eyebrow": "Activation",
+      "title": "Canal e-mail",
+      "toggleLabel": "Activer SMTP / E-mail",
+      "toggleDesc": "Autoriser la plateforme à envoyer des e-mails transactionnels aux utilisateurs",
+      "activeText": "SMTP est actif. Les e-mails de réservation, newsletters et avis de compte seront envoyés.",
+      "inactiveText": "L'e-mail est désactivé. Aucun e-mail ne sera envoyé aux utilisateurs."
+    },
+    "toasts": {
+      "enabled": "{{channel}} activé avec succès.",
+      "disabled": "{{channel}} désactivé avec succès."
+    },
+    "errors": {
+      "loadFailed": "Échec du chargement des paramètres.",
+      "updateFailed": "Échec de la mise à jour du paramètre."
+    }
   }
 }

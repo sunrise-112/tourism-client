@@ -1070,5 +1070,56 @@
       "bulkDeleteFailed": "Error en la eliminación masiva.",
       "saveFailed": "Error al guardar."
     }
+  },
+  "settings": {
+    "admin": "Administrador",
+    "title": "Configuración",
+    "description": "Administrar los canales de comunicación de toda la plataforma",
+    "breadcrumb": {
+      "settings": "Configuración"
+    },
+    "savingIndicator": "Guardando…",
+    "tabs": {
+      "language": {
+        "label": "Idioma",
+        "eyebrow": "Localización"
+      },
+      "sms": {
+        "label": "SMS",
+        "eyebrow": "Notificaciones"
+      },
+      "email": {
+        "label": "Correo",
+        "eyebrow": "Notificaciones"
+      }
+    },
+    "language": {
+      "eyebrow": "Canales",
+      "title": "Notificaciones de idioma"
+    },
+    "sms": {
+      "eyebrow": "Activación",
+      "title": "Canal SMS",
+      "toggleLabel": "Habilitar SMS",
+      "toggleDesc": "Permitir que la plataforma envíe notificaciones por SMS a los usuarios",
+      "activeText": "SMS está activo. Las confirmaciones de reserva, recordatorios y alertas se enviarán por SMS.",
+      "inactiveText": "SMS está deshabilitado. No se enviarán mensajes SMS a los usuarios."
+    },
+    "email": {
+      "eyebrow": "Activación",
+      "title": "Canal de correo",
+      "toggleLabel": "Habilitar SMTP / Correo",
+      "toggleDesc": "Permitir que la plataforma envíe correos transaccionales a los usuarios",
+      "activeText": "SMTP está activo. Se enviarán correos de reserva, boletines y avisos de cuenta.",
+      "inactiveText": "El correo está deshabilitado. No se enviarán correos a los usuarios."
+    },
+    "toasts": {
+      "enabled": "{{channel}} habilitado correctamente.",
+      "disabled": "{{channel}} deshabilitado correctamente."
+    },
+    "errors": {
+      "loadFailed": "Error al cargar la configuración.",
+      "updateFailed": "Error al actualizar la configuración."
+    }
   }
 }

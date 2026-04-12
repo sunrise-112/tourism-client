@@ -1071,5 +1071,56 @@
       "bulkDeleteFailed": "批量删除失败。",
       "saveFailed": "保存失败。"
     }
+  },
+  "settings": {
+    "admin": "管理员",
+    "title": "设置",
+    "description": "管理平台范围内的通信渠道",
+    "breadcrumb": {
+      "settings": "设置"
+    },
+    "savingIndicator": "保存中…",
+    "tabs": {
+      "language": {
+        "label": "语言",
+        "eyebrow": "本地化"
+      },
+      "sms": {
+        "label": "短信",
+        "eyebrow": "通知"
+      },
+      "email": {
+        "label": "邮件",
+        "eyebrow": "通知"
+      }
+    },
+    "language": {
+      "eyebrow": "渠道",
+      "title": "语言通知"
+    },
+    "sms": {
+      "eyebrow": "激活",
+      "title": "短信渠道",
+      "toggleLabel": "启用短信",
+      "toggleDesc": "允许平台向用户发送短信通知",
+      "activeText": "短信已启用。预订确认、提醒和警报将通过短信发送。",
+      "inactiveText": "短信已禁用。不会向用户发送任何短信。"
+    },
+    "email": {
+      "eyebrow": "激活",
+      "title": "邮件渠道",
+      "toggleLabel": "启用 SMTP / 邮件",
+      "toggleDesc": "允许平台向用户发送交易邮件",
+      "activeText": "SMTP 已启用。预订邮件、新闻通讯和账户通知将被发送。",
+      "inactiveText": "邮件已禁用。不会向用户发送任何邮件。"
+    },
+    "toasts": {
+      "enabled": "{{channel}} 已成功启用。",
+      "disabled": "{{channel}} 已成功禁用。"
+    },
+    "errors": {
+      "loadFailed": "加载设置失败。",
+      "updateFailed": "更新设置失败。"
+    }
   }
 }

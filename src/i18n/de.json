@@ -1070,5 +1070,56 @@
       "bulkDeleteFailed": "Fehler beim Massenlöschen.",
       "saveFailed": "Fehler beim Speichern."
     }
+  },
+  "settings": {
+    "admin": "Administrator",
+    "title": "Einstellungen",
+    "description": "Plattformweite Kommunikationskanäle verwalten",
+    "breadcrumb": {
+      "settings": "Einstellungen"
+    },
+    "savingIndicator": "Speichern…",
+    "tabs": {
+      "language": {
+        "label": "Sprache",
+        "eyebrow": "Lokalisierung"
+      },
+      "sms": {
+        "label": "SMS",
+        "eyebrow": "Benachrichtigungen"
+      },
+      "email": {
+        "label": "E-Mail",
+        "eyebrow": "Benachrichtigungen"
+      }
+    },
+    "language": {
+      "eyebrow": "Kanäle",
+      "title": "Sprachbenachrichtigungen"
+    },
+    "sms": {
+      "eyebrow": "Aktivierung",
+      "title": "SMS-Kanal",
+      "toggleLabel": "SMS aktivieren",
+      "toggleDesc": "Der Plattform erlauben, SMS-Benachrichtigungen an Benutzer zu senden",
+      "activeText": "SMS ist aktiv. Buchungsbestätigungen, Erinnerungen und Warnungen werden per SMS zugestellt.",
+      "inactiveText": "SMS ist deaktiviert. Es werden keine SMS-Nachrichten an Benutzer gesendet."
+    },
+    "email": {
+      "eyebrow": "Aktivierung",
+      "title": "E-Mail-Kanal",
+      "toggleLabel": "SMTP / E-Mail aktivieren",
+      "toggleDesc": "Der Plattform erlauben, transaktionale E-Mails an Benutzer zu senden",
+      "activeText": "SMTP ist aktiv. Buchungs-E-Mails, Newsletter und Kontobenachrichtigungen werden gesendet.",
+      "inactiveText": "E-Mail ist deaktiviert. Es werden keine E-Mails an Benutzer gesendet."
+    },
+    "toasts": {
+      "enabled": "{{channel}} erfolgreich aktiviert.",
+      "disabled": "{{channel}} erfolgreich deaktiviert."
+    },
+    "errors": {
+      "loadFailed": "Fehler beim Laden der Einstellungen.",
+      "updateFailed": "Fehler beim Aktualisieren der Einstellung."
+    }
   }
 }

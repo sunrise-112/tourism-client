@@ -1070,5 +1070,56 @@
       "bulkDeleteFailed": "Bulk delete failed.",
       "saveFailed": "Save failed."
     }
+  },
+  "settings": {
+    "admin": "Admin",
+    "title": "Settings",
+    "description": "Manage platform-wide communication channels",
+    "breadcrumb": {
+      "settings": "Settings"
+    },
+    "savingIndicator": "Saving…",
+    "tabs": {
+      "language": {
+        "label": "Language",
+        "eyebrow": "Localisation"
+      },
+      "sms": {
+        "label": "SMS",
+        "eyebrow": "Notifications"
+      },
+      "email": {
+        "label": "Email",
+        "eyebrow": "Notifications"
+      }
+    },
+    "language": {
+      "eyebrow": "Channels",
+      "title": "Language Notifications"
+    },
+    "sms": {
+      "eyebrow": "Activation",
+      "title": "SMS Channel",
+      "toggleLabel": "Enable SMS",
+      "toggleDesc": "Allow the platform to send SMS notifications to users",
+      "activeText": "SMS is active. Booking confirmations, reminders, and alerts will be delivered via SMS.",
+      "inactiveText": "SMS is disabled. No SMS messages will be sent to users."
+    },
+    "email": {
+      "eyebrow": "Activation",
+      "title": "Email Channel",
+      "toggleLabel": "Enable SMTP / Email",
+      "toggleDesc": "Allow the platform to send transactional emails to users",
+      "activeText": "SMTP is active. Booking emails, newsletters, and account notices will be sent.",
+      "inactiveText": "Email is disabled. No emails will be sent to users."
+    },
+    "toasts": {
+      "enabled": "{{channel}} enabled successfully.",
+      "disabled": "{{channel}} disabled successfully."
+    },
+    "errors": {
+      "loadFailed": "Failed to load settings.",
+      "updateFailed": "Failed to update setting."
+    }
   }
 }
