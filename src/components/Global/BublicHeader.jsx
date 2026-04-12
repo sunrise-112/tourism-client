@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import userService from "../../services/userService";
 import role from "../../constants/role";
 import renderImage from "../../utils/renderImage";
 
 const PublicHeader = () => {
+  const { t } = useTranslation();
   const [user, setUser] = useState(null);
   const [dropOpen, setDropOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -46,10 +48,41 @@ const PublicHeader = () => {
     location.pathname === path || location.pathname.startsWith(path + "?");
 
   const NAV_LINKS = [
-    { label: "Home", path: "/" },
-    { label: "Tours", path: "/tours" },
-    { label: "About Us", path: "/about" },
-    { label: "Contact", path: "/contact" },
+    { labelKey: "publicHeader.nav.home", path: "/" },
+    { labelKey: "publicHeader.nav.tours", path: "/tours" },
+    { labelKey: "publicHeader.nav.about", path: "/about" },
+    { labelKey: "publicHeader.nav.contact", path: "/contact" },
+  ];
+
+  // Translate user role
+  const translateRole = (roleValue) => {
+    if (!roleValue) return "";
+    return t(`roles.${roleValue}`, { defaultValue: roleValue });
+  };
+
+  const dropdownItems = [
+    {
+      icon: "fa-th-large",
+      labelKey: "publicHeader.dropdown.dashboard",
+      path: `${
+        user?.role === role.ADMIN ? "/admin/dashboard" : "/customer/dashboard"
+      }`,
+    },
+    {
+      icon: "fa-user",
+      labelKey: "publicHeader.dropdown.profile",
+      path: "/profile/me",
+    },
+    {
+      icon: "fa-suitcase-rolling",
+      labelKey: "publicHeader.dropdown.bookings",
+      path: "/my-bookings",
+    },
+    {
+      icon: "fa-heart",
+      labelKey: "publicHeader.dropdown.favorites",
+      path: "/favorites",
+    },
   ];
 
   return (
@@ -91,7 +124,7 @@ const PublicHeader = () => {
                     : "text-stone-500 hover:text-stone-800 hover:bg-stone-50"
                 }`}
               >
-                {link.label}
+                {t(link.labelKey)}
                 {isActive(link.path) && (
                   <span className='absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-amber-400 rounded-full' />
                 )}
@@ -108,7 +141,7 @@ const PublicHeader = () => {
                 {/* Role badge — desktop */}
                 <span className='hidden md:inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 capitalize'>
                   <span className='w-1.5 h-1.5 rounded-full bg-amber-400' />
-                  {user.role}
+                  {translateRole(user.role)}
                 </span>
 
                 {/* User dropdown */}
@@ -138,7 +171,7 @@ const PublicHeader = () => {
                         {user.name}
                       </span>
                       <span className='text-[10px] text-stone-400 capitalize'>
-                        {user.role}
+                        {translateRole(user.role)}
                       </span>
                     </div>
 
@@ -172,38 +205,13 @@ const PublicHeader = () => {
                           </p>
                           <span className='inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full capitalize mt-0.5'>
                             <span className='w-1.5 h-1.5 rounded-full bg-amber-400' />
-                            {user.role}
+                            {translateRole(user.role)}
                           </span>
                         </div>
                       </div>
 
                       {/* Links */}
-                      {[
-                        {
-                          icon: "fa-th-large",
-                          label: "Dashboard",
-                          path: `${
-                            user?.role === role.ADMIN
-                              ? "/admin/dashboard"
-                              : "/customer/dashboard"
-                          }`,
-                        },
-                        {
-                          icon: "fa-user",
-                          label: "My Profile",
-                          path: "/profile/me",
-                        },
-                        {
-                          icon: "fa-suitcase-rolling",
-                          label: "My Bookings",
-                          path: "/my-bookings",
-                        },
-                        {
-                          icon: "fa-heart",
-                          label: "Favorites",
-                          path: "/favorites",
-                        },
-                      ].map((item) => (
+                      {dropdownItems.map((item) => (
                         <Link
                           key={item.path}
                           to={item.path}
@@ -213,7 +221,7 @@ const PublicHeader = () => {
                           <i
                             className={`fa ${item.icon} text-stone-400 w-4 text-center text-xs`}
                           />
-                          {item.label}
+                          {t(item.labelKey)}
                         </Link>
                       ))}
 
@@ -226,7 +234,7 @@ const PublicHeader = () => {
                           className='w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition-colors text-sm text-red-500 hover:text-red-600'
                         >
                           <i className='fa fa-sign-out-alt text-xs w-4 text-center' />
-                          Sign Out
+                          {t("publicHeader.dropdown.signOut")}
                         </button>
                       </div>
                     </div>
@@ -240,13 +248,13 @@ const PublicHeader = () => {
                   to='/login'
                   className='text-sm font-semibold text-stone-600 hover:text-stone-800 px-4 py-2 rounded-xl hover:bg-stone-50 transition-colors'
                 >
-                  Sign In
+                  {t("publicHeader.auth.signIn")}
                 </Link>
                 <Link
                   to='/register'
                   className='text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-4 py-2 rounded-xl shadow-sm shadow-amber-200'
                 >
-                  Get Started
+                  {t("publicHeader.auth.getStarted")}
                 </Link>
               </div>
             )}
@@ -280,7 +288,7 @@ const PublicHeader = () => {
                     : "text-stone-500 hover:text-stone-800 hover:bg-stone-50"
                 }`}
               >
-                {link.label}
+                {t(link.labelKey)}
               </Link>
             ))}
 
@@ -290,13 +298,13 @@ const PublicHeader = () => {
                   to='/login'
                   className='flex-1 text-center text-sm font-semibold text-stone-600 border border-stone-200 px-4 py-2.5 rounded-xl hover:bg-stone-50 transition-colors'
                 >
-                  Sign In
+                  {t("publicHeader.auth.signIn")}
                 </Link>
                 <Link
                   to='/register'
                   className='flex-1 text-center text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 px-4 py-2.5 rounded-xl transition-colors'
                 >
-                  Get Started
+                  {t("publicHeader.auth.getStarted")}
                 </Link>
               </div>
             )}

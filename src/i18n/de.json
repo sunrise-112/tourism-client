@@ -1483,5 +1483,31 @@
       "lastMonth": "Letzter Monat",
       "customRange": "Benutzerdefinierter Bereich"
     }
+  },
+  "publicHeader": {
+    "nav": {
+      "home": "Startseite",
+      "tours": "Touren",
+      "about": "Über uns",
+      "contact": "Kontakt"
+    },
+    "auth": {
+      "signIn": "Anmelden",
+      "getStarted": "Loslegen"
+    },
+    "dropdown": {
+      "dashboard": "Dashboard",
+      "profile": "Mein Profil",
+      "bookings": "Meine Buchungen",
+      "favorites": "Favoriten",
+      "signOut": "Abmelden"
+    }
+  },
+  "roles": {
+    "admin": "Administrator",
+    "customer": "Kunde",
+    "customer_staff": "Kundenmitarbeiter",
+    "carrier": "Spediteur",
+    "ramasseur": "Sammler"
   }
 }

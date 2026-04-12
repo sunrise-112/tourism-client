@@ -1483,5 +1483,31 @@
       "lastMonth": "Last month",
       "customRange": "Custom range"
     }
+  },
+  "publicHeader": {
+    "nav": {
+      "home": "Home",
+      "tours": "Tours",
+      "about": "About Us",
+      "contact": "Contact"
+    },
+    "auth": {
+      "signIn": "Sign In",
+      "getStarted": "Get Started"
+    },
+    "dropdown": {
+      "dashboard": "Dashboard",
+      "profile": "My Profile",
+      "bookings": "My Bookings",
+      "favorites": "Favorites",
+      "signOut": "Sign Out"
+    }
+  },
+  "roles": {
+    "admin": "Admin",
+    "customer": "Customer",
+    "customer_staff": "Customer Staff",
+    "carrier": "Carrier",
+    "ramasseur": "Collector"
   }
 }

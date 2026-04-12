@@ -1492,5 +1492,31 @@
       "lastMonth": "الشهر الماضي",
       "customRange": "نطاق مخصص"
     }
+  },
+  "publicHeader": {
+    "nav": {
+      "home": "الرئيسية",
+      "tours": "الجولات",
+      "about": "من نحن",
+      "contact": "اتصل بنا"
+    },
+    "auth": {
+      "signIn": "تسجيل الدخول",
+      "getStarted": "ابدأ الآن"
+    },
+    "dropdown": {
+      "dashboard": "لوحة التحكم",
+      "profile": "ملفي الشخصي",
+      "bookings": "حجوزاتي",
+      "favorites": "المفضلة",
+      "signOut": "تسجيل الخروج"
+    }
+  },
+  "roles": {
+    "admin": "مدير",
+    "customer": "عميل",
+    "customer_staff": "موظف عميل",
+    "carrier": "ناقل",
+    "ramasseur": "جامع"
   }
 }

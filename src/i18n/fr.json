@@ -1483,5 +1483,31 @@
       "lastMonth": "Mois dernier",
       "customRange": "Plage personnalisée"
     }
+  },
+  "publicHeader": {
+    "nav": {
+      "home": "Accueil",
+      "tours": "Circuits",
+      "about": "À propos",
+      "contact": "Contact"
+    },
+    "auth": {
+      "signIn": "Se connecter",
+      "getStarted": "Commencer"
+    },
+    "dropdown": {
+      "dashboard": "Tableau de bord",
+      "profile": "Mon profil",
+      "bookings": "Mes réservations",
+      "favorites": "Favoris",
+      "signOut": "Déconnexion"
+    }
+  },
+  "roles": {
+    "admin": "Administrateur",
+    "customer": "Client",
+    "customer_staff": "Personnel client",
+    "carrier": "Transporteur",
+    "ramasseur": "Collecteur"
   }
 }

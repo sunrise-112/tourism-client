@@ -1548,5 +1548,31 @@
       "lastMonth": "Mes pasado",
       "customRange": "Rango personalizado"
     }
+  },
+  "publicHeader": {
+    "nav": {
+      "home": "Inicio",
+      "tours": "Tours",
+      "about": "Sobre nosotros",
+      "contact": "Contacto"
+    },
+    "auth": {
+      "signIn": "Iniciar sesión",
+      "getStarted": "Comenzar"
+    },
+    "dropdown": {
+      "dashboard": "Panel",
+      "profile": "Mi perfil",
+      "bookings": "Mis reservas",
+      "favorites": "Favoritos",
+      "signOut": "Cerrar sesión"
+    }
+  },
+  "roles": {
+    "admin": "Administrador",
+    "customer": "Cliente",
+    "customer_staff": "Personal del cliente",
+    "carrier": "Transportista",
+    "ramasseur": "Recolector"
   }
 }

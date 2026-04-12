@@ -1484,5 +1484,31 @@
       "lastMonth": "上月",
       "customRange": "自定义范围"
     }
+  },
+  "publicHeader": {
+    "nav": {
+      "home": "首页",
+      "tours": "行程",
+      "about": "关于我们",
+      "contact": "联系我们"
+    },
+    "auth": {
+      "signIn": "登录",
+      "getStarted": "立即注册"
+    },
+    "dropdown": {
+      "dashboard": "控制台",
+      "profile": "我的资料",
+      "bookings": "我的预订",
+      "favorites": "收藏夹",
+      "signOut": "退出登录"
+    }
+  },
+  "roles": {
+    "admin": "管理员",
+    "customer": "客户",
+    "customer_staff": "客户员工",
+    "carrier": "承运商",
+    "ramasseur": "收集员"
   }
 }
