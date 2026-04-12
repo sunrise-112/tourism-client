@@ -1,6 +1,7 @@
 // ── UserForm.jsx ──────────────────────────────────────────────
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   renderImageUpload,
   renderInput,
@@ -18,11 +19,6 @@ import { toast } from "react-toastify";
 const STEPS = [
   { id: 1, label: "Identity", icon: "fa-user" },
   { id: 2, label: "Access", icon: "fa-shield-alt" },
-];
-
-const ROLES = [
-  { value: "customer", label: "Customer" },
-  { value: "admin", label: "Admin" },
 ];
 
 const ROLE_META = {
@@ -66,6 +62,7 @@ const AvatarPreview = ({
   textSize = "text-2xl",
   role = "customer",
 }) => {
+  const { t } = useTranslation();
   const meta = ROLE_META[role] ?? ROLE_META.customer;
   return src ? (
     <img
@@ -84,7 +81,11 @@ const AvatarPreview = ({
 
 // ─── Live Preview Panel ───────────────────────────────────────
 const LivePreview = ({ data, isEdit }) => {
+  const { t } = useTranslation();
   const meta = ROLE_META[data.role] ?? ROLE_META.customer;
+  const translatedRole = t(`userForm.roles.${data.role}`, {
+    defaultValue: data.role,
+  });
   return (
     <div className='sticky top-6 bg-[#1C1107] rounded-2xl overflow-hidden shadow-2xl'>
       {/* Header glow */}
@@ -104,7 +105,9 @@ const LivePreview = ({ data, isEdit }) => {
       <div className='relative z-10 p-6'>
         {/* Preview label */}
         <p className='text-[10px] font-bold uppercase tracking-[0.2em] text-amber-400/70 mb-5'>
-          {isEdit ? "Editing user" : "New user preview"}
+          {isEdit
+            ? t("userForm.preview.editModeLabel")
+            : t("userForm.preview.newModeLabel")}
         </p>
 
         {/* Avatar + name */}
@@ -122,13 +125,15 @@ const LivePreview = ({ data, isEdit }) => {
           >
             {data.name || (
               <span className='text-white/20 italic font-normal text-base'>
-                Full name…
+                {t("userForm.preview.placeholderName")}
               </span>
             )}
           </h3>
           <p className='text-stone-400 text-xs mt-1 truncate max-w-full'>
             {data.email || (
-              <span className='text-white/20 italic'>email@example.com</span>
+              <span className='text-white/20 italic'>
+                {t("userForm.preview.placeholderEmail")}
+              </span>
             )}
           </p>
 
@@ -137,15 +142,23 @@ const LivePreview = ({ data, isEdit }) => {
             className={`mt-3 inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full ${meta.badge}`}
           >
             <i className={`fa ${meta.icon} text-[10px]`} />
-            {data.role?.charAt(0).toUpperCase() + data.role?.slice(1)}
+            {translatedRole}
           </span>
         </div>
 
         {/* Info rows */}
         <div className='space-y-3 border-t border-white/10 pt-5'>
           {[
-            { icon: "fa-phone", label: "Phone", value: data.phone },
-            { icon: "fa-flag", label: "Nationality", value: data.nationality },
+            {
+              icon: "fa-phone",
+              label: t("userForm.preview.phoneLabel"),
+              value: data.phone,
+            },
+            {
+              icon: "fa-flag",
+              label: t("userForm.preview.nationalityLabel"),
+              value: data.nationality,
+            },
           ].map((row) => (
             <div key={row.label} className='flex items-center gap-3'>
               <div className='w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center shrink-0'>
@@ -174,12 +187,10 @@ const LivePreview = ({ data, isEdit }) => {
                 : "bg-white/5 text-white/30 border border-white/10"
             }`}
           >
-            <i
-              className={`fa ${
-                data.active ? "fa-circle" : "fa-circle"
-              } mr-1 text-[8px]`}
-            />
-            {data.active ? "Active" : "Inactive"}
+            <i className='fa fa-circle mr-1 text-[8px]' />
+            {data.active
+              ? t("userForm.preview.active")
+              : t("userForm.preview.inactive")}
           </span>
           <span
             className={`flex-1 text-center text-[10px] font-bold py-1.5 rounded-lg ${
@@ -193,7 +204,9 @@ const LivePreview = ({ data, isEdit }) => {
                 data.verified ? "fa-check-circle" : "fa-times-circle"
               } mr-1 text-[10px]`}
             />
-            {data.verified ? "Verified" : "Unverified"}
+            {data.verified
+              ? t("userForm.preview.verified")
+              : t("userForm.preview.unverified")}
           </span>
         </div>
       </div>
@@ -203,6 +216,7 @@ const LivePreview = ({ data, isEdit }) => {
 
 // ─── Main Component ───────────────────────────────────────────
 const UserForm = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
@@ -212,6 +226,15 @@ const UserForm = () => {
   const [formData, setFormData] = useState({ ...EMPTY });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loadingUser, setLoadingUser] = useState(isEdit);
+
+  // Translated roles for select dropdown
+  const roleOptions = useMemo(() => {
+    const roles = [
+      { name: "admin", label: t("userForm.roles.admin") },
+      { name: "customer", label: t("userForm.roles.customer") },
+    ];
+    return roles;
+  }, [t]);
 
   // ── Fetch existing user if editing ──────────────────────────
   useEffect(() => {
@@ -240,8 +263,6 @@ const UserForm = () => {
     fetchUser();
   }, [id]);
 
-  const ROLES = [{ name: "admin" }, { name: "customer" }];
-
   const schema = {
     avatar: Joi.optional(),
     name: Joi.string().max(100).label("Name"),
@@ -254,28 +275,31 @@ const UserForm = () => {
     active: Joi.boolean().label("Active"),
   };
 
-  /*   // ── Validation ───────────────────────────────────────────────
+  const { data, errors, handleChange, handleSubmit, validate, getFormData } =
+    useForm(formData, schema, doSubmit);
+
   const validateStep1 = () => {
     const e = {};
-    if (!data.name?.trim()) e.name = "Full name is required";
-    if (!data.email?.trim()) e.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(data.email)) e.email = "Email is invalid";
-    if (!data.phone?.trim()) e.phone = "Phone is required";
+    if (!data.name?.trim()) e.name = t("userForm.errors.nameRequired");
+    if (!data.email?.trim()) e.email = t("userForm.errors.emailRequired");
+    else if (!/\S+@\S+\.\S+/.test(data.email))
+      e.email = t("userForm.errors.emailInvalid");
+    if (!data.phone?.trim()) e.phone = t("userForm.errors.phoneRequired");
     return e;
   };
 
   const validateStep2 = () => {
     const e = {};
-    if (!data.role) e.role = "Role is required";
+    if (!data.role) e.role = t("userForm.errors.roleRequired");
     if (!isEdit && !data.password?.trim())
-      e.password = "Password is required for new users";
+      e.password = t("userForm.errors.passwordRequired");
     return e;
   };
 
   const isStep1Valid = !Object.keys(validateStep1()).length;
   const isStep2Valid = !Object.keys(validateStep2()).length;
 
- */ // ── Navigation ───────────────────────────────────────────────
+  // ── Navigation ───────────────────────────────────────────────
   const goTo = (next) => {
     if (next > step) {
       const stepErrors = step === 1 ? validateStep1() : {};
@@ -288,9 +312,8 @@ const UserForm = () => {
   };
 
   // ── Submit ───────────────────────────────────────────────────
-  const doSubmit = async (e) => {
+  async function doSubmit(e) {
     const payload = getFormData();
-
     try {
       setIsSubmitting(true);
       if (isEdit) {
@@ -298,39 +321,15 @@ const UserForm = () => {
       } else {
         await userService.create(payload);
       }
-      toast.success("User updated successfully!");
-      /*       navigate("/admin/users");
-       */
+      toast.success(t("userForm.toasts.updateSuccess"));
+      // navigate("/admin/users");
     } catch (err) {
       console.log("Error: ", err);
       console.error("Submit error:", err);
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const { data, errors, handleChange, handleSubmit, validate, getFormData } =
-    useForm(formData, schema, doSubmit);
-
-  const validateStep1 = () => {
-    const e = {};
-    if (!data.name?.trim()) e.name = "Full name is required";
-    if (!data.email?.trim()) e.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(data.email)) e.email = "Email is invalid";
-    if (!data.phone?.trim()) e.phone = "Phone is required";
-    return e;
-  };
-
-  const validateStep2 = () => {
-    const e = {};
-    if (!data.role) e.role = "Role is required";
-    if (!isEdit && !data.password?.trim())
-      e.password = "Password is required for new users";
-    return e;
-  };
-
-  const isStep1Valid = !Object.keys(validateStep1()).length;
-  const isStep2Valid = !Object.keys(validateStep2()).length;
+  }
 
   // ── Loading skeleton ─────────────────────────────────────────
   if (loadingUser) {
@@ -338,7 +337,9 @@ const UserForm = () => {
       <div className='min-h-screen bg-stone-100 flex items-center justify-center'>
         <div className='text-center'>
           <div className='w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 mx-auto mb-4 animate-pulse' />
-          <p className='text-sm text-stone-400 font-semibold'>Loading user…</p>
+          <p className='text-sm text-stone-400 font-semibold'>
+            {t("userForm.loading")}
+          </p>
         </div>
       </div>
     );
@@ -357,13 +358,19 @@ const UserForm = () => {
           </button>
           <div>
             <p className='text-xs font-bold uppercase tracking-widest text-stone-400'>
-              {isEdit ? "Edit user" : "Create user"}
+              {isEdit
+                ? t("userForm.pageHeader.editLabel")
+                : t("userForm.pageHeader.createLabel")}
             </p>
             <h1
               className='text-2xl font-black text-stone-800'
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              {isEdit ? `Editing ${data.name || "user"}` : "New User"}
+              {isEdit
+                ? t("userForm.pageHeader.editTitle", {
+                    name: data.name || t("userForm.pageHeader.unknownUser"),
+                  })
+                : t("userForm.pageHeader.createTitle")}
             </h1>
           </div>
         </div>
@@ -381,6 +388,9 @@ const UserForm = () => {
                 {STEPS.map((s, i) => {
                   const isActive = step === s.id;
                   const isDone = step > s.id;
+                  const stepLabel = t(
+                    `userForm.steps.${s.id === 1 ? "identity" : "access"}.label`
+                  );
                   return (
                     <div key={s.id} className='flex items-center gap-2 flex-1'>
                       <div className='flex items-center gap-2 flex-1'>
@@ -407,14 +417,14 @@ const UserForm = () => {
                               isActive ? "text-stone-800" : "text-stone-400"
                             }`}
                           >
-                            {s.label}
+                            {stepLabel}
                           </p>
                           <p className='text-[10px] text-stone-400'>
                             {isDone
-                              ? "Completed"
+                              ? t("userForm.steps.status.completed")
                               : isActive
-                              ? "In progress"
-                              : "Upcoming"}
+                              ? t("userForm.steps.status.inProgress")
+                              : t("userForm.steps.status.upcoming")}
                           </p>
                         </div>
                       </div>
@@ -437,10 +447,10 @@ const UserForm = () => {
                   }`}
                 >
                   {step === STEPS.length
-                    ? "Last step"
-                    : `${STEPS.length - step} step${
-                        STEPS.length - step > 1 ? "s" : ""
-                      } left`}
+                    ? t("userForm.steps.lastStep")
+                    : t("userForm.steps.stepsLeft", {
+                        count: STEPS.length - step,
+                      })}
                 </span>
               </div>
 
@@ -458,11 +468,11 @@ const UserForm = () => {
                     }`}
                   >
                     <p className='text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-3'>
-                      Personal Information
+                      {t("userForm.form.personalInfo")}
                     </p>
 
                     {renderInput(
-                      "Full Name",
+                      t("userForm.form.fullName"),
                       "name",
                       data,
                       errors,
@@ -470,7 +480,7 @@ const UserForm = () => {
                       "text"
                     )}
                     {renderInput(
-                      "Email",
+                      t("userForm.form.email"),
                       "email",
                       data,
                       errors,
@@ -478,7 +488,7 @@ const UserForm = () => {
                       "email"
                     )}
                     {renderInput(
-                      "Phone",
+                      t("userForm.form.phone"),
                       "phone",
                       data,
                       errors,
@@ -486,7 +496,7 @@ const UserForm = () => {
                       "tel"
                     )}
                     {renderInput(
-                      "Nationality",
+                      t("userForm.form.nationality"),
                       "nationality",
                       data,
                       errors,
@@ -494,7 +504,7 @@ const UserForm = () => {
                       "text"
                     )}
                     {renderImageUpload(
-                      "Avatar",
+                      t("userForm.form.avatar"),
                       "avatar",
                       data,
                       errors,
@@ -503,11 +513,12 @@ const UserForm = () => {
 
                     <button
                       type='button'
-                      disabled={!isStep1Valid && validate()}
+                      disabled={!isStep1Valid}
                       onClick={() => goTo(2)}
                       className='w-full mt-2 py-3 rounded-xl text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2'
                     >
-                      Continue <i className='fa fa-arrow-right text-xs' />
+                      {t("userForm.buttons.continue")}{" "}
+                      <i className='fa fa-arrow-right text-xs' />
                     </button>
                   </div>
 
@@ -522,23 +533,23 @@ const UserForm = () => {
                     }`}
                   >
                     <p className='text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-3'>
-                      Role &amp; Access
+                      {t("userForm.form.roleAndAccess")}
                     </p>
 
                     {renderSelect(
-                      "Role",
+                      t("userForm.form.role"),
                       "role",
                       data,
                       errors,
                       handleChange,
-                      ROLES,
-                      "name",
+                      roleOptions,
+                      "label",
                       "name"
                     )}
                     {renderInput(
                       isEdit
-                        ? "New Password (leave blank to keep current)"
-                        : "Password",
+                        ? t("userForm.form.newPassword")
+                        : t("userForm.form.password"),
                       "password",
                       data,
                       errors,
@@ -549,30 +560,30 @@ const UserForm = () => {
                     {/* Divider */}
                     <div className='border-t border-stone-100 pt-4'>
                       <p className='text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-3'>
-                        Account Status
+                        {t("userForm.form.accountStatus")}
                       </p>
                       <div className='space-y-3'>
                         <ToggleSwitcher
-                          label='Active'
+                          label={t("userForm.form.active.label")}
                           name='active'
                           data={data}
                           errors={errors}
                           onChange={handleChange}
                           icon='fa-circle'
                           selected={data.active}
-                          description='User can log in and access the platform'
+                          description={t("userForm.form.active.description")}
                           bg_color='bg-emerald-500'
                         />
 
                         <ToggleSwitcher
-                          label='Verified'
+                          label={t("userForm.form.verified.label")}
                           name='verified'
                           data={data}
                           errors={errors}
                           onChange={handleChange}
                           icon='fa-check-circle'
                           selected={data.verified}
-                          description='Email address has been confirmed'
+                          description={t("userForm.form.verified.description")}
                           bg_color='bg-blue-500'
                         />
                       </div>
@@ -585,7 +596,8 @@ const UserForm = () => {
                         onClick={() => goTo(1)}
                         className='py-3 px-4 rounded-xl text-sm font-semibold text-stone-500 border border-stone-200 hover:border-stone-300 hover:text-stone-700 transition-all duration-200 flex items-center gap-2 shrink-0'
                       >
-                        <i className='fa fa-arrow-left text-xs' /> Back
+                        <i className='fa fa-arrow-left text-xs' />{" "}
+                        {t("userForm.buttons.back")}
                       </button>
 
                       <button
@@ -596,7 +608,9 @@ const UserForm = () => {
                         {isSubmitting ? (
                           <>
                             <i className='fa fa-spinner fa-spin text-xs' />
-                            {isEdit ? "Saving…" : "Creating…"}
+                            {isEdit
+                              ? t("userForm.buttons.saving")
+                              : t("userForm.buttons.creating")}
                           </>
                         ) : (
                           <>
@@ -605,7 +619,9 @@ const UserForm = () => {
                                 isEdit ? "fa-save" : "fa-user-plus"
                               } text-xs`}
                             />
-                            {isEdit ? "Save Changes" : "Create User"}
+                            {isEdit
+                              ? t("userForm.buttons.saveChanges")
+                              : t("userForm.buttons.createUser")}
                           </>
                         )}
                       </button>

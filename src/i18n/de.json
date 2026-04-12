@@ -712,5 +712,87 @@
       "deleteSuccess": "Benutzer erfolgreich gelöscht!",
       "deleteFailed": "Fehler beim Löschen des Benutzers!"
     }
+  },
+  "userForm": {
+    "pageHeader": {
+      "editLabel": "Benutzer bearbeiten",
+      "createLabel": "Benutzer erstellen",
+      "editTitle": "Bearbeite {{name}}",
+      "createTitle": "Neuer Benutzer",
+      "unknownUser": "Benutzer"
+    },
+    "steps": {
+      "identity": {
+        "label": "Identität"
+      },
+      "access": {
+        "label": "Zugriff"
+      },
+      "status": {
+        "completed": "Abgeschlossen",
+        "inProgress": "In Bearbeitung",
+        "upcoming": "Ausstehend"
+      },
+      "lastStep": "Letzter Schritt",
+      "stepsLeft": "{{count}} Schritt übrig",
+      "stepsLeft_plural": "{{count}} Schritte übrig"
+    },
+    "form": {
+      "personalInfo": "Persönliche Informationen",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "nationality": "Nationalität",
+      "avatar": "Avatar",
+      "roleAndAccess": "Rolle & Zugriff",
+      "role": "Rolle",
+      "password": "Passwort",
+      "newPassword": "Neues Passwort (leer lassen, um aktuelles zu behalten)",
+      "accountStatus": "Kontostatus",
+      "active": {
+        "label": "Aktiv",
+        "description": "Benutzer kann sich anmelden und auf die Plattform zugreifen"
+      },
+      "verified": {
+        "label": "Verifiziert",
+        "description": "E-Mail-Adresse wurde bestätigt"
+      }
+    },
+    "buttons": {
+      "continue": "Weiter",
+      "back": "Zurück",
+      "saveChanges": "Änderungen speichern",
+      "createUser": "Benutzer erstellen",
+      "saving": "Speichern…",
+      "creating": "Erstellen…"
+    },
+    "loading": "Benutzer wird geladen…",
+    "toasts": {
+      "updateSuccess": "Benutzer erfolgreich aktualisiert!"
+    },
+    "errors": {
+      "nameRequired": "Vollständiger Name ist erforderlich",
+      "emailRequired": "E-Mail ist erforderlich",
+      "emailInvalid": "E-Mail ist ungültig",
+      "phoneRequired": "Telefon ist erforderlich",
+      "roleRequired": "Rolle ist erforderlich",
+      "passwordRequired": "Passwort ist für neue Benutzer erforderlich"
+    },
+    "preview": {
+      "editModeLabel": "Benutzer bearbeiten",
+      "newModeLabel": "Vorschau neuer Benutzer",
+      "placeholderName": "Vollständiger Name…",
+      "placeholderEmail": "email@beispiel.de",
+      "phoneLabel": "Telefon",
+      "nationalityLabel": "Nationalität",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "verified": "Verifiziert",
+      "unverified": "Nicht verifiziert"
+    },
+    "roles": {
+      "admin": "Administrator",
+      "customer": "Kunde"
+    }
   }
 }

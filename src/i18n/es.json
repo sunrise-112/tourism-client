@@ -712,5 +712,87 @@
       "deleteSuccess": "¡Usuario eliminado correctamente!",
       "deleteFailed": "¡Error al eliminar el usuario!"
     }
+  },
+  "userForm": {
+    "pageHeader": {
+      "editLabel": "Editar usuario",
+      "createLabel": "Crear usuario",
+      "editTitle": "Editando a {{name}}",
+      "createTitle": "Nuevo usuario",
+      "unknownUser": "usuario"
+    },
+    "steps": {
+      "identity": {
+        "label": "Identidad"
+      },
+      "access": {
+        "label": "Acceso"
+      },
+      "status": {
+        "completed": "Completado",
+        "inProgress": "En progreso",
+        "upcoming": "Próximo"
+      },
+      "lastStep": "Último paso",
+      "stepsLeft": "{{count}} paso restante",
+      "stepsLeft_plural": "{{count}} pasos restantes"
+    },
+    "form": {
+      "personalInfo": "Información personal",
+      "fullName": "Nombre completo",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "nationality": "Nacionalidad",
+      "avatar": "Avatar",
+      "roleAndAccess": "Rol y acceso",
+      "role": "Rol",
+      "password": "Contraseña",
+      "newPassword": "Nueva contraseña (dejar en blanco para mantener la actual)",
+      "accountStatus": "Estado de la cuenta",
+      "active": {
+        "label": "Activo",
+        "description": "El usuario puede iniciar sesión y acceder a la plataforma"
+      },
+      "verified": {
+        "label": "Verificado",
+        "description": "La dirección de correo ha sido confirmada"
+      }
+    },
+    "buttons": {
+      "continue": "Continuar",
+      "back": "Atrás",
+      "saveChanges": "Guardar cambios",
+      "createUser": "Crear usuario",
+      "saving": "Guardando…",
+      "creating": "Creando…"
+    },
+    "loading": "Cargando usuario…",
+    "toasts": {
+      "updateSuccess": "¡Usuario actualizado correctamente!"
+    },
+    "errors": {
+      "nameRequired": "El nombre completo es obligatorio",
+      "emailRequired": "El correo electrónico es obligatorio",
+      "emailInvalid": "El correo electrónico no es válido",
+      "phoneRequired": "El teléfono es obligatorio",
+      "roleRequired": "El rol es obligatorio",
+      "passwordRequired": "La contraseña es obligatoria para nuevos usuarios"
+    },
+    "preview": {
+      "editModeLabel": "Editando usuario",
+      "newModeLabel": "Vista previa de nuevo usuario",
+      "placeholderName": "Nombre completo…",
+      "placeholderEmail": "email@ejemplo.com",
+      "phoneLabel": "Teléfono",
+      "nationalityLabel": "Nacionalidad",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "verified": "Verificado",
+      "unverified": "No verificado"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "customer": "Cliente"
+    }
   }
 }

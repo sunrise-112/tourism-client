@@ -712,5 +712,87 @@
       "deleteSuccess": "User deleted successfully!",
       "deleteFailed": "Failed to delete user!"
     }
+  },
+  "userForm": {
+    "pageHeader": {
+      "editLabel": "Edit user",
+      "createLabel": "Create user",
+      "editTitle": "Editing {{name}}",
+      "createTitle": "New User",
+      "unknownUser": "user"
+    },
+    "steps": {
+      "identity": {
+        "label": "Identity"
+      },
+      "access": {
+        "label": "Access"
+      },
+      "status": {
+        "completed": "Completed",
+        "inProgress": "In progress",
+        "upcoming": "Upcoming"
+      },
+      "lastStep": "Last step",
+      "stepsLeft": "{{count}} step left",
+      "stepsLeft_plural": "{{count}} steps left"
+    },
+    "form": {
+      "personalInfo": "Personal Information",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "nationality": "Nationality",
+      "avatar": "Avatar",
+      "roleAndAccess": "Role & Access",
+      "role": "Role",
+      "password": "Password",
+      "newPassword": "New Password (leave blank to keep current)",
+      "accountStatus": "Account Status",
+      "active": {
+        "label": "Active",
+        "description": "User can log in and access the platform"
+      },
+      "verified": {
+        "label": "Verified",
+        "description": "Email address has been confirmed"
+      }
+    },
+    "buttons": {
+      "continue": "Continue",
+      "back": "Back",
+      "saveChanges": "Save Changes",
+      "createUser": "Create User",
+      "saving": "Saving…",
+      "creating": "Creating…"
+    },
+    "loading": "Loading user…",
+    "toasts": {
+      "updateSuccess": "User updated successfully!"
+    },
+    "errors": {
+      "nameRequired": "Full name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email is invalid",
+      "phoneRequired": "Phone is required",
+      "roleRequired": "Role is required",
+      "passwordRequired": "Password is required for new users"
+    },
+    "preview": {
+      "editModeLabel": "Editing user",
+      "newModeLabel": "New user preview",
+      "placeholderName": "Full name…",
+      "placeholderEmail": "email@example.com",
+      "phoneLabel": "Phone",
+      "nationalityLabel": "Nationality",
+      "active": "Active",
+      "inactive": "Inactive",
+      "verified": "Verified",
+      "unverified": "Unverified"
+    },
+    "roles": {
+      "admin": "Admin",
+      "customer": "Customer"
+    }
   }
 }

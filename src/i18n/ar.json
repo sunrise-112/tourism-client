@@ -712,5 +712,87 @@
       "deleteSuccess": "تم حذف المستخدم بنجاح!",
       "deleteFailed": "فشل في حذف المستخدم!"
     }
+  },
+  "userForm": {
+    "pageHeader": {
+      "editLabel": "تعديل مستخدم",
+      "createLabel": "إنشاء مستخدم",
+      "editTitle": "تعديل {{name}}",
+      "createTitle": "مستخدم جديد",
+      "unknownUser": "المستخدم"
+    },
+    "steps": {
+      "identity": {
+        "label": "الهوية"
+      },
+      "access": {
+        "label": "الوصول"
+      },
+      "status": {
+        "completed": "مكتمل",
+        "inProgress": "قيد التقدم",
+        "upcoming": "قادم"
+      },
+      "lastStep": "الخطوة الأخيرة",
+      "stepsLeft": "{{count}} خطوة متبقية",
+      "stepsLeft_plural": "{{count}} خطوات متبقية"
+    },
+    "form": {
+      "personalInfo": "المعلومات الشخصية",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "nationality": "الجنسية",
+      "avatar": "الصورة الرمزية",
+      "roleAndAccess": "الدور والوصول",
+      "role": "الدور",
+      "password": "كلمة المرور",
+      "newPassword": "كلمة مرور جديدة (اتركها فارغة للإبقاء على الحالية)",
+      "accountStatus": "حالة الحساب",
+      "active": {
+        "label": "نشط",
+        "description": "يمكن للمستخدم تسجيل الدخول والوصول إلى المنصة"
+      },
+      "verified": {
+        "label": "موثق",
+        "description": "تم تأكيد عنوان البريد الإلكتروني"
+      }
+    },
+    "buttons": {
+      "continue": "متابعة",
+      "back": "رجوع",
+      "saveChanges": "حفظ التغييرات",
+      "createUser": "إنشاء مستخدم",
+      "saving": "جاري الحفظ…",
+      "creating": "جاري الإنشاء…"
+    },
+    "loading": "جاري تحميل المستخدم…",
+    "toasts": {
+      "updateSuccess": "تم تحديث المستخدم بنجاح!"
+    },
+    "errors": {
+      "nameRequired": "الاسم الكامل مطلوب",
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailInvalid": "البريد الإلكتروني غير صالح",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "roleRequired": "الدور مطلوب",
+      "passwordRequired": "كلمة المرور مطلوبة للمستخدمين الجدد"
+    },
+    "preview": {
+      "editModeLabel": "تعديل مستخدم",
+      "newModeLabel": "معاينة مستخدم جديد",
+      "placeholderName": "الاسم الكامل…",
+      "placeholderEmail": "البريد@مثال.كوم",
+      "phoneLabel": "الهاتف",
+      "nationalityLabel": "الجنسية",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "verified": "موثق",
+      "unverified": "غير موثق"
+    },
+    "roles": {
+      "admin": "مدير",
+      "customer": "عميل"
+    }
   }
 }
