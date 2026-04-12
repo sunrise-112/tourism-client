@@ -1312,5 +1312,69 @@
       "browseButton": "تصفح الجولات",
       "contactButton": "اتصل بنا"
     }
+  },
+  "contactUs": {
+    "hero": {
+      "eyebrow": "تواصل معنا",
+      "titleLine1": "يسعدنا",
+      "titleLine2": "الاستماع إليك",
+      "subtitle": "سواء كان لديك سؤال، أو تريد التخطيط لجولة مخصصة، أو فقط تريد إلقاء التحية — فريقنا هنا من أجلك."
+    },
+    "info": {
+      "eyebrow": "تفاصيل الاتصال",
+      "title": "تواصل معنا مباشرة",
+      "address": {
+        "label": "العنوان",
+        "value": "12 شارع القصور، مراكش المدينة، المغرب 40000"
+      },
+      "phone": {
+        "label": "الهاتف",
+        "value": "+212 524 000 111"
+      },
+      "email": {
+        "label": "البريد الإلكتروني",
+        "value": "hello@maghribtours.com"
+      },
+      "hours": {
+        "label": "ساعات العمل",
+        "value": "الإثنين – السبت: 9 ص – 7 م (توقيت جرينتش+1)"
+      }
+    },
+    "social": {
+      "title": "تابعنا"
+    },
+    "form": {
+      "title": "أرسل لنا رسالة",
+      "subtitle": "نرد عادةً خلال ساعات قليلة.",
+      "fullName": "الاسم الكامل",
+      "fullNamePlaceholder": "اسمك الكامل",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "بريدك@example.com",
+      "phone": "الهاتف",
+      "phonePlaceholder": "+1 234 567 8900",
+      "subject": "الموضوع",
+      "subjectPlaceholder": "اختر موضوعاً",
+      "message": "الرسالة",
+      "messagePlaceholder": "أخبرنا كيف يمكننا مساعدتك...",
+      "sendButton": "إرسال الرسالة",
+      "sending": "جاري الإرسال...",
+      "successTitle": "تم إرسال الرسالة!",
+      "successMessage": "شكراً لتواصلك. سيعود إليك أحد أعضاء فريقنا خلال 24 ساعة.",
+      "sendAnother": "إرسال رسالة أخرى"
+    },
+    "subjects": {
+      "General_Inquiry": "استفسار عام",
+      "Tour_Booking": "حجز جولة",
+      "Custom_Itinerary": "مسار مخصص",
+      "Group_Travel": "سفر جماعي",
+      "Cancellation_/_Refund": "إلغاء / استرداد",
+      "Other": "أخرى"
+    },
+    "toast": {
+      "success": "تم إرسال الرسالة! سنتواصل معك خلال 24 ساعة."
+    },
+    "map": {
+      "title": "موقعنا في المدينة القديمة مراكش، المغرب"
+    }
   }
 }

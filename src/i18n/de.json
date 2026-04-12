@@ -1309,5 +1309,69 @@
       "browseButton": "Touren durchstöbern",
       "contactButton": "Kontaktieren Sie uns"
     }
+  },
+  "contactUs": {
+    "hero": {
+      "eyebrow": "Kontakt aufnehmen",
+      "titleLine1": "Wir würden gerne",
+      "titleLine2": "von Ihnen hören",
+      "subtitle": "Ob Sie eine Frage haben, eine maßgeschneiderte Tour planen möchten oder einfach nur Hallo sagen wollen — unser Team ist für Sie da."
+    },
+    "info": {
+      "eyebrow": "Kontaktdetails",
+      "title": "Erreichen Sie uns direkt",
+      "address": {
+        "label": "Adresse",
+        "value": "12 Rue des Ksour, Marrakesch Medina, Marokko 40000"
+      },
+      "phone": {
+        "label": "Telefon",
+        "value": "+212 524 000 111"
+      },
+      "email": {
+        "label": "E-Mail",
+        "value": "hello@maghribtours.com"
+      },
+      "hours": {
+        "label": "Öffnungszeiten",
+        "value": "Mo–Sa: 9 – 19 Uhr (GMT+1)"
+      }
+    },
+    "social": {
+      "title": "Folgen Sie uns"
+    },
+    "form": {
+      "title": "Senden Sie uns eine Nachricht",
+      "subtitle": "Wir antworten normalerweise innerhalb weniger Stunden.",
+      "fullName": "Vollständiger Name",
+      "fullNamePlaceholder": "Ihr vollständiger Name",
+      "email": "E-Mail",
+      "emailPlaceholder": "ihre@email.de",
+      "phone": "Telefon",
+      "phonePlaceholder": "+1 234 567 8900",
+      "subject": "Betreff",
+      "subjectPlaceholder": "Wählen Sie einen Betreff",
+      "message": "Nachricht",
+      "messagePlaceholder": "Teilen Sie uns mit, wie wir Ihnen helfen können...",
+      "sendButton": "Nachricht senden",
+      "sending": "Senden...",
+      "successTitle": "Nachricht gesendet!",
+      "successMessage": "Vielen Dank für Ihre Kontaktaufnahme. Eines unserer Teammitglieder wird sich innerhalb von 24 Stunden bei Ihnen melden.",
+      "sendAnother": "Weitere Nachricht senden"
+    },
+    "subjects": {
+      "General_Inquiry": "Allgemeine Anfrage",
+      "Tour_Booking": "Tourenbuchung",
+      "Custom_Itinerary": "Maßgeschneiderte Reiseroute",
+      "Group_Travel": "Gruppenreise",
+      "Cancellation_/_Refund": "Stornierung / Rückerstattung",
+      "Other": "Sonstiges"
+    },
+    "toast": {
+      "success": "Nachricht gesendet! Wir melden uns innerhalb von 24 Stunden."
+    },
+    "map": {
+      "title": "Unser Standort in der Medina von Marrakesch, Marokko"
+    }
   }
 }

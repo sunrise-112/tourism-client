@@ -1310,5 +1310,69 @@
       "browseButton": "浏览旅程",
       "contactButton": "联系我们"
     }
+  },
+  "contactUs": {
+    "hero": {
+      "eyebrow": "联系我们",
+      "titleLine1": "我们很乐意",
+      "titleLine2": "倾听您的声音",
+      "subtitle": "无论您有疑问、想规划定制行程，还是只是想打个招呼 — 我们的团队随时为您服务。"
+    },
+    "info": {
+      "eyebrow": "联系方式",
+      "title": "直接联系我们",
+      "address": {
+        "label": "地址",
+        "value": "摩洛哥马拉喀什麦地那Ksour街12号 40000"
+      },
+      "phone": {
+        "label": "电话",
+        "value": "+212 524 000 111"
+      },
+      "email": {
+        "label": "邮箱",
+        "value": "hello@maghribtours.com"
+      },
+      "hours": {
+        "label": "营业时间",
+        "value": "周一至周六：上午9点 – 晚上7点 (GMT+1)"
+      }
+    },
+    "social": {
+      "title": "关注我们"
+    },
+    "form": {
+      "title": "给我们留言",
+      "subtitle": "我们通常在几小时内回复。",
+      "fullName": "全名",
+      "fullNamePlaceholder": "您的全名",
+      "email": "邮箱",
+      "emailPlaceholder": "您的邮箱@example.com",
+      "phone": "电话",
+      "phonePlaceholder": "+1 234 567 8900",
+      "subject": "主题",
+      "subjectPlaceholder": "选择一个主题",
+      "message": "留言",
+      "messagePlaceholder": "告诉我们如何帮助您...",
+      "sendButton": "发送留言",
+      "sending": "发送中...",
+      "successTitle": "留言已发送！",
+      "successMessage": "感谢您的联系。我们的团队成员将在24小时内回复您。",
+      "sendAnother": "再发一条留言"
+    },
+    "subjects": {
+      "General_Inquiry": "一般咨询",
+      "Tour_Booking": "行程预订",
+      "Custom_Itinerary": "定制行程",
+      "Group_Travel": "团体旅行",
+      "Cancellation_/_Refund": "取消/退款",
+      "Other": "其他"
+    },
+    "toast": {
+      "success": "消息已发送！我们将在24小时内与您联系。"
+    },
+    "map": {
+      "title": "我们在摩洛哥马拉喀什麦地那的位置"
+    }
   }
 }

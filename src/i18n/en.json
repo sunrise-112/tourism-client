@@ -1309,5 +1309,69 @@
       "browseButton": "Browse Tours",
       "contactButton": "Contact Us"
     }
+  },
+  "contactUs": {
+    "hero": {
+      "eyebrow": "Get in Touch",
+      "titleLine1": "We'd Love to",
+      "titleLine2": "Hear From You",
+      "subtitle": "Whether you have a question, want to plan a custom tour, or just want to say hello — our team is here for you."
+    },
+    "info": {
+      "eyebrow": "Contact Details",
+      "title": "Reach Us Directly",
+      "address": {
+        "label": "Address",
+        "value": "12 Rue des Ksour, Marrakech Medina, Morocco 40000"
+      },
+      "phone": {
+        "label": "Phone",
+        "value": "+212 524 000 111"
+      },
+      "email": {
+        "label": "Email",
+        "value": "hello@maghribtours.com"
+      },
+      "hours": {
+        "label": "Hours",
+        "value": "Mon–Sat: 9am – 7pm (GMT+1)"
+      }
+    },
+    "social": {
+      "title": "Follow Us"
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "subtitle": "We typically respond within a few hours.",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Your full name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "phone": "Phone",
+      "phonePlaceholder": "+1 234 567 8900",
+      "subject": "Subject",
+      "subjectPlaceholder": "Select a subject",
+      "message": "Message",
+      "messagePlaceholder": "Tell us how we can help you...",
+      "sendButton": "Send Message",
+      "sending": "Sending...",
+      "successTitle": "Message Sent!",
+      "successMessage": "Thanks for reaching out. One of our team members will get back to you within 24 hours.",
+      "sendAnother": "Send Another Message"
+    },
+    "subjects": {
+      "General_Inquiry": "General Inquiry",
+      "Tour_Booking": "Tour Booking",
+      "Custom_Itinerary": "Custom Itinerary",
+      "Group_Travel": "Group Travel",
+      "Cancellation_/_Refund": "Cancellation / Refund",
+      "Other": "Other"
+    },
+    "toast": {
+      "success": "Message sent! We'll be in touch within 24 hours."
+    },
+    "map": {
+      "title": "Our location in Marrakech Medina, Morocco"
+    }
   }
 }

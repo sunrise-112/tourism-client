@@ -1309,5 +1309,69 @@
       "browseButton": "Parcourir les circuits",
       "contactButton": "Contactez-nous"
     }
+  },
+  "contactUs": {
+    "hero": {
+      "eyebrow": "Contactez-nous",
+      "titleLine1": "Nous serions ravis",
+      "titleLine2": "de vous entendre",
+      "subtitle": "Que vous ayez une question, que vous souhaitiez planifier un circuit personnalisé ou simplement dire bonjour — notre équipe est là pour vous."
+    },
+    "info": {
+      "eyebrow": "Coordonnées",
+      "title": "Contactez-nous directement",
+      "address": {
+        "label": "Adresse",
+        "value": "12 Rue des Ksour, Médina de Marrakech, Maroc 40000"
+      },
+      "phone": {
+        "label": "Téléphone",
+        "value": "+212 524 000 111"
+      },
+      "email": {
+        "label": "E-mail",
+        "value": "hello@maghribtours.com"
+      },
+      "hours": {
+        "label": "Horaires",
+        "value": "Lun–Sam: 9h – 19h (GMT+1)"
+      }
+    },
+    "social": {
+      "title": "Suivez-nous"
+    },
+    "form": {
+      "title": "Envoyez-nous un message",
+      "subtitle": "Nous répondons généralement en quelques heures.",
+      "fullName": "Nom complet",
+      "fullNamePlaceholder": "Votre nom complet",
+      "email": "E-mail",
+      "emailPlaceholder": "votre@email.fr",
+      "phone": "Téléphone",
+      "phonePlaceholder": "+1 234 567 8900",
+      "subject": "Sujet",
+      "subjectPlaceholder": "Sélectionnez un sujet",
+      "message": "Message",
+      "messagePlaceholder": "Dites-nous comment nous pouvons vous aider...",
+      "sendButton": "Envoyer le message",
+      "sending": "Envoi en cours...",
+      "successTitle": "Message envoyé !",
+      "successMessage": "Merci de nous avoir contactés. Un membre de notre équipe vous répondra dans les 24 heures.",
+      "sendAnother": "Envoyer un autre message"
+    },
+    "subjects": {
+      "General_Inquiry": "Demande générale",
+      "Tour_Booking": "Réservation de circuit",
+      "Custom_Itinerary": "Itinéraire personnalisé",
+      "Group_Travel": "Voyage en groupe",
+      "Cancellation_/_Refund": "Annulation / Remboursement",
+      "Other": "Autre"
+    },
+    "toast": {
+      "success": "Message envoyé ! Nous vous répondrons dans les 24 heures."
+    },
+    "map": {
+      "title": "Notre emplacement dans la Médina de Marrakech, Maroc"
+    }
   }
 }
