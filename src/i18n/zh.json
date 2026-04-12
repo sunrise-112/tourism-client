@@ -937,5 +937,54 @@
       "nameRequired": "分类名称不能为空！",
       "saveFailed": "保存分类失败！"
     }
+  },
+  "profile": {
+    "header": {
+      "eyebrow": "账户",
+      "title": "我的资料",
+      "description": "管理您的账户设置和偏好"
+    },
+    "avatar": {
+      "eyebrow": "照片",
+      "title": "个人头像",
+      "fileHint": "JPG、PNG 或 WebP 格式，最大 5MB。"
+    },
+    "stats": {
+      "title": "快速统计",
+      "memberSince": "加入于",
+      "totalBookings": "总预订数",
+      "reviewsWritten": "发表评论数"
+    },
+    "form": {
+      "eyebrow": "详细信息",
+      "title": "个人信息",
+      "fullName": "全名",
+      "email": "电子邮箱",
+      "password": "密码",
+      "phone": "电话",
+      "nationality": "国籍",
+      "role": "角色",
+      "verified": "已验证",
+      "active": "激活",
+      "saveButton": "保存"
+    },
+    "roles": {
+      "admin": "管理员",
+      "customer": "客户"
+    },
+    "schema": {
+      "name": "姓名",
+      "email": "邮箱",
+      "password": "密码",
+      "phone": "电话",
+      "nationality": "国籍",
+      "role": "角色",
+      "verified": "已验证",
+      "active": "激活"
+    },
+    "toasts": {
+      "updateSuccess": "资料更新成功！",
+      "updateError": "更新资料时出错！"
+    }
   }
 }

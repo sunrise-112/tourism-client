@@ -936,5 +936,54 @@
       "nameRequired": "Le nom de la catégorie est requis !",
       "saveFailed": "Échec de l'enregistrement de la catégorie !"
     }
+  },
+  "profile": {
+    "header": {
+      "eyebrow": "Compte",
+      "title": "Mon profil",
+      "description": "Gérez les paramètres et préférences de votre compte"
+    },
+    "avatar": {
+      "eyebrow": "Photo",
+      "title": "Photo de profil",
+      "fileHint": "JPG, PNG ou WebP. Max 5 Mo."
+    },
+    "stats": {
+      "title": "Statistiques rapides",
+      "memberSince": "Membre depuis",
+      "totalBookings": "Réservations totales",
+      "reviewsWritten": "Avis rédigés"
+    },
+    "form": {
+      "eyebrow": "Détails",
+      "title": "Informations personnelles",
+      "fullName": "Nom complet",
+      "email": "Adresse e-mail",
+      "password": "Mot de passe",
+      "phone": "Téléphone",
+      "nationality": "Nationalité",
+      "role": "Rôle",
+      "verified": "Vérifié",
+      "active": "Actif",
+      "saveButton": "Enregistrer"
+    },
+    "roles": {
+      "admin": "Administrateur",
+      "customer": "Client"
+    },
+    "schema": {
+      "name": "Nom",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "phone": "Téléphone",
+      "nationality": "Nationalité",
+      "role": "Rôle",
+      "verified": "Vérifié",
+      "active": "Actif"
+    },
+    "toasts": {
+      "updateSuccess": "Profil mis à jour avec succès !",
+      "updateError": "Erreur lors de la mise à jour du profil !"
+    }
   }
 }

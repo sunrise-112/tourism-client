@@ -936,5 +936,54 @@
       "nameRequired": "اسم التصنيف مطلوب!",
       "saveFailed": "فشل في حفظ التصنيف!"
     }
+  },
+  "profile": {
+    "header": {
+      "eyebrow": "الحساب",
+      "title": "ملفي الشخصي",
+      "description": "إدارة إعدادات حسابك وتفضيلاتك"
+    },
+    "avatar": {
+      "eyebrow": "الصورة",
+      "title": "الصورة الشخصية",
+      "fileHint": "JPG, PNG أو WebP. الحد الأقصى 5 ميجابايت."
+    },
+    "stats": {
+      "title": "إحصائيات سريعة",
+      "memberSince": "عضو منذ",
+      "totalBookings": "إجمالي الحجوزات",
+      "reviewsWritten": "التقييمات المكتوبة"
+    },
+    "form": {
+      "eyebrow": "التفاصيل",
+      "title": "المعلومات الشخصية",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "phone": "الهاتف",
+      "nationality": "الجنسية",
+      "role": "الدور",
+      "verified": "موثق",
+      "active": "نشط",
+      "saveButton": "حفظ"
+    },
+    "roles": {
+      "admin": "مدير",
+      "customer": "عميل"
+    },
+    "schema": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "phone": "الهاتف",
+      "nationality": "الجنسية",
+      "role": "الدور",
+      "verified": "موثق",
+      "active": "نشط"
+    },
+    "toasts": {
+      "updateSuccess": "تم تحديث الملف الشخصي بنجاح!",
+      "updateError": "حدث خطأ أثناء تحديث الملف الشخصي!"
+    }
   }
 }

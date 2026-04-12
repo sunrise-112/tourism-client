@@ -936,5 +936,54 @@
       "nameRequired": "Category name is required!",
       "saveFailed": "Failed to save category!"
     }
+  },
+  "profile": {
+    "header": {
+      "eyebrow": "Account",
+      "title": "My Profile",
+      "description": "Manage your account settings and preferences"
+    },
+    "avatar": {
+      "eyebrow": "Photo",
+      "title": "Profile Picture",
+      "fileHint": "JPG, PNG or WebP. Max 5MB."
+    },
+    "stats": {
+      "title": "Quick Stats",
+      "memberSince": "Member Since",
+      "totalBookings": "Total Bookings",
+      "reviewsWritten": "Reviews Written"
+    },
+    "form": {
+      "eyebrow": "Details",
+      "title": "Personal Information",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "password": "Password",
+      "phone": "Phone",
+      "nationality": "Nationality",
+      "role": "Role",
+      "verified": "Verified",
+      "active": "Active",
+      "saveButton": "Save"
+    },
+    "roles": {
+      "admin": "Admin",
+      "customer": "Customer"
+    },
+    "schema": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "phone": "Phone",
+      "nationality": "Nationality",
+      "role": "Role",
+      "verified": "Verified",
+      "active": "Active"
+    },
+    "toasts": {
+      "updateSuccess": "Profile updated successfully!",
+      "updateError": "Error updating profile!"
+    }
   }
 }

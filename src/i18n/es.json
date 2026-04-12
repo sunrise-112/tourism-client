@@ -936,5 +936,54 @@
       "nameRequired": "¡El nombre de la categoría es obligatorio!",
       "saveFailed": "¡Error al guardar la categoría!"
     }
+  },
+  "profile": {
+    "header": {
+      "eyebrow": "Cuenta",
+      "title": "Mi perfil",
+      "description": "Administra la configuración y preferencias de tu cuenta"
+    },
+    "avatar": {
+      "eyebrow": "Foto",
+      "title": "Foto de perfil",
+      "fileHint": "JPG, PNG o WebP. Máx. 5MB."
+    },
+    "stats": {
+      "title": "Estadísticas rápidas",
+      "memberSince": "Miembro desde",
+      "totalBookings": "Reservas totales",
+      "reviewsWritten": "Reseñas escritas"
+    },
+    "form": {
+      "eyebrow": "Detalles",
+      "title": "Información personal",
+      "fullName": "Nombre completo",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "phone": "Teléfono",
+      "nationality": "Nacionalidad",
+      "role": "Rol",
+      "verified": "Verificado",
+      "active": "Activo",
+      "saveButton": "Guardar"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "customer": "Cliente"
+    },
+    "schema": {
+      "name": "Nombre",
+      "email": "Correo",
+      "password": "Contraseña",
+      "phone": "Teléfono",
+      "nationality": "Nacionalidad",
+      "role": "Rol",
+      "verified": "Verificado",
+      "active": "Activo"
+    },
+    "toasts": {
+      "updateSuccess": "¡Perfil actualizado correctamente!",
+      "updateError": "¡Error al actualizar el perfil!"
+    }
   }
 }

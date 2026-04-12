@@ -936,5 +936,54 @@
       "nameRequired": "Kategoriename ist erforderlich!",
       "saveFailed": "Fehler beim Speichern der Kategorie!"
     }
+  },
+  "profile": {
+    "header": {
+      "eyebrow": "Konto",
+      "title": "Mein Profil",
+      "description": "Verwalten Sie Ihre Kontoeinstellungen und Präferenzen"
+    },
+    "avatar": {
+      "eyebrow": "Foto",
+      "title": "Profilbild",
+      "fileHint": "JPG, PNG oder WebP. Max. 5MB."
+    },
+    "stats": {
+      "title": "Schnelle Statistiken",
+      "memberSince": "Mitglied seit",
+      "totalBookings": "Buchungen insgesamt",
+      "reviewsWritten": "Geschriebene Bewertungen"
+    },
+    "form": {
+      "eyebrow": "Details",
+      "title": "Persönliche Informationen",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail-Adresse",
+      "password": "Passwort",
+      "phone": "Telefon",
+      "nationality": "Nationalität",
+      "role": "Rolle",
+      "verified": "Verifiziert",
+      "active": "Aktiv",
+      "saveButton": "Speichern"
+    },
+    "roles": {
+      "admin": "Administrator",
+      "customer": "Kunde"
+    },
+    "schema": {
+      "name": "Name",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "phone": "Telefon",
+      "nationality": "Nationalität",
+      "role": "Rolle",
+      "verified": "Verifiziert",
+      "active": "Aktiv"
+    },
+    "toasts": {
+      "updateSuccess": "Profil erfolgreich aktualisiert!",
+      "updateError": "Fehler beim Aktualisieren des Profils!"
+    }
   }
 }

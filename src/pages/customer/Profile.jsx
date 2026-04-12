@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Joi from "joi-browser";
+import { useTranslation } from "react-i18next";
 
 // Services
 import userService from "../../services/userService";
@@ -65,6 +66,7 @@ const SectionCard = ({ title, eyebrow, children, danger = false }) => (
 );
 
 const Profile = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -123,22 +125,30 @@ const Profile = () => {
 
   const ROLES = ["admin", "customer"];
 
+  // Translate role names for select dropdown
+  const getRoleOptions = () => {
+    return ROLES.map((r) => ({
+      value: r,
+      label: t(`profile.roles.${r}`, { defaultValue: r }),
+    }));
+  };
+
   const baseSchema = {
     avatar: Joi.optional(),
-    name: Joi.string().max(100).label("Name"),
-    email: Joi.string().email().max(150).label("Email"),
-    password: Joi.optional().label("Password"),
-    phone: Joi.string().max(20).label("Phone"),
-    nationality: Joi.string().max(100).label("Nationality"),
+    name: Joi.string().max(100).label(t("profile.schema.name")),
+    email: Joi.string().email().max(150).label(t("profile.schema.email")),
+    password: Joi.optional().label(t("profile.schema.password")),
+    phone: Joi.string().max(20).label(t("profile.schema.phone")),
+    nationality: Joi.string().max(100).label(t("profile.schema.nationality")),
   };
 
   const roleExtensions = {
     admin: {
       role: Joi.string()
         .valid(...ROLES)
-        .label("Role"),
-      verified: Joi.boolean().label("Verified"),
-      active: Joi.boolean().label("Active"),
+        .label(t("profile.schema.role")),
+      verified: Joi.boolean().label(t("profile.schema.verified")),
+      active: Joi.boolean().label(t("profile.schema.active")),
     },
     customer: {},
   };
@@ -160,10 +170,10 @@ const Profile = () => {
       const createData = getFormData();
       setSubmitting(true);
       await userService.update(user?.id, createData);
-      toast.success("Profile updated successfully!");
+      toast.success(t("profile.toasts.updateSuccess"));
     } catch (error) {
       console.log("Error: ", error);
-      toast.error("Error updating profile!");
+      toast.error(t("profile.toasts.updateError"));
     } finally {
       setSubmitting(false);
     }
@@ -181,16 +191,16 @@ const Profile = () => {
       {/* ── Page header ──────────────────────────────────── */}
       <div className='mb-8'>
         <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
-          Account
+          {t("profile.header.eyebrow")}
         </p>
         <h1
           className='text-3xl font-black text-stone-800'
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          My Profile
+          {t("profile.header.title")}
         </h1>
         <p className='text-stone-400 text-sm mt-1'>
-          Manage your account settings and preferences
+          {t("profile.header.description")}
         </p>
       </div>
 
@@ -207,7 +217,10 @@ const Profile = () => {
 
           <div className='space-y-6'>
             {/* Avatar card */}
-            <SectionCard eyebrow='Photo' title='Profile Picture'>
+            <SectionCard
+              eyebrow={t("profile.avatar.eyebrow")}
+              title={t("profile.avatar.title")}
+            >
               <div className='flex flex-col items-center text-center'>
                 <div className='relative mb-4'>
                   <div className='w-28 h-28 rounded-2xl overflow-hidden bg-stone-100 ring-4 ring-amber-400/20 mx-auto'>
@@ -235,7 +248,7 @@ const Profile = () => {
                     />
 
                     <label htmlFor='avatar'>
-                      <i className='absolute -bottom-2 -right-2 w-8 h-8 bg-amber-400 hover:bg-amber-300 rounded-xl flex items-center justify-center shadow-md transition-colors'>
+                      <i className='absolute -bottom-2 -right-2 w-8 h-8 bg-amber-400 hover:bg-amber-300 rounded-xl flex items-center justify-center shadow-md transition-colors cursor-pointer'>
                         <i className='fa fa-camera text-amber-900 text-xs' />
                       </i>
                     </label>
@@ -248,13 +261,15 @@ const Profile = () => {
                 <p className='text-xs text-stone-400 mb-1'>{user?.email}</p>
                 <span className='inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 capitalize mb-5'>
                   <span className='w-1.5 h-1.5 rounded-full bg-amber-400' />
-                  {user?.role}
+                  {t(`profile.roles.${user?.role}`, {
+                    defaultValue: user?.role,
+                  })}
                 </span>
 
                 <input type='file' accept='image/*' className='hidden' />
 
                 <p className='text-[10px] text-stone-400 mt-3'>
-                  JPG, PNG or WebP. Max 5MB.
+                  {t("profile.avatar.fileHint")}
                 </p>
               </div>
             </SectionCard>
@@ -262,28 +277,31 @@ const Profile = () => {
             {/* Quick stats */}
             <div className='bg-white rounded-2xl border border-stone-100 p-6'>
               <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-4'>
-                Quick Stats
+                {t("profile.stats.title")}
               </p>
               <div className='space-y-3'>
                 {[
                   {
                     icon: "fa-calendar-alt",
-                    label: "Member Since",
+                    label: t("profile.stats.memberSince"),
                     value: user?.created_at
-                      ? new Date(user.created_at).toLocaleDateString("en-US", {
-                          month: "long",
-                          year: "numeric",
-                        })
+                      ? new Date(user.created_at).toLocaleDateString(
+                          t("locale", { defaultValue: "en-US" }),
+                          {
+                            month: "long",
+                            year: "numeric",
+                          }
+                        )
                       : "—",
                   },
                   {
                     icon: "fa-suitcase-rolling",
-                    label: "Total Bookings",
+                    label: t("profile.stats.totalBookings"),
                     value: user?.bookings_count ?? "—",
                   },
                   {
                     icon: "fa-star",
-                    label: "Reviews Written",
+                    label: t("profile.stats.reviewsWritten"),
                     value: user?.reviews_count ?? "—",
                   },
                 ].map((s) => (
@@ -306,13 +324,18 @@ const Profile = () => {
           {/* ── Col 2-3: Forms ────────────────────────── */}
           <div className='lg:col-span-2 space-y-6'>
             {/* Personal info */}
-            <SectionCard eyebrow='Details' title='Personal Information'>
+            <SectionCard
+              eyebrow={t("profile.form.eyebrow")}
+              title={t("profile.form.title")}
+            >
               <form
                 onSubmit={handleSubmit}
                 className='grid sm:grid-cols-2 gap-4'
               >
                 <div>
-                  <label className={labelClass}>Full Name</label>
+                  <label className={labelClass}>
+                    {t("profile.form.fullName")}
+                  </label>
                   {renderInput(
                     "",
                     "name",
@@ -324,7 +347,9 @@ const Profile = () => {
                   )}
                 </div>
                 <div>
-                  <label className={labelClass}>Email Address</label>
+                  <label className={labelClass}>
+                    {t("profile.form.email")}
+                  </label>
                   {renderInput(
                     "",
                     "email",
@@ -336,7 +361,9 @@ const Profile = () => {
                   )}
                 </div>
                 <div>
-                  <label className={labelClass}>Password</label>
+                  <label className={labelClass}>
+                    {t("profile.form.password")}
+                  </label>
                   {renderInput(
                     "",
                     "password",
@@ -348,7 +375,9 @@ const Profile = () => {
                   )}
                 </div>
                 <div>
-                  <label className={labelClass}>Phone</label>
+                  <label className={labelClass}>
+                    {t("profile.form.phone")}
+                  </label>
                   {renderInput(
                     "",
                     "phone",
@@ -360,7 +389,9 @@ const Profile = () => {
                   )}
                 </div>
                 <div>
-                  <label className={labelClass}>Nationality</label>
+                  <label className={labelClass}>
+                    {t("profile.form.nationality")}
+                  </label>
                   {renderInput(
                     "",
                     "nationality",
@@ -373,22 +404,17 @@ const Profile = () => {
                 </div>
                 {user?.role === role.ADMIN && (
                   <div>
-                    <label className={labelClass}>Role</label>
+                    <label className={labelClass}>
+                      {t("profile.form.role")}
+                    </label>
                     {renderSelect(
                       "",
                       "role",
                       data,
                       errors,
                       handleChange,
-                      [
-                        {
-                          value: "admin",
-                        },
-                        {
-                          value: "customer",
-                        },
-                      ],
-                      "value",
+                      getRoleOptions(),
+                      "label",
                       "value"
                     )}
                   </div>
@@ -396,7 +422,9 @@ const Profile = () => {
                 {user?.role === role.ADMIN && (
                   <div className='flex justify-between items-center gap-4'>
                     <div className='flex-col items-center'>
-                      <label className={labelClass}>Verified</label>
+                      <label className={labelClass}>
+                        {t("profile.form.verified")}
+                      </label>
                       {ToggleSwitcher({
                         name: "verified",
                         data,
@@ -406,7 +434,9 @@ const Profile = () => {
                       })}
                     </div>
                     <div className='flex-col items-center'>
-                      <label className={labelClass}>Active</label>
+                      <label className={labelClass}>
+                        {t("profile.form.active")}
+                      </label>
                       {ToggleSwitcher({
                         name: "active",
                         data,
@@ -418,7 +448,11 @@ const Profile = () => {
                   </div>
                 )}
                 <div className='sm:col-span-2 pt-1'>
-                  {renderButton("Save", "submit", validate())}
+                  {renderButton(
+                    t("profile.form.saveButton"),
+                    "submit",
+                    validate()
+                  )}
                 </div>
               </form>
             </SectionCard>
