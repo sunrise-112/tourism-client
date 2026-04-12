@@ -1374,5 +1374,56 @@
     "map": {
       "title": "我们在摩洛哥马拉喀什麦地那的位置"
     }
+  },
+  "tourList": {
+    "header": {
+      "eyebrow": "探索摩洛哥",
+      "title": "所有行程",
+      "loading": "加载中...",
+      "toursAvailable_one": "{{count}} 个行程可供选择",
+      "toursAvailable_other": "{{count}} 个行程可供选择"
+    },
+    "filters": {
+      "search": "搜索",
+      "searchPlaceholder": "行程名称或目的地...",
+      "category": "分类",
+      "allCategories": "全部分类",
+      "priceRange": "价格范围",
+      "minPlaceholder": "最低价",
+      "maxPlaceholder": "最高价",
+      "filterBy": "筛选条件",
+      "featured": "精选行程",
+      "hotDeals": "热门优惠",
+      "clear_one": "清除 {{count}} 个筛选条件",
+      "clear_other": "清除 {{count}} 个筛选条件"
+    },
+    "categories": {
+      "adventure": "探险",
+      "beach": "海滩",
+      "cultural": "文化",
+      "wildlife": "野生动物",
+      "city": "城市",
+      "wellness": "养生",
+      "desert": "沙漠",
+      "trekking": "徒步",
+      "coastal": "沿海",
+      "culinary": "美食",
+      "historical": "历史"
+    },
+    "toolbar": {
+      "searching": "搜索中...",
+      "showing": "显示 {{shown}} 个，共 {{total}} 个行程"
+    },
+    "sort": {
+      "newest": "最新",
+      "priceLow": "价格从低到高",
+      "priceHigh": "价格从高到低",
+      "duration": "行程天数"
+    },
+    "empty": {
+      "title": "未找到行程",
+      "subtitle": "请尝试调整筛选条件",
+      "clearButton": "清除所有筛选条件"
+    }
   }
 }

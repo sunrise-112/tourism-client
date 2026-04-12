@@ -1373,5 +1373,56 @@
     "map": {
       "title": "Notre emplacement dans la Médina de Marrakech, Maroc"
     }
+  },
+  "tourList": {
+    "header": {
+      "eyebrow": "Explorez le Maroc",
+      "title": "Tous les circuits",
+      "loading": "Chargement...",
+      "toursAvailable_one": "{{count}} circuit disponible",
+      "toursAvailable_other": "{{count}} circuits disponibles"
+    },
+    "filters": {
+      "search": "Rechercher",
+      "searchPlaceholder": "Nom du circuit ou destination...",
+      "category": "Catégorie",
+      "allCategories": "Toutes les catégories",
+      "priceRange": "Fourchette de prix",
+      "minPlaceholder": "Min",
+      "maxPlaceholder": "Max",
+      "filterBy": "Filtrer par",
+      "featured": "Circuits à la une",
+      "hotDeals": "Offres spéciales",
+      "clear_one": "Effacer {{count}} filtre",
+      "clear_other": "Effacer {{count}} filtres"
+    },
+    "categories": {
+      "adventure": "Aventure",
+      "beach": "Plage",
+      "cultural": "Culturel",
+      "wildlife": "Faune",
+      "city": "Ville",
+      "wellness": "Bien-être",
+      "desert": "Désert",
+      "trekking": "Randonnée",
+      "coastal": "Côtier",
+      "culinary": "Culinaire",
+      "historical": "Historique"
+    },
+    "toolbar": {
+      "searching": "Recherche en cours...",
+      "showing": "Affichage de {{shown}} circuits sur {{total}}"
+    },
+    "sort": {
+      "newest": "Plus récents",
+      "priceLow": "Prix: croissant",
+      "priceHigh": "Prix: décroissant",
+      "duration": "Durée"
+    },
+    "empty": {
+      "title": "Aucun circuit trouvé",
+      "subtitle": "Essayez d'ajuster vos filtres",
+      "clearButton": "Effacer tous les filtres"
+    }
   }
 }

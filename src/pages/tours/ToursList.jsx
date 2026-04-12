@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import tourService from "../../services/tourService";
 import TourCardGrid from "../../components/tours/TourCardGrid";
 import TourCardList from "../../components/tours/TourCardList";
@@ -21,13 +22,14 @@ const CATEGORIES = [
 ];
 
 const SORT_OPTIONS = [
-  { label: "Newest", value: "created_at:desc" },
-  { label: "Price: Low", value: "price:asc" },
-  { label: "Price: High", value: "price:desc" },
-  { label: "Duration", value: "duration_days:asc" },
+  { labelKey: "tourList.sort.newest", value: "created_at:desc" },
+  { labelKey: "tourList.sort.priceLow", value: "price:asc" },
+  { labelKey: "tourList.sort.priceHigh", value: "price:desc" },
+  { labelKey: "tourList.sort.duration", value: "duration_days:asc" },
 ];
 
 const TourList = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [tours, setTours] = useState([]);
@@ -123,18 +125,18 @@ const TourList = () => {
       <div className='bg-white border-b border-stone-100'>
         <div className='max-w-7xl mx-auto px-6 py-10'>
           <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-600 mb-2'>
-            Explore Morocco
+            {t("tourList.header.eyebrow")}
           </p>
           <h1
             className='text-4xl font-black text-stone-800'
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            All Tours
+            {t("tourList.header.title")}
           </h1>
           <p className='text-stone-400 text-sm mt-1'>
             {loading
-              ? "Loading..."
-              : `${total} tour${total !== 1 ? "s" : ""} available`}
+              ? t("tourList.header.loading")
+              : t("tourList.header.toursAvailable", { count: total })}
           </p>
         </div>
       </div>
@@ -145,7 +147,7 @@ const TourList = () => {
           {/* Search */}
           <div className='bg-white rounded-2xl border border-stone-100 p-5'>
             <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-3'>
-              Search
+              {t("tourList.filters.search")}
             </p>
             <div className='relative'>
               <i className='fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-stone-300 text-xs' />
@@ -153,7 +155,7 @@ const TourList = () => {
                 type='text'
                 value={filters.q}
                 onChange={(e) => setFilter("q", e.target.value)}
-                placeholder='Tour name or destination...'
+                placeholder={t("tourList.filters.searchPlaceholder")}
                 className='w-full pl-8 pr-3 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/15 transition-all placeholder-stone-300 text-stone-700'
               />
             </div>
@@ -162,7 +164,7 @@ const TourList = () => {
           {/* Category */}
           <div className='bg-white rounded-2xl border border-stone-100 p-5'>
             <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-3'>
-              Category
+              {t("tourList.filters.category")}
             </p>
             <div className='space-y-1'>
               <button
@@ -173,7 +175,7 @@ const TourList = () => {
                     : "text-stone-500 hover:bg-stone-50"
                 }`}
               >
-                All Categories
+                {t("tourList.filters.allCategories")}
               </button>
               {CATEGORIES.map((cat) => (
                 <button
@@ -187,7 +189,9 @@ const TourList = () => {
                       : "text-stone-500 hover:bg-stone-50"
                   }`}
                 >
-                  {cat}
+                  {t(`tourList.categories.${cat.toLowerCase()}`, {
+                    defaultValue: cat,
+                  })}
                 </button>
               ))}
             </div>
@@ -196,14 +200,14 @@ const TourList = () => {
           {/* Price Range */}
           <div className='bg-white rounded-2xl border border-stone-100 p-5'>
             <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-3'>
-              Price Range
+              {t("tourList.filters.priceRange")}
             </p>
             <div className='flex items-center gap-2'>
               <input
                 type='number'
                 value={filters.min_price}
                 onChange={(e) => setFilter("min_price", e.target.value)}
-                placeholder='Min'
+                placeholder={t("tourList.filters.minPlaceholder")}
                 className='w-full px-3 py-2 text-sm bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-amber-400 transition-all placeholder-stone-300 text-stone-700'
               />
               <span className='text-stone-300 text-xs'>—</span>
@@ -211,7 +215,7 @@ const TourList = () => {
                 type='number'
                 value={filters.max_price}
                 onChange={(e) => setFilter("max_price", e.target.value)}
-                placeholder='Max'
+                placeholder={t("tourList.filters.maxPlaceholder")}
                 className='w-full px-3 py-2 text-sm bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-amber-400 transition-all placeholder-stone-300 text-stone-700'
               />
             </div>
@@ -220,7 +224,7 @@ const TourList = () => {
           {/* Badges */}
           <div className='bg-white rounded-2xl border border-stone-100 p-5'>
             <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-3'>
-              Filter By
+              {t("tourList.filters.filterBy")}
             </p>
             <div className='space-y-2'>
               <button
@@ -233,8 +237,8 @@ const TourList = () => {
                     : "border-stone-200 text-stone-500 hover:bg-stone-50"
                 }`}
               >
-                <i className='fa fa-star text-amber-400 text-xs' /> Featured
-                Tours
+                <i className='fa fa-star text-amber-400 text-xs' />{" "}
+                {t("tourList.filters.featured")}
               </button>
               <button
                 onClick={() =>
@@ -246,7 +250,8 @@ const TourList = () => {
                     : "border-stone-200 text-stone-500 hover:bg-stone-50"
                 }`}
               >
-                <i className='fa fa-fire text-red-400 text-xs' /> Hot Deals
+                <i className='fa fa-fire text-red-400 text-xs' />{" "}
+                {t("tourList.filters.hotDeals")}
               </button>
             </div>
           </div>
@@ -258,7 +263,7 @@ const TourList = () => {
               className='w-full text-sm text-stone-400 hover:text-red-500 border border-stone-200 hover:border-red-200 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2'
             >
               <i className='fa fa-times text-xs' />
-              Clear {activeFilterCount} filter{activeFilterCount > 1 ? "s" : ""}
+              {t("tourList.filters.clear", { count: activeFilterCount })}
             </button>
           )}
         </aside>
@@ -269,8 +274,11 @@ const TourList = () => {
           <div className='flex items-center justify-between mb-6 gap-4 flex-wrap'>
             <p className='text-sm text-stone-400'>
               {loading
-                ? "Searching..."
-                : `Showing ${tours.length} of ${total} tours`}
+                ? t("tourList.toolbar.searching")
+                : t("tourList.toolbar.showing", {
+                    shown: tours.length,
+                    total: total,
+                  })}
             </p>
             <div className='flex items-center gap-3'>
               {/* Sort */}
@@ -281,7 +289,7 @@ const TourList = () => {
               >
                 {SORT_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>
-                    {o.label}
+                    {t(o.labelKey)}
                   </option>
                 ))}
               </select>
@@ -333,15 +341,17 @@ const TourList = () => {
           ) : tours.length === 0 ? (
             <div className='text-center py-24 text-stone-300'>
               <i className='fa fa-map-marked-alt text-5xl mb-4 block' />
-              <p className='text-stone-400 font-medium mb-1'>No tours found</p>
+              <p className='text-stone-400 font-medium mb-1'>
+                {t("tourList.empty.title")}
+              </p>
               <p className='text-sm text-stone-300'>
-                Try adjusting your filters
+                {t("tourList.empty.subtitle")}
               </p>
               <button
                 onClick={clearFilters}
                 className='mt-4 text-sm text-amber-600 hover:text-amber-700 font-semibold'
               >
-                Clear all filters
+                {t("tourList.empty.clearButton")}
               </button>
             </div>
           ) : (

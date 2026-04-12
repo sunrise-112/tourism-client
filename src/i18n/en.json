@@ -1373,5 +1373,56 @@
     "map": {
       "title": "Our location in Marrakech Medina, Morocco"
     }
+  },
+  "tourList": {
+    "header": {
+      "eyebrow": "Explore Morocco",
+      "title": "All Tours",
+      "loading": "Loading...",
+      "toursAvailable_one": "{{count}} tour available",
+      "toursAvailable_other": "{{count}} tours available"
+    },
+    "filters": {
+      "search": "Search",
+      "searchPlaceholder": "Tour name or destination...",
+      "category": "Category",
+      "allCategories": "All Categories",
+      "priceRange": "Price Range",
+      "minPlaceholder": "Min",
+      "maxPlaceholder": "Max",
+      "filterBy": "Filter By",
+      "featured": "Featured Tours",
+      "hotDeals": "Hot Deals",
+      "clear_one": "Clear {{count}} filter",
+      "clear_other": "Clear {{count}} filters"
+    },
+    "categories": {
+      "adventure": "Adventure",
+      "beach": "Beach",
+      "cultural": "Cultural",
+      "wildlife": "Wildlife",
+      "city": "City",
+      "wellness": "Wellness",
+      "desert": "Desert",
+      "trekking": "Trekking",
+      "coastal": "Coastal",
+      "culinary": "Culinary",
+      "historical": "Historical"
+    },
+    "toolbar": {
+      "searching": "Searching...",
+      "showing": "Showing {{shown}} of {{total}} tours"
+    },
+    "sort": {
+      "newest": "Newest",
+      "priceLow": "Price: Low",
+      "priceHigh": "Price: High",
+      "duration": "Duration"
+    },
+    "empty": {
+      "title": "No tours found",
+      "subtitle": "Try adjusting your filters",
+      "clearButton": "Clear all filters"
+    }
   }
 }

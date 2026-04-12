@@ -1376,5 +1376,62 @@
     "map": {
       "title": "موقعنا في المدينة القديمة مراكش، المغرب"
     }
+  },
+  "tourList": {
+    "header": {
+      "eyebrow": "استكشف المغرب",
+      "title": "جميع الجولات",
+      "loading": "جاري التحميل...",
+      "toursAvailable_one": "{{count}} جولة متاحة",
+      "toursAvailable_two": "{{count}} جولتين متاحتين",
+      "toursAvailable_few": "{{count}} جولات متاحة",
+      "toursAvailable_many": "{{count}} جولة متاحة",
+      "toursAvailable_other": "{{count}} جولة متاحة"
+    },
+    "filters": {
+      "search": "بحث",
+      "searchPlaceholder": "اسم الجولة أو الوجهة...",
+      "category": "التصنيف",
+      "allCategories": "جميع التصنيفات",
+      "priceRange": "نطاق السعر",
+      "minPlaceholder": "الحد الأدنى",
+      "maxPlaceholder": "الحد الأقصى",
+      "filterBy": "تصفية حسب",
+      "featured": "الجولات المميزة",
+      "hotDeals": "العروض الساخنة",
+      "clear_one": "مسح {{count}} فلتر",
+      "clear_two": "مسح {{count}} فلترين",
+      "clear_few": "مسح {{count}} فلاتر",
+      "clear_many": "مسح {{count}} فلتراً",
+      "clear_other": "مسح {{count}} فلتر"
+    },
+    "categories": {
+      "adventure": "مغامرة",
+      "beach": "شاطئ",
+      "cultural": "ثقافي",
+      "wildlife": "حياة برية",
+      "city": "مدينة",
+      "wellness": "صحة",
+      "desert": "صحراء",
+      "trekking": "رحلات",
+      "coastal": "ساحلي",
+      "culinary": "طعام",
+      "historical": "تاريخي"
+    },
+    "toolbar": {
+      "searching": "جاري البحث...",
+      "showing": "عرض {{shown}} من {{total}} جولة"
+    },
+    "sort": {
+      "newest": "الأحدث",
+      "priceLow": "السعر: منخفض",
+      "priceHigh": "السعر: مرتفع",
+      "duration": "المدة"
+    },
+    "empty": {
+      "title": "لا توجد جولات",
+      "subtitle": "حاول تعديل الفلاتر",
+      "clearButton": "مسح جميع الفلاتر"
+    }
   }
 }

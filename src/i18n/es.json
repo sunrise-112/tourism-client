@@ -1438,5 +1438,56 @@
     "map": {
       "title": "Nuestra ubicación en la Medina de Marrakech, Marruecos"
     }
+  },
+  "tourList": {
+    "header": {
+      "eyebrow": "Explora Marruecos",
+      "title": "Todos los tours",
+      "loading": "Cargando...",
+      "toursAvailable_one": "{{count}} tour disponible",
+      "toursAvailable_other": "{{count}} tours disponibles"
+    },
+    "filters": {
+      "search": "Buscar",
+      "searchPlaceholder": "Nombre del tour o destino...",
+      "category": "Categoría",
+      "allCategories": "Todas las categorías",
+      "priceRange": "Rango de precio",
+      "minPlaceholder": "Mín",
+      "maxPlaceholder": "Máx",
+      "filterBy": "Filtrar por",
+      "featured": "Tours destacados",
+      "hotDeals": "Ofertas especiales",
+      "clear_one": "Borrar {{count}} filtro",
+      "clear_other": "Borrar {{count}} filtros"
+    },
+    "categories": {
+      "adventure": "Aventura",
+      "beach": "Playa",
+      "cultural": "Cultural",
+      "wildlife": "Fauna",
+      "city": "Ciudad",
+      "wellness": "Bienestar",
+      "desert": "Desierto",
+      "trekking": "Senderismo",
+      "coastal": "Costa",
+      "culinary": "Gastronomía",
+      "historical": "Histórico"
+    },
+    "toolbar": {
+      "searching": "Buscando...",
+      "showing": "Mostrando {{shown}} de {{total}} tours"
+    },
+    "sort": {
+      "newest": "Más reciente",
+      "priceLow": "Precio: menor",
+      "priceHigh": "Precio: mayor",
+      "duration": "Duración"
+    },
+    "empty": {
+      "title": "No se encontraron tours",
+      "subtitle": "Intenta ajustar tus filtros",
+      "clearButton": "Borrar todos los filtros"
+    }
   }
 }
