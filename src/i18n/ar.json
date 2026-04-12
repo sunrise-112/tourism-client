@@ -595,5 +595,60 @@
     "error": {
       "failedToLoad": "فشل التحميل. يرجى المحاولة مرة أخرى."
     }
+  },
+  "manageReviews": {
+    "admin": "المشرف",
+    "title": "إدارة التقييمات",
+    "reviewsSubmitted": "{{count}} تقييم تم إرسالها",
+    "stats": {
+      "totalReviews": "إجمالي التقييمات",
+      "approved": "المقبولة",
+      "pending": "قيد الانتظار",
+      "avgRating": "متوسط التقييم"
+    },
+    "filters": {
+      "all": "الكل",
+      "approved": "المقبولة",
+      "pending": "قيد الانتظار"
+    },
+    "table": {
+      "reviewer": "المراجع",
+      "tour": "الجولة",
+      "rating": "التقييم",
+      "review": "المراجعة",
+      "status": "الحالة",
+      "date": "التاريخ",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "approved": "مقبول",
+      "pending": "قيد الانتظار"
+    },
+    "empty": {
+      "noReviews": "لا توجد تقييمات",
+      "tryDifferentFilter": "جرّب فلتراً مختلفاً."
+    },
+    "modal": {
+      "deleteTitle": "حذف التقييم؟",
+      "deleteDescription": "سيؤدي هذا إلى إزالة التقييم بواسطة <strong>{{name}}</strong> بشكل دائم. لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "deleting": "جاري الحذف..."
+    },
+    "toasts": {
+      "approved": "تم قبول التقييم!",
+      "disapproved": "تم رفض التقييم!",
+      "deleted": "تم حذف التقييم!"
+    },
+    "errors": {
+      "fetchFailed": "فشل في جلب التقييمات!",
+      "approveFailed": "فشل في قبول التقييم!",
+      "disapproveFailed": "فشل في رفض التقييم!",
+      "deleteFailed": "فشل في حذف التقييم!"
+    },
+    "tooltips": {
+      "approve": "قبول",
+      "delete": "حذف"
+    }
   }
 }

@@ -595,5 +595,60 @@
     "error": {
       "failedToLoad": "加载失败，请重试。"
     }
+  },
+  "manageReviews": {
+    "admin": "管理员",
+    "title": "管理评论",
+    "reviewsSubmitted": "已提交 {{count}} 条评论",
+    "stats": {
+      "totalReviews": "总评论数",
+      "approved": "已批准",
+      "pending": "待审核",
+      "avgRating": "平均评分"
+    },
+    "filters": {
+      "all": "全部",
+      "approved": "已批准",
+      "pending": "待审核"
+    },
+    "table": {
+      "reviewer": "评论者",
+      "tour": "旅游项目",
+      "rating": "评分",
+      "review": "评论内容",
+      "status": "状态",
+      "date": "日期",
+      "actions": "操作"
+    },
+    "status": {
+      "approved": "已批准",
+      "pending": "待审核"
+    },
+    "empty": {
+      "noReviews": "暂无评论",
+      "tryDifferentFilter": "请尝试其他筛选条件。"
+    },
+    "modal": {
+      "deleteTitle": "删除评论？",
+      "deleteDescription": "这将永久删除由 <strong>{{name}}</strong> 发表的评论。此操作不可撤销。",
+      "cancel": "取消",
+      "delete": "删除",
+      "deleting": "删除中..."
+    },
+    "toasts": {
+      "approved": "评论已批准！",
+      "disapproved": "评论已驳回！",
+      "deleted": "评论已删除！"
+    },
+    "errors": {
+      "fetchFailed": "获取评论失败！",
+      "approveFailed": "批准评论失败！",
+      "disapproveFailed": "驳回评论失败！",
+      "deleteFailed": "删除评论失败！"
+    },
+    "tooltips": {
+      "approve": "批准",
+      "delete": "删除"
+    }
   }
 }

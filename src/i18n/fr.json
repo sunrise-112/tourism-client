@@ -595,5 +595,60 @@
     "error": {
       "failedToLoad": "Échec du chargement. Veuillez réessayer."
     }
+  },
+  "manageReviews": {
+    "admin": "Administrateur",
+    "title": "Gérer les avis",
+    "reviewsSubmitted": "{{count}} avis soumis",
+    "stats": {
+      "totalReviews": "Total des avis",
+      "approved": "Approuvés",
+      "pending": "En attente",
+      "avgRating": "Note moyenne"
+    },
+    "filters": {
+      "all": "Tous",
+      "approved": "Approuvés",
+      "pending": "En attente"
+    },
+    "table": {
+      "reviewer": "Auteur",
+      "tour": "Circuit",
+      "rating": "Note",
+      "review": "Avis",
+      "status": "Statut",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "status": {
+      "approved": "Approuvé",
+      "pending": "En attente"
+    },
+    "empty": {
+      "noReviews": "Aucun avis trouvé",
+      "tryDifferentFilter": "Essayez un autre filtre."
+    },
+    "modal": {
+      "deleteTitle": "Supprimer l'avis ?",
+      "deleteDescription": "Cela supprimera définitivement l'avis de <strong>{{name}}</strong>. Cette action est irréversible.",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "deleting": "Suppression..."
+    },
+    "toasts": {
+      "approved": "Avis approuvé !",
+      "disapproved": "Avis rejeté !",
+      "deleted": "Avis supprimé !"
+    },
+    "errors": {
+      "fetchFailed": "Échec du chargement des avis !",
+      "approveFailed": "Échec de l'approbation de l'avis !",
+      "disapproveFailed": "Échec du rejet de l'avis !",
+      "deleteFailed": "Échec de la suppression de l'avis !"
+    },
+    "tooltips": {
+      "approve": "Approuver",
+      "delete": "Supprimer"
+    }
   }
 }

@@ -595,5 +595,60 @@
     "error": {
       "failedToLoad": "Error al cargar. Por favor, inténtelo de nuevo."
     }
+  },
+  "manageReviews": {
+    "admin": "Administrador",
+    "title": "Gestionar Reseñas",
+    "reviewsSubmitted": "{{count}} reseñas enviadas",
+    "stats": {
+      "totalReviews": "Total de reseñas",
+      "approved": "Aprobadas",
+      "pending": "Pendientes",
+      "avgRating": "Calificación media"
+    },
+    "filters": {
+      "all": "Todas",
+      "approved": "Aprobadas",
+      "pending": "Pendientes"
+    },
+    "table": {
+      "reviewer": "Revisor",
+      "tour": "Tour",
+      "rating": "Puntuación",
+      "review": "Reseña",
+      "status": "Estado",
+      "date": "Fecha",
+      "actions": "Acciones"
+    },
+    "status": {
+      "approved": "Aprobada",
+      "pending": "Pendiente"
+    },
+    "empty": {
+      "noReviews": "No se encontraron reseñas",
+      "tryDifferentFilter": "Prueba con otro filtro."
+    },
+    "modal": {
+      "deleteTitle": "¿Eliminar reseña?",
+      "deleteDescription": "Esto eliminará permanentemente la reseña de <strong>{{name}}</strong>. Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando..."
+    },
+    "toasts": {
+      "approved": "¡Reseña aprobada!",
+      "disapproved": "¡Reseña rechazada!",
+      "deleted": "¡Reseña eliminada!"
+    },
+    "errors": {
+      "fetchFailed": "¡Error al cargar las reseñas!",
+      "approveFailed": "¡Error al aprobar la reseña!",
+      "disapproveFailed": "¡Error al rechazar la reseña!",
+      "deleteFailed": "¡Error al eliminar la reseña!"
+    },
+    "tooltips": {
+      "approve": "Aprobar",
+      "delete": "Eliminar"
+    }
   }
 }

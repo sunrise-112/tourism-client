@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useTranslation, Trans } from "react-i18next";
 import _ from "lodash";
 import reviewService from "../../services/reviewService";
 import getTimeAgo from "../../utils/getTimeAgo";
@@ -28,6 +29,7 @@ const FILTERS = ["All", "Approved", "Pending"];
 
 // ─── ManageReviews ────────────────────────────────────────────
 const ManageReviews = ({ searchQuery }) => {
+  const { t } = useTranslation();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -57,7 +59,7 @@ const ManageReviews = ({ searchQuery }) => {
       setReviews(res?.data);
       setTotalItems(res?.pagination?.totalItems);
     } catch {
-      toast.error("Failed to fetch reviews!");
+      toast.error(t("manageReviews.errors.fetchFailed"));
     } finally {
       setLoading(false);
     }
@@ -96,12 +98,18 @@ const ManageReviews = ({ searchQuery }) => {
       setReviews((prev) =>
         prev.map((r) => (r.id === review.id ? { ...r, approve: !approved } : r))
       );
-      toast.success(`Review ${!approved ? "approved" : "disapproved"}!`);
+      toast.success(
+        !approved
+          ? t("manageReviews.toasts.approved")
+          : t("manageReviews.toasts.disapproved")
+      );
     } catch (err) {
       setReviews(originalReviews);
       toast.error(
         err?.response?.data?.message ||
-          `Failed to ${!approved ? "approved" : "disapproved"} Review!`
+          (!approved
+            ? t("manageReviews.errors.approveFailed")
+            : t("manageReviews.errors.disapproveFailed"))
       );
     } finally {
       setApprovingId(null);
@@ -114,10 +122,12 @@ const ManageReviews = ({ searchQuery }) => {
       await reviewService.deleteOne(deleteModal.id);
       setReviews((prev) => prev.filter((r) => r.id !== deleteModal.id));
       setTotalItems((n) => n - 1);
-      toast.success("Review deleted!");
+      toast.success(t("manageReviews.toasts.deleted"));
       setDeleteModal(null);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to delete review!");
+      toast.error(
+        err?.response?.data?.message || t("manageReviews.errors.deleteFailed")
+      );
     } finally {
       setDeleting(false);
     }
@@ -140,16 +150,16 @@ const ManageReviews = ({ searchQuery }) => {
       {/* ── Header ─────────────────────────────────── */}
       <div className='mb-8'>
         <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
-          Admin
+          {t("manageReviews.admin")}
         </p>
         <h1
           className='text-3xl font-black text-stone-800'
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          Manage Reviews
+          {t("manageReviews.title")}
         </h1>
         <p className='text-stone-400 text-sm mt-1'>
-          {totalItems} reviews submitted
+          {t("manageReviews.reviewsSubmitted", { count: totalItems })}
         </p>
       </div>
 
@@ -158,28 +168,28 @@ const ManageReviews = ({ searchQuery }) => {
         {[
           {
             icon: "fa-comments",
-            label: "Total Reviews",
+            label: t("manageReviews.stats.totalReviews"),
             value: totalItems,
             color: "from-amber-400 to-orange-500",
             ring: "ring-amber-200",
           },
           {
             icon: "fa-check-circle",
-            label: "Approved",
+            label: t("manageReviews.stats.approved"),
             value: approved,
             color: "from-emerald-400 to-teal-500",
             ring: "ring-emerald-200",
           },
           {
             icon: "fa-clock",
-            label: "Pending",
+            label: t("manageReviews.stats.pending"),
             value: pending,
             color: "from-yellow-400 to-amber-500",
             ring: "ring-yellow-200",
           },
           {
             icon: "fa-star",
-            label: "Avg Rating",
+            label: t("manageReviews.stats.avgRating"),
             value: avgRating,
             color: "from-blue-400 to-indigo-500",
             ring: "ring-blue-200",
@@ -219,7 +229,9 @@ const ManageReviews = ({ searchQuery }) => {
                 : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"
             }`}
           >
-            {f}
+            {f === "All" && t("manageReviews.filters.all")}
+            {f === "Approved" && t("manageReviews.filters.approved")}
+            {f === "Pending" && t("manageReviews.filters.pending")}
           </button>
         ))}
       </div>
@@ -234,8 +246,12 @@ const ManageReviews = ({ searchQuery }) => {
       ) : sorted.length === 0 ? (
         <div className='bg-white rounded-2xl border border-stone-100 py-20 text-center'>
           <i className='fa fa-star text-5xl text-stone-200 mb-4 block' />
-          <p className='font-bold text-stone-500 mb-1'>No reviews found</p>
-          <p className='text-sm text-stone-400'>Try a different filter.</p>
+          <p className='font-bold text-stone-500 mb-1'>
+            {t("manageReviews.empty.noReviews")}
+          </p>
+          <p className='text-sm text-stone-400'>
+            {t("manageReviews.empty.tryDifferentFilter")}
+          </p>
         </div>
       ) : (
         <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
@@ -244,13 +260,13 @@ const ManageReviews = ({ searchQuery }) => {
               <thead>
                 <tr className='border-b border-stone-100 bg-stone-50'>
                   {[
-                    "Reviewer",
-                    "Tour",
-                    "Rating",
-                    "Review",
-                    "Status",
-                    "Date",
-                    "Actions",
+                    t("manageReviews.table.reviewer"),
+                    t("manageReviews.table.tour"),
+                    t("manageReviews.table.rating"),
+                    t("manageReviews.table.review"),
+                    t("manageReviews.table.status"),
+                    t("manageReviews.table.date"),
+                    t("manageReviews.table.actions"),
                   ].map((h) => (
                     <th
                       key={h}
@@ -330,7 +346,9 @@ const ManageReviews = ({ searchQuery }) => {
                             r.approve ? "bg-emerald-400" : "bg-yellow-400"
                           }`}
                         />
-                        {r.approve ? "Approved" : "Pending"}
+                        {r.approve
+                          ? t("manageReviews.status.approved")
+                          : t("manageReviews.status.pending")}
                       </span>
                     </td>
                     {/* Date */}
@@ -343,7 +361,7 @@ const ManageReviews = ({ searchQuery }) => {
                         {
                           <button
                             onClick={() => handleApprove(r)}
-                            title='Approve'
+                            title={t("manageReviews.tooltips.approve")}
                             disabled={approvingId === r.id}
                             className='w-8 h-8 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-600 flex items-center justify-center transition-colors disabled:opacity-60'
                           >
@@ -356,7 +374,7 @@ const ManageReviews = ({ searchQuery }) => {
                         }
                         <button
                           onClick={() => setDeleteModal(r)}
-                          title='Delete'
+                          title={t("manageReviews.tooltips.delete")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-trash text-xs' />
@@ -396,19 +414,23 @@ const ManageReviews = ({ searchQuery }) => {
                 className='font-black text-stone-800 text-lg mb-1'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Delete Review?
+                {t("manageReviews.modal.deleteTitle")}
               </h3>
               <p className='text-sm text-stone-500 mb-6'>
-                This will permanently remove the review by{" "}
-                <strong>{deleteModal?.user?.name}</strong>. This action cannot
-                be undone.
+                <Trans
+                  i18nKey='manageReviews.modal.deleteDescription'
+                  values={{ name: deleteModal?.user?.name }}
+                >
+                  This will permanently remove the review by{" "}
+                  <strong>{{ name }}</strong>. This action cannot be undone.
+                </Trans>
               </p>
               <div className='flex gap-3'>
                 <button
                   onClick={() => setDeleteModal(null)}
                   className='flex-1 py-2.5 rounded-xl text-sm font-semibold text-stone-600 border border-stone-200 hover:bg-stone-50 transition-colors'
                 >
-                  Cancel
+                  {t("manageReviews.modal.cancel")}
                 </button>
                 <button
                   onClick={handleDelete}
@@ -418,10 +440,10 @@ const ManageReviews = ({ searchQuery }) => {
                   {deleting ? (
                     <>
                       <i className='fa fa-spinner fa-spin mr-1.5' />
-                      Deleting...
+                      {t("manageReviews.modal.deleting")}
                     </>
                   ) : (
-                    "Delete"
+                    t("manageReviews.modal.delete")
                   )}
                 </button>
               </div>

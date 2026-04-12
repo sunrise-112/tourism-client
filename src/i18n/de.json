@@ -595,5 +595,60 @@
     "error": {
       "failedToLoad": "Laden fehlgeschlagen. Bitte versuchen Sie es erneut."
     }
+  },
+  "manageReviews": {
+    "admin": "Administrator",
+    "title": "Bewertungen verwalten",
+    "reviewsSubmitted": "{{count}} Bewertungen eingereicht",
+    "stats": {
+      "totalReviews": "Gesamtbewertungen",
+      "approved": "Genehmigt",
+      "pending": "Ausstehend",
+      "avgRating": "Durchschnittliche Bewertung"
+    },
+    "filters": {
+      "all": "Alle",
+      "approved": "Genehmigt",
+      "pending": "Ausstehend"
+    },
+    "table": {
+      "reviewer": "Bewerter",
+      "tour": "Tour",
+      "rating": "Bewertung",
+      "review": "Kommentar",
+      "status": "Status",
+      "date": "Datum",
+      "actions": "Aktionen"
+    },
+    "status": {
+      "approved": "Genehmigt",
+      "pending": "Ausstehend"
+    },
+    "empty": {
+      "noReviews": "Keine Bewertungen gefunden",
+      "tryDifferentFilter": "Versuchen Sie einen anderen Filter."
+    },
+    "modal": {
+      "deleteTitle": "Bewertung löschen?",
+      "deleteDescription": "Dies wird die Bewertung von <strong>{{name}}</strong> dauerhaft entfernen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "deleting": "Löschen..."
+    },
+    "toasts": {
+      "approved": "Bewertung genehmigt!",
+      "disapproved": "Bewertung abgelehnt!",
+      "deleted": "Bewertung gelöscht!"
+    },
+    "errors": {
+      "fetchFailed": "Fehler beim Laden der Bewertungen!",
+      "approveFailed": "Fehler beim Genehmigen der Bewertung!",
+      "disapproveFailed": "Fehler beim Ablehnen der Bewertung!",
+      "deleteFailed": "Fehler beim Löschen der Bewertung!"
+    },
+    "tooltips": {
+      "approve": "Genehmigen",
+      "delete": "Löschen"
+    }
   }
 }

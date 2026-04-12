@@ -595,5 +595,60 @@
     "error": {
       "failedToLoad": "Failed to load. Please try again."
     }
+  },
+  "manageReviews": {
+    "admin": "Admin",
+    "title": "Manage Reviews",
+    "reviewsSubmitted": "{{count}} reviews submitted",
+    "stats": {
+      "totalReviews": "Total Reviews",
+      "approved": "Approved",
+      "pending": "Pending",
+      "avgRating": "Avg Rating"
+    },
+    "filters": {
+      "all": "All",
+      "approved": "Approved",
+      "pending": "Pending"
+    },
+    "table": {
+      "reviewer": "Reviewer",
+      "tour": "Tour",
+      "rating": "Rating",
+      "review": "Review",
+      "status": "Status",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "status": {
+      "approved": "Approved",
+      "pending": "Pending"
+    },
+    "empty": {
+      "noReviews": "No reviews found",
+      "tryDifferentFilter": "Try a different filter."
+    },
+    "modal": {
+      "deleteTitle": "Delete Review?",
+      "deleteDescription": "This will permanently remove the review by <strong>{{name}}</strong>. This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    },
+    "toasts": {
+      "approved": "Review approved!",
+      "disapproved": "Review disapproved!",
+      "deleted": "Review deleted!"
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch reviews!",
+      "approveFailed": "Failed to approve review!",
+      "disapproveFailed": "Failed to disapprove review!",
+      "deleteFailed": "Failed to delete review!"
+    },
+    "tooltips": {
+      "approve": "Approve",
+      "delete": "Delete"
+    }
   }
 }
