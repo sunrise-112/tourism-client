@@ -1121,5 +1121,128 @@
       "loadFailed": "فشل في تحميل الإعدادات.",
       "updateFailed": "فشل في تحديث الإعدادات."
     }
+  },
+  "home": {
+    "badge": {
+      "hotDeal": "عرض ساخن",
+      "featured": "مميز"
+    },
+    "tourCard": {
+      "durationDays_one": "يوم واحد",
+      "durationDays_two": "يومان",
+      "durationDays_few": "{{count}} أيام",
+      "durationDays_many": "{{count}} يومًا",
+      "durationDays_other": "{{count}} يوم",
+      "from": "ابتداء من",
+      "explore": "استكشف"
+    },
+    "stats": {
+      "destinations": "وجهات",
+      "avgRating": "متوسط التقييم",
+      "happyTravelers": "مسافرون سعداء",
+      "experience": "خبرة"
+    },
+    "categories": {
+      "eyebrow": "استكشف حسب النوع",
+      "title": "تصفح حسب الفئة",
+      "subtitle": "ابحث عن التجربة المثالية لأسلوب سفرك",
+      "adventure": "مغامرة",
+      "beach": "شاطئ",
+      "cultural": "ثقافي",
+      "wildlife": "حياة برية",
+      "city": "مدينة",
+      "wellness": "صحة"
+    },
+    "featured": {
+      "eyebrow": "مختارة لك",
+      "title": "جولات مميزة",
+      "subtitle": "تجارب يحبها مسافرونا أكثر",
+      "viewAll": "عرض الكل",
+      "empty": "لا توجد جولات مميزة حالياً"
+    },
+    "hotDeals": {
+      "eyebrow": "وقت محدود",
+      "title": "عروض ساخنة",
+      "subtitle": "اغتنمها قبل أن تنتهي",
+      "viewAll": "عرض الكل"
+    },
+    "hero": {
+      "eyebrow": "اكتشف المغرب وما وراءه",
+      "titleLine1": "مغامرتك",
+      "titleLine2": "القادمة",
+      "titleLine3": "في انتظارك",
+      "subtitle": "جولات مصممة بعناية عبر المدن القديمة، والصحاري الذهبية، والممرات الجبلية الدراماتيكية - مصممة للمسافر الفضولي.",
+      "searchPlaceholder": "أين تريد الذهاب؟",
+      "searchButton": "بحث",
+      "scroll": "تمرير"
+    },
+    "quickTags": {
+      "sahara": "الصحراء",
+      "marrakech": "مراكش",
+      "atlasMountains": "جبال الأطلس",
+      "coastalTours": "جولات ساحلية"
+    },
+    "cta": {
+      "eyebrow": "ابدأ رحلتك",
+      "title": "هل أنت مستعد للاستكشاف؟",
+      "subtitle": "انضم إلى آلاف المسافرين السعداء وابدأ في التخطيط لرحلتك اليوم.",
+      "browseButton": "تصفح الجولات",
+      "contactButton": "اتصل بنا"
+    }
+  },
+  "footer": {
+    "brand": {
+      "description": "نصنع رحلات لا تُنسى منذ عام 2012. نؤمن بأن السفر يغير الحياة — دعنا نريك العالم."
+    },
+    "sections": {
+      "explore": "استكشف",
+      "company": "الشركة",
+      "account": "الحساب"
+    },
+    "links": {
+      "explore": {
+        "allTours": "جميع الجولات",
+        "featured": "المميزة",
+        "hotDeals": "العروض الساخنة",
+        "adventure": "مغامرة",
+        "beach": "شاطئ"
+      },
+      "company": {
+        "aboutUs": "من نحن",
+        "contactUs": "اتصل بنا",
+        "ourTeam": "فريقنا"
+      },
+      "account": {
+        "login": "تسجيل الدخول",
+        "register": "إنشاء حساب",
+        "myBookings": "حجوزاتي",
+        "myReviews": "تقييماتي",
+        "profile": "الملف الشخصي"
+      }
+    },
+    "contacts": {
+      "address": "شارع الأطلس 123، مراكش، المغرب",
+      "phone": "+212 600 000 000",
+      "email": "hello@tourapp.com",
+      "hours": "الإثنين – السبت: 9:00 ص – 6:00 م"
+    },
+    "socials": {
+      "facebook": "فيسبوك",
+      "instagram": "إنستغرام",
+      "twitter": "تويتر",
+      "youtube": "يوتيوب"
+    },
+    "newsletter": {
+      "title": "احصل على إلهام السفر في بريدك الوارد",
+      "subtitle": "لا بريد مزعج. يمكنك إلغاء الاشتراك في أي وقت.",
+      "placeholder": "بريدك@example.com",
+      "button": "اشترك"
+    },
+    "copyright": "© {{year}} {{company}}. جميع الحقوق محفوظة.",
+    "bottomLinks": {
+      "privacy": "سياسة الخصوصية",
+      "terms": "شروط الخدمة",
+      "sitemap": "خريطة الموقع"
+    }
   }
 }

@@ -1121,5 +1121,125 @@
       "loadFailed": "Échec du chargement des paramètres.",
       "updateFailed": "Échec de la mise à jour du paramètre."
     }
+  },
+  "home": {
+    "badge": {
+      "hotDeal": "Offre chaude",
+      "featured": "À la une"
+    },
+    "tourCard": {
+      "durationDays_one": "{{count}} jour",
+      "durationDays_other": "{{count}} jours",
+      "from": "À partir de",
+      "explore": "Explorer"
+    },
+    "stats": {
+      "destinations": "Destinations",
+      "avgRating": "Note moyenne",
+      "happyTravelers": "Voyageurs heureux",
+      "experience": "Expérience"
+    },
+    "categories": {
+      "eyebrow": "Explorer par type",
+      "title": "Parcourir par catégorie",
+      "subtitle": "Trouvez l'expérience parfaite pour votre style de voyage",
+      "adventure": "Aventure",
+      "beach": "Plage",
+      "cultural": "Culturel",
+      "wildlife": "Faune",
+      "city": "Ville",
+      "wellness": "Bien-être"
+    },
+    "featured": {
+      "eyebrow": "Sélectionnés pour vous",
+      "title": "Circuits à la une",
+      "subtitle": "Les expériences que nos voyageurs préfèrent",
+      "viewAll": "Voir tout",
+      "empty": "Aucun circuit à la une disponible pour le moment"
+    },
+    "hotDeals": {
+      "eyebrow": "Temps limité",
+      "title": "Offres spéciales",
+      "subtitle": "Attrapez-les avant qu'ils ne disparaissent",
+      "viewAll": "Voir tout"
+    },
+    "hero": {
+      "eyebrow": "Découvrez le Maroc et au-delà",
+      "titleLine1": "Votre prochaine",
+      "titleLine2": "Aventure",
+      "titleLine3": "vous attend",
+      "subtitle": "Circuits artisanaux à travers les anciennes médinas, les déserts dorés et les cols de montagne spectaculaires – conçus pour le voyageur curieux.",
+      "searchPlaceholder": "Où voulez-vous aller ?",
+      "searchButton": "Rechercher",
+      "scroll": "Défiler"
+    },
+    "quickTags": {
+      "sahara": "Sahara",
+      "marrakech": "Marrakech",
+      "atlasMountains": "Montagnes de l'Atlas",
+      "coastalTours": "Circuits côtiers"
+    },
+    "cta": {
+      "eyebrow": "Commencez votre voyage",
+      "title": "Prêt à explorer ?",
+      "subtitle": "Rejoignez des milliers de voyageurs heureux et commencez à planifier votre voyage de rêve dès aujourd'hui.",
+      "browseButton": "Parcourir les circuits",
+      "contactButton": "Contactez-nous"
+    }
+  },
+  "footer": {
+    "brand": {
+      "description": "Nous créons des voyages inoubliables depuis 2012. Nous croyons que voyager transforme la vie — laissez-nous vous montrer le monde."
+    },
+    "sections": {
+      "explore": "Explorer",
+      "company": "Entreprise",
+      "account": "Compte"
+    },
+    "links": {
+      "explore": {
+        "allTours": "Tous les circuits",
+        "featured": "À la une",
+        "hotDeals": "Offres spéciales",
+        "adventure": "Aventure",
+        "beach": "Plage"
+      },
+      "company": {
+        "aboutUs": "À propos",
+        "contactUs": "Contactez-nous",
+        "ourTeam": "Notre équipe"
+      },
+      "account": {
+        "login": "Connexion",
+        "register": "Inscription",
+        "myBookings": "Mes réservations",
+        "myReviews": "Mes avis",
+        "profile": "Profil"
+      }
+    },
+    "contacts": {
+      "address": "123 Rue de l'Atlas, Marrakech, Maroc",
+      "phone": "+212 600 000 000",
+      "email": "hello@tourapp.com",
+      "hours": "Lun – Sam : 9h00 – 18h00"
+    },
+    "socials": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "twitter": "Twitter",
+      "youtube": "YouTube"
+    },
+    "newsletter": {
+      "title": "Recevez l'inspiration voyage dans votre boîte mail",
+      "subtitle": "Pas de spam. Désabonnez-vous à tout moment.",
+      "placeholder": "votre@email.fr",
+      "button": "S'abonner"
+    },
+    "copyright": "© {{year}} {{company}}. Tous droits réservés.",
+    "bottomLinks": {
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d'utilisation",
+      "sitemap": "Plan du site"
+    }
   }
 }

@@ -1,32 +1,58 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import tourService from "../../services/tourService";
 
 // ─── Stats ────────────────────────────────────────────────────
 const stats = [
-  { value: "120+", label: "Destinations" },
-  { value: "4.9★", label: "Avg Rating" },
-  { value: "8K+", label: "Happy Travelers" },
-  { value: "12yr", label: "Experience" },
+  { value: "120+", labelKey: "home.stats.destinations" },
+  { value: "4.9★", labelKey: "home.stats.avgRating" },
+  { value: "8K+", labelKey: "home.stats.happyTravelers" },
+  { value: "12yr", labelKey: "home.stats.experience" },
 ];
 
 // ─── Categories ───────────────────────────────────────────────
 const categories = [
-  { label: "Adventure", icon: "fa-mountain", bg: "#FFF4ED", color: "#C2500A" },
   {
-    label: "Beach",
+    labelKey: "home.categories.adventure",
+    icon: "fa-mountain",
+    bg: "#FFF4ED",
+    color: "#C2500A",
+  },
+  {
+    labelKey: "home.categories.beach",
     icon: "fa-umbrella-beach",
     bg: "#EDF7FF",
     color: "#0A6EC2",
   },
-  { label: "Cultural", icon: "fa-landmark", bg: "#F5F0FF", color: "#6B21A8" },
-  { label: "Wildlife", icon: "fa-paw", bg: "#EDFFF4", color: "#15803D" },
-  { label: "City", icon: "fa-city", bg: "#EFF6FF", color: "#1D4ED8" },
-  { label: "Wellness", icon: "fa-spa", bg: "#FFF0F6", color: "#BE185D" },
+  {
+    labelKey: "home.categories.cultural",
+    icon: "fa-landmark",
+    bg: "#F5F0FF",
+    color: "#6B21A8",
+  },
+  {
+    labelKey: "home.categories.wildlife",
+    icon: "fa-paw",
+    bg: "#EDFFF4",
+    color: "#15803D",
+  },
+  {
+    labelKey: "home.categories.city",
+    icon: "fa-city",
+    bg: "#EFF6FF",
+    color: "#1D4ED8",
+  },
+  {
+    labelKey: "home.categories.wellness",
+    icon: "fa-spa",
+    bg: "#FFF0F6",
+    color: "#BE185D",
+  },
 ];
 
 // ─── Tour Card ────────────────────────────────────────────────
-const TourCard = ({ tour }) => (
+const TourCard = ({ tour, t }) => (
   <Link
     to={`/tours/${tour.id}`}
     className='group relative bg-white rounded-2xl overflow-hidden border border-stone-100
@@ -54,12 +80,12 @@ const TourCard = ({ tour }) => (
       <div className='absolute top-3 left-3 flex gap-1.5'>
         {tour.is_hot_deal && (
           <span className='flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-red-500 text-white shadow-sm'>
-            <i className='fa fa-fire text-[10px]' /> Hot Deal
+            <i className='fa fa-fire text-[10px]' /> {t("home.badge.hotDeal")}
           </span>
         )}
         {tour.is_featured && (
           <span className='flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400 text-amber-900 shadow-sm'>
-            <i className='fa fa-star text-[10px]' /> Featured
+            <i className='fa fa-star text-[10px]' /> {t("home.badge.featured")}
           </span>
         )}
       </div>
@@ -67,7 +93,7 @@ const TourCard = ({ tour }) => (
       {/* Duration pill */}
       <div className='absolute bottom-3 right-3 bg-black/50 text-white text-xs font-medium px-2.5 py-1 rounded-full backdrop-blur-sm flex items-center gap-1'>
         <i className='fa fa-clock text-[10px]' />
-        {tour.duration_days} days
+        {t("home.tourCard.durationDays", { count: tour.duration_days })}
       </div>
     </div>
 
@@ -85,11 +111,14 @@ const TourCard = ({ tour }) => (
       </p>
       <div className='flex items-center justify-between pt-3 border-t border-stone-100'>
         <div>
-          <span className='text-xs text-stone-400 block'>From</span>
+          <span className='text-xs text-stone-400 block'>
+            {t("home.tourCard.from")}
+          </span>
           <p className='text-xl font-black text-amber-600'>${tour.price}</p>
         </div>
         <span className='flex items-center gap-1.5 text-sm font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-4 py-2 rounded-xl transition-colors'>
-          Explore <i className='fa fa-arrow-right text-xs' />
+          {t("home.tourCard.explore")}{" "}
+          <i className='fa fa-arrow-right text-xs' />
         </span>
       </div>
     </div>
@@ -97,18 +126,20 @@ const TourCard = ({ tour }) => (
 );
 
 // ─── Section Header ───────────────────────────────────────────
-const SectionHeader = ({ eyebrow, title, subtitle, right }) => (
+const SectionHeader = ({ eyebrowKey, titleKey, subtitleKey, right, t }) => (
   <div className='flex items-end justify-between mb-10'>
     <div>
-      {eyebrow && (
+      {eyebrowKey && (
         <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-600 mb-2'>
-          {eyebrow}
+          {t(eyebrowKey)}
         </p>
       )}
       <h2 className='text-3xl md:text-4xl font-black text-stone-800 leading-tight'>
-        {title}
+        {typeof titleKey === "string" ? t(titleKey) : titleKey}
       </h2>
-      {subtitle && <p className='text-stone-400 text-sm mt-2'>{subtitle}</p>}
+      {subtitleKey && (
+        <p className='text-stone-400 text-sm mt-2'>{t(subtitleKey)}</p>
+      )}
     </div>
     {right}
   </div>
@@ -129,6 +160,7 @@ const SkeletonCard = () => (
 
 // ─── Home Page ────────────────────────────────────────────────
 const Home = () => {
+  const { t } = useTranslation();
   const [featuredTours, setFeaturedTours] = useState([]);
   const [hotDeals, setHotDeals] = useState([]);
   const [search, setSearch] = useState("");
@@ -154,6 +186,26 @@ const Home = () => {
     e.preventDefault();
     if (search.trim()) window.location.href = `/tours?q=${search}`;
   };
+
+  // Pre-translated stats
+  const translatedStats = stats.map((s) => ({
+    value: s.value,
+    label: t(s.labelKey),
+  }));
+
+  // Pre-translated categories
+  const translatedCategories = categories.map((cat) => ({
+    ...cat,
+    label: t(cat.labelKey),
+  }));
+
+  // Quick tags
+  const quickTags = [
+    { key: "home.quickTags.sahara", query: "Sahara" },
+    { key: "home.quickTags.marrakech", query: "Marrakech" },
+    { key: "home.quickTags.atlasMountains", query: "Atlas Mountains" },
+    { key: "home.quickTags.coastalTours", query: "Coastal Tours" },
+  ];
 
   return (
     <div
@@ -181,7 +233,7 @@ const Home = () => {
           {/* Eyebrow pill */}
           <div className='inline-flex items-center gap-2 bg-amber-400/10 text-amber-300 text-xs font-semibold px-5 py-2.5 rounded-full border border-amber-400/20 mb-8 backdrop-blur-sm'>
             <i className='fa fa-globe-africa' />
-            Discover Morocco & Beyond
+            {t("home.hero.eyebrow")}
           </div>
 
           {/* Heading */}
@@ -189,7 +241,7 @@ const Home = () => {
             className='text-6xl md:text-8xl font-black text-white leading-[0.95] tracking-tight mb-6'
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Your Next
+            {t("home.hero.titleLine1")}
             <span
               className='block text-transparent bg-clip-text'
               style={{
@@ -197,14 +249,13 @@ const Home = () => {
                   "linear-gradient(135deg, #F59E0B, #FB923C, #FBBF24)",
               }}
             >
-              Adventure
+              {t("home.hero.titleLine2")}
             </span>
-            Awaits
+            {t("home.hero.titleLine3")}
           </h1>
 
           <p className='text-stone-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed'>
-            Handcrafted tours through ancient medinas, golden deserts, and
-            dramatic mountain passes — designed for the curious traveler.
+            {t("home.hero.subtitle")}
           </p>
 
           {/* Search bar */}
@@ -218,7 +269,7 @@ const Home = () => {
                 type='text'
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder='Where do you want to go?'
+                placeholder={t("home.hero.searchPlaceholder")}
                 className='flex-1 bg-transparent text-sm outline-none text-white placeholder-stone-500'
               />
             </div>
@@ -226,29 +277,30 @@ const Home = () => {
               type='submit'
               className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-6 py-3 rounded-xl'
             >
-              Search <i className='fa fa-arrow-right text-xs' />
+              {t("home.hero.searchButton")}{" "}
+              <i className='fa fa-arrow-right text-xs' />
             </button>
           </form>
 
           {/* Quick tags */}
           <div className='flex flex-wrap justify-center gap-2'>
-            {["Sahara", "Marrakech", "Atlas Mountains", "Coastal Tours"].map(
-              (tag) => (
-                <Link
-                  key={tag}
-                  to={`/tours?q=${tag}`}
-                  className='text-xs text-stone-400 hover:text-amber-300 border border-white/10 hover:border-amber-400/40 px-4 py-1.5 rounded-full transition-all backdrop-blur-sm'
-                >
-                  {tag}
-                </Link>
-              )
-            )}
+            {quickTags.map((tag) => (
+              <Link
+                key={tag.key}
+                to={`/tours?q=${tag.query}`}
+                className='text-xs text-stone-400 hover:text-amber-300 border border-white/10 hover:border-amber-400/40 px-4 py-1.5 rounded-full transition-all backdrop-blur-sm'
+              >
+                {t(tag.key)}
+              </Link>
+            ))}
           </div>
         </div>
 
         {/* Scroll indicator */}
         <div className='absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-stone-600 animate-bounce'>
-          <span className='text-xs tracking-widest uppercase'>Scroll</span>
+          <span className='text-xs tracking-widest uppercase'>
+            {t("home.hero.scroll")}
+          </span>
           <i className='fa fa-chevron-down text-xs' />
         </div>
       </section>
@@ -256,7 +308,7 @@ const Home = () => {
       {/* ── STATS ────────────────────────────────────────── */}
       <section className='bg-amber-500'>
         <div className='max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 divide-x divide-amber-400/40'>
-          {stats.map((s) => (
+          {translatedStats.map((s) => (
             <div key={s.label} className='text-center px-4'>
               <p className='text-3xl font-black text-amber-900'>{s.value}</p>
               <p className='text-sm text-amber-800/70 font-medium mt-1 uppercase tracking-wider'>
@@ -270,12 +322,13 @@ const Home = () => {
       {/* ── CATEGORIES ───────────────────────────────────── */}
       <section className='max-w-6xl mx-auto px-6 py-20'>
         <SectionHeader
-          eyebrow='Explore by type'
-          title='Browse by Category'
-          subtitle='Find the perfect experience for your travel style'
+          eyebrowKey='home.categories.eyebrow'
+          titleKey='home.categories.title'
+          subtitleKey='home.categories.subtitle'
+          t={t}
         />
         <div className='grid grid-cols-3 md:grid-cols-6 gap-4'>
-          {categories.map((cat) => (
+          {translatedCategories.map((cat) => (
             <Link
               key={cat.label}
               to={`/tours?category=${cat.label.toLowerCase()}`}
@@ -300,17 +353,19 @@ const Home = () => {
       <section className='bg-white py-20'>
         <div className='max-w-6xl mx-auto px-6'>
           <SectionHeader
-            eyebrow='Handpicked for you'
-            title='Featured Tours'
-            subtitle='Experiences our travelers love most'
+            eyebrowKey='home.featured.eyebrow'
+            titleKey='home.featured.title'
+            subtitleKey='home.featured.subtitle'
             right={
               <Link
                 to='/tours?is_featured=true'
                 className='flex items-center gap-1.5 text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors'
               >
-                View all <i className='fa fa-arrow-right text-xs' />
+                {t("home.featured.viewAll")}{" "}
+                <i className='fa fa-arrow-right text-xs' />
               </Link>
             }
+            t={t}
           />
 
           {loading ? (
@@ -322,12 +377,12 @@ const Home = () => {
           ) : featuredTours.length === 0 ? (
             <div className='text-center py-20 text-stone-300'>
               <i className='fa fa-map text-5xl mb-4 block' />
-              <p className='text-stone-400'>No featured tours available yet</p>
+              <p className='text-stone-400'>{t("home.featured.empty")}</p>
             </div>
           ) : (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
               {featuredTours.map((tour) => (
-                <TourCard key={tour.id} tour={tour} />
+                <TourCard key={tour.id} tour={tour} t={t} />
               ))}
             </div>
           )}
@@ -339,26 +394,23 @@ const Home = () => {
         <section className='bg-stone-50 py-20'>
           <div className='max-w-6xl mx-auto px-6'>
             <SectionHeader
-              eyebrow='Limited time'
-              title={
-                <span className='flex items-center gap-3'>
-                  <i className='fa fa-fire text-red-500 text-3xl' />
-                  Hot Deals
-                </span>
-              }
-              subtitle="Grab these before they're gone"
+              eyebrowKey='home.hotDeals.eyebrow'
+              titleKey='home.hotDeals.title'
+              subtitleKey='home.hotDeals.subtitle'
               right={
                 <Link
                   to='/tours?is_hot_deal=true'
                   className='flex items-center gap-1.5 text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors'
                 >
-                  View all <i className='fa fa-arrow-right text-xs' />
+                  {t("home.hotDeals.viewAll")}{" "}
+                  <i className='fa fa-arrow-right text-xs' />
                 </Link>
               }
+              t={t}
             />
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
               {hotDeals.map((tour) => (
-                <TourCard key={tour.id} tour={tour} />
+                <TourCard key={tour.id} tour={tour} t={t} />
               ))}
             </div>
           </div>
@@ -383,30 +435,29 @@ const Home = () => {
 
           <div className='relative z-10'>
             <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-400 mb-4'>
-              Start your journey
+              {t("home.cta.eyebrow")}
             </p>
             <h2
               className='text-5xl font-black text-white mb-4'
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Ready to Explore?
+              {t("home.cta.title")}
             </h2>
             <p className='text-stone-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed'>
-              Join thousands of happy travelers and start planning your dream
-              trip today.
+              {t("home.cta.subtitle")}
             </p>
             <div className='flex items-center justify-center gap-4 flex-wrap'>
               <Link
                 to='/tours'
                 className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-8 py-3.5 rounded-xl'
               >
-                Browse Tours <i className='fa fa-arrow-right' />
+                {t("home.cta.browseButton")} <i className='fa fa-arrow-right' />
               </Link>
               <Link
                 to='/contact'
                 className='flex items-center gap-2 text-sm font-semibold text-stone-300 hover:text-white border border-white/15 hover:border-white/30 px-8 py-3.5 rounded-xl transition-all'
               >
-                Contact Us
+                {t("home.cta.contactButton")}
               </Link>
             </div>
           </div>

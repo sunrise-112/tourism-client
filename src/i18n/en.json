@@ -1121,5 +1121,125 @@
       "loadFailed": "Failed to load settings.",
       "updateFailed": "Failed to update setting."
     }
+  },
+  "home": {
+    "badge": {
+      "hotDeal": "Hot Deal",
+      "featured": "Featured"
+    },
+    "tourCard": {
+      "durationDays_one": "{{count}} day",
+      "durationDays_other": "{{count}} days",
+      "from": "From",
+      "explore": "Explore"
+    },
+    "stats": {
+      "destinations": "Destinations",
+      "avgRating": "Avg Rating",
+      "happyTravelers": "Happy Travelers",
+      "experience": "Experience"
+    },
+    "categories": {
+      "eyebrow": "Explore by type",
+      "title": "Browse by Category",
+      "subtitle": "Find the perfect experience for your travel style",
+      "adventure": "Adventure",
+      "beach": "Beach",
+      "cultural": "Cultural",
+      "wildlife": "Wildlife",
+      "city": "City",
+      "wellness": "Wellness"
+    },
+    "featured": {
+      "eyebrow": "Handpicked for you",
+      "title": "Featured Tours",
+      "subtitle": "Experiences our travelers love most",
+      "viewAll": "View all",
+      "empty": "No featured tours available yet"
+    },
+    "hotDeals": {
+      "eyebrow": "Limited time",
+      "title": "Hot Deals",
+      "subtitle": "Grab these before they're gone",
+      "viewAll": "View all"
+    },
+    "hero": {
+      "eyebrow": "Discover Morocco & Beyond",
+      "titleLine1": "Your Next",
+      "titleLine2": "Adventure",
+      "titleLine3": "Awaits",
+      "subtitle": "Handcrafted tours through ancient medinas, golden deserts, and dramatic mountain passes — designed for the curious traveler.",
+      "searchPlaceholder": "Where do you want to go?",
+      "searchButton": "Search",
+      "scroll": "Scroll"
+    },
+    "quickTags": {
+      "sahara": "Sahara",
+      "marrakech": "Marrakech",
+      "atlasMountains": "Atlas Mountains",
+      "coastalTours": "Coastal Tours"
+    },
+    "cta": {
+      "eyebrow": "Start your journey",
+      "title": "Ready to Explore?",
+      "subtitle": "Join thousands of happy travelers and start planning your dream trip today.",
+      "browseButton": "Browse Tours",
+      "contactButton": "Contact Us"
+    }
+  },
+  "footer": {
+    "brand": {
+      "description": "Crafting unforgettable journeys since 2012. We believe travel transforms lives — let us show you the world."
+    },
+    "sections": {
+      "explore": "Explore",
+      "company": "Company",
+      "account": "Account"
+    },
+    "links": {
+      "explore": {
+        "allTours": "All Tours",
+        "featured": "Featured",
+        "hotDeals": "Hot Deals",
+        "adventure": "Adventure",
+        "beach": "Beach"
+      },
+      "company": {
+        "aboutUs": "About Us",
+        "contactUs": "Contact Us",
+        "ourTeam": "Our Team"
+      },
+      "account": {
+        "login": "Login",
+        "register": "Register",
+        "myBookings": "My Bookings",
+        "myReviews": "My Reviews",
+        "profile": "Profile"
+      }
+    },
+    "contacts": {
+      "address": "123 Atlas Street, Marrakech, Morocco",
+      "phone": "+212 600 000 000",
+      "email": "hello@tourapp.com",
+      "hours": "Mon – Sat: 9:00am – 6:00pm"
+    },
+    "socials": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "twitter": "Twitter",
+      "youtube": "YouTube"
+    },
+    "newsletter": {
+      "title": "Get travel inspiration in your inbox",
+      "subtitle": "No spam. Unsubscribe anytime.",
+      "placeholder": "your@email.com",
+      "button": "Subscribe"
+    },
+    "copyright": "© {{year}} {{company}}. All rights reserved.",
+    "bottomLinks": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "sitemap": "Sitemap"
+    }
   }
 }

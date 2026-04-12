@@ -1121,5 +1121,190 @@
       "loadFailed": "Error al cargar la configuración.",
       "updateFailed": "Error al actualizar la configuración."
     }
+  },
+  "home": {
+    "badge": {
+      "hotDeal": "Oferta especial",
+      "featured": "Destacado"
+    },
+    "tourCard": {
+      "durationDays_one": "{{count}} día",
+      "durationDays_other": "{{count}} días",
+      "from": "Desde",
+      "explore": "Explorar"
+    },
+    "stats": {
+      "destinations": "Destinos",
+      "avgRating": "Puntuación media",
+      "happyTravelers": "Viajeros felices",
+      "experience": "Experiencia"
+    },
+    "categories": {
+      "eyebrow": "Explora por tipo",
+      "title": "Navega por categoría",
+      "subtitle": "Encuentra la experiencia perfecta para tu estilo de viaje",
+      "adventure": "Aventura",
+      "beach": "Playa",
+      "cultural": "Cultural",
+      "wildlife": "Fauna",
+      "city": "Ciudad",
+      "wellness": "Bienestar"
+    },
+    "featured": {
+      "eyebrow": "Seleccionados para ti",
+      "title": "Tours destacados",
+      "subtitle": "Experiencias que nuestros viajeros más aman",
+      "viewAll": "Ver todos",
+      "empty": "Aún no hay tours destacados"
+    },
+    "hotDeals": {
+      "eyebrow": "Tiempo limitado",
+      "title": "Ofertas especiales",
+      "subtitle": "Aprovecha antes de que desaparezcan",
+      "viewAll": "Ver todos"
+    },
+    "hero": {
+      "eyebrow": "Descubre Marruecos y más allá",
+      "titleLine1": "Tu próxima",
+      "titleLine2": "Aventura",
+      "titleLine3": "te espera",
+      "subtitle": "Tours artesanales a través de antiguas medinas, desiertos dorados y pasos de montaña dramáticos, diseñados para el viajero curioso.",
+      "searchPlaceholder": "¿A dónde quieres ir?",
+      "searchButton": "Buscar",
+      "scroll": "Desplazar"
+    },
+    "quickTags": {
+      "sahara": "Sáhara",
+      "marrakech": "Marrakech",
+      "atlasMountains": "Montañas del Atlas",
+      "coastalTours": "Tours costeros"
+    },
+    "cta": {
+      "eyebrow": "Comienza tu viaje",
+      "title": "¿Listo para explorar?",
+      "subtitle": "Únete a miles de viajeros felices y comienza a planificar tu viaje soñado hoy.",
+      "browseButton": "Ver tours",
+      "contactButton": "Contáctanos"
+    }
+  },
+  "home": {
+    "badge": {
+      "hotDeal": "Heißer Deal",
+      "featured": "Empfohlen"
+    },
+    "tourCard": {
+      "durationDays_one": "{{count}} Tag",
+      "durationDays_other": "{{count}} Tage",
+      "from": "Ab",
+      "explore": "Entdecken"
+    },
+    "stats": {
+      "destinations": "Reiseziele",
+      "avgRating": "Durchschnittliche Bewertung",
+      "happyTravelers": "Zufriedene Reisende",
+      "experience": "Erfahrung"
+    },
+    "categories": {
+      "eyebrow": "Nach Typ erkunden",
+      "title": "Nach Kategorie durchsuchen",
+      "subtitle": "Finden Sie das perfekte Erlebnis für Ihren Reisestil",
+      "adventure": "Abenteuer",
+      "beach": "Strand",
+      "cultural": "Kultur",
+      "wildlife": "Tierwelt",
+      "city": "Stadt",
+      "wellness": "Wellness"
+    },
+    "featured": {
+      "eyebrow": "Für Sie ausgewählt",
+      "title": "Empfohlene Touren",
+      "subtitle": "Erlebnisse, die unsere Reisenden am meisten lieben",
+      "viewAll": "Alle anzeigen",
+      "empty": "Noch keine empfohlenen Touren verfügbar"
+    },
+    "hotDeals": {
+      "eyebrow": "Begrenzte Zeit",
+      "title": "Heiße Deals",
+      "subtitle": "Sichern Sie sich diese, bevor sie weg sind",
+      "viewAll": "Alle anzeigen"
+    },
+    "hero": {
+      "eyebrow": "Entdecken Sie Marokko & darüber hinaus",
+      "titleLine1": "Ihr nächstes",
+      "titleLine2": "Abenteuer",
+      "titleLine3": "erwartet Sie",
+      "subtitle": "Handgefertigte Touren durch antike Medina, goldene Wüsten und dramatische Gebirgspässe – entworfen für den neugierigen Reisenden.",
+      "searchPlaceholder": "Wohin möchten Sie reisen?",
+      "searchButton": "Suchen",
+      "scroll": "Scrollen"
+    },
+    "quickTags": {
+      "sahara": "Sahara",
+      "marrakech": "Marrakesch",
+      "atlasMountains": "Atlasgebirge",
+      "coastalTours": "Küstentouren"
+    },
+    "cta": {
+      "eyebrow": "Beginnen Sie Ihre Reise",
+      "title": "Bereit zu entdecken?",
+      "subtitle": "Schließen Sie sich Tausenden zufriedenen Reisenden an und planen Sie noch heute Ihre Traumreise.",
+      "browseButton": "Touren durchstöbern",
+      "contactButton": "Kontaktieren Sie uns"
+    }
+  },
+  "footer": {
+    "brand": {
+      "description": "Creando viajes inolvidables desde 2012. Creemos que viajar transforma vidas — déjanos mostrarte el mundo."
+    },
+    "sections": {
+      "explore": "Explorar",
+      "company": "Compañía",
+      "account": "Cuenta"
+    },
+    "links": {
+      "explore": {
+        "allTours": "Todos los tours",
+        "featured": "Destacados",
+        "hotDeals": "Ofertas especiales",
+        "adventure": "Aventura",
+        "beach": "Playa"
+      },
+      "company": {
+        "aboutUs": "Sobre nosotros",
+        "contactUs": "Contáctanos",
+        "ourTeam": "Nuestro equipo"
+      },
+      "account": {
+        "login": "Iniciar sesión",
+        "register": "Registrarse",
+        "myBookings": "Mis reservas",
+        "myReviews": "Mis reseñas",
+        "profile": "Perfil"
+      }
+    },
+    "contacts": {
+      "address": "Calle Atlas 123, Marrakech, Marruecos",
+      "phone": "+212 600 000 000",
+      "email": "hello@tourapp.com",
+      "hours": "Lun – Sáb: 9:00am – 6:00pm"
+    },
+    "socials": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "twitter": "Twitter",
+      "youtube": "YouTube"
+    },
+    "newsletter": {
+      "title": "Recibe inspiración de viajes en tu bandeja de entrada",
+      "subtitle": "Sin spam. Cancela la suscripción cuando quieras.",
+      "placeholder": "tu@email.com",
+      "button": "Suscribirse"
+    },
+    "copyright": "© {{year}} {{company}}. Todos los derechos reservados.",
+    "bottomLinks": {
+      "privacy": "Política de privacidad",
+      "terms": "Términos de servicio",
+      "sitemap": "Mapa del sitio"
+    }
   }
 }

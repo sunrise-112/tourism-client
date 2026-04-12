@@ -1121,5 +1121,125 @@
       "loadFailed": "Fehler beim Laden der Einstellungen.",
       "updateFailed": "Fehler beim Aktualisieren der Einstellung."
     }
+  },
+  "home": {
+    "badge": {
+      "hotDeal": "Heißer Deal",
+      "featured": "Empfohlen"
+    },
+    "tourCard": {
+      "durationDays_one": "{{count}} Tag",
+      "durationDays_other": "{{count}} Tage",
+      "from": "Ab",
+      "explore": "Entdecken"
+    },
+    "stats": {
+      "destinations": "Reiseziele",
+      "avgRating": "Durchschnittliche Bewertung",
+      "happyTravelers": "Zufriedene Reisende",
+      "experience": "Erfahrung"
+    },
+    "categories": {
+      "eyebrow": "Nach Typ erkunden",
+      "title": "Nach Kategorie durchsuchen",
+      "subtitle": "Finden Sie das perfekte Erlebnis für Ihren Reisestil",
+      "adventure": "Abenteuer",
+      "beach": "Strand",
+      "cultural": "Kultur",
+      "wildlife": "Tierwelt",
+      "city": "Stadt",
+      "wellness": "Wellness"
+    },
+    "featured": {
+      "eyebrow": "Für Sie ausgewählt",
+      "title": "Empfohlene Touren",
+      "subtitle": "Erlebnisse, die unsere Reisenden am meisten lieben",
+      "viewAll": "Alle anzeigen",
+      "empty": "Noch keine empfohlenen Touren verfügbar"
+    },
+    "hotDeals": {
+      "eyebrow": "Begrenzte Zeit",
+      "title": "Heiße Deals",
+      "subtitle": "Sichern Sie sich diese, bevor sie weg sind",
+      "viewAll": "Alle anzeigen"
+    },
+    "hero": {
+      "eyebrow": "Entdecken Sie Marokko & darüber hinaus",
+      "titleLine1": "Ihr nächstes",
+      "titleLine2": "Abenteuer",
+      "titleLine3": "erwartet Sie",
+      "subtitle": "Handgefertigte Touren durch antike Medina, goldene Wüsten und dramatische Gebirgspässe – entworfen für den neugierigen Reisenden.",
+      "searchPlaceholder": "Wohin möchten Sie reisen?",
+      "searchButton": "Suchen",
+      "scroll": "Scrollen"
+    },
+    "quickTags": {
+      "sahara": "Sahara",
+      "marrakech": "Marrakesch",
+      "atlasMountains": "Atlasgebirge",
+      "coastalTours": "Küstentouren"
+    },
+    "cta": {
+      "eyebrow": "Beginnen Sie Ihre Reise",
+      "title": "Bereit zu entdecken?",
+      "subtitle": "Schließen Sie sich Tausenden zufriedenen Reisenden an und planen Sie noch heute Ihre Traumreise.",
+      "browseButton": "Touren durchstöbern",
+      "contactButton": "Kontaktieren Sie uns"
+    }
+  },
+  "footer": {
+    "brand": {
+      "description": "Wir gestalten unvergessliche Reisen seit 2012. Wir glauben, dass Reisen das Leben verändert – lassen Sie uns Ihnen die Welt zeigen."
+    },
+    "sections": {
+      "explore": "Entdecken",
+      "company": "Unternehmen",
+      "account": "Konto"
+    },
+    "links": {
+      "explore": {
+        "allTours": "Alle Touren",
+        "featured": "Empfohlen",
+        "hotDeals": "Heiße Deals",
+        "adventure": "Abenteuer",
+        "beach": "Strand"
+      },
+      "company": {
+        "aboutUs": "Über uns",
+        "contactUs": "Kontakt",
+        "ourTeam": "Unser Team"
+      },
+      "account": {
+        "login": "Anmelden",
+        "register": "Registrieren",
+        "myBookings": "Meine Buchungen",
+        "myReviews": "Meine Bewertungen",
+        "profile": "Profil"
+      }
+    },
+    "contacts": {
+      "address": "Atlasstraße 123, Marrakesch, Marokko",
+      "phone": "+212 600 000 000",
+      "email": "hello@tourapp.com",
+      "hours": "Mo – Sa: 9:00 – 18:00 Uhr"
+    },
+    "socials": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "twitter": "Twitter",
+      "youtube": "YouTube"
+    },
+    "newsletter": {
+      "title": "Reiseinspiration in Ihrem Posteingang",
+      "subtitle": "Kein Spam. Jederzeit abbestellbar.",
+      "placeholder": "ihre@email.de",
+      "button": "Abonnieren"
+    },
+    "copyright": "© {{year}} {{company}}. Alle Rechte vorbehalten.",
+    "bottomLinks": {
+      "privacy": "Datenschutzerklärung",
+      "terms": "Nutzungsbedingungen",
+      "sitemap": "Sitemap"
+    }
   }
 }
