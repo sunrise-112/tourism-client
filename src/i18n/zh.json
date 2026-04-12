@@ -859,5 +859,83 @@
       "guide": "导游",
       "customer": "客户"
     }
+  },
+  "locale": "zh-CN",
+  "manageCategories": {
+    "admin": "管理员",
+    "title": "管理分类",
+    "totalCategories": "共 {{count}} 个分类",
+    "newCategory": "新建分类",
+    "stats": {
+      "total": "总数",
+      "active": "启用",
+      "inactive": "禁用"
+    },
+    "filters": {
+      "all": "全部",
+      "active": "启用",
+      "inactive": "禁用"
+    },
+    "bulkDeleteButton": "删除所选 ({{count}})",
+    "table": {
+      "name": "名称",
+      "status": "状态",
+      "created": "创建时间",
+      "actions": "操作"
+    },
+    "status": {
+      "active": "启用",
+      "inactive": "禁用"
+    },
+    "empty": {
+      "title": "未找到分类",
+      "description": "请尝试其他筛选条件或新建分类。"
+    },
+    "tooltips": {
+      "activate": "启用",
+      "deactivate": "禁用",
+      "edit": "编辑",
+      "delete": "删除"
+    },
+    "modal": {
+      "createTitle": "新建分类",
+      "editTitle": "编辑分类",
+      "nameLabel": "名称",
+      "namePlaceholder": "例如：探险",
+      "cancel": "取消",
+      "create": "创建",
+      "saveChanges": "保存更改",
+      "saving": "保存中..."
+    },
+    "deleteModal": {
+      "title": "删除分类？",
+      "description": "这将永久删除 <strong>{{name}}</strong>。此操作不可撤销。",
+      "cancel": "取消",
+      "delete": "删除",
+      "deleting": "删除中..."
+    },
+    "bulkDeleteModal": {
+      "title": "删除 {{count}} 个分类？",
+      "description": "所有选中的分类将被永久删除。此操作不可撤销。",
+      "cancel": "取消",
+      "delete": "删除 {{count}} 个",
+      "deleting": "删除中..."
+    },
+    "toasts": {
+      "activated": "分类已启用！",
+      "deactivated": "分类已禁用！",
+      "deleteSuccess": "分类已删除！",
+      "bulkDeleteSuccess": "分类已删除！",
+      "createSuccess": "分类已创建！",
+      "updateSuccess": "分类已更新！"
+    },
+    "errors": {
+      "fetchFailed": "获取分类失败！",
+      "updateFailed": "更新分类失败！",
+      "deleteFailed": "删除分类失败！",
+      "bulkDeleteFailed": "删除分类失败！",
+      "nameRequired": "分类名称不能为空！",
+      "saveFailed": "保存分类失败！"
+    }
   }
 }

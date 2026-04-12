@@ -859,5 +859,82 @@
       "guide": "Guide",
       "customer": "Client"
     }
+  },
+  "manageCategories": {
+    "admin": "Administrateur",
+    "title": "Gérer les catégories",
+    "totalCategories": "{{count}} catégories au total",
+    "newCategory": "Nouvelle catégorie",
+    "stats": {
+      "total": "Total",
+      "active": "Actives",
+      "inactive": "Inactives"
+    },
+    "filters": {
+      "all": "Toutes",
+      "active": "Actives",
+      "inactive": "Inactives"
+    },
+    "bulkDeleteButton": "Supprimer la sélection ({{count}})",
+    "table": {
+      "name": "Nom",
+      "status": "Statut",
+      "created": "Créée le",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "empty": {
+      "title": "Aucune catégorie trouvée",
+      "description": "Essayez un autre filtre ou créez-en une."
+    },
+    "tooltips": {
+      "activate": "Activer",
+      "deactivate": "Désactiver",
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    },
+    "modal": {
+      "createTitle": "Nouvelle catégorie",
+      "editTitle": "Modifier la catégorie",
+      "nameLabel": "Nom",
+      "namePlaceholder": "ex: Aventure",
+      "cancel": "Annuler",
+      "create": "Créer",
+      "saveChanges": "Enregistrer les modifications",
+      "saving": "Enregistrement..."
+    },
+    "deleteModal": {
+      "title": "Supprimer la catégorie ?",
+      "description": "Cela supprimera définitivement <strong>{{name}}</strong>. Cette action est irréversible.",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "deleting": "Suppression..."
+    },
+    "bulkDeleteModal": {
+      "title": "Supprimer {{count}} catégories ?",
+      "description": "Toutes les catégories sélectionnées seront définitivement supprimées. Cette action est irréversible.",
+      "cancel": "Annuler",
+      "delete": "Supprimer {{count}}",
+      "deleting": "Suppression..."
+    },
+    "toasts": {
+      "activated": "Catégorie activée !",
+      "deactivated": "Catégorie désactivée !",
+      "deleteSuccess": "Catégorie supprimée !",
+      "bulkDeleteSuccess": "Catégories supprimées !",
+      "createSuccess": "Catégorie créée !",
+      "updateSuccess": "Catégorie mise à jour !"
+    },
+    "errors": {
+      "fetchFailed": "Échec du chargement des catégories !",
+      "updateFailed": "Échec de la mise à jour de la catégorie !",
+      "deleteFailed": "Échec de la suppression de la catégorie !",
+      "bulkDeleteFailed": "Échec de la suppression des catégories !",
+      "nameRequired": "Le nom de la catégorie est requis !",
+      "saveFailed": "Échec de l'enregistrement de la catégorie !"
+    }
   }
 }

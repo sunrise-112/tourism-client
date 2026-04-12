@@ -859,5 +859,82 @@
       "guide": "مرشد",
       "customer": "عميل"
     }
+  },
+  "manageCategories": {
+    "admin": "المشرف",
+    "title": "إدارة التصنيفات",
+    "totalCategories": "{{count}} تصنيف إجمالاً",
+    "newCategory": "تصنيف جديد",
+    "stats": {
+      "total": "الإجمالي",
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "filters": {
+      "all": "الكل",
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "bulkDeleteButton": "حذف المحدد ({{count}})",
+    "table": {
+      "name": "الاسم",
+      "status": "الحالة",
+      "created": "تاريخ الإنشاء",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "empty": {
+      "title": "لا توجد تصنيفات",
+      "description": "جرّب فلتراً مختلفاً أو أنشئ تصنيفاً جديداً."
+    },
+    "tooltips": {
+      "activate": "تفعيل",
+      "deactivate": "إلغاء التفعيل",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "modal": {
+      "createTitle": "تصنيف جديد",
+      "editTitle": "تعديل التصنيف",
+      "nameLabel": "الاسم",
+      "namePlaceholder": "مثال: مغامرة",
+      "cancel": "إلغاء",
+      "create": "إنشاء",
+      "saveChanges": "حفظ التغييرات",
+      "saving": "جاري الحفظ..."
+    },
+    "deleteModal": {
+      "title": "حذف التصنيف؟",
+      "description": "سيتم إزالة <strong>{{name}}</strong> بشكل دائم. لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "deleting": "جاري الحذف..."
+    },
+    "bulkDeleteModal": {
+      "title": "حذف {{count}} تصنيف؟",
+      "description": "سيتم إزالة جميع التصنيفات المحددة بشكل دائم. لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف {{count}}",
+      "deleting": "جاري الحذف..."
+    },
+    "toasts": {
+      "activated": "تم تفعيل التصنيف!",
+      "deactivated": "تم إلغاء تفعيل التصنيف!",
+      "deleteSuccess": "تم حذف التصنيف!",
+      "bulkDeleteSuccess": "تم حذف التصنيفات!",
+      "createSuccess": "تم إنشاء التصنيف!",
+      "updateSuccess": "تم تحديث التصنيف!"
+    },
+    "errors": {
+      "fetchFailed": "فشل في جلب التصنيفات!",
+      "updateFailed": "فشل في تحديث التصنيف!",
+      "deleteFailed": "فشل في حذف التصنيف!",
+      "bulkDeleteFailed": "فشل في حذف التصنيفات!",
+      "nameRequired": "اسم التصنيف مطلوب!",
+      "saveFailed": "فشل في حفظ التصنيف!"
+    }
   }
 }

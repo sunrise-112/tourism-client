@@ -859,5 +859,82 @@
       "guide": "Guía",
       "customer": "Cliente"
     }
+  },
+  "manageCategories": {
+    "admin": "Administrador",
+    "title": "Gestionar Categorías",
+    "totalCategories": "{{count}} categorías en total",
+    "newCategory": "Nueva categoría",
+    "stats": {
+      "total": "Total",
+      "active": "Activas",
+      "inactive": "Inactivas"
+    },
+    "filters": {
+      "all": "Todas",
+      "active": "Activas",
+      "inactive": "Inactivas"
+    },
+    "bulkDeleteButton": "Eliminar seleccionadas ({{count}})",
+    "table": {
+      "name": "Nombre",
+      "status": "Estado",
+      "created": "Creada",
+      "actions": "Acciones"
+    },
+    "status": {
+      "active": "Activa",
+      "inactive": "Inactiva"
+    },
+    "empty": {
+      "title": "No se encontraron categorías",
+      "description": "Prueba con otro filtro o crea una."
+    },
+    "tooltips": {
+      "activate": "Activar",
+      "deactivate": "Desactivar",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "modal": {
+      "createTitle": "Nueva categoría",
+      "editTitle": "Editar categoría",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "p.ej. Aventura",
+      "cancel": "Cancelar",
+      "create": "Crear",
+      "saveChanges": "Guardar cambios",
+      "saving": "Guardando..."
+    },
+    "deleteModal": {
+      "title": "¿Eliminar categoría?",
+      "description": "Esto eliminará permanentemente <strong>{{name}}</strong>. Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando..."
+    },
+    "bulkDeleteModal": {
+      "title": "¿Eliminar {{count}} categorías?",
+      "description": "Todas las categorías seleccionadas serán eliminadas permanentemente. Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar {{count}}",
+      "deleting": "Eliminando..."
+    },
+    "toasts": {
+      "activated": "¡Categoría activada!",
+      "deactivated": "¡Categoría desactivada!",
+      "deleteSuccess": "¡Categoría eliminada!",
+      "bulkDeleteSuccess": "¡Categorías eliminadas!",
+      "createSuccess": "¡Categoría creada!",
+      "updateSuccess": "¡Categoría actualizada!"
+    },
+    "errors": {
+      "fetchFailed": "¡Error al cargar las categorías!",
+      "updateFailed": "¡Error al actualizar la categoría!",
+      "deleteFailed": "¡Error al eliminar la categoría!",
+      "bulkDeleteFailed": "¡Error al eliminar las categorías!",
+      "nameRequired": "¡El nombre de la categoría es obligatorio!",
+      "saveFailed": "¡Error al guardar la categoría!"
+    }
   }
 }

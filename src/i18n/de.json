@@ -859,5 +859,82 @@
       "guide": "Reiseführer",
       "customer": "Kunde"
     }
+  },
+  "manageCategories": {
+    "admin": "Administrator",
+    "title": "Kategorien verwalten",
+    "totalCategories": "{{count}} Kategorien insgesamt",
+    "newCategory": "Neue Kategorie",
+    "stats": {
+      "total": "Gesamt",
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
+    },
+    "filters": {
+      "all": "Alle",
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
+    },
+    "bulkDeleteButton": "Ausgewählte löschen ({{count}})",
+    "table": {
+      "name": "Name",
+      "status": "Status",
+      "created": "Erstellt",
+      "actions": "Aktionen"
+    },
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
+    },
+    "empty": {
+      "title": "Keine Kategorien gefunden",
+      "description": "Versuchen Sie einen anderen Filter oder erstellen Sie eine neue."
+    },
+    "tooltips": {
+      "activate": "Aktivieren",
+      "deactivate": "Deaktivieren",
+      "edit": "Bearbeiten",
+      "delete": "Löschen"
+    },
+    "modal": {
+      "createTitle": "Neue Kategorie",
+      "editTitle": "Kategorie bearbeiten",
+      "nameLabel": "Name",
+      "namePlaceholder": "z.B. Abenteuer",
+      "cancel": "Abbrechen",
+      "create": "Erstellen",
+      "saveChanges": "Änderungen speichern",
+      "saving": "Speichern..."
+    },
+    "deleteModal": {
+      "title": "Kategorie löschen?",
+      "description": "Dies wird <strong>{{name}}</strong> dauerhaft entfernen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "deleting": "Löschen..."
+    },
+    "bulkDeleteModal": {
+      "title": "{{count}} Kategorien löschen?",
+      "description": "Alle ausgewählten Kategorien werden dauerhaft entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "cancel": "Abbrechen",
+      "delete": "{{count}} löschen",
+      "deleting": "Löschen..."
+    },
+    "toasts": {
+      "activated": "Kategorie aktiviert!",
+      "deactivated": "Kategorie deaktiviert!",
+      "deleteSuccess": "Kategorie gelöscht!",
+      "bulkDeleteSuccess": "Kategorien gelöscht!",
+      "createSuccess": "Kategorie erstellt!",
+      "updateSuccess": "Kategorie aktualisiert!"
+    },
+    "errors": {
+      "fetchFailed": "Fehler beim Laden der Kategorien!",
+      "updateFailed": "Fehler beim Aktualisieren der Kategorie!",
+      "deleteFailed": "Fehler beim Löschen der Kategorie!",
+      "bulkDeleteFailed": "Fehler beim Löschen der Kategorien!",
+      "nameRequired": "Kategoriename ist erforderlich!",
+      "saveFailed": "Fehler beim Speichern der Kategorie!"
+    }
   }
 }

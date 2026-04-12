@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 // Services
 import categoryService from "../../services/categoryService";
@@ -16,6 +17,7 @@ const FILTERS = ["All", "Active", "Inactive"];
 
 // ─── ManageCategories ─────────────────────────────────────────
 const ManageCategories = ({ searchQuery }) => {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -51,7 +53,7 @@ const ManageCategories = ({ searchQuery }) => {
       setCategories(res?.data ?? []);
       setTotalItems(res?.pagination?.totalItems ?? 0);
     } catch {
-      toast.error("Failed to fetch categories!");
+      toast.error(t("manageCategories.errors.fetchFailed"));
     } finally {
       setLoading(false);
     }
@@ -108,11 +110,16 @@ const ManageCategories = ({ searchQuery }) => {
         )
       );
       toast.success(
-        `Category ${!category.is_active ? "activated" : "deactivated"}!`
+        category.is_active
+          ? t("manageCategories.toasts.deactivated")
+          : t("manageCategories.toasts.activated")
       );
     } catch (err) {
       setCategories(original);
-      toast.error(err?.response?.data?.message || "Failed to update category!");
+      toast.error(
+        err?.response?.data?.message ||
+          t("manageCategories.errors.updateFailed")
+      );
     } finally {
       setTogglingId(null);
     }
@@ -126,10 +133,13 @@ const ManageCategories = ({ searchQuery }) => {
       setCategories((prev) => prev.filter((c) => c.id !== deleteModal.id));
       setSelectedIds((prev) => prev.filter((id) => id !== deleteModal.id));
       setTotalItems((n) => n - 1);
-      toast.success("Category deleted!");
+      toast.success(t("manageCategories.toasts.deleteSuccess"));
       setDeleteModal(null);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to delete category!");
+      toast.error(
+        err?.response?.data?.message ||
+          t("manageCategories.errors.deleteFailed")
+      );
     } finally {
       setDeleting(false);
     }
@@ -144,9 +154,11 @@ const ManageCategories = ({ searchQuery }) => {
       setTotalItems((n) => n - selectedIds.length);
       setSelectedIds([]);
       setBulkDeleteModal(false);
+      toast.success(t("manageCategories.toasts.bulkDeleteSuccess"));
     } catch (err) {
       toast.error(
-        err?.response?.data?.message || "Failed to delete categories!"
+        err?.response?.data?.message ||
+          t("manageCategories.errors.bulkDeleteFailed")
       );
     } finally {
       setBulkDeleting(false);
@@ -166,13 +178,14 @@ const ManageCategories = ({ searchQuery }) => {
 
   const handleFormSave = async () => {
     if (!formValue.name.trim())
-      return toast.error("Category name is required!");
+      return toast.error(t("manageCategories.errors.nameRequired"));
     try {
       setFormSaving(true);
       if (formModal.mode === "create") {
         const created = await categoryService.create(formValue);
         setCategories((prev) => [created, ...prev]);
         setTotalItems((n) => n + 1);
+        toast.success(t("manageCategories.toasts.createSuccess"));
       } else {
         const updated = await categoryService.update(
           formModal.data.id,
@@ -181,10 +194,13 @@ const ManageCategories = ({ searchQuery }) => {
         setCategories((prev) =>
           prev.map((c) => (c.id === updated.id ? updated : c))
         );
+        toast.success(t("manageCategories.toasts.updateSuccess"));
       }
       setFormModal(null);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to save category!");
+      toast.error(
+        err?.response?.data?.message || t("manageCategories.errors.saveFailed")
+      );
     } finally {
       setFormSaving(false);
     }
@@ -193,6 +209,20 @@ const ManageCategories = ({ searchQuery }) => {
   // ─── Derived stats ────────────────────────────────────────
   const activeCount = categories.filter((c) => c.is_active).length;
   const inactiveCount = categories.filter((c) => !c.is_active).length;
+
+  // Helper for filter translation
+  const getFilterLabel = (filterKey) => {
+    switch (filterKey) {
+      case "All":
+        return t("manageCategories.filters.all");
+      case "Active":
+        return t("manageCategories.filters.active");
+      case "Inactive":
+        return t("manageCategories.filters.inactive");
+      default:
+        return filterKey;
+    }
+  };
 
   return (
     <div
@@ -203,16 +233,16 @@ const ManageCategories = ({ searchQuery }) => {
       <div className='mb-8 flex items-start justify-between gap-4 flex-wrap'>
         <div>
           <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
-            Admin
+            {t("manageCategories.admin")}
           </p>
           <h1
             className='text-3xl font-black text-stone-800'
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Manage Categories
+            {t("manageCategories.title")}
           </h1>
           <p className='text-stone-400 text-sm mt-1'>
-            {totalItems} categories total
+            {t("manageCategories.totalCategories", { count: totalItems })}
           </p>
         </div>
         <button
@@ -220,7 +250,7 @@ const ManageCategories = ({ searchQuery }) => {
           className='flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold transition-colors shadow-sm'
         >
           <i className='fa fa-plus text-xs' />
-          New Category
+          {t("manageCategories.newCategory")}
         </button>
       </div>
 
@@ -229,21 +259,21 @@ const ManageCategories = ({ searchQuery }) => {
         {[
           {
             icon: "fa-tags",
-            label: "Total",
+            label: t("manageCategories.stats.total"),
             value: totalItems,
             color: "from-amber-400 to-orange-500",
             ring: "ring-amber-200",
           },
           {
             icon: "fa-check-circle",
-            label: "Active",
+            label: t("manageCategories.stats.active"),
             value: activeCount,
             color: "from-emerald-400 to-teal-500",
             ring: "ring-emerald-200",
           },
           {
             icon: "fa-ban",
-            label: "Inactive",
+            label: t("manageCategories.stats.inactive"),
             value: inactiveCount,
             color: "from-stone-400 to-stone-500",
             ring: "ring-stone-200",
@@ -284,7 +314,7 @@ const ManageCategories = ({ searchQuery }) => {
                   : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"
               }`}
             >
-              {f}
+              {getFilterLabel(f)}
             </button>
           ))}
         </div>
@@ -295,7 +325,9 @@ const ManageCategories = ({ searchQuery }) => {
             className='flex items-center gap-2 px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold border border-red-200 transition-colors'
           >
             <i className='fa fa-trash text-xs' />
-            Delete selected ({selectedIds.length})
+            {t("manageCategories.bulkDeleteButton", {
+              count: selectedIds.length,
+            })}
           </button>
         )}
       </div>
@@ -310,9 +342,11 @@ const ManageCategories = ({ searchQuery }) => {
       ) : categories.length === 0 ? (
         <div className='bg-white rounded-2xl border border-stone-100 py-20 text-center'>
           <i className='fa fa-tags text-5xl text-stone-200 mb-4 block' />
-          <p className='font-bold text-stone-500 mb-1'>No categories found</p>
+          <p className='font-bold text-stone-500 mb-1'>
+            {t("manageCategories.empty.title")}
+          </p>
           <p className='text-sm text-stone-400'>
-            Try a different filter or create one.
+            {t("manageCategories.empty.description")}
           </p>
         </div>
       ) : (
@@ -330,7 +364,13 @@ const ManageCategories = ({ searchQuery }) => {
                       className='w-4 h-4 rounded accent-amber-500 cursor-pointer'
                     />
                   </th>
-                  {["#", "Name", "Status", "Created", "Actions"].map((h) => (
+                  {[
+                    "#",
+                    t("manageCategories.table.name"),
+                    t("manageCategories.table.status"),
+                    t("manageCategories.table.created"),
+                    t("manageCategories.table.actions"),
+                  ].map((h) => (
                     <th
                       key={h}
                       className='px-4 py-3.5 text-left text-xs font-bold uppercase tracking-widest text-stone-400 whitespace-nowrap'
@@ -381,17 +421,22 @@ const ManageCategories = ({ searchQuery }) => {
                             c.is_active ? "bg-emerald-400" : "bg-stone-400"
                           }`}
                         />
-                        {c.is_active ? "Active" : "Inactive"}
+                        {c.is_active
+                          ? t("manageCategories.status.active")
+                          : t("manageCategories.status.inactive")}
                       </span>
                     </td>
                     {/* Date */}
                     <td className='px-4 py-4 text-xs text-stone-400 whitespace-nowrap'>
                       {c.created_at
-                        ? new Date(c.created_at).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })
+                        ? new Date(c.created_at).toLocaleDateString(
+                            t("locale", { defaultValue: "en-GB" }),
+                            {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )
                         : "—"}
                     </td>
                     {/* Actions */}
@@ -401,7 +446,11 @@ const ManageCategories = ({ searchQuery }) => {
                         <button
                           onClick={() => handleToggleActive(c)}
                           disabled={togglingId === c.id}
-                          title={c.is_active ? "Deactivate" : "Activate"}
+                          title={
+                            c.is_active
+                              ? t("manageCategories.tooltips.deactivate")
+                              : t("manageCategories.tooltips.activate")
+                          }
                           className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors disabled:opacity-60 ${
                             c.is_active
                               ? "bg-emerald-50 hover:bg-emerald-100 text-emerald-600"
@@ -421,7 +470,7 @@ const ManageCategories = ({ searchQuery }) => {
                         {/* Edit */}
                         <button
                           onClick={() => openEdit(c)}
-                          title='Edit'
+                          title={t("manageCategories.tooltips.edit")}
                           className='w-8 h-8 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-600 flex items-center justify-center transition-colors'
                         >
                           <i className='fa fa-pencil text-xs' />
@@ -429,7 +478,7 @@ const ManageCategories = ({ searchQuery }) => {
                         {/* Delete */}
                         <button
                           onClick={() => setDeleteModal(c)}
-                          title='Delete'
+                          title={t("manageCategories.tooltips.delete")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-trash text-xs' />
@@ -466,13 +515,15 @@ const ManageCategories = ({ searchQuery }) => {
                 className='font-black text-stone-800 text-lg mb-5'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                {formModal.mode === "create" ? "New Category" : "Edit Category"}
+                {formModal.mode === "create"
+                  ? t("manageCategories.modal.createTitle")
+                  : t("manageCategories.modal.editTitle")}
               </h3>
 
               {/* Name */}
               <label className='block mb-4'>
                 <span className='text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 block'>
-                  Name
+                  {t("manageCategories.modal.nameLabel")}
                 </span>
                 <input
                   type='text'
@@ -480,7 +531,7 @@ const ManageCategories = ({ searchQuery }) => {
                   onChange={(e) =>
                     setFormValue((v) => ({ ...v, name: e.target.value }))
                   }
-                  placeholder='e.g. Adventure'
+                  placeholder={t("manageCategories.modal.namePlaceholder")}
                   maxLength={300}
                   className='w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-300'
                 />
@@ -503,7 +554,9 @@ const ManageCategories = ({ searchQuery }) => {
                   />
                 </div>
                 <span className='text-sm font-semibold text-stone-600'>
-                  {formValue.is_active ? "Active" : "Inactive"}
+                  {formValue.is_active
+                    ? t("manageCategories.status.active")
+                    : t("manageCategories.status.inactive")}
                 </span>
               </label>
 
@@ -512,7 +565,7 @@ const ManageCategories = ({ searchQuery }) => {
                   onClick={() => setFormModal(null)}
                   className='flex-1 py-2.5 rounded-xl text-sm font-semibold text-stone-600 border border-stone-200 hover:bg-stone-50 transition-colors'
                 >
-                  Cancel
+                  {t("manageCategories.modal.cancel")}
                 </button>
                 <button
                   onClick={handleFormSave}
@@ -522,12 +575,12 @@ const ManageCategories = ({ searchQuery }) => {
                   {formSaving ? (
                     <>
                       <i className='fa fa-spinner fa-spin mr-1.5' />
-                      Saving...
+                      {t("manageCategories.modal.saving")}
                     </>
                   ) : formModal.mode === "create" ? (
-                    "Create"
+                    t("manageCategories.modal.create")
                   ) : (
-                    "Save Changes"
+                    t("manageCategories.modal.saveChanges")
                   )}
                 </button>
               </div>
@@ -549,18 +602,19 @@ const ManageCategories = ({ searchQuery }) => {
                 className='font-black text-stone-800 text-lg mb-1'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Delete Category?
+                {t("manageCategories.deleteModal.title")}
               </h3>
               <p className='text-sm text-stone-500 mb-6'>
-                This will permanently remove <strong>{deleteModal.name}</strong>
-                . This action cannot be undone.
+                {t("manageCategories.deleteModal.description", {
+                  name: deleteModal.name,
+                })}
               </p>
               <div className='flex gap-3'>
                 <button
                   onClick={() => setDeleteModal(null)}
                   className='flex-1 py-2.5 rounded-xl text-sm font-semibold text-stone-600 border border-stone-200 hover:bg-stone-50 transition-colors'
                 >
-                  Cancel
+                  {t("manageCategories.deleteModal.cancel")}
                 </button>
                 <button
                   onClick={handleDeleteOne}
@@ -570,10 +624,10 @@ const ManageCategories = ({ searchQuery }) => {
                   {deleting ? (
                     <>
                       <i className='fa fa-spinner fa-spin mr-1.5' />
-                      Deleting...
+                      {t("manageCategories.deleteModal.deleting")}
                     </>
                   ) : (
-                    "Delete"
+                    t("manageCategories.deleteModal.delete")
                   )}
                 </button>
               </div>
@@ -595,18 +649,19 @@ const ManageCategories = ({ searchQuery }) => {
                 className='font-black text-stone-800 text-lg mb-1'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Delete {selectedIds.length} Categories?
+                {t("manageCategories.bulkDeleteModal.title", {
+                  count: selectedIds.length,
+                })}
               </h3>
               <p className='text-sm text-stone-500 mb-6'>
-                All selected categories will be permanently removed. This action
-                cannot be undone.
+                {t("manageCategories.bulkDeleteModal.description")}
               </p>
               <div className='flex gap-3'>
                 <button
                   onClick={() => setBulkDeleteModal(false)}
                   className='flex-1 py-2.5 rounded-xl text-sm font-semibold text-stone-600 border border-stone-200 hover:bg-stone-50 transition-colors'
                 >
-                  Cancel
+                  {t("manageCategories.bulkDeleteModal.cancel")}
                 </button>
                 <button
                   onClick={handleDeleteMany}
@@ -616,10 +671,12 @@ const ManageCategories = ({ searchQuery }) => {
                   {bulkDeleting ? (
                     <>
                       <i className='fa fa-spinner fa-spin mr-1.5' />
-                      Deleting...
+                      {t("manageCategories.bulkDeleteModal.deleting")}
                     </>
                   ) : (
-                    `Delete ${selectedIds.length}`
+                    t("manageCategories.bulkDeleteModal.delete", {
+                      count: selectedIds.length,
+                    })
                   )}
                 </button>
               </div>

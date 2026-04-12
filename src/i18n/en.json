@@ -859,5 +859,82 @@
       "guide": "Guide",
       "customer": "Customer"
     }
+  },
+  "manageCategories": {
+    "admin": "Admin",
+    "title": "Manage Categories",
+    "totalCategories": "{{count}} categories total",
+    "newCategory": "New Category",
+    "stats": {
+      "total": "Total",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "bulkDeleteButton": "Delete selected ({{count}})",
+    "table": {
+      "name": "Name",
+      "status": "Status",
+      "created": "Created",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "empty": {
+      "title": "No categories found",
+      "description": "Try a different filter or create one."
+    },
+    "tooltips": {
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "modal": {
+      "createTitle": "New Category",
+      "editTitle": "Edit Category",
+      "nameLabel": "Name",
+      "namePlaceholder": "e.g. Adventure",
+      "cancel": "Cancel",
+      "create": "Create",
+      "saveChanges": "Save Changes",
+      "saving": "Saving..."
+    },
+    "deleteModal": {
+      "title": "Delete Category?",
+      "description": "This will permanently remove <strong>{{name}}</strong>. This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    },
+    "bulkDeleteModal": {
+      "title": "Delete {{count}} Categories?",
+      "description": "All selected categories will be permanently removed. This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete {{count}}",
+      "deleting": "Deleting..."
+    },
+    "toasts": {
+      "activated": "Category activated!",
+      "deactivated": "Category deactivated!",
+      "deleteSuccess": "Category deleted!",
+      "bulkDeleteSuccess": "Categories deleted!",
+      "createSuccess": "Category created!",
+      "updateSuccess": "Category updated!"
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch categories!",
+      "updateFailed": "Failed to update category!",
+      "deleteFailed": "Failed to delete category!",
+      "bulkDeleteFailed": "Failed to delete categories!",
+      "nameRequired": "Category name is required!",
+      "saveFailed": "Failed to save category!"
+    }
   }
 }
