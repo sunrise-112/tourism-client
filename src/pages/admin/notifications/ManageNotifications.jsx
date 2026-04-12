@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import _ from "lodash";
 import notificationService from "../../../services/notificationService";
 import Pagination from "../../../common/Pagination";
@@ -41,19 +42,22 @@ const TYPE_STYLES = {
   },
 };
 
-const TypeBadge = ({ type }) => {
+const TypeBadge = ({ type, t }) => {
   const s = TYPE_STYLES[type] || TYPE_STYLES.info;
+  const typeLabel = t(`manageNotifications.types.${type}`, {
+    defaultValue: type || "info",
+  });
   return (
     <span
       className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border capitalize ${s.bg} ${s.text} ${s.border}`}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-      {type || "info"}
+      {typeLabel}
     </span>
   );
 };
 
-const ReadBadge = ({ is_read }) => (
+const ReadBadge = ({ is_read, t }) => (
   <span
     className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${
       is_read
@@ -66,7 +70,9 @@ const ReadBadge = ({ is_read }) => (
         is_read ? "bg-stone-300" : "bg-violet-400"
       }`}
     />
-    {is_read ? "Read" : "Unread"}
+    {is_read
+      ? t("manageNotifications.readStatus.read")
+      : t("manageNotifications.readStatus.unread")}
   </span>
 );
 
@@ -77,6 +83,7 @@ const EMPTY_FORM = { title: "", message: "", type: "info" };
 
 // ─── ManageNotifications ──────────────────────────────────────
 const ManageNotifications = ({ searchQuery }) => {
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -110,7 +117,7 @@ const ManageNotifications = ({ searchQuery }) => {
       setNotifications(res?.data || []);
       setTotalItems(res?.pagination?.totalItems || res?.data?.length || 0);
     } catch {
-      toast.error("Failed to fetch notifications!");
+      toast.error(t("manageNotifications.errors.fetchFailed"));
     } finally {
       setLoading(false);
     }
@@ -145,7 +152,7 @@ const ManageNotifications = ({ searchQuery }) => {
         prev.map((x) => (x.id === n.id ? { ...x, is_read: true } : x))
       );
     } catch {
-      toast.error("Failed to mark as read.");
+      toast.error(t("manageNotifications.errors.markReadFailed"));
     }
   };
 
@@ -154,9 +161,9 @@ const ManageNotifications = ({ searchQuery }) => {
     try {
       await notificationService.markAllRead();
       setNotifications((prev) => prev.map((x) => ({ ...x, is_read: true })));
-      toast.success("All notifications marked as read!");
+      toast.success(t("manageNotifications.toasts.markAllReadSuccess"));
     } catch {
-      toast.error("Failed to mark all as read.");
+      toast.error(t("manageNotifications.errors.markAllReadFailed"));
     }
   };
 
@@ -168,11 +175,14 @@ const ManageNotifications = ({ searchQuery }) => {
       setNotifications((prev) => prev.filter((n) => n.id !== deleteModal.id));
       await notificationService.deleteOne(deleteModal.id);
       setTotalItems((c) => c - 1);
-      toast.success("Notification deleted!");
+      toast.success(t("manageNotifications.toasts.deleteSuccess"));
       setDeleteModal(null);
     } catch (err) {
       setNotifications(original);
-      toast.error(err?.response?.data?.message || "Failed to delete.");
+      toast.error(
+        err?.response?.data?.message ||
+          t("manageNotifications.errors.deleteFailed")
+      );
     } finally {
       setDeleting(false);
     }
@@ -188,9 +198,10 @@ const ManageNotifications = ({ searchQuery }) => {
       await notificationService.deleteMany(selectedItems);
       setTotalItems((c) => c - selectedItems.length);
       setSelectedItems([]);
+      toast.success(t("manageNotifications.toasts.bulkDeleteSuccess"));
     } catch {
       setNotifications(original);
-      toast.error("Bulk delete failed.");
+      toast.error(t("manageNotifications.errors.bulkDeleteFailed"));
     }
   };
 
@@ -219,13 +230,18 @@ const ManageNotifications = ({ searchQuery }) => {
         setNotifications((prev) =>
           prev.map((n) => (n.id === editTarget.id ? { ...n, ...updated } : n))
         );
+        toast.success(t("manageNotifications.toasts.updateSuccess"));
       } else {
         await notificationService.announce(form);
         setTrigger((t) => !t);
+        toast.success(t("manageNotifications.toasts.createSuccess"));
       }
       setFormModal(false);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Save failed.");
+      toast.error(
+        err?.response?.data?.message ||
+          t("manageNotifications.errors.saveFailed")
+      );
     } finally {
       setSaving(false);
     }
@@ -236,6 +252,18 @@ const ManageNotifications = ({ searchQuery }) => {
 
   const sorted = _.orderBy(notifications, ["created_at"], ["desc"]);
 
+  // Helper for filter translations
+  const getTypeFilterLabel = (filter) => {
+    if (filter === "All") return t("manageNotifications.filters.typeAll");
+    return t(`manageNotifications.types.${filter}`, { defaultValue: filter });
+  };
+
+  const getReadFilterLabel = (filter) => {
+    if (filter === "All") return t("manageNotifications.filters.readAll");
+    if (filter === "Read") return t("manageNotifications.readStatus.read");
+    return t("manageNotifications.readStatus.unread");
+  };
+
   return (
     <div
       className='min-h-screen bg-stone-50 p-6 md:p-8'
@@ -245,16 +273,16 @@ const ManageNotifications = ({ searchQuery }) => {
       <div className='mb-8 flex items-start justify-between gap-4 flex-wrap'>
         <div>
           <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
-            Admin
+            {t("manageNotifications.admin")}
           </p>
           <h1
             className='text-3xl font-black text-stone-800'
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Manage Notifications
+            {t("manageNotifications.title")}
           </h1>
           <p className='text-stone-400 text-sm mt-1'>
-            {totalItems} notifications total
+            {t("manageNotifications.totalNotifications", { count: totalItems })}
           </p>
         </div>
         <div className='flex gap-2 flex-wrap'>
@@ -263,14 +291,16 @@ const ManageNotifications = ({ searchQuery }) => {
               onClick={handleMarkAllRead}
               className='inline-flex items-center gap-2 text-sm font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-colors px-4 py-2.5 rounded-xl'
             >
-              <i className='fa fa-check-double text-xs' /> Mark all read
+              <i className='fa fa-check-double text-xs' />{" "}
+              {t("manageNotifications.markAllRead")}
             </button>
           )}
           <button
             onClick={openCreate}
             className='inline-flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-5 py-2.5 rounded-xl shadow-sm shadow-amber-200'
           >
-            <i className='fa fa-bell text-xs' /> Send Notification
+            <i className='fa fa-bell text-xs' />{" "}
+            {t("manageNotifications.sendNotification")}
           </button>
         </div>
       </div>
@@ -280,28 +310,28 @@ const ManageNotifications = ({ searchQuery }) => {
         {[
           {
             icon: "fa-bell",
-            label: "Total",
+            label: t("manageNotifications.stats.total"),
             value: total,
             color: "from-amber-400 to-orange-500",
             ring: "ring-amber-200",
           },
           {
             icon: "fa-envelope",
-            label: "Unread",
+            label: t("manageNotifications.stats.unread"),
             value: unread,
             color: "from-violet-400 to-purple-500",
             ring: "ring-violet-200",
           },
           {
             icon: "fa-check",
-            label: "Read",
+            label: t("manageNotifications.stats.read"),
             value: notifications.filter((n) => n.is_read).length,
             color: "from-emerald-400 to-teal-500",
             ring: "ring-emerald-200",
           },
           {
             icon: "fa-eye",
-            label: "This Page",
+            label: t("manageNotifications.stats.thisPage"),
             value: sorted.length,
             color: "from-stone-400 to-stone-500",
             ring: "ring-stone-200",
@@ -347,7 +377,7 @@ const ManageNotifications = ({ searchQuery }) => {
                   className={`fa ${TYPE_STYLES[f]?.icon} mr-1.5 text-[10px]`}
                 />
               )}
-              {f}
+              {getTypeFilterLabel(f)}
             </button>
           ))}
         </div>
@@ -366,20 +396,23 @@ const ManageNotifications = ({ searchQuery }) => {
                   : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"
               }`}
             >
-              {f}
+              {getReadFilterLabel(f)}
             </button>
           ))}
         </div>
         {selectedItems.length > 0 && (
           <div className='ml-auto flex items-center gap-2'>
             <span className='text-xs text-stone-500 font-semibold'>
-              {selectedItems.length} selected
+              {t("manageNotifications.selectedCount", {
+                count: selectedItems.length,
+              })}
             </span>
             <button
               onClick={handleBulkDelete}
               className='text-xs font-bold text-red-500 border border-red-200 bg-red-50 hover:bg-red-100 px-3 py-2 rounded-xl transition-colors'
             >
-              <i className='fa fa-trash mr-1.5 text-[10px]' /> Delete Selected
+              <i className='fa fa-trash mr-1.5 text-[10px]' />{" "}
+              {t("manageNotifications.deleteSelected")}
             </button>
           </div>
         )}
@@ -396,10 +429,10 @@ const ManageNotifications = ({ searchQuery }) => {
         <div className='bg-white rounded-2xl border border-stone-100 py-20 text-center'>
           <i className='fa fa-bell text-5xl text-stone-200 mb-4 block' />
           <p className='font-bold text-stone-500 mb-1'>
-            No notifications found
+            {t("manageNotifications.empty.title")}
           </p>
           <p className='text-sm text-stone-400'>
-            Try a different filter or send a new notification.
+            {t("manageNotifications.empty.description")}
           </p>
         </div>
       ) : (
@@ -419,16 +452,20 @@ const ManageNotifications = ({ searchQuery }) => {
                       className='w-4 h-4 rounded border-stone-300 accent-amber-400 cursor-pointer'
                     />
                   </th>
-                  {["Notification", "Type", "Status", "Sent", "Actions"].map(
-                    (h) => (
-                      <th
-                        key={h}
-                        className='px-4 py-3.5 text-left text-xs font-bold uppercase tracking-widest text-stone-400 whitespace-nowrap'
-                      >
-                        {h}
-                      </th>
-                    )
-                  )}
+                  {[
+                    t("manageNotifications.table.notification"),
+                    t("manageNotifications.table.type"),
+                    t("manageNotifications.table.status"),
+                    t("manageNotifications.table.sent"),
+                    t("manageNotifications.table.actions"),
+                  ].map((h) => (
+                    <th
+                      key={h}
+                      className='px-4 py-3.5 text-left text-xs font-bold uppercase tracking-widest text-stone-400 whitespace-nowrap'
+                    >
+                      {h}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className='divide-y divide-stone-50'>
@@ -476,11 +513,11 @@ const ManageNotifications = ({ searchQuery }) => {
                     </td>
                     {/* Type */}
                     <td className='px-4 py-3'>
-                      <TypeBadge type={n.type} />
+                      <TypeBadge type={n.type} t={t} />
                     </td>
                     {/* Read status */}
                     <td className='px-4 py-3'>
-                      <ReadBadge is_read={n.is_read} />
+                      <ReadBadge is_read={n.is_read} t={t} />
                     </td>
 
                     {/* Sent */}
@@ -493,7 +530,7 @@ const ManageNotifications = ({ searchQuery }) => {
                         {!n.is_read && (
                           <button
                             onClick={() => handleMarkRead(n)}
-                            title='Mark as read'
+                            title={t("manageNotifications.tooltips.markRead")}
                             className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-violet-50 hover:text-violet-600 flex items-center justify-center text-stone-400 transition-colors'
                           >
                             <i className='fa fa-check text-xs' />
@@ -501,14 +538,14 @@ const ManageNotifications = ({ searchQuery }) => {
                         )}
                         <button
                           onClick={() => openEdit(n)}
-                          title='Edit'
+                          title={t("manageNotifications.tooltips.edit")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-pen text-xs' />
                         </button>
                         <button
                           onClick={() => setDeleteModal(n)}
-                          title='Delete'
+                          title={t("manageNotifications.tooltips.delete")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-trash text-xs' />
@@ -554,12 +591,16 @@ const ManageNotifications = ({ searchQuery }) => {
                     className='font-black text-stone-800 text-lg'
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
-                    {editTarget ? "Edit Notification" : "Send Notification"}
+                    {editTarget
+                      ? t("manageNotifications.modal.editTitle")
+                      : t("manageNotifications.modal.createTitle")}
                   </h3>
                   <p className='text-xs text-stone-400'>
                     {editTarget
-                      ? `Editing #${editTarget.id}`
-                      : "Broadcast or target a user"}
+                      ? t("manageNotifications.modal.editingHint", {
+                          id: editTarget.id,
+                        })
+                      : t("manageNotifications.modal.createHint")}
                   </p>
                 </div>
               </div>
@@ -568,7 +609,7 @@ const ManageNotifications = ({ searchQuery }) => {
                 <div className='grid grid-cols-2 gap-4'>
                   <div className='col-span-2'>
                     <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1.5'>
-                      Title *
+                      {t("manageNotifications.modal.titleLabel")} *
                     </label>
                     <input
                       required
@@ -576,13 +617,15 @@ const ManageNotifications = ({ searchQuery }) => {
                       onChange={(e) =>
                         setForm((f) => ({ ...f, title: e.target.value }))
                       }
-                      placeholder='Notification title'
+                      placeholder={t(
+                        "manageNotifications.modal.titlePlaceholder"
+                      )}
                       className={inputClass}
                     />
                   </div>
                   <div>
                     <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1.5'>
-                      Type *
+                      {t("manageNotifications.modal.typeLabel")} *
                     </label>
                     <select
                       required
@@ -602,7 +645,7 @@ const ManageNotifications = ({ searchQuery }) => {
 
                   <div className='col-span-2'>
                     <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1.5'>
-                      Message *
+                      {t("manageNotifications.modal.messageLabel")} *
                     </label>
                     <textarea
                       required
@@ -611,7 +654,9 @@ const ManageNotifications = ({ searchQuery }) => {
                       onChange={(e) =>
                         setForm((f) => ({ ...f, message: e.target.value }))
                       }
-                      placeholder='Notification body...'
+                      placeholder={t(
+                        "manageNotifications.modal.messagePlaceholder"
+                      )}
                       className={`${inputClass} resize-none`}
                     />
                   </div>
@@ -634,10 +679,12 @@ const ManageNotifications = ({ searchQuery }) => {
                         TYPE_STYLES[form.type]?.text
                       }`}
                     >
-                      {form.title || "Title preview"}
+                      {form.title ||
+                        t("manageNotifications.modal.previewTitle")}
                     </p>
                     <p className='text-[11px] text-stone-400 truncate max-w-xs'>
-                      {form.message || "Message preview..."}
+                      {form.message ||
+                        t("manageNotifications.modal.previewMessage")}
                     </p>
                   </div>
                 </div>
@@ -648,7 +695,7 @@ const ManageNotifications = ({ searchQuery }) => {
                     onClick={() => setFormModal(false)}
                     className='flex-1 py-2.5 rounded-xl text-sm font-semibold text-stone-600 border border-stone-200 hover:bg-stone-50 transition-colors'
                   >
-                    Cancel
+                    {t("manageNotifications.modal.cancel")}
                   </button>
                   <button
                     type='submit'
@@ -658,12 +705,12 @@ const ManageNotifications = ({ searchQuery }) => {
                     {saving ? (
                       <>
                         <i className='fa fa-spinner fa-spin mr-1.5' />
-                        Saving...
+                        {t("manageNotifications.modal.saving")}
                       </>
                     ) : editTarget ? (
-                      "Save Changes"
+                      t("manageNotifications.modal.saveChanges")
                     ) : (
-                      "Send"
+                      t("manageNotifications.modal.send")
                     )}
                   </button>
                 </div>
@@ -686,18 +733,19 @@ const ManageNotifications = ({ searchQuery }) => {
                 className='font-black text-stone-800 text-lg mb-1'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Delete Notification?
+                {t("manageNotifications.deleteModal.title")}
               </h3>
               <p className='text-sm text-stone-500 mb-6'>
-                Permanently delete <strong>"{deleteModal?.title}"</strong>? This
-                cannot be undone.
+                {t("manageNotifications.deleteModal.description", {
+                  title: deleteModal?.title,
+                })}
               </p>
               <div className='flex gap-3'>
                 <button
                   onClick={() => setDeleteModal(null)}
                   className='flex-1 py-2.5 rounded-xl text-sm font-semibold text-stone-600 border border-stone-200 hover:bg-stone-50 transition-colors'
                 >
-                  Cancel
+                  {t("manageNotifications.deleteModal.cancel")}
                 </button>
                 <button
                   onClick={handleDelete}
@@ -707,10 +755,10 @@ const ManageNotifications = ({ searchQuery }) => {
                   {deleting ? (
                     <>
                       <i className='fa fa-spinner fa-spin mr-1.5' />
-                      Deleting...
+                      {t("manageNotifications.deleteModal.deleting")}
                     </>
                   ) : (
-                    "Delete"
+                    t("manageNotifications.deleteModal.delete")
                   )}
                 </button>
               </div>

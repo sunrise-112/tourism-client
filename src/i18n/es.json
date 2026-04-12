@@ -985,5 +985,90 @@
       "updateSuccess": "¡Perfil actualizado correctamente!",
       "updateError": "¡Error al actualizar el perfil!"
     }
+  },
+  "manageNotifications": {
+    "admin": "Administrador",
+    "title": "Gestionar notificaciones",
+    "totalNotifications": "{{count}} notificaciones en total",
+    "markAllRead": "Marcar todo como leído",
+    "sendNotification": "Enviar notificación",
+    "selectedCount": "{{count}} seleccionados",
+    "deleteSelected": "Eliminar seleccionados",
+    "stats": {
+      "total": "Total",
+      "unread": "No leídas",
+      "read": "Leídas",
+      "thisPage": "Esta página"
+    },
+    "filters": {
+      "typeAll": "Todas",
+      "readAll": "Todos"
+    },
+    "readStatus": {
+      "read": "Leída",
+      "unread": "No leída"
+    },
+    "types": {
+      "info": "Información",
+      "success": "Éxito",
+      "warning": "Advertencia",
+      "error": "Error",
+      "promo": "Promoción"
+    },
+    "table": {
+      "notification": "Notificación",
+      "type": "Tipo",
+      "status": "Estado",
+      "sent": "Enviada",
+      "actions": "Acciones"
+    },
+    "empty": {
+      "title": "No se encontraron notificaciones",
+      "description": "Prueba con otro filtro o envía una nueva notificación."
+    },
+    "tooltips": {
+      "markRead": "Marcar como leída",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "modal": {
+      "createTitle": "Enviar notificación",
+      "editTitle": "Editar notificación",
+      "editingHint": "Editando #{{id}}",
+      "createHint": "Difundir o dirigir a un usuario",
+      "titleLabel": "Título",
+      "titlePlaceholder": "Título de la notificación",
+      "typeLabel": "Tipo",
+      "messageLabel": "Mensaje",
+      "messagePlaceholder": "Cuerpo de la notificación...",
+      "previewTitle": "Vista previa del título",
+      "previewMessage": "Vista previa del mensaje...",
+      "cancel": "Cancelar",
+      "saveChanges": "Guardar cambios",
+      "send": "Enviar",
+      "saving": "Guardando..."
+    },
+    "deleteModal": {
+      "title": "¿Eliminar notificación?",
+      "description": "¿Eliminar permanentemente <strong>\"{{title}}\"</strong>? Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando..."
+    },
+    "toasts": {
+      "markAllReadSuccess": "¡Todas las notificaciones marcadas como leídas!",
+      "deleteSuccess": "¡Notificación eliminada!",
+      "bulkDeleteSuccess": "¡Notificaciones eliminadas!",
+      "createSuccess": "¡Notificación enviada!",
+      "updateSuccess": "¡Notificación actualizada!"
+    },
+    "errors": {
+      "fetchFailed": "¡Error al cargar las notificaciones!",
+      "markReadFailed": "Error al marcar como leída.",
+      "markAllReadFailed": "Error al marcar todas como leídas.",
+      "deleteFailed": "Error al eliminar.",
+      "bulkDeleteFailed": "Error en la eliminación masiva.",
+      "saveFailed": "Error al guardar."
+    }
   }
 }

@@ -985,5 +985,90 @@
       "updateSuccess": "تم تحديث الملف الشخصي بنجاح!",
       "updateError": "حدث خطأ أثناء تحديث الملف الشخصي!"
     }
+  },
+  "manageNotifications": {
+    "admin": "المشرف",
+    "title": "إدارة الإشعارات",
+    "totalNotifications": "{{count}} إشعار إجمالاً",
+    "markAllRead": "تحديد الكل كمقروء",
+    "sendNotification": "إرسال إشعار",
+    "selectedCount": "{{count}} مُحدد",
+    "deleteSelected": "حذف المحدد",
+    "stats": {
+      "total": "الإجمالي",
+      "unread": "غير مقروء",
+      "read": "مقروء",
+      "thisPage": "هذه الصفحة"
+    },
+    "filters": {
+      "typeAll": "الكل",
+      "readAll": "الكل"
+    },
+    "readStatus": {
+      "read": "مقروء",
+      "unread": "غير مقروء"
+    },
+    "types": {
+      "info": "معلومات",
+      "success": "نجاح",
+      "warning": "تحذير",
+      "error": "خطأ",
+      "promo": "ترويجي"
+    },
+    "table": {
+      "notification": "الإشعار",
+      "type": "النوع",
+      "status": "الحالة",
+      "sent": "تاريخ الإرسال",
+      "actions": "الإجراءات"
+    },
+    "empty": {
+      "title": "لا توجد إشعارات",
+      "description": "جرّب فلتراً مختلفاً أو أرسل إشعاراً جديداً."
+    },
+    "tooltips": {
+      "markRead": "تحديد كمقروء",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "modal": {
+      "createTitle": "إرسال إشعار",
+      "editTitle": "تعديل الإشعار",
+      "editingHint": "تعديل #{{id}}",
+      "createHint": "إرسال عام أو لمستخدم معين",
+      "titleLabel": "العنوان",
+      "titlePlaceholder": "عنوان الإشعار",
+      "typeLabel": "النوع",
+      "messageLabel": "الرسالة",
+      "messagePlaceholder": "نص الإشعار...",
+      "previewTitle": "معاينة العنوان",
+      "previewMessage": "معاينة الرسالة...",
+      "cancel": "إلغاء",
+      "saveChanges": "حفظ التغييرات",
+      "send": "إرسال",
+      "saving": "جاري الحفظ..."
+    },
+    "deleteModal": {
+      "title": "حذف الإشعار؟",
+      "description": "هل تريد حذف <strong>\"{{title}}\"</strong> بشكل دائم؟ لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "deleting": "جاري الحذف..."
+    },
+    "toasts": {
+      "markAllReadSuccess": "تم تحديد جميع الإشعارات كمقروءة!",
+      "deleteSuccess": "تم حذف الإشعار!",
+      "bulkDeleteSuccess": "تم حذف الإشعارات!",
+      "createSuccess": "تم إرسال الإشعار!",
+      "updateSuccess": "تم تحديث الإشعار!"
+    },
+    "errors": {
+      "fetchFailed": "فشل في جلب الإشعارات!",
+      "markReadFailed": "فشل في تحديد الإشعار كمقروء.",
+      "markAllReadFailed": "فشل في تحديد الكل كمقروء.",
+      "deleteFailed": "فشل في الحذف.",
+      "bulkDeleteFailed": "فشل الحذف الجماعي.",
+      "saveFailed": "فشل في الحفظ."
+    }
   }
 }

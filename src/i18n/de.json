@@ -985,5 +985,90 @@
       "updateSuccess": "Profil erfolgreich aktualisiert!",
       "updateError": "Fehler beim Aktualisieren des Profils!"
     }
+  },
+  "manageNotifications": {
+    "admin": "Administrator",
+    "title": "Benachrichtigungen verwalten",
+    "totalNotifications": "{{count}} Benachrichtigungen insgesamt",
+    "markAllRead": "Alle als gelesen markieren",
+    "sendNotification": "Benachrichtigung senden",
+    "selectedCount": "{{count}} ausgewählt",
+    "deleteSelected": "Ausgewählte löschen",
+    "stats": {
+      "total": "Gesamt",
+      "unread": "Ungelesen",
+      "read": "Gelesen",
+      "thisPage": "Diese Seite"
+    },
+    "filters": {
+      "typeAll": "Alle",
+      "readAll": "Alle"
+    },
+    "readStatus": {
+      "read": "Gelesen",
+      "unread": "Ungelesen"
+    },
+    "types": {
+      "info": "Info",
+      "success": "Erfolg",
+      "warning": "Warnung",
+      "error": "Fehler",
+      "promo": "Aktion"
+    },
+    "table": {
+      "notification": "Benachrichtigung",
+      "type": "Typ",
+      "status": "Status",
+      "sent": "Gesendet",
+      "actions": "Aktionen"
+    },
+    "empty": {
+      "title": "Keine Benachrichtigungen gefunden",
+      "description": "Versuchen Sie einen anderen Filter oder senden Sie eine neue Benachrichtigung."
+    },
+    "tooltips": {
+      "markRead": "Als gelesen markieren",
+      "edit": "Bearbeiten",
+      "delete": "Löschen"
+    },
+    "modal": {
+      "createTitle": "Benachrichtigung senden",
+      "editTitle": "Benachrichtigung bearbeiten",
+      "editingHint": "Bearbeite #{{id}}",
+      "createHint": "Rundsendung oder an einen bestimmten Benutzer",
+      "titleLabel": "Titel",
+      "titlePlaceholder": "Titel der Benachrichtigung",
+      "typeLabel": "Typ",
+      "messageLabel": "Nachricht",
+      "messagePlaceholder": "Inhalt der Benachrichtigung...",
+      "previewTitle": "Titelvorschau",
+      "previewMessage": "Nachrichtenvorschau...",
+      "cancel": "Abbrechen",
+      "saveChanges": "Änderungen speichern",
+      "send": "Senden",
+      "saving": "Speichern..."
+    },
+    "deleteModal": {
+      "title": "Benachrichtigung löschen?",
+      "description": "Möchten Sie <strong>\"{{title}}\"</strong> dauerhaft löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "deleting": "Löschen..."
+    },
+    "toasts": {
+      "markAllReadSuccess": "Alle Benachrichtigungen als gelesen markiert!",
+      "deleteSuccess": "Benachrichtigung gelöscht!",
+      "bulkDeleteSuccess": "Benachrichtigungen gelöscht!",
+      "createSuccess": "Benachrichtigung gesendet!",
+      "updateSuccess": "Benachrichtigung aktualisiert!"
+    },
+    "errors": {
+      "fetchFailed": "Fehler beim Laden der Benachrichtigungen!",
+      "markReadFailed": "Fehler beim Markieren als gelesen.",
+      "markAllReadFailed": "Fehler beim Markieren aller als gelesen.",
+      "deleteFailed": "Fehler beim Löschen.",
+      "bulkDeleteFailed": "Fehler beim Massenlöschen.",
+      "saveFailed": "Fehler beim Speichern."
+    }
   }
 }

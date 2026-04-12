@@ -986,5 +986,90 @@
       "updateSuccess": "资料更新成功！",
       "updateError": "更新资料时出错！"
     }
+  },
+  "manageNotifications": {
+    "admin": "管理员",
+    "title": "管理通知",
+    "totalNotifications": "共 {{count}} 条通知",
+    "markAllRead": "全部标记为已读",
+    "sendNotification": "发送通知",
+    "selectedCount": "已选 {{count}} 项",
+    "deleteSelected": "删除所选",
+    "stats": {
+      "total": "总数",
+      "unread": "未读",
+      "read": "已读",
+      "thisPage": "本页"
+    },
+    "filters": {
+      "typeAll": "全部",
+      "readAll": "全部"
+    },
+    "readStatus": {
+      "read": "已读",
+      "unread": "未读"
+    },
+    "types": {
+      "info": "信息",
+      "success": "成功",
+      "warning": "警告",
+      "error": "错误",
+      "promo": "促销"
+    },
+    "table": {
+      "notification": "通知",
+      "type": "类型",
+      "status": "状态",
+      "sent": "发送时间",
+      "actions": "操作"
+    },
+    "empty": {
+      "title": "暂无通知",
+      "description": "请尝试其他筛选条件或发送新通知。"
+    },
+    "tooltips": {
+      "markRead": "标记为已读",
+      "edit": "编辑",
+      "delete": "删除"
+    },
+    "modal": {
+      "createTitle": "发送通知",
+      "editTitle": "编辑通知",
+      "editingHint": "正在编辑 #{{id}}",
+      "createHint": "广播或定向发送给用户",
+      "titleLabel": "标题",
+      "titlePlaceholder": "通知标题",
+      "typeLabel": "类型",
+      "messageLabel": "消息内容",
+      "messagePlaceholder": "通知正文...",
+      "previewTitle": "标题预览",
+      "previewMessage": "消息预览...",
+      "cancel": "取消",
+      "saveChanges": "保存更改",
+      "send": "发送",
+      "saving": "保存中..."
+    },
+    "deleteModal": {
+      "title": "删除通知？",
+      "description": "永久删除 <strong>“{{title}}”</strong>？此操作不可撤销。",
+      "cancel": "取消",
+      "delete": "删除",
+      "deleting": "删除中..."
+    },
+    "toasts": {
+      "markAllReadSuccess": "所有通知已标记为已读！",
+      "deleteSuccess": "通知已删除！",
+      "bulkDeleteSuccess": "通知已删除！",
+      "createSuccess": "通知已发送！",
+      "updateSuccess": "通知已更新！"
+    },
+    "errors": {
+      "fetchFailed": "获取通知失败！",
+      "markReadFailed": "标记为已读失败。",
+      "markAllReadFailed": "全部标记为已读失败。",
+      "deleteFailed": "删除失败。",
+      "bulkDeleteFailed": "批量删除失败。",
+      "saveFailed": "保存失败。"
+    }
   }
 }

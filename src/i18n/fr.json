@@ -985,5 +985,90 @@
       "updateSuccess": "Profil mis à jour avec succès !",
       "updateError": "Erreur lors de la mise à jour du profil !"
     }
+  },
+  "manageNotifications": {
+    "admin": "Administrateur",
+    "title": "Gérer les notifications",
+    "totalNotifications": "{{count}} notifications au total",
+    "markAllRead": "Tout marquer comme lu",
+    "sendNotification": "Envoyer une notification",
+    "selectedCount": "{{count}} sélectionnés",
+    "deleteSelected": "Supprimer la sélection",
+    "stats": {
+      "total": "Total",
+      "unread": "Non lues",
+      "read": "Lues",
+      "thisPage": "Cette page"
+    },
+    "filters": {
+      "typeAll": "Toutes",
+      "readAll": "Tous"
+    },
+    "readStatus": {
+      "read": "Lue",
+      "unread": "Non lue"
+    },
+    "types": {
+      "info": "Info",
+      "success": "Succès",
+      "warning": "Avertissement",
+      "error": "Erreur",
+      "promo": "Promo"
+    },
+    "table": {
+      "notification": "Notification",
+      "type": "Type",
+      "status": "Statut",
+      "sent": "Envoyée",
+      "actions": "Actions"
+    },
+    "empty": {
+      "title": "Aucune notification trouvée",
+      "description": "Essayez un autre filtre ou envoyez une nouvelle notification."
+    },
+    "tooltips": {
+      "markRead": "Marquer comme lue",
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    },
+    "modal": {
+      "createTitle": "Envoyer une notification",
+      "editTitle": "Modifier la notification",
+      "editingHint": "Modification #{{id}}",
+      "createHint": "Diffusion ou ciblage d'un utilisateur",
+      "titleLabel": "Titre",
+      "titlePlaceholder": "Titre de la notification",
+      "typeLabel": "Type",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Corps de la notification...",
+      "previewTitle": "Aperçu du titre",
+      "previewMessage": "Aperçu du message...",
+      "cancel": "Annuler",
+      "saveChanges": "Enregistrer les modifications",
+      "send": "Envoyer",
+      "saving": "Enregistrement..."
+    },
+    "deleteModal": {
+      "title": "Supprimer la notification ?",
+      "description": "Supprimer définitivement <strong>\"{{title}}\"</strong> ? Cette action est irréversible.",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "deleting": "Suppression..."
+    },
+    "toasts": {
+      "markAllReadSuccess": "Toutes les notifications ont été marquées comme lues !",
+      "deleteSuccess": "Notification supprimée !",
+      "bulkDeleteSuccess": "Notifications supprimées !",
+      "createSuccess": "Notification envoyée !",
+      "updateSuccess": "Notification mise à jour !"
+    },
+    "errors": {
+      "fetchFailed": "Échec du chargement des notifications !",
+      "markReadFailed": "Échec du marquage comme lu.",
+      "markAllReadFailed": "Échec du marquage de toutes comme lues.",
+      "deleteFailed": "Échec de la suppression.",
+      "bulkDeleteFailed": "Échec de la suppression groupée.",
+      "saveFailed": "Échec de l'enregistrement."
+    }
   }
 }

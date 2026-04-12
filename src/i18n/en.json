@@ -985,5 +985,90 @@
       "updateSuccess": "Profile updated successfully!",
       "updateError": "Error updating profile!"
     }
+  },
+  "manageNotifications": {
+    "admin": "Admin",
+    "title": "Manage Notifications",
+    "totalNotifications": "{{count}} notifications total",
+    "markAllRead": "Mark all read",
+    "sendNotification": "Send Notification",
+    "selectedCount": "{{count}} selected",
+    "deleteSelected": "Delete Selected",
+    "stats": {
+      "total": "Total",
+      "unread": "Unread",
+      "read": "Read",
+      "thisPage": "This Page"
+    },
+    "filters": {
+      "typeAll": "All",
+      "readAll": "All"
+    },
+    "readStatus": {
+      "read": "Read",
+      "unread": "Unread"
+    },
+    "types": {
+      "info": "Info",
+      "success": "Success",
+      "warning": "Warning",
+      "error": "Error",
+      "promo": "Promo"
+    },
+    "table": {
+      "notification": "Notification",
+      "type": "Type",
+      "status": "Status",
+      "sent": "Sent",
+      "actions": "Actions"
+    },
+    "empty": {
+      "title": "No notifications found",
+      "description": "Try a different filter or send a new notification."
+    },
+    "tooltips": {
+      "markRead": "Mark as read",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "modal": {
+      "createTitle": "Send Notification",
+      "editTitle": "Edit Notification",
+      "editingHint": "Editing #{{id}}",
+      "createHint": "Broadcast or target a user",
+      "titleLabel": "Title",
+      "titlePlaceholder": "Notification title",
+      "typeLabel": "Type",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Notification body...",
+      "previewTitle": "Title preview",
+      "previewMessage": "Message preview...",
+      "cancel": "Cancel",
+      "saveChanges": "Save Changes",
+      "send": "Send",
+      "saving": "Saving..."
+    },
+    "deleteModal": {
+      "title": "Delete Notification?",
+      "description": "Permanently delete <strong>\"{{title}}\"</strong>? This cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    },
+    "toasts": {
+      "markAllReadSuccess": "All notifications marked as read!",
+      "deleteSuccess": "Notification deleted!",
+      "bulkDeleteSuccess": "Notifications deleted!",
+      "createSuccess": "Notification sent!",
+      "updateSuccess": "Notification updated!"
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch notifications!",
+      "markReadFailed": "Failed to mark as read.",
+      "markAllReadFailed": "Failed to mark all as read.",
+      "deleteFailed": "Failed to delete.",
+      "bulkDeleteFailed": "Bulk delete failed.",
+      "saveFailed": "Save failed."
+    }
   }
 }
