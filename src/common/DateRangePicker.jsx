@@ -50,34 +50,34 @@ const DateRangePicker = ({
 
     return [
       {
-        label: t("All time"),
+        label: t("dateRangePicker.presets.allTime"),
         range: { startDate: null, endDate: null },
       },
       {
-        label: t("today"),
+        label: t("dateRangePicker.presets.today"),
         range: { startDate: today, endDate: today },
       },
       {
-        label: t("yesterday"),
+        label: t("dateRangePicker.presets.yesterday"),
         range: { startDate: yesterday, endDate: yesterday },
       },
       {
-        label: t("last7Days"),
+        label: t("dateRangePicker.presets.last7Days"),
         range: { startDate: last7Days, endDate: today },
       },
       {
-        label: t("last30Days"),
+        label: t("dateRangePicker.presets.last30Days"),
         range: { startDate: last30Days, endDate: today },
       },
       {
-        label: t("thisMonth"),
+        label: t("dateRangePicker.presets.thisMonth"),
         range: { startDate: thisMonth, endDate: today },
       },
       {
-        label: t("lastMonth"),
+        label: t("dateRangePicker.presets.lastMonth"),
         range: { startDate: lastMonth, endDate: lastMonthEnd },
       },
-      { label: t("customRange"), isCustom: true },
+      { label: t("dateRangePicker.presets.customRange"), isCustom: true },
     ];
   };
 
@@ -474,7 +474,7 @@ const DateRangePicker = ({
               {/* Desktop: vertical list */}
               <div className='hidden lg:block p-3'>
                 <p className='text-[10px] font-black uppercase tracking-widest text-stone-400 px-2 mb-3'>
-                  Quick ranges
+                  {t("dateRangePicker.sidebar.quickRanges")}
                 </p>
                 <div className='space-y-0.5'>
                   {presets.map((preset) => (

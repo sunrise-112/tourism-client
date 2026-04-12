@@ -1457,5 +1457,32 @@
       "phone": "电话",
       "nationality": "国籍"
     }
+  },
+  "dateRangePicker": {
+    "placeholder": "选择日期范围",
+    "sidebar": {
+      "quickRanges": "快速范围"
+    },
+    "sections": {
+      "primaryRange": "主范围",
+      "compareTo": "比较"
+    },
+    "footer": {
+      "selectedDate": "所选日期：",
+      "primaryDate": "主日期：",
+      "compareDate": "比较日期：",
+      "cancel": "取消",
+      "apply": "应用"
+    },
+    "presets": {
+      "allTime": "全部时间",
+      "today": "今天",
+      "yesterday": "昨天",
+      "last7Days": "最近7天",
+      "last30Days": "最近30天",
+      "thisMonth": "本月",
+      "lastMonth": "上月",
+      "customRange": "自定义范围"
+    }
   }
 }

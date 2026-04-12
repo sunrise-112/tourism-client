@@ -1521,5 +1521,32 @@
       "phone": "Teléfono",
       "nationality": "Nacionalidad"
     }
+  },
+  "dateRangePicker": {
+    "placeholder": "Seleccionar rango de fechas",
+    "sidebar": {
+      "quickRanges": "Rangos rápidos"
+    },
+    "sections": {
+      "primaryRange": "Rango principal",
+      "compareTo": "Comparar con"
+    },
+    "footer": {
+      "selectedDate": "Fecha seleccionada:",
+      "primaryDate": "Fecha principal:",
+      "compareDate": "Fecha de comparación:",
+      "cancel": "Cancelar",
+      "apply": "Aplicar"
+    },
+    "presets": {
+      "allTime": "Todo el tiempo",
+      "today": "Hoy",
+      "yesterday": "Ayer",
+      "last7Days": "Últimos 7 días",
+      "last30Days": "Últimos 30 días",
+      "thisMonth": "Este mes",
+      "lastMonth": "Mes pasado",
+      "customRange": "Rango personalizado"
+    }
   }
 }

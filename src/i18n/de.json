@@ -1456,5 +1456,32 @@
       "phone": "Telefon",
       "nationality": "Nationalität"
     }
+  },
+  "dateRangePicker": {
+    "placeholder": "Datumsbereich auswählen",
+    "sidebar": {
+      "quickRanges": "Schnellbereiche"
+    },
+    "sections": {
+      "primaryRange": "Primärer Bereich",
+      "compareTo": "Vergleichen mit"
+    },
+    "footer": {
+      "selectedDate": "Ausgewähltes Datum:",
+      "primaryDate": "Primäres Datum:",
+      "compareDate": "Vergleichsdatum:",
+      "cancel": "Abbrechen",
+      "apply": "Übernehmen"
+    },
+    "presets": {
+      "allTime": "Alle Zeiten",
+      "today": "Heute",
+      "yesterday": "Gestern",
+      "last7Days": "Letzte 7 Tage",
+      "last30Days": "Letzte 30 Tage",
+      "thisMonth": "Dieser Monat",
+      "lastMonth": "Letzter Monat",
+      "customRange": "Benutzerdefinierter Bereich"
+    }
   }
 }
