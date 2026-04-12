@@ -650,5 +650,67 @@
       "approve": "Aprobar",
       "delete": "Eliminar"
     }
+  },
+  "manageUsers": {
+    "admin": "Administrador",
+    "title": "Gestionar Usuarios",
+    "usersRegistered": "{{count}} usuarios registrados",
+    "stats": {
+      "totalUsers": "Usuarios totales",
+      "active": "Activos",
+      "verified": "Verificados",
+      "thisPage": "Esta página"
+    },
+    "addUser": "Agregar usuario",
+    "filters": {
+      "all": "Todos"
+    },
+    "bulk": {
+      "selectedCount": "{{count}} seleccionados",
+      "deleteSelected": "Eliminar seleccionados"
+    },
+    "table": {
+      "user": "Usuario",
+      "email": "Correo",
+      "role": "Rol",
+      "status": "Estado",
+      "verified": "Verificado",
+      "joined": "Registrado",
+      "actions": "Acciones"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "verified": "Verificado",
+      "pending": "Pendiente"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "customer": "Cliente",
+      "customer_staff": "Personal de cliente",
+      "carrier": "Transportista",
+      "ramasseur": "Recolector"
+    },
+    "empty": {
+      "noUsers": "No se encontraron usuarios",
+      "tryDifferentFilter": "Prueba con otro filtro de rol o búsqueda."
+    },
+    "tooltips": {
+      "view": "Ver",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "modal": {
+      "deleteTitle": "¿Eliminar usuario?",
+      "deleteDescription": "¿Eliminar permanentemente a <strong>{{name}}</strong>? Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando..."
+    },
+    "toasts": {
+      "fetchFailed": "¡Error al cargar los usuarios!",
+      "deleteSuccess": "¡Usuario eliminado correctamente!",
+      "deleteFailed": "¡Error al eliminar el usuario!"
+    }
   }
 }

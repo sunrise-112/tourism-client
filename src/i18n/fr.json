@@ -650,5 +650,67 @@
       "approve": "Approuver",
       "delete": "Supprimer"
     }
+  },
+  "manageUsers": {
+    "admin": "Administrateur",
+    "title": "Gérer les utilisateurs",
+    "usersRegistered": "{{count}} utilisateurs inscrits",
+    "stats": {
+      "totalUsers": "Total utilisateurs",
+      "active": "Actifs",
+      "verified": "Vérifiés",
+      "thisPage": "Cette page"
+    },
+    "addUser": "Ajouter un utilisateur",
+    "filters": {
+      "all": "Tous"
+    },
+    "bulk": {
+      "selectedCount": "{{count}} sélectionnés",
+      "deleteSelected": "Supprimer la sélection"
+    },
+    "table": {
+      "user": "Utilisateur",
+      "email": "E-mail",
+      "role": "Rôle",
+      "status": "Statut",
+      "verified": "Vérifié",
+      "joined": "Inscrit le",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "verified": "Vérifié",
+      "pending": "En attente"
+    },
+    "roles": {
+      "admin": "Administrateur",
+      "customer": "Client",
+      "customer_staff": "Personnel client",
+      "carrier": "Transporteur",
+      "ramasseur": "Collecteur"
+    },
+    "empty": {
+      "noUsers": "Aucun utilisateur trouvé",
+      "tryDifferentFilter": "Essayez un autre filtre de rôle ou une autre recherche."
+    },
+    "tooltips": {
+      "view": "Voir",
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    },
+    "modal": {
+      "deleteTitle": "Supprimer l'utilisateur ?",
+      "deleteDescription": "Supprimer définitivement <strong>{{name}}</strong> ? Cette action est irréversible.",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "deleting": "Suppression..."
+    },
+    "toasts": {
+      "fetchFailed": "Échec du chargement des utilisateurs !",
+      "deleteSuccess": "Utilisateur supprimé avec succès !",
+      "deleteFailed": "Échec de la suppression de l'utilisateur !"
+    }
   }
 }

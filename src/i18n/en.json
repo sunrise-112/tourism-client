@@ -650,5 +650,67 @@
       "approve": "Approve",
       "delete": "Delete"
     }
+  },
+  "manageUsers": {
+    "admin": "Admin",
+    "title": "Manage Users",
+    "usersRegistered": "{{count}} users registered",
+    "stats": {
+      "totalUsers": "Total Users",
+      "active": "Active",
+      "verified": "Verified",
+      "thisPage": "This Page"
+    },
+    "addUser": "Add user",
+    "filters": {
+      "all": "All"
+    },
+    "bulk": {
+      "selectedCount": "{{count}} selected",
+      "deleteSelected": "Delete Selected"
+    },
+    "table": {
+      "user": "User",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "verified": "Verified",
+      "joined": "Joined",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "verified": "Verified",
+      "pending": "Pending"
+    },
+    "roles": {
+      "admin": "Admin",
+      "customer": "Customer",
+      "customer_staff": "Customer Staff",
+      "carrier": "Carrier",
+      "ramasseur": "Collector"
+    },
+    "empty": {
+      "noUsers": "No users found",
+      "tryDifferentFilter": "Try a different role filter or search."
+    },
+    "tooltips": {
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "modal": {
+      "deleteTitle": "Delete User?",
+      "deleteDescription": "Permanently delete <strong>{{name}}</strong>? This cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    },
+    "toasts": {
+      "fetchFailed": "Failed to fetch users!",
+      "deleteSuccess": "User deleted successfully!",
+      "deleteFailed": "Failed to delete user!"
+    }
   }
 }

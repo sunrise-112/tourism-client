@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useTranslation, Trans } from "react-i18next";
 import _ from "lodash";
 import userService from "../../services/userService";
 import Pagination from "../../common/Pagination";
@@ -47,24 +48,27 @@ const ROLE_STYLES = {
   },
 };
 
-const RoleBadge = ({ role }) => {
+const RoleBadge = ({ role, t }) => {
   const s = ROLE_STYLES[role] || {
     bg: "bg-stone-50",
     text: "text-stone-500",
     border: "border-stone-200",
     dot: "bg-stone-300",
   };
+  // Translate role name, fallback to original role if translation missing
+  const roleKey = `manageUsers.roles.${role}`;
+  const translatedRole = t(roleKey, { defaultValue: role });
   return (
     <span
       className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${s.bg} ${s.text} ${s.border} capitalize`}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-      {role}
+      {translatedRole}
     </span>
   );
 };
 
-const StatusDot = ({ active }) => (
+const StatusDot = ({ active, t }) => (
   <span
     className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${
       active
@@ -77,7 +81,7 @@ const StatusDot = ({ active }) => (
         active ? "bg-emerald-400" : "bg-stone-300"
       }`}
     />
-    {active ? "Active" : "Inactive"}
+    {active ? t("manageUsers.status.active") : t("manageUsers.status.inactive")}
   </span>
 );
 
@@ -85,6 +89,7 @@ const ROLE_FILTERS = ["All", Roles.ADMIN, Roles.CUSTOMER];
 
 // ─── ManageUsers ──────────────────────────────────────────────
 const ManageUsers = ({ searchQuery, user: currentUser }) => {
+  const { t } = useTranslation();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -111,7 +116,7 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
       setUsers(res?.users || []);
       setTotalItems(res?.pagination?.totalItems || 0);
     } catch {
-      toast.error("Failed to fetch users!");
+      toast.error(t("manageUsers.toasts.fetchFailed"));
     } finally {
       setLoading(false);
     }
@@ -148,11 +153,13 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
       setUsers((prev) => prev.filter((u) => u.id !== deleteModal.id));
       await userService.deleteById(deleteModal.id);
       setTotalItems((n) => n - 1);
-      toast.success("User deleted successfully!");
+      toast.success(t("manageUsers.toasts.deleteSuccess"));
       setDeleteModal(null);
     } catch (err) {
       setUsers(original);
-      toast.error(err?.response?.data?.message || "Failed to delete user!");
+      toast.error(
+        err?.response?.data?.message || t("manageUsers.toasts.deleteFailed")
+      );
     } finally {
       setDeleting(false);
     }
@@ -182,16 +189,16 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
       {/* ── Header ─────────────────────────────────── */}
       <div className='mb-8'>
         <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
-          Admin
+          {t("manageUsers.admin")}
         </p>
         <h1
           className='text-3xl font-black text-stone-800'
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          Manage Users
+          {t("manageUsers.title")}
         </h1>
         <p className='text-stone-400 text-sm mt-1'>
-          {totalItems} users registered
+          {t("manageUsers.usersRegistered", { count: totalItems })}
         </p>
       </div>
       {/* ── Stats ──────────────────────────────────── */}
@@ -199,28 +206,28 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
         {[
           {
             icon: "fa-users",
-            label: "Total Users",
+            label: t("manageUsers.stats.totalUsers"),
             value: totalItems,
             color: "from-amber-400 to-orange-500",
             ring: "ring-amber-200",
           },
           {
             icon: "fa-user-check",
-            label: "Active",
+            label: t("manageUsers.stats.active"),
             value: active,
             color: "from-emerald-400 to-teal-500",
             ring: "ring-emerald-200",
           },
           {
             icon: "fa-shield-alt",
-            label: "Verified",
+            label: t("manageUsers.stats.verified"),
             value: verified,
             color: "from-blue-400 to-indigo-500",
             ring: "ring-blue-200",
           },
           {
             icon: "fa-eye",
-            label: "This Page",
+            label: t("manageUsers.stats.thisPage"),
             value: sorted.length,
             color: "from-stone-400 to-stone-500",
             ring: "ring-stone-200",
@@ -248,36 +255,48 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
         to={`/admin/users/create`}
         className='inline-flex items-center gap-2 mb-3 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-5 py-2.5 rounded-xl shadow-sm shadow-amber-200 self-start sm:self-auto'
       >
-        <i className='fa fa-user text-xs' /> Add user
+        <i className='fa fa-user text-xs' /> {t("manageUsers.addUser")}
       </Link>
       <button></button>
       {/* ── Role filter tabs ────────────────────────── */}
       <div className='flex items-center gap-2 mb-5 flex-wrap'>
-        {ROLE_FILTERS.map((r) => (
-          <button
-            key={r}
-            onClick={() => {
-              setRoleFilter(r);
-              setPageNumber(1);
-            }}
-            className={`text-xs font-bold px-4 py-2 rounded-xl border capitalize transition-colors ${
-              roleFilter === r
-                ? "bg-amber-50 text-amber-700 border-amber-200"
-                : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"
-            }`}
-          >
-            {r}
-          </button>
-        ))}
+        {ROLE_FILTERS.map((r) => {
+          let filterLabel = "";
+          if (r === "All") filterLabel = t("manageUsers.filters.all");
+          else if (r === Roles.ADMIN)
+            filterLabel = t("manageUsers.roles.admin");
+          else if (r === Roles.CUSTOMER)
+            filterLabel = t("manageUsers.roles.customer");
+          else filterLabel = r;
+          return (
+            <button
+              key={r}
+              onClick={() => {
+                setRoleFilter(r);
+                setPageNumber(1);
+              }}
+              className={`text-xs font-bold px-4 py-2 rounded-xl border capitalize transition-colors ${
+                roleFilter === r
+                  ? "bg-amber-50 text-amber-700 border-amber-200"
+                  : "bg-white text-stone-500 border-stone-200 hover:bg-stone-50"
+              }`}
+            >
+              {filterLabel}
+            </button>
+          );
+        })}
 
         {/* Bulk action */}
         {selectedItems.length > 0 && (
           <div className='ml-auto flex items-center gap-2'>
             <span className='text-xs text-stone-500 font-semibold'>
-              {selectedItems.length} selected
+              {t("manageUsers.bulk.selectedCount", {
+                count: selectedItems.length,
+              })}
             </span>
             <button className='text-xs font-bold text-red-500 border border-red-200 bg-red-50 hover:bg-red-100 px-3 py-2 rounded-xl transition-colors'>
-              <i className='fa fa-trash mr-1.5 text-[10px]' /> Delete Selected
+              <i className='fa fa-trash mr-1.5 text-[10px]' />{" "}
+              {t("manageUsers.bulk.deleteSelected")}
             </button>
           </div>
         )}
@@ -292,9 +311,11 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
       ) : sorted.length === 0 ? (
         <div className='bg-white rounded-2xl border border-stone-100 py-20 text-center'>
           <i className='fa fa-users text-5xl text-stone-200 mb-4 block' />
-          <p className='font-bold text-stone-500 mb-1'>No users found</p>
+          <p className='font-bold text-stone-500 mb-1'>
+            {t("manageUsers.empty.noUsers")}
+          </p>
           <p className='text-sm text-stone-400'>
-            Try a different role filter or search.
+            {t("manageUsers.empty.tryDifferentFilter")}
           </p>
         </div>
       ) : (
@@ -315,13 +336,13 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
                     />
                   </th>
                   {[
-                    "User",
-                    "Email",
-                    "Role",
-                    "Status",
-                    "Verified",
-                    "Joined",
-                    "Actions",
+                    t("manageUsers.table.user"),
+                    t("manageUsers.table.email"),
+                    t("manageUsers.table.role"),
+                    t("manageUsers.table.status"),
+                    t("manageUsers.table.verified"),
+                    t("manageUsers.table.joined"),
+                    t("manageUsers.table.actions"),
                   ].map((h) => (
                     <th
                       key={h}
@@ -378,11 +399,11 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
                     </td>
                     {/* Role */}
                     <td className='px-4 py-3'>
-                      <RoleBadge role={u.role} />
+                      <RoleBadge role={u.role} t={t} />
                     </td>
                     {/* Status */}
                     <td className='px-4 py-3'>
-                      <StatusDot active={u.active} />
+                      <StatusDot active={u.active} t={t} />
                     </td>
                     {/* Verified */}
                     <td className='px-4 py-3'>
@@ -398,7 +419,9 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
                             u.verified ? "fa-check" : "fa-clock"
                           } text-[9px]`}
                         />
-                        {u.verified ? "Verified" : "Pending"}
+                        {u.verified
+                          ? t("manageUsers.status.verified")
+                          : t("manageUsers.status.pending")}
                       </span>
                     </td>
                     {/* Joined */}
@@ -410,21 +433,21 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
                       <div className='flex items-center gap-2'>
                         <Link
                           to={`/admin/users/preview/${u.id}`}
-                          title='View'
+                          title={t("manageUsers.tooltips.view")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-amber-50 hover:text-amber-600 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-eye text-xs' />
                         </Link>
                         <Link
                           to={`/admin/users/edit/${u.id}`}
-                          title='Edit'
+                          title={t("manageUsers.tooltips.edit")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-pen text-xs' />
                         </Link>
                         <button
                           onClick={() => setDeleteModal(u)}
-                          title='Delete'
+                          title={t("manageUsers.tooltips.delete")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-trash text-xs' />
@@ -463,18 +486,23 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
                 className='font-black text-stone-800 text-lg mb-1'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Delete User?
+                {t("manageUsers.modal.deleteTitle")}
               </h3>
               <p className='text-sm text-stone-500 mb-6'>
-                Permanently delete <strong>{deleteModal?.name}</strong>? This
-                cannot be undone.
+                <Trans
+                  i18nKey='manageUsers.modal.deleteDescription'
+                  values={{ name: deleteModal?.name }}
+                >
+                  Permanently delete <strong>{{ name }}</strong>? This cannot be
+                  undone.
+                </Trans>
               </p>
               <div className='flex gap-3'>
                 <button
                   onClick={() => setDeleteModal(null)}
                   className='flex-1 py-2.5 rounded-xl text-sm font-semibold text-stone-600 border border-stone-200 hover:bg-stone-50 transition-colors'
                 >
-                  Cancel
+                  {t("manageUsers.modal.cancel")}
                 </button>
                 <button
                   onClick={handleDelete}
@@ -484,10 +512,10 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
                   {deleting ? (
                     <>
                       <i className='fa fa-spinner fa-spin mr-1.5' />
-                      Deleting...
+                      {t("manageUsers.modal.deleting")}
                     </>
                   ) : (
-                    "Delete"
+                    t("manageUsers.modal.delete")
                   )}
                 </button>
               </div>

@@ -650,5 +650,67 @@
       "approve": "قبول",
       "delete": "حذف"
     }
+  },
+  "manageUsers": {
+    "admin": "المشرف",
+    "title": "إدارة المستخدمين",
+    "usersRegistered": "{{count}} مستخدم مسجل",
+    "stats": {
+      "totalUsers": "إجمالي المستخدمين",
+      "active": "نشط",
+      "verified": "موثق",
+      "thisPage": "هذه الصفحة"
+    },
+    "addUser": "إضافة مستخدم",
+    "filters": {
+      "all": "الجميع"
+    },
+    "bulk": {
+      "selectedCount": "{{count}} مختار",
+      "deleteSelected": "حذف المختارين"
+    },
+    "table": {
+      "user": "المستخدم",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "status": "الحالة",
+      "verified": "التوثيق",
+      "joined": "تاريخ الانضمام",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "verified": "موثق",
+      "pending": "قيد الانتظار"
+    },
+    "roles": {
+      "admin": "مدير",
+      "customer": "عميل",
+      "customer_staff": "موظف عميل",
+      "carrier": "ناقل",
+      "ramasseur": "جامع"
+    },
+    "empty": {
+      "noUsers": "لم يتم العثور على مستخدمين",
+      "tryDifferentFilter": "جرّب فلتر دور مختلف أو بحث آخر."
+    },
+    "tooltips": {
+      "view": "عرض",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "modal": {
+      "deleteTitle": "حذف المستخدم؟",
+      "deleteDescription": "هل تريد حذف <strong>{{name}}</strong> بشكل دائم؟ لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "deleting": "جاري الحذف..."
+    },
+    "toasts": {
+      "fetchFailed": "فشل في جلب المستخدمين!",
+      "deleteSuccess": "تم حذف المستخدم بنجاح!",
+      "deleteFailed": "فشل في حذف المستخدم!"
+    }
   }
 }

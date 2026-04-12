@@ -650,5 +650,67 @@
       "approve": "Genehmigen",
       "delete": "Löschen"
     }
+  },
+  "manageUsers": {
+    "admin": "Administrator",
+    "title": "Benutzer verwalten",
+    "usersRegistered": "{{count}} Benutzer registriert",
+    "stats": {
+      "totalUsers": "Benutzer insgesamt",
+      "active": "Aktiv",
+      "verified": "Verifiziert",
+      "thisPage": "Diese Seite"
+    },
+    "addUser": "Benutzer hinzufügen",
+    "filters": {
+      "all": "Alle"
+    },
+    "bulk": {
+      "selectedCount": "{{count}} ausgewählt",
+      "deleteSelected": "Ausgewählte löschen"
+    },
+    "table": {
+      "user": "Benutzer",
+      "email": "E-Mail",
+      "role": "Rolle",
+      "status": "Status",
+      "verified": "Verifiziert",
+      "joined": "Beigetreten",
+      "actions": "Aktionen"
+    },
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "verified": "Verifiziert",
+      "pending": "Ausstehend"
+    },
+    "roles": {
+      "admin": "Administrator",
+      "customer": "Kunde",
+      "customer_staff": "Kundenmitarbeiter",
+      "carrier": "Spediteur",
+      "ramasseur": "Sammler"
+    },
+    "empty": {
+      "noUsers": "Keine Benutzer gefunden",
+      "tryDifferentFilter": "Versuchen Sie einen anderen Rollenfilter oder eine andere Suche."
+    },
+    "tooltips": {
+      "view": "Ansehen",
+      "edit": "Bearbeiten",
+      "delete": "Löschen"
+    },
+    "modal": {
+      "deleteTitle": "Benutzer löschen?",
+      "deleteDescription": "Möchten Sie <strong>{{name}}</strong> dauerhaft löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "deleting": "Löschen..."
+    },
+    "toasts": {
+      "fetchFailed": "Fehler beim Laden der Benutzer!",
+      "deleteSuccess": "Benutzer erfolgreich gelöscht!",
+      "deleteFailed": "Fehler beim Löschen des Benutzers!"
+    }
   }
 }
