@@ -37,6 +37,8 @@
     "activities": "الأنشطة",
     "reviews": "التقييمات",
     "users": "المستخدمون",
+    "inquiries": "الاستفسارات",
+
     "categories": "الفئات",
     "favorites": "المفضلة",
     "profile": "الملف الشخصي",
@@ -1518,5 +1520,61 @@
     "customer_staff": "موظف عميل",
     "carrier": "ناقل",
     "ramasseur": "جامع"
+  },
+  "manageInquiries": {
+    "admin": "مدير",
+    "title": "استفسارات العملاء",
+    "inquiriesSubmitted": "{{count}} استفسار تم إرساله",
+    "errors": {
+      "fetchFailed": "فشل تحميل الاستفسارات. الرجاء المحاولة مرة أخرى.",
+      "deleteFailed": "فشل حذف الاستفسار. الرجاء المحاولة مرة أخرى."
+    },
+    "toasts": {
+      "deleted": "تم حذف الاستفسار بنجاح!"
+    },
+    "stats": {
+      "total": "إجمالي الاستفسارات",
+      "today": "اليوم",
+      "week": "هذا الأسبوع",
+      "avgResponse": "متوسط الرد"
+    },
+    "filters": {
+      "all": "الكل",
+      "today": "اليوم",
+      "week": "هذا الأسبوع",
+      "month": "هذا الشهر"
+    },
+    "empty": {
+      "noInquiries": "لا توجد استفسارات",
+      "tryDifferentFilter": "جرب فلتراً أو نطاق زمني مختلف"
+    },
+    "table": {
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "subject": "الموضوع",
+      "message": "الرسالة",
+      "date": "التاريخ",
+      "actions": "الإجراءات"
+    },
+    "tooltips": {
+      "view": "عرض تفاصيل الاستفسار",
+      "delete": "حذف الاستفسار"
+    },
+    "modal": {
+      "viewTitle": "تفاصيل الاستفسار",
+      "fullName": "الاسم الكامل",
+      "email": "عنوان البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "subject": "الموضوع",
+      "message": "الرسالة",
+      "submitted": "تاريخ الإرسال",
+      "close": "إغلاق",
+      "deleteTitle": "حذف الاستفسار",
+      "deleteDescription": "سيؤدي هذا إلى إزالة الاستفسار من <strong>{{name}}</strong> بشكل دائم. لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "deleting": "جاري الحذف..."
+    }
   }
 }

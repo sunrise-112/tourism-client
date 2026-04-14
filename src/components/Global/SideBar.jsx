@@ -69,6 +69,11 @@ const Sidebar = ({
                 path: "/admin/users",
               },
               {
+                icon: "fa-envelope",
+                label: t("nav.inquiries"),
+                path: "/admin/inquiries",
+              },
+              {
                 icon: "fa-list",
                 label: t("nav.categories"),
                 path: "/categories",

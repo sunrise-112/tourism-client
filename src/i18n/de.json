@@ -37,6 +37,7 @@
     "activities": "Aktivitäten",
     "reviews": "Bewertungen",
     "users": "Benutzer",
+    "inquiries": "Anfragen",
     "categories": "Kategorien",
     "favorites": "Favoriten",
     "profile": "Ihr Profil",
@@ -1505,9 +1506,62 @@
   },
   "roles": {
     "admin": "Administrator",
-    "customer": "Kunde",
-    "customer_staff": "Kundenmitarbeiter",
-    "carrier": "Spediteur",
-    "ramasseur": "Sammler"
+    "customer": "Kunde"
+  },
+  "manageInquiries": {
+    "admin": "Administrator",
+    "title": "Kundenanfragen",
+    "inquiriesSubmitted": "{{count}} Anfragen eingereicht",
+    "errors": {
+      "fetchFailed": "Anfragen konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+      "deleteFailed": "Anfrage konnte nicht gelöscht werden. Bitte versuchen Sie es erneut."
+    },
+    "toasts": {
+      "deleted": "Anfrage erfolgreich gelöscht!"
+    },
+    "stats": {
+      "total": "Anfragen insgesamt",
+      "today": "Heute",
+      "week": "Diese Woche",
+      "avgResponse": "Durchschn. Antwortzeit"
+    },
+    "filters": {
+      "all": "Alle",
+      "today": "Heute",
+      "week": "Diese Woche",
+      "month": "Diesen Monat"
+    },
+    "empty": {
+      "noInquiries": "Keine Anfragen gefunden",
+      "tryDifferentFilter": "Versuchen Sie einen anderen Filter oder Zeitraum"
+    },
+    "table": {
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "subject": "Betreff",
+      "message": "Nachricht",
+      "date": "Datum",
+      "actions": "Aktionen"
+    },
+    "tooltips": {
+      "view": "Anfragedetails anzeigen",
+      "delete": "Anfrage löschen"
+    },
+    "modal": {
+      "viewTitle": "Anfragedetails",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefonnummer",
+      "subject": "Betreff",
+      "message": "Nachricht",
+      "submitted": "Eingereicht am",
+      "close": "Schließen",
+      "deleteTitle": "Anfrage löschen",
+      "deleteDescription": "Dies wird die Anfrage von <strong>{{name}}</strong> dauerhaft entfernen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "deleting": "Löschen..."
+    }
   }
 }

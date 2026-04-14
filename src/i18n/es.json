@@ -37,6 +37,7 @@
     "activities": "Actividades",
     "reviews": "Reseñas",
     "users": "Usuarios",
+    "inquiries": "consultas",
     "categories": "Categorías",
     "favorites": "Favoritos",
     "profile": "Perfil",
@@ -1570,9 +1571,62 @@
   },
   "roles": {
     "admin": "Administrador",
-    "customer": "Cliente",
-    "customer_staff": "Personal del cliente",
-    "carrier": "Transportista",
-    "ramasseur": "Recolector"
+    "customer": "Cliente"
+  },
+  "manageInquiries": {
+    "admin": "Administrador",
+    "title": "Consultas de Clientes",
+    "inquiriesSubmitted": "{{count}} consultas enviadas",
+    "errors": {
+      "fetchFailed": "Error al cargar las consultas. Inténtelo de nuevo.",
+      "deleteFailed": "Error al eliminar la consulta. Inténtelo de nuevo."
+    },
+    "toasts": {
+      "deleted": "¡Consulta eliminada con éxito!"
+    },
+    "stats": {
+      "total": "Total de Consultas",
+      "today": "Hoy",
+      "week": "Esta Semana",
+      "avgResponse": "Respuesta Promedio"
+    },
+    "filters": {
+      "all": "Todas",
+      "today": "Hoy",
+      "week": "Esta Semana",
+      "month": "Este Mes"
+    },
+    "empty": {
+      "noInquiries": "No se encontraron consultas",
+      "tryDifferentFilter": "Pruebe un filtro o rango de fechas diferente"
+    },
+    "table": {
+      "fullName": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "subject": "Asunto",
+      "message": "Mensaje",
+      "date": "Fecha",
+      "actions": "Acciones"
+    },
+    "tooltips": {
+      "view": "Ver detalles de la consulta",
+      "delete": "Eliminar consulta"
+    },
+    "modal": {
+      "viewTitle": "Detalles de la Consulta",
+      "fullName": "Nombre Completo",
+      "email": "Dirección de Correo",
+      "phone": "Número de Teléfono",
+      "subject": "Asunto",
+      "message": "Mensaje",
+      "submitted": "Enviado el",
+      "close": "Cerrar",
+      "deleteTitle": "Eliminar Consulta",
+      "deleteDescription": "Esto eliminará permanentemente la consulta de <strong>{{name}}</strong>. Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando..."
+    }
   }
 }

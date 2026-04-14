@@ -37,6 +37,7 @@
     "activities": "Activités",
     "reviews": "Avis",
     "users": "Utilisateurs",
+    "inquiries": "Demandes",
     "categories": "Catégories",
     "favorites": "Favoris",
     "profile": "Profil",
@@ -1505,9 +1506,62 @@
   },
   "roles": {
     "admin": "Administrateur",
-    "customer": "Client",
-    "customer_staff": "Personnel client",
-    "carrier": "Transporteur",
-    "ramasseur": "Collecteur"
+    "customer": "Client"
+  },
+  "manageInquiries": {
+    "admin": "Administrateur",
+    "title": "Demandes des clients",
+    "inquiriesSubmitted": "{{count}} demandes soumises",
+    "errors": {
+      "fetchFailed": "Échec du chargement des demandes. Veuillez réessayer.",
+      "deleteFailed": "Échec de la suppression de la demande. Veuillez réessayer."
+    },
+    "toasts": {
+      "deleted": "Demande supprimée avec succès !"
+    },
+    "stats": {
+      "total": "Total des demandes",
+      "today": "Aujourd'hui",
+      "week": "Cette semaine",
+      "avgResponse": "Réponse moyenne"
+    },
+    "filters": {
+      "all": "Toutes",
+      "today": "Aujourd'hui",
+      "week": "Cette semaine",
+      "month": "Ce mois"
+    },
+    "empty": {
+      "noInquiries": "Aucune demande trouvée",
+      "tryDifferentFilter": "Essayez un autre filtre ou intervalle de dates"
+    },
+    "table": {
+      "fullName": "Nom complet",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "subject": "Sujet",
+      "message": "Message",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "tooltips": {
+      "view": "Voir les détails de la demande",
+      "delete": "Supprimer la demande"
+    },
+    "modal": {
+      "viewTitle": "Détails de la demande",
+      "fullName": "Nom complet",
+      "email": "Adresse e-mail",
+      "phone": "Numéro de téléphone",
+      "subject": "Sujet",
+      "message": "Message",
+      "submitted": "Soumis le",
+      "close": "Fermer",
+      "deleteTitle": "Supprimer la demande",
+      "deleteDescription": "Cela supprimera définitivement la demande de <strong>{{name}}</strong>. Cette action est irréversible.",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "deleting": "Suppression..."
+    }
   }
 }

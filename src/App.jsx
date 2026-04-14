@@ -55,6 +55,7 @@ import UserForm from "./pages/admin/UserForm";
 import UserPreview from "./pages/admin/UserPreview";
 import ManageNotifications from "./pages/admin/notifications/ManageNotifications";
 import Settings from "./pages/settings/Settings";
+import ManageInquiries from "./pages/admin/ManageInquiries";
 
 /* 
 
@@ -337,6 +338,17 @@ const App = () => {
             <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
               <AdminLayout>
                 <UserPreview />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        {/* Inquiries */}
+        <Route
+          path='/admin/inquiries'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <ManageInquiries />
               </AdminLayout>
             </ProtectedRoute>
           }

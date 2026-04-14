@@ -37,6 +37,7 @@
     "activities": "活动",
     "reviews": "评价",
     "users": "用户",
+    "inquiries": "查询",
     "categories": "分类",
     "favorites": "收藏夹",
     "profile": "个人资料",
@@ -1506,9 +1507,62 @@
   },
   "roles": {
     "admin": "管理员",
-    "customer": "客户",
-    "customer_staff": "客户员工",
-    "carrier": "承运商",
-    "ramasseur": "收集员"
+    "customer": "客户"
+  },
+  "manageInquiries": {
+    "admin": "管理员",
+    "title": "客户咨询",
+    "inquiriesSubmitted": "已提交 {{count}} 条咨询",
+    "errors": {
+      "fetchFailed": "加载咨询失败，请重试。",
+      "deleteFailed": "删除咨询失败，请重试。"
+    },
+    "toasts": {
+      "deleted": "咨询删除成功！"
+    },
+    "stats": {
+      "total": "总咨询数",
+      "today": "今日",
+      "week": "本周",
+      "avgResponse": "平均响应时间"
+    },
+    "filters": {
+      "all": "全部",
+      "today": "今日",
+      "week": "本周",
+      "month": "本月"
+    },
+    "empty": {
+      "noInquiries": "未找到咨询",
+      "tryDifferentFilter": "尝试不同的筛选器或日期范围"
+    },
+    "table": {
+      "fullName": "姓名",
+      "email": "邮箱",
+      "phone": "电话",
+      "subject": "主题",
+      "message": "消息",
+      "date": "日期",
+      "actions": "操作"
+    },
+    "tooltips": {
+      "view": "查看咨询详情",
+      "delete": "删除咨询"
+    },
+    "modal": {
+      "viewTitle": "咨询详情",
+      "fullName": "姓名",
+      "email": "邮箱地址",
+      "phone": "电话号码",
+      "subject": "主题",
+      "message": "消息内容",
+      "submitted": "提交时间",
+      "close": "关闭",
+      "deleteTitle": "删除咨询",
+      "deleteDescription": "这将永久删除来自 <strong>{{name}}</strong> 的咨询。此操作不可撤销。",
+      "cancel": "取消",
+      "delete": "删除",
+      "deleting": "删除中..."
+    }
   }
 }

@@ -2,6 +2,20 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import Joi from "joi-browser";
+
+// Services
+import InquiriesService from "../../services/inquiriesService";
+
+// Utils
+import {
+  renderButton,
+  renderInput,
+  renderSelect,
+} from "../../utils/formRenders";
+
+// Hooks
+import useForm from "../../hooks/useForm";
 
 const CONTACT_INFO = [
   {
@@ -45,46 +59,59 @@ const SOCIALS = [
   },
 ];
 
+const subjectOptions = [
+  { label: "General Inquiry" },
+  { label: "Tour Booking" },
+  { label: "Custom Itinerary" },
+  { label: "Group Travel" },
+  { label: "Cancellation / Refund" },
+  { label: "Other" },
+];
+
+// Validation schema
+
 const ContactUs = () => {
   const { t } = useTranslation();
-  const [form, setForm] = useState({
-    name: "",
+  const [formData, setFormData] = useState({
+    full_name: "",
     email: "",
     phone: "",
     subject: "",
     message: "",
   });
-  const [submitting, setSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (e) =>
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    // Replace with: await contactService.send(form)
-    await new Promise((r) => setTimeout(r, 1200));
-    setSubmitting(false);
-    setSubmitted(true);
-    toast.success(t("contactUs.toast.success"));
+  const schema = {
+    full_name: Joi.string().min(2).max(100).required(),
+    email: Joi.string().email().required(),
+    phone: Joi.string()
+      .regex(/^[0-9+\-\s()]*$/)
+      .min(0)
+      .max(20)
+      .allow(""),
+    subject: Joi.string().min(3).max(255).required(),
+    message: Joi.string().min(10).max(5000).required(),
   };
 
-  // Pre-translated subject options
-  const subjectOptions = [
-    "General Inquiry",
-    "Tour Booking",
-    "Custom Itinerary",
-    "Group Travel",
-    "Cancellation / Refund",
-    "Other",
-  ];
+  const doSubmit = async () => {
+    try {
+      setIsSubmitting(true);
+      await InquiriesService.create(data);
+      toast.success(t("contactUs.toasts.success"));
+      setSubmitted(true);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || t("contactUs.toasts.error"));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-  const inputClass =
-    "w-full px-4 py-3 text-sm bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/15 transition-all placeholder-stone-300 text-stone-700";
-
-  const labelClass =
-    "block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1.5";
+  const { data, errors, handleChange, handleSubmit, validate } = useForm(
+    formData,
+    schema,
+    doSubmit
+  );
 
   return (
     <div
@@ -221,111 +248,67 @@ const ContactUs = () => {
 
                     <form onSubmit={handleSubmit} className='space-y-5'>
                       <div className='grid md:grid-cols-2 gap-5'>
-                        <div>
-                          <label className={labelClass}>
-                            {t("contactUs.form.fullName")} *
-                          </label>
-                          <input
-                            name='name'
-                            value={form.name}
-                            onChange={handleChange}
-                            required
-                            placeholder={t(
-                              "contactUs.form.fullNamePlaceholder"
-                            )}
-                            className={inputClass}
-                          />
-                        </div>
-                        <div>
-                          <label className={labelClass}>
-                            {t("contactUs.form.email")} *
-                          </label>
-                          <input
-                            name='email'
-                            value={form.email}
-                            onChange={handleChange}
-                            required
-                            type='email'
-                            placeholder={t("contactUs.form.emailPlaceholder")}
-                            className={inputClass}
-                          />
-                        </div>
+                        {renderInput(
+                          t("contactUs.form.fullName"),
+                          "full_name",
+                          data,
+                          errors,
+                          handleChange,
+                          "text"
+                        )}
+                        {renderInput(
+                          t("contactUs.form.email"),
+                          "email",
+                          data,
+                          errors,
+                          handleChange,
+                          "email"
+                        )}
                       </div>
 
                       <div className='grid md:grid-cols-2 gap-5'>
-                        <div>
-                          <label className={labelClass}>
-                            {t("contactUs.form.phone")}
-                          </label>
-                          <input
-                            name='phone'
-                            value={form.phone}
-                            onChange={handleChange}
-                            placeholder={t("contactUs.form.phonePlaceholder")}
-                            className={inputClass}
-                          />
-                        </div>
-                        <div>
-                          <label className={labelClass}>
-                            {t("contactUs.form.subject")} *
-                          </label>
-                          <select
-                            name='subject'
-                            value={form.subject}
-                            onChange={handleChange}
-                            required
-                            className={inputClass}
-                          >
-                            <option value=''>
-                              {t("contactUs.form.subjectPlaceholder")}
-                            </option>
-                            {subjectOptions.map((s) => (
-                              <option key={s} value={s}>
-                                {t(
-                                  `contactUs.subjects.${s.replace(
-                                    /[ /]/g,
-                                    "_"
-                                  )}`,
-                                  { defaultValue: s }
-                                )}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
+                        {renderInput(
+                          t("contactUs.form.phone"),
+                          "phone",
+                          data,
+                          errors,
+                          handleChange,
+                          "tel"
+                        )}
+                        {renderSelect(
+                          t("contactUs.form.subject"),
+                          "subject",
+                          data,
+                          errors,
+                          handleChange,
+                          subjectOptions,
+                          "label",
+                          "label"
+                        )}
                       </div>
 
-                      <div>
-                        <label className={labelClass}>
-                          {t("contactUs.form.message")} *
-                        </label>
-                        <textarea
-                          name='message'
-                          value={form.message}
-                          onChange={handleChange}
-                          required
-                          rows={5}
-                          placeholder={t("contactUs.form.messagePlaceholder")}
-                          className={`${inputClass} resize-none`}
-                        />
-                      </div>
+                      {renderInput(
+                        t("contactUs.form.message"),
+                        "message",
+                        data,
+                        errors,
+                        handleChange,
+                        "textarea"
+                      )}
 
-                      <button
+                      {renderButton(
+                        t("contactUs.form.sendButton"),
+                        "submit",
+                        validate(),
+                        isSubmitting
+                      )}
+
+                      {/* <button
                         type='submit'
-                        disabled={submitting}
                         className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 transition-colors px-8 py-3.5 rounded-xl shadow-lg shadow-amber-200'
                       >
-                        {submitting ? (
-                          <>
-                            <i className='fa fa-spinner fa-spin text-xs' />{" "}
-                            {t("contactUs.form.sending")}
-                          </>
-                        ) : (
-                          <>
-                            <i className='fa fa-paper-plane text-xs' />{" "}
-                            {t("contactUs.form.sendButton")}
-                          </>
-                        )}
-                      </button>
+                        <i className='fa fa-paper-plane text-xs' /> {}
+                      </button> */}
                     </form>
                   </>
                 )}

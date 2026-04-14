@@ -37,6 +37,7 @@
     "activities": "Activities",
     "reviews": "Reviews",
     "users": "Users",
+    "inquiries": "Inquiries",
     "categories": "Categories",
     "favorites": "Favorites",
     "profile": "Profile",
@@ -1509,5 +1510,62 @@
     "customer_staff": "Customer Staff",
     "carrier": "Carrier",
     "ramasseur": "Collector"
+  },
+  "manageInquiries": {
+    "admin": "Admin",
+    "title": "Customer Inquiries",
+    "inquiriesSubmitted": "{{count}} inquiries submitted",
+    "errors": {
+      "fetchFailed": "Failed to load inquiries. Please try again.",
+      "deleteFailed": "Failed to delete inquiry. Please try again."
+    },
+    "toasts": {
+      "deleted": "Inquiry deleted successfully!"
+    },
+    "stats": {
+      "total": "Total Inquiries",
+      "today": "Today",
+      "week": "This Week",
+      "avgResponse": "Avg. Response"
+    },
+    "filters": {
+      "all": "All",
+      "today": "Today",
+      "week": "This Week",
+      "month": "This Month"
+    },
+    "empty": {
+      "noInquiries": "No inquiries found",
+      "tryDifferentFilter": "Try a different filter or date range"
+    },
+    "table": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "subject": "Subject",
+      "message": "Message",
+      "date": "Date",
+      "actions": "Actions",
+      "status": "Status"
+    },
+    "tooltips": {
+      "view": "View inquiry details",
+      "delete": "Delete inquiry"
+    },
+    "modal": {
+      "viewTitle": "Inquiry Details",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "subject": "Subject",
+      "message": "Message",
+      "submitted": "Submitted On",
+      "close": "Close",
+      "deleteTitle": "Delete Inquiry",
+      "deleteDescription": "This will permanently remove the inquiry from <strong>{{name}}</strong>. This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    }
   }
 }
