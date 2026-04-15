@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-// 🇬🇧 English
+
+// Flags (unchanged, keep as original)
+// ... FlagGB, FlagCN, FlagES, FlagDE, FlagFR, FlagAR ...
 const FlagGB = () => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
@@ -122,7 +124,6 @@ const FlagAR = () => (
   </svg>
 );
 
-// ─── Language List ───────────────────────────────────────────────
 const langs = [
   { label: "Arabic", native: "العربية", value: "ar", Flag: FlagAR },
   { label: "English", native: "English", value: "en", Flag: FlagGB },
@@ -131,12 +132,12 @@ const langs = [
   { label: "German", native: "Deutsch", value: "de", Flag: FlagDE },
   { label: "French", native: "Français", value: "fr", Flag: FlagFR },
 ];
+
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
   const dropdownRef = useRef(null);
 
   const changeLanguage = (lng) => {
-    console.log("Language: ", lng);
     localStorage.setItem("lang", lng);
     i18n.changeLanguage(lng);
     dropdownRef.current?.removeAttribute("open");
@@ -144,7 +145,6 @@ const LanguageSwitcher = () => {
 
   const current = langs.find((l) => l.value === i18n.language) ?? langs[1];
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -156,14 +156,20 @@ const LanguageSwitcher = () => {
   }, []);
 
   return (
-    <div className='language-switcher'>
-      <details className='dropdown' ref={dropdownRef}>
-        {/* Trigger button */}
-        <summary className='btn btn-sm gap-2 normal-case min-w-[9rem] flex items-center'>
+    <div className='language-switcher-wrapper'>
+      <details
+        className='dropdown dropdown-end'
+        ref={dropdownRef}
+        style={{ position: "relative" }}
+      >
+        {/* Trigger button – floating pill (glass effect, optional) */}
+        <summary className='flex items-center gap-3 px-4 py-2.5 rounded-full bg-white/90 backdrop-blur-md shadow-lg border border-white/20 cursor-pointer transition-all duration-200 hover:shadow-xl hover:bg-white hover:border-amber-200 group'>
           <current.Flag />
-          <span className='flex-1 text-left'>{current.native}</span>
+          <span className='text-sm font-medium text-stone-700 group-hover:text-amber-700'>
+            {current.native}
+          </span>
           <svg
-            className='w-3 h-3 opacity-40 shrink-0'
+            className='w-3.5 h-3.5 text-stone-500 transition-transform duration-200 group-open:rotate-180'
             fill='none'
             stroke='currentColor'
             strokeWidth='2.5'
@@ -173,32 +179,30 @@ const LanguageSwitcher = () => {
           </svg>
         </summary>
 
-        {/* Dropdown menu */}
-        <ul className='dropdown-content menu bg-base-100 rounded-box z-50 w-44 p-1 mt-1 shadow-xl border border-base'>
+        {/* Dropdown menu – SOLID BACKGROUND, no transparency */}
+        <ul className='dropdown-content z-50 w-56 p-2 mt-3 bg-white rounded-2xl shadow-2xl border border-stone-200 overflow-hidden'>
           {langs.map((l) => (
             <li key={l.value}>
               <button
                 onClick={() => changeLanguage(l.value)}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 w-full text-left
+                className={`flex items-center gap-3 w-full rounded-xl px-3 py-2.5 transition-all duration-150
                   ${
                     current.value === l.value
-                      ? "bg-primary text-primary-content"
-                      : "hover:bg-base-200"
+                      ? "bg-amber-50 text-amber-700"
+                      : "hover:bg-stone-50 text-stone-600 hover:text-stone-900"
                   }`}
               >
                 <l.Flag />
-                <div className='flex-1'>
-                  <p className='text-sm font-medium leading-tight'>
-                    {l.native}
-                  </p>
-                  <p className='text-xs opacity-50'>{l.label}</p>
+                <div className='flex-1 text-left'>
+                  <p className='text-sm font-medium'>{l.native}</p>
+                  <p className='text-xs text-stone-400'>{l.label}</p>
                 </div>
                 {current.value === l.value && (
                   <svg
-                    className='w-3.5 h-3.5 shrink-0'
+                    className='w-4 h-4 text-amber-500'
                     fill='none'
                     stroke='currentColor'
-                    strokeWidth='3'
+                    strokeWidth='2.5'
                     viewBox='0 0 24 24'
                   >
                     <polyline points='20 6 9 17 4 12' />
