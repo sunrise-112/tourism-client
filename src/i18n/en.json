@@ -1567,5 +1567,41 @@
       "delete": "Delete",
       "deleting": "Deleting..."
     }
+  },
+  "locationPicker": {
+    "title": "Location Picker",
+    "searchLabel": "Search location",
+    "searchPlaceholder": "Enter an address or place name...",
+    "useMyLocation": "Use my current location",
+    "gettingLocation": "Getting location...",
+    "selectedLocation": "Selected location",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "searching": "Searching...",
+    "helperText": "Click on the map to select a location, or use the search bar.",
+    "errors": {
+      "notSupported": "Geolocation is not supported by your browser.",
+      "httpsRequired": "Geolocation requires HTTPS (except localhost).",
+      "unableToGet": "Unable to retrieve your location.",
+      "permissionDenied": "Location permission denied. Please allow access.",
+      "positionUnavailable": "Position unavailable. Try again later.",
+      "timeout": "Location request timed out.",
+      "unknownError": "An unknown error occurred.",
+      "reverseGeocodeFailed": "Reverse geocoding failed",
+      "searchFailed": "Location search failed"
+    }
+  },
+  "locationViewer": {
+    "title": "Our Location",
+    "loadingData": "Loading agency location...",
+    "coordinates": "Coordinates",
+    "defaultAgencyName": "Our Tourism Agency",
+    "helperText": "This is our physical location. Click the marker for more details.",
+    "errors": {
+      "locationNotSet": "Agency location has not been set in admin settings.",
+      "failedToLoad": "Failed to load agency settings.",
+      "fetchFailed": "Error fetching agency settings",
+      "reverseGeocodeFailed": "Failed to get address from coordinates"
+    }
   }
 }

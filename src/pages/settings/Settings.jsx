@@ -1,10 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import settingsService from "../../services/adminSettings";
 import userService from "../../services/userService";
 import LanguageSwitcher from "../../common/LanguageSwitcher";
 import role from "../../constants/role";
+import LocationPicker from "../../components/LocationPicker";
+import Joi from "joi-browser";
+import useForm from "../../hooks/useForm";
+import { renderButton, renderInput } from "../../utils/formRenders";
+import LocationViewer from "../../components/LocationViewer";
 
 // ─── primitives ───────────────────────────────────────────────────────────────
 
@@ -117,7 +122,327 @@ const PanelSkeleton = () => (
   </div>
 );
 
-// ─── tab panels ───────────────────────────────────────────────────────────────
+const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
+  const [cordinates, setCordinates] = useState({
+    lng: "",
+    lat: "",
+  });
+  const [formData, setFormData] = useState({
+    company_name: "",
+    address: "",
+    company_phone: "",
+    opening_hours: "",
+    facebook_url: "",
+    instagram_url: "",
+    youtube_url: "",
+    twitter_url: "",
+  });
+
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem("darkMode");
+    return saved === "true";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", darkMode);
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
+  const schema = {
+    company_name: Joi.string().max(255).allow(null, "").optional(),
+    address: Joi.string().allow(null, "").optional(),
+    company_phone: Joi.string().max(50).allow(null, "").optional(),
+    opening_hours: Joi.string().allow(null, "").optional(),
+    facebook_url: Joi.string().uri().max(255).allow(null, "").optional(),
+    instagram_url: Joi.string().uri().max(255).allow(null, "").optional(),
+    youtube_url: Joi.string().uri().max(255).allow(null, "").optional(),
+    twitter_url: Joi.string().uri().max(255).allow(null, "").optional(),
+  };
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await settingsService.get();
+        setCordinates({
+          lat: response?.lat || "",
+          lng: response?.lng || "",
+        });
+        setFormData({
+          company_name: response.company_name || "",
+          address: response.address || "",
+          company_phone: response.company_phone || "",
+          opening_hours: response.opening_hours || "",
+          facebook_url: response.facebook_url || "",
+          instagram_url: response.instagram_url || "",
+          youtube_url: response.youtube_url || "",
+          twitter_url: response.twitter_url || "",
+        });
+        console.log("Response: ", response);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+
+    fetchSettings();
+  }, []);
+
+  useEffect(() => {
+    console.log("cordinates: ", cordinates);
+  }, [cordinates]);
+
+  const doSubmit = async () => {
+    try {
+      const updateData = {
+        ...data,
+        lat: cordinates?.lat,
+        lng: cordinates?.lng,
+      };
+
+      await settingsService.update(updateData);
+      toast.success("Settings updated successfully!");
+      setTimeout(() => {
+        setIsEditing(false);
+      }, 1500);
+    } catch (error) {
+      console.log("Error: ", error);
+      toast.error("Error updating Settings!");
+    }
+  };
+
+  const { data, errors, handleChange, handleSubmit, validate } = useForm(
+    formData,
+    schema,
+    doSubmit
+  );
+
+  // Placeholder edit handler – replace with actual logic
+  const handleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  console.log("Validate: ", validate());
+
+  return (
+    <SectionCard
+      eyebrow={t("settings.general.eyebrow", "PREFERENCES")}
+      title={t("settings.general.title", "General Settings")}
+    >
+      <div className='space-y-6'>
+        {/* Dark mode toggle */}
+        <ToggleRow
+          icon='fa-moon'
+          label={t("settings.general.darkModeLabel", "Dark Mode")}
+          desc={t(
+            "settings.general.darkModeDesc",
+            "Switch between light and dark appearance"
+          )}
+          checked={darkMode}
+          onChange={setDarkMode}
+          color='bg-indigo-400'
+          saving={false}
+        />
+
+        {/* User information card */}
+        <div className='rounded-xl border border-stone-200 bg-white p-4'>
+          <div className='flex justify-between items-center mb-3'>
+            <p className='text-sm font-bold text-stone-700'>
+              {t(
+                "settings.general.profile",
+                `${
+                  isEditing ? "Edit Profile Information" : "Profile Information"
+                }`
+              )}
+            </p>
+            <button
+              onClick={handleEdit}
+              className={`${
+                isEditing ? "bg-red-600" : "bg-amber-600"
+              } text-white rounded-xl text w-20 h-7 cursor-pointer text-center text-md font-medium hover:bg-amber-700 transition-colors`}
+            >
+              {isEditing ? "Cancel" : "Edit"}
+            </button>
+          </div>
+
+          {!isEditing ? (
+            <div className='space-y-4'>
+              {/* Company & contact info - two columns */}
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3'>
+                <div className='flex justify-between items-center border-b border-stone-100 pb-2'>
+                  <span className='text-stone-500 text-sm'>
+                    {t("settings.general.company_name", "Company name")}:
+                  </span>
+                  <span className='font-medium text-stone-800 text-sm'>
+                    {data?.company_name || "-"}
+                  </span>
+                </div>
+                <div className='flex justify-between items-center border-b border-stone-100 pb-2'>
+                  <span className='text-stone-500 text-sm'>
+                    {t("settings.general.address", "Address")}:
+                  </span>
+                  <span className='font-medium text-stone-800 text-sm'>
+                    {data?.address || "-"}
+                  </span>
+                </div>
+                <div className='flex justify-between items-center border-b border-stone-100 pb-2'>
+                  <span className='text-stone-500 text-sm'>
+                    {t("settings.general.company_phone", "Phone number")}:
+                  </span>
+                  <span className='font-medium text-stone-800 text-sm'>
+                    {data?.company_phone || "-"}
+                  </span>
+                </div>
+                <div className='flex justify-between items-center border-b border-stone-100 pb-2'>
+                  <span className='text-stone-500 text-sm'>
+                    {t("settings.general.opening_hours", "Opening hours")}:
+                  </span>
+                  <span className='font-medium text-stone-800 text-sm'>
+                    {data?.opening_hours || "-"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Social media section */}
+              {(data?.facebook_url ||
+                data?.instagram_url ||
+                data?.youtube_url ||
+                data?.twitter_url) && (
+                <div className='pt-2'>
+                  <p className='text-xs font-semibold uppercase tracking-wider text-stone-400 mb-3'>
+                    {t("settings.general.social_media", "Social Media")}
+                  </p>
+                  <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+                    {data?.facebook_url && (
+                      <a
+                        href={data.facebook_url}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='flex items-center gap-2 text-sm text-stone-600 hover:text-blue-600 transition-colors'
+                      >
+                        <i className='fab fa-facebook-f w-4 text-blue-500'></i>
+                        <span className='truncate'>{data.facebook_url}</span>
+                      </a>
+                    )}
+                    {data?.instagram_url && (
+                      <a
+                        href={data.instagram_url}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='flex items-center gap-2 text-sm text-stone-600 hover:text-pink-600 transition-colors'
+                      >
+                        <i className='fab fa-instagram w-4 text-pink-500'></i>
+                        <span className='truncate'>{data.instagram_url}</span>
+                      </a>
+                    )}
+                    {data?.youtube_url && (
+                      <a
+                        href={data.youtube_url}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='flex items-center gap-2 text-sm text-stone-600 hover:text-red-600 transition-colors'
+                      >
+                        <i className='fab fa-youtube w-4 text-red-500'></i>
+                        <span className='truncate'>{data.youtube_url}</span>
+                      </a>
+                    )}
+                    {data?.twitter_url && (
+                      <a
+                        href={data.twitter_url}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='flex items-center gap-2 text-sm text-stone-600 hover:text-sky-600 transition-colors'
+                      >
+                        <i className='fab fa-twitter w-4 text-sky-500'></i>
+                        <span className='truncate'>{data.twitter_url}</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+                )}
+              <LocationViewer/>
+            </div>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className='bg-white rounded-xl shadow-md p-6'
+            >
+              <h2 className='text-xl font-bold text-stone-800 mb-6 pb-2 border-b border-stone-200'>
+                Company Settings
+              </h2>
+
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2'>
+                {/* Basic info */}
+                {renderInput(
+                  "Company name",
+                  "company_name",
+                  data,
+                  errors,
+                  handleChange
+                )}
+                {renderInput("Address", "address", data, errors, handleChange)}
+                {renderInput(
+                  "Phone number",
+                  "company_phone",
+                  data,
+                  errors,
+                  handleChange
+                )}
+                {renderInput(
+                  "Opening hours",
+                  "opening_hours",
+                  data,
+                  errors,
+                  handleChange
+                )}
+
+                {/* Social media */}
+                {renderInput(
+                  "Facebook URL",
+                  "facebook_url",
+                  data,
+                  errors,
+                  handleChange
+                )}
+                {renderInput(
+                  "Instagram URL",
+                  "instagram_url",
+                  data,
+                  errors,
+                  handleChange
+                )}
+                {renderInput(
+                  "YouTube URL",
+                  "youtube_url",
+                  data,
+                  errors,
+                  handleChange
+                )}
+                {renderInput(
+                  "Twitter URL",
+                  "twitter_url",
+                  data,
+                  errors,
+                  handleChange
+                )}
+              </div>
+
+              <LocationPicker
+                onChange={(cords) => setCordinates(cords)}
+                initialPosition={cordinates}
+              />
+              <div className='mt-8 flex justify-end'>
+                {renderButton("Save changes", "submit", validate())}
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    </SectionCard>
+  );
+};
 
 const LanguagePanel = ({ t }) => (
   <SectionCard
@@ -182,15 +507,23 @@ const EmailPanel = ({ settings, onToggle, saving, t }) => (
 
 const Settings = ({ className = "" }) => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("language");
+  const [activeTab, setActiveTab] = useState("general"); // default to general
   const [settings, setSettings] = useState({ smtp: false, sms: false });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState({});
 
   const isAdmin = user?.role === role.ADMIN;
 
+  // TABS definition – General is always first
   const TABS = [
+    {
+      id: "general",
+      label: t("settings.tabs.general.label", "General"),
+      icon: "fa-sliders-h",
+      eyebrow: t("settings.tabs.general.eyebrow", "BASIC"),
+    },
     {
       id: "language",
       label: t("settings.tabs.language.label"),
@@ -261,6 +594,16 @@ const Settings = ({ className = "" }) => {
   const renderPanel = () => {
     if (loading) return <PanelSkeleton />;
 
+    if (activeTab === "general")
+      return (
+        <GeneralPanel
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+          t={t}
+          user={user}
+        />
+      );
+
     if (activeTab === "language") return <LanguagePanel t={t} />;
     if (activeTab === "sms" && user?.role === role?.ADMIN)
       return (
@@ -284,9 +627,9 @@ const Settings = ({ className = "" }) => {
 
   const current = TABS.find((t) => t.id === activeTab);
 
-  // ── sidebar status dot ──────────────────────────────────────────────────────
+  // ── sidebar status dot (no dot for general) ─────────────────────────────────
   const statusDot = (tabId) => {
-    if (loading) return null;
+    if (loading || tabId === "general") return null;
     const active =
       tabId === "sms" ? settings.sms : tabId === "email" ? settings.smtp : null;
     if (active === null) return null;

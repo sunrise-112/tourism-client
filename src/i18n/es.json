@@ -1628,5 +1628,41 @@
       "delete": "Eliminar",
       "deleting": "Eliminando..."
     }
+  },
+  "locationPicker": {
+    "title": "Selector de ubicación",
+    "searchLabel": "Buscar ubicación",
+    "searchPlaceholder": "Ingrese una dirección o nombre de lugar...",
+    "useMyLocation": "Usar mi ubicación actual",
+    "gettingLocation": "Obteniendo ubicación...",
+    "selectedLocation": "Ubicación seleccionada",
+    "latitude": "Latitud",
+    "longitude": "Longitud",
+    "searching": "Buscando...",
+    "helperText": "Haga clic en el mapa para seleccionar una ubicación o use la barra de búsqueda.",
+    "errors": {
+      "notSupported": "Su navegador no soporta geolocalización.",
+      "httpsRequired": "La geolocalización requiere HTTPS (excepto localhost).",
+      "unableToGet": "No se pudo obtener su ubicación.",
+      "permissionDenied": "Permiso de ubicación denegado. Por favor permita el acceso.",
+      "positionUnavailable": "Posición no disponible. Intente más tarde.",
+      "timeout": "La solicitud de ubicación expiró.",
+      "unknownError": "Ocurrió un error desconocido.",
+      "reverseGeocodeFailed": "Falló la geocodificación inversa",
+      "searchFailed": "Falló la búsqueda de ubicación"
+    }
+  },
+  "locationViewer": {
+    "title": "Nuestra ubicación",
+    "loadingData": "Cargando ubicación de la agencia...",
+    "coordinates": "Coordenadas",
+    "defaultAgencyName": "Nuestra agencia de turismo",
+    "helperText": "Esta es nuestra ubicación física. Haz clic en el marcador para más detalles.",
+    "errors": {
+      "locationNotSet": "La ubicación de la agencia no se ha configurado en la configuración de administrador.",
+      "failedToLoad": "Error al cargar la configuración de la agencia.",
+      "fetchFailed": "Error al obtener la configuración de la agencia",
+      "reverseGeocodeFailed": "Error al obtener la dirección desde las coordenadas"
+    }
   }
 }

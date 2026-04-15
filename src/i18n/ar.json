@@ -1576,5 +1576,41 @@
       "delete": "حذف",
       "deleting": "جاري الحذف..."
     }
+  },
+  "locationPicker": {
+    "title": "اختيار الموقع",
+    "searchLabel": "البحث عن موقع",
+    "searchPlaceholder": "أدخل عنوانًا أو اسم مكان...",
+    "useMyLocation": "استخدام موقعي الحالي",
+    "gettingLocation": "جاري الحصول على الموقع...",
+    "selectedLocation": "الموقع المحدد",
+    "latitude": "خط العرض",
+    "longitude": "خط الطول",
+    "searching": "جاري البحث...",
+    "helperText": "انقر على الخريطة لتحديد موقع، أو استخدم شريط البحث.",
+    "errors": {
+      "notSupported": "متصفحك لا يدعم تحديد الموقع الجغرافي.",
+      "httpsRequired": "تحديد الموقع يتطلب HTTPS (ما عدا localhost).",
+      "unableToGet": "تعذر الحصول على موقعك.",
+      "permissionDenied": "تم ربط إذن الموقع. يرجى السماح بالوصول.",
+      "positionUnavailable": "الموقع غير متاح. حاول مرة أخرى لاحقًا.",
+      "timeout": "انتهت مهلة طلب الموقع.",
+      "unknownError": "حدث خطأ غير معروف.",
+      "reverseGeocodeFailed": "فشل الترميز الجغرافي العكسي",
+      "searchFailed": "فشل البحث عن الموقع"
+    }
+  },
+  "locationViewer": {
+    "title": "موقعنا",
+    "loadingData": "جاري تحميل موقع الوكالة...",
+    "coordinates": "الإحداثيات",
+    "defaultAgencyName": "وكالتنا السياحية",
+    "helperText": "هذا هو موقعنا الفعلي. انقر على العلامة للمزيد من التفاصيل.",
+    "errors": {
+      "locationNotSet": "لم يتم تعيين موقع الوكالة في إعدادات المسؤول.",
+      "failedToLoad": "فشل تحميل إعدادات الوكالة.",
+      "fetchFailed": "خطأ في جلب إعدادات الوكالة",
+      "reverseGeocodeFailed": "فشل الحصول على العنوان من الإحداثيات"
+    }
   }
 }

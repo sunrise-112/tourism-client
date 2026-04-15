@@ -1,11 +1,12 @@
 // ─── ContactUs.jsx ────────────────────────────────────────────
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import Joi from "joi-browser";
 
 // Services
 import InquiriesService from "../../services/inquiriesService";
+import settingsService from "../../services/adminSettings";
 
 // Utils
 import {
@@ -16,46 +17,29 @@ import {
 
 // Hooks
 import useForm from "../../hooks/useForm";
+import LocationViewer from "../../components/LocationViewer";
 
-const CONTACT_INFO = [
+// Static contact info structure (values will be replaced dynamically)
+const CONTACT_INFO_TEMPLATE = [
   {
     icon: "fa-map-marker-alt",
     labelKey: "contactUs.info.address.label",
-    valueKey: "contactUs.info.address.value",
+    valueKey: "address", // will come from settings
   },
   {
     icon: "fa-phone-alt",
     labelKey: "contactUs.info.phone.label",
-    valueKey: "contactUs.info.phone.value",
+    valueKey: "company_phone",
   },
   {
     icon: "fa-envelope",
     labelKey: "contactUs.info.email.label",
-    valueKey: "contactUs.info.email.value",
+    valueKey: "email", // static fallback; you can add an email field in settings if needed
   },
   {
     icon: "fa-clock",
     labelKey: "contactUs.info.hours.label",
-    valueKey: "contactUs.info.hours.value",
-  },
-];
-
-const SOCIALS = [
-  {
-    icon: "fa-facebook-f",
-    hover: "hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200",
-  },
-  {
-    icon: "fa-instagram",
-    hover: "hover:bg-pink-50 hover:text-pink-500 hover:border-pink-200",
-  },
-  {
-    icon: "fa-twitter",
-    hover: "hover:bg-sky-50 hover:text-sky-500 hover:border-sky-200",
-  },
-  {
-    icon: "fa-youtube",
-    hover: "hover:bg-red-50 hover:text-red-500 hover:border-red-200",
+    valueKey: "opening_hours",
   },
 ];
 
@@ -67,8 +51,6 @@ const subjectOptions = [
   { label: "Cancellation / Refund" },
   { label: "Other" },
 ];
-
-// Validation schema
 
 const ContactUs = () => {
   const { t } = useTranslation();
@@ -82,6 +64,87 @@ const ContactUs = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  // Admin settings state
+  const [adminSettings, setAdminSettings] = useState({
+    company_name: "",
+    address: "",
+    company_phone: "",
+    opening_hours: "",
+    facebook_url: "",
+    instagram_url: "",
+    youtube_url: "",
+    twitter_url: "",
+    lat: null,
+    lng: null,
+  });
+  const [loadingSettings, setLoadingSettings] = useState(true);
+
+  // Fetch admin settings on mount
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await settingsService.get();
+        setAdminSettings({
+          company_name: response.company_name || "",
+          address: response.address || "",
+          company_phone: response.company_phone || "",
+          opening_hours: response.opening_hours || "",
+          facebook_url: response.facebook_url || "",
+          instagram_url: response.instagram_url || "",
+          youtube_url: response.youtube_url || "",
+          twitter_url: response.twitter_url || "",
+          lat: response.lat || null,
+          lng: response.lng || null,
+        });
+      } catch (error) {
+        console.error("Error fetching admin settings:", error);
+        toast.error(t("contactUs.errors.settingsLoadFailed"));
+      } finally {
+        setLoadingSettings(false);
+      }
+    };
+    fetchSettings();
+  }, [t]);
+
+  // Prepare dynamic contact info items
+  const contactInfoItems = CONTACT_INFO_TEMPLATE.map((item) => {
+    let value;
+    if (item.valueKey === "email") {
+      // Fallback email – replace with a real admin email if available in settings
+      value = t("contactUs.info.email.value");
+    } else {
+      value =
+        adminSettings[item.valueKey] ||
+        t(`contactUs.info.${item.valueKey}.fallback`);
+    }
+    return { ...item, value };
+  });
+
+  // Prepare social links – only show if URL exists
+  const socialLinks = [
+    {
+      icon: "fa-facebook-f",
+      url: adminSettings.facebook_url,
+      hover: "hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200",
+    },
+    {
+      icon: "fa-instagram",
+      url: adminSettings.instagram_url,
+      hover: "hover:bg-pink-50 hover:text-pink-500 hover:border-pink-200",
+    },
+    {
+      icon: "fa-twitter",
+      url: adminSettings.twitter_url,
+      hover: "hover:bg-sky-50 hover:text-sky-500 hover:border-sky-200",
+    },
+    {
+      icon: "fa-youtube",
+      url: adminSettings.youtube_url,
+      hover: "hover:bg-red-50 hover:text-red-500 hover:border-red-200",
+    },
+  ].filter((social) => social.url); // only show if URL exists
+
+  // Validation schema
   const schema = {
     full_name: Joi.string().min(2).max(100).required(),
     email: Joi.string().email().required(),
@@ -171,7 +234,7 @@ const ContactUs = () => {
               </h2>
             </div>
 
-            {CONTACT_INFO.map((info) => (
+            {contactInfoItems.map((info) => (
               <div
                 key={info.labelKey}
                 className='bg-white rounded-2xl border border-stone-100 p-5 flex items-start gap-4 hover:shadow-md hover:shadow-stone-200/60 transition-all'
@@ -184,28 +247,33 @@ const ContactUs = () => {
                     {t(info.labelKey)}
                   </p>
                   <p className='text-sm font-semibold text-stone-700'>
-                    {t(info.valueKey)}
+                    {info.value || t("contactUs.info.notAvailable")}
                   </p>
                 </div>
               </div>
             ))}
 
-            {/* Social links */}
-            <div className='bg-white rounded-2xl border border-stone-100 p-5'>
-              <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-4'>
-                {t("contactUs.social.title")}
-              </p>
-              <div className='flex gap-2'>
-                {SOCIALS.map((s) => (
-                  <button
-                    key={s.icon}
-                    className={`flex-1 py-2.5 rounded-xl border border-stone-200 text-stone-400 text-sm transition-all ${s.hover}`}
-                  >
-                    <i className={`fab ${s.icon}`} />
-                  </button>
-                ))}
+            {/* Social links – only if at least one URL exists */}
+            {socialLinks.length > 0 && (
+              <div className='bg-white rounded-2xl border border-stone-100 p-5'>
+                <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-4'>
+                  {t("contactUs.social.title")}
+                </p>
+                <div className='flex gap-2'>
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.icon}
+                      href={social.url}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className={`flex-1 py-2.5 rounded-xl border border-stone-200 text-stone-400 text-sm transition-all text-center ${social.hover}`}
+                    >
+                      <i className={`fab ${social.icon}`} />
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* ── Contact Form ─────────────────────────────── */}
@@ -302,13 +370,6 @@ const ContactUs = () => {
                         validate(),
                         isSubmitting
                       )}
-
-                      {/* <button
-                        type='submit'
-                        className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 transition-colors px-8 py-3.5 rounded-xl shadow-lg shadow-amber-200'
-                      >
-                        <i className='fa fa-paper-plane text-xs' /> {}
-                      </button> */}
                     </form>
                   </>
                 )}
@@ -320,14 +381,14 @@ const ContactUs = () => {
         {/* ── MAP ───────────────────────────────────────── */}
         <div className='mt-12'>
           <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden shadow-sm'>
-            <iframe
-              title={t("contactUs.map.title")}
-              width='100%'
-              height='380'
-              style={{ border: 0 }}
-              loading='lazy'
-              allowFullScreen
-              src='https://maps.google.com/maps?q=Marrakech+Medina,+Morocco&output=embed'
+            {/* Pass coordinates to LocationViewer to avoid extra API call */}
+            <LocationViewer
+              isPublic={true}
+              initialLocation={
+                adminSettings.lat && adminSettings.lng
+                  ? { lat: adminSettings.lat, lng: adminSettings.lng }
+                  : null
+              }
             />
           </div>
         </div>

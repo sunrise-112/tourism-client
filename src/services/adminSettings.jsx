@@ -17,7 +17,7 @@ const get = async () => {
  * @returns {Promise<{ id: number, smtp: boolean, sms: boolean }>}
  */
 const update = async (payload) => {
-  const { data } = await http.patch(ENDPOINT, payload);
+  const { data } = await http.put(ENDPOINT, payload);
   return data.data;
 };
 

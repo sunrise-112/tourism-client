@@ -1564,5 +1564,41 @@
       "delete": "删除",
       "deleting": "删除中..."
     }
+  },
+  "locationPicker": {
+    "title": "位置选择器",
+    "searchLabel": "搜索位置",
+    "searchPlaceholder": "输入地址或地名...",
+    "useMyLocation": "使用我的当前位置",
+    "gettingLocation": "正在获取位置...",
+    "selectedLocation": "选中的位置",
+    "latitude": "纬度",
+    "longitude": "经度",
+    "searching": "搜索中...",
+    "helperText": "点击地图选择位置，或使用搜索栏。",
+    "errors": {
+      "notSupported": "您的浏览器不支持地理定位。",
+      "httpsRequired": "地理定位需要 HTTPS（localhost 除外）。",
+      "unableToGet": "无法获取您的位置。",
+      "permissionDenied": "位置权限被拒绝。请允许访问。",
+      "positionUnavailable": "位置不可用，请稍后重试。",
+      "timeout": "位置请求超时。",
+      "unknownError": "发生未知错误。",
+      "reverseGeocodeFailed": "反向地理编码失败",
+      "searchFailed": "位置搜索失败"
+    }
+  },
+  "locationViewer": {
+    "title": "我们的位置",
+    "loadingData": "正在加载机构位置...",
+    "coordinates": "坐标",
+    "defaultAgencyName": "我们的旅游机构",
+    "helperText": "这是我们的实际位置。点击标记查看更多详情。",
+    "errors": {
+      "locationNotSet": "机构位置尚未在管理设置中设置。",
+      "failedToLoad": "加载机构设置失败。",
+      "fetchFailed": "获取机构设置时出错",
+      "reverseGeocodeFailed": "从坐标获取地址失败"
+    }
   }
 }

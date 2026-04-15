@@ -1563,5 +1563,41 @@
       "delete": "Supprimer",
       "deleting": "Suppression..."
     }
+  },
+  "locationPicker": {
+    "title": "Sélecteur de lieu",
+    "searchLabel": "Rechercher un lieu",
+    "searchPlaceholder": "Entrez une adresse ou un nom de lieu...",
+    "useMyLocation": "Utiliser ma position actuelle",
+    "gettingLocation": "Obtention de la position...",
+    "selectedLocation": "Lieu sélectionné",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "searching": "Recherche...",
+    "helperText": "Cliquez sur la carte pour sélectionner un lieu ou utilisez la barre de recherche.",
+    "errors": {
+      "notSupported": "Votre navigateur ne prend pas en charge la géolocalisation.",
+      "httpsRequired": "La géolocalisation nécessite HTTPS (sauf localhost).",
+      "unableToGet": "Impossible d'obtenir votre position.",
+      "permissionDenied": "Permission de localisation refusée. Veuillez autoriser l'accès.",
+      "positionUnavailable": "Position indisponible. Réessayez plus tard.",
+      "timeout": "La demande de localisation a expiré.",
+      "unknownError": "Une erreur inconnue s'est produite.",
+      "reverseGeocodeFailed": "Échec du géocodage inversé",
+      "searchFailed": "Échec de la recherche de lieu"
+    }
+  },
+  "locationViewer": {
+    "title": "Notre emplacement",
+    "loadingData": "Chargement de l'emplacement de l'agence...",
+    "coordinates": "Coordonnées",
+    "defaultAgencyName": "Notre agence de tourisme",
+    "helperText": "Voici notre emplacement physique. Cliquez sur le marqueur pour plus de détails.",
+    "errors": {
+      "locationNotSet": "L'emplacement de l'agence n'a pas été défini dans les paramètres d'administration.",
+      "failedToLoad": "Échec du chargement des paramètres de l'agence.",
+      "fetchFailed": "Erreur lors de la récupération des paramètres de l'agence",
+      "reverseGeocodeFailed": "Échec de l'obtention de l'adresse à partir des coordonnées"
+    }
   }
 }

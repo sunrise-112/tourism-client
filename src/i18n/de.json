@@ -1563,5 +1563,18 @@
       "delete": "Löschen",
       "deleting": "Löschen..."
     }
+  },
+  "locationViewer": {
+    "title": "Unser Standort",
+    "loadingData": "Standort der Agentur wird geladen...",
+    "coordinates": "Koordinaten",
+    "defaultAgencyName": "Unsere Tourismusagentur",
+    "helperText": "Dies ist unser physischer Standort. Klicken Sie auf die Markierung für weitere Details.",
+    "errors": {
+      "locationNotSet": "Der Standort der Agentur wurde nicht in den Admin-Einstellungen festgelegt.",
+      "failedToLoad": "Laden der Agentur-Einstellungen fehlgeschlagen.",
+      "fetchFailed": "Fehler beim Abrufen der Agentur-Einstellungen",
+      "reverseGeocodeFailed": "Adresse konnte nicht aus Koordinaten ermittelt werden"
+    }
   }
 }
