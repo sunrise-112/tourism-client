@@ -1125,68 +1125,88 @@
     }
   },
   "home": {
-    "badge": {
-      "hotDeal": "热门优惠",
-      "featured": "精选推荐"
+    "hero": {
+      "eyebrow": "探索摩洛哥",
+      "titleLine1": "发现",
+      "titleLine2": "摩洛哥",
+      "titleLine3": "的魅力",
+      "subtitle": "踏上穿越摩洛哥壮丽景观和丰富遗产的难忘旅程",
+      "searchPlaceholder": "你想去哪里？",
+      "searchButton": "搜索",
+      "scroll": "滚动"
     },
-    "tourCard": {
-      "durationDays_one": "{{count}} 天",
-      "durationDays_other": "{{count}} 天",
-      "from": "起价",
-      "explore": "探索"
+    "quickTags": {
+      "sahara": "撒哈拉沙漠",
+      "marrakech": "马拉喀什",
+      "atlasMountains": "阿特拉斯山脉",
+      "coastalTours": "海岸游览"
     },
     "stats": {
       "destinations": "目的地",
       "avgRating": "平均评分",
-      "happyTravelers": "满意旅客",
-      "experience": "经验"
+      "happyTravelers": "快乐旅行者",
+      "experience": "年经验"
     },
     "categories": {
-      "eyebrow": "按类型探索",
-      "title": "按分类浏览",
-      "subtitle": "找到适合您旅行风格的完美体验",
+      "eyebrow": "按类别探索",
+      "title": "选择你的冒险",
+      "subtitle": "找到符合你旅行风格的完美活动",
       "adventure": "探险",
       "beach": "海滩",
       "cultural": "文化",
       "wildlife": "野生动物",
       "city": "城市",
-      "wellness": "养生"
+      "wellness": "康养"
     },
     "featured": {
-      "eyebrow": "为您精选",
-      "title": "精选旅游",
-      "subtitle": "我们旅客最喜爱的体验",
+      "eyebrow": "为你精选",
+      "title": "特色之旅",
+      "subtitle": "最受欢迎的旅行体验",
       "viewAll": "查看全部",
-      "empty": "暂无精选旅游"
+      "empty": "暂无特色之旅"
     },
     "hotDeals": {
       "eyebrow": "限时优惠",
       "title": "热门优惠",
-      "subtitle": "趁它们还没被抢光",
+      "subtitle": "售完即止",
       "viewAll": "查看全部"
     },
-    "hero": {
-      "eyebrow": "探索摩洛哥及更多",
-      "titleLine1": "您的下一次",
-      "titleLine2": "冒险",
-      "titleLine3": "正等着您",
-      "subtitle": "精心设计的旅程，穿越古老的麦地那、金色的沙漠和壮丽的山口 — 为好奇的旅行者量身打造。",
-      "searchPlaceholder": "您想去哪里？",
-      "searchButton": "搜索",
-      "scroll": "滚动"
+    "section": {
+      "viewAll": "查看全部"
     },
-    "quickTags": {
-      "sahara": "撒哈拉",
-      "marrakech": "马拉喀什",
-      "atlasMountains": "阿特拉斯山脉",
-      "coastalTours": "沿海之旅"
+    "toursSection": {
+      "eyebrow": "旅行团",
+      "title": "热门旅行团"
+    },
+    "excursionsSection": {
+      "eyebrow": "一日游",
+      "title": "难忘的短途旅行"
+    },
+    "activitiesSection": {
+      "eyebrow": "活动",
+      "title": "可做之事"
     },
     "cta": {
-      "eyebrow": "开始您的旅程",
-      "title": "准备好探索了吗？",
-      "subtitle": "加入数千名快乐旅行者的行列，立即开始规划您的梦想之旅。",
-      "browseButton": "浏览旅游",
+      "eyebrow": "开始你的冒险",
+      "title": "准备好探索摩洛哥了吗？",
+      "subtitle": "联系我们的旅行专家，今天就规划你的梦想之旅",
+      "browseButton": "浏览行程",
       "contactButton": "联系我们"
+    },
+    "badge": {
+      "hotDeal": "热卖",
+      "featured": "精选"
+    },
+    "tourCard": {
+      "from": "起价",
+      "explore": "探索",
+      "durationDays_one": "{{count}} 天",
+      "durationDays_other": "{{count}} 天",
+      "type": {
+        "tour": "旅行团",
+        "excursion": "短途游",
+        "activity": "活动"
+      }
     }
   },
   "footer": {
@@ -1599,6 +1619,129 @@
       "failedToLoad": "加载机构设置失败。",
       "fetchFailed": "获取机构设置时出错",
       "reverseGeocodeFailed": "从坐标获取地址失败"
+    }
+  },
+  "tourDetail": {
+    "allTours": "所有行程",
+    "backToTours": "返回行程列表",
+    "notFound": {
+      "title": "未找到行程",
+      "message": "此行程可能已被删除或不存在。"
+    },
+    "badge": {
+      "hotDeal": "热卖",
+      "featured": "精选"
+    },
+    "types": {
+      "tour": "旅行团",
+      "excursion": "短途游",
+      "activity": "活动"
+    },
+    "unit": {
+      "days_one": "{{count}} 天",
+      "days_other": "{{count}} 天",
+      "hours_one": "{{count}} 小时",
+      "hours_other": "{{count}} 小时"
+    },
+    "stats": {
+      "duration": "时长",
+      "departure": "出发",
+      "return": "返回",
+      "meetingPoint": "集合点",
+      "guide": "导游",
+      "groupSize": "团队规模",
+      "maxPeople": "最多 {{count}} 人",
+      "difficulty": "难度",
+      "equipment": "装备",
+      "category": "类别",
+      "destination": "目的地"
+    },
+    "difficulty": {
+      "easy": "简单",
+      "moderate": "中等",
+      "hard": "困难",
+      "expert": "专家级"
+    },
+    "included": "包含",
+    "notIncluded": "不包含",
+    "overview": {
+      "eyebrow": "关于此{{type}}",
+      "tourTitle": "行程概览",
+      "excursionTitle": "短途游概览",
+      "activityTitle": "活动概览"
+    },
+    "noDescription": "暂无描述。",
+    "inclusions": {
+      "eyebrow": "费用包含",
+      "title": "包含与不包含"
+    },
+    "gallery": {
+      "eyebrow": "视觉之旅",
+      "title": "图片库",
+      "alt": "图库图片 {{number}}",
+      "lightboxAlt": "放大图片"
+    },
+    "itinerary": {
+      "eyebrow": "每日行程",
+      "title": "行程安排",
+      "day": "第 {{day}} 天"
+    },
+    "review": {
+      "eyebrow": "旅行者故事",
+      "title": "宾客评价",
+      "count_zero": "{{count}} 条评价",
+      "count_one": "{{count}} 条评价",
+      "count_other": "{{count}} 条评价",
+      "success": "评价已提交！"
+    },
+    "reviewForm": {
+      "title": "分享您的体验",
+      "subtitle": "通过留下真实评价帮助其他旅行者",
+      "ratingLabel": "您的评分 *",
+      "commentLabel": "评论 *",
+      "submit": "提交评价",
+      "success": "评价已提交！",
+      "thanks": "感谢您分享您的体验。",
+      "writeAnother": "再写一条评价",
+      "ratingLabels": {
+        "1": "差",
+        "2": "一般",
+        "3": "好",
+        "4": "很好",
+        "5": "极好"
+      }
+    },
+    "map": {
+      "eyebrow": "您将前往的地方",
+      "title": "行程地点"
+    },
+    "trust": {
+      "freeCancellation": "48小时前免费取消",
+      "support": "24/7 客户支持",
+      "guides": "持证且投保的导游"
+    },
+    "share": {
+      "title": "分享此{{type}}"
+    },
+    "related": {
+      "eyebrow": "您可能也喜欢",
+      "title": "相关行程",
+      "viewAll": "查看全部"
+    },
+    "relatedCard": {
+      "view": "查看"
+    },
+    "tabs": {
+      "overview": "概览",
+      "itinerary": "行程",
+      "reviews": "评价",
+      "map": "地图"
+    },
+    "pricePerDay": "~{{price}}元/天",
+    "pricePerHour": "~{{price}}元/小时",
+    "departsAt": "{{time}} 出发",
+    "errors": {
+      "maxGroup": "人数必须小于或等于 {{max}}"
     }
   }
 }

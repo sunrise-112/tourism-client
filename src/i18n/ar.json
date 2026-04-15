@@ -1125,71 +1125,88 @@
     }
   },
   "home": {
-    "badge": {
-      "hotDeal": "عرض ساخن",
-      "featured": "مميز"
-    },
-    "tourCard": {
-      "durationDays_one": "يوم واحد",
-      "durationDays_two": "يومان",
-      "durationDays_few": "{{count}} أيام",
-      "durationDays_many": "{{count}} يومًا",
-      "durationDays_other": "{{count}} يوم",
-      "from": "ابتداء من",
-      "explore": "استكشف"
-    },
-    "stats": {
-      "destinations": "وجهات",
-      "avgRating": "متوسط التقييم",
-      "happyTravelers": "مسافرون سعداء",
-      "experience": "خبرة"
-    },
-    "categories": {
-      "eyebrow": "استكشف حسب النوع",
-      "title": "تصفح حسب الفئة",
-      "subtitle": "ابحث عن التجربة المثالية لأسلوب سفرك",
-      "adventure": "مغامرة",
-      "beach": "شاطئ",
-      "cultural": "ثقافي",
-      "wildlife": "حياة برية",
-      "city": "مدينة",
-      "wellness": "صحة"
-    },
-    "featured": {
-      "eyebrow": "مختارة لك",
-      "title": "جولات مميزة",
-      "subtitle": "تجارب يحبها مسافرونا أكثر",
-      "viewAll": "عرض الكل",
-      "empty": "لا توجد جولات مميزة حالياً"
-    },
-    "hotDeals": {
-      "eyebrow": "وقت محدود",
-      "title": "عروض ساخنة",
-      "subtitle": "اغتنمها قبل أن تنتهي",
-      "viewAll": "عرض الكل"
-    },
     "hero": {
-      "eyebrow": "اكتشف المغرب وما وراءه",
-      "titleLine1": "مغامرتك",
-      "titleLine2": "القادمة",
-      "titleLine3": "في انتظارك",
-      "subtitle": "جولات مصممة بعناية عبر المدن القديمة، والصحاري الذهبية، والممرات الجبلية الدراماتيكية - مصممة للمسافر الفضولي.",
-      "searchPlaceholder": "أين تريد الذهاب؟",
-      "searchButton": "بحث",
+      "eyebrow": "استكشف المغرب",
+      "titleLine1": "اكتشف سحر",
+      "titleLine2": "المغرب",
+      "titleLine3": "",
+      "subtitle": "انطلق في رحلة لا تُنسى عبر المناظر الطبيعية الخلابة والتراث الغني للمملكة",
+      "searchPlaceholder": "أين تريد أن تذهب؟",
+      "searchButton": "ابحث",
       "scroll": "تمرير"
     },
     "quickTags": {
-      "sahara": "الصحراء",
+      "sahara": "الصحراء الكبرى",
       "marrakech": "مراكش",
       "atlasMountains": "جبال الأطلس",
       "coastalTours": "جولات ساحلية"
     },
+    "stats": {
+      "destinations": "وجهة",
+      "avgRating": "متوسط التقييم",
+      "happyTravelers": "مسافر سعيد",
+      "experience": "سنوات الخبرة"
+    },
+    "categories": {
+      "eyebrow": "استكشف حسب الفئة",
+      "title": "اختر مغامرتك",
+      "subtitle": "ابحث عن النشاط المثالي الذي يناسب أسلوب سفرك",
+      "adventure": "مغامرة",
+      "beach": "شاطئ",
+      "cultural": "ثقافي",
+      "wildlife": "الحياة البرية",
+      "city": "مدينة",
+      "wellness": "صحة"
+    },
+    "featured": {
+      "eyebrow": "مختارة لكم",
+      "title": "جولات مميزة",
+      "subtitle": "أكثر تجارب السفر طلباً",
+      "viewAll": "عرض الكل",
+      "empty": "لا توجد جولات مميزة حالياً"
+    },
+    "hotDeals": {
+      "eyebrow": "عروض محدودة",
+      "title": "عروض حصرية",
+      "subtitle": "احجز قبل فوات الأوان",
+      "viewAll": "عرض الكل"
+    },
+    "section": {
+      "viewAll": "عرض الكل"
+    },
+    "toursSection": {
+      "eyebrow": "جولات",
+      "title": "جولات شهيرة"
+    },
+    "excursionsSection": {
+      "eyebrow": "رحلات يومية",
+      "title": "رحلات لا تُنسى"
+    },
+    "activitiesSection": {
+      "eyebrow": "أنشطة",
+      "title": "أشياء يمكنك القيام بها"
+    },
     "cta": {
-      "eyebrow": "ابدأ رحلتك",
-      "title": "هل أنت مستعد للاستكشاف؟",
-      "subtitle": "انضم إلى آلاف المسافرين السعداء وابدأ في التخطيط لرحلتك اليوم.",
+      "eyebrow": "لنبدأ المغامرة",
+      "title": "جاهز لاستكشاف المغرب؟",
+      "subtitle": "تواصل مع خبراء السفر لدينا وخطط لرحلة أحلامك اليوم",
       "browseButton": "تصفح الجولات",
       "contactButton": "اتصل بنا"
+    },
+    "badge": {
+      "hotDeal": "عرض حار",
+      "featured": "مميز"
+    },
+    "tourCard": {
+      "from": "ابتداءً من",
+      "explore": "استكشف",
+      "durationDays_one": "{{count}} يوم",
+      "durationDays_other": "{{count}} أيام",
+      "type": {
+        "tour": "جولة",
+        "excursion": "رحلة",
+        "activity": "نشاط"
+      }
     }
   },
   "footer": {
@@ -1611,6 +1628,129 @@
       "failedToLoad": "فشل تحميل إعدادات الوكالة.",
       "fetchFailed": "خطأ في جلب إعدادات الوكالة",
       "reverseGeocodeFailed": "فشل الحصول على العنوان من الإحداثيات"
+    }
+  },
+  "tourDetail": {
+    "allTours": "جميع الجولات",
+    "backToTours": "العودة إلى الجولات",
+    "notFound": {
+      "title": "الجولة غير موجودة",
+      "message": "قد تكون هذه الجولة قد أزيلت أو لا وجود لها."
+    },
+    "badge": {
+      "hotDeal": "عرض حار",
+      "featured": "مميز"
+    },
+    "types": {
+      "tour": "جولة",
+      "excursion": "رحلة",
+      "activity": "نشاط"
+    },
+    "unit": {
+      "days_one": "{{count}} يوم",
+      "days_other": "{{count}} أيام",
+      "hours_one": "{{count}} ساعة",
+      "hours_other": "{{count}} ساعات"
+    },
+    "stats": {
+      "duration": "المدة",
+      "departure": "المغادرة",
+      "return": "العودة",
+      "meetingPoint": "نقطة الالتقاء",
+      "guide": "المرشد",
+      "groupSize": "حجم المجموعة",
+      "maxPeople": "الحد الأقصى {{count}} أشخاص",
+      "difficulty": "الصعوبة",
+      "equipment": "المعدات",
+      "category": "الفئة",
+      "destination": "الوجهة"
+    },
+    "difficulty": {
+      "easy": "سهل",
+      "moderate": "متوسط",
+      "hard": "صعب",
+      "expert": "خبير"
+    },
+    "included": "مشمول",
+    "notIncluded": "غير مشمول",
+    "overview": {
+      "eyebrow": "حول {{type}}",
+      "tourTitle": "نظرة عامة على الجولة",
+      "excursionTitle": "نظرة عامة على الرحلة",
+      "activityTitle": "نظرة عامة على النشاط"
+    },
+    "noDescription": "لا يوجد وصف متاح.",
+    "inclusions": {
+      "eyebrow": "ما هو مشمول",
+      "title": "المشمولات والاستثناءات"
+    },
+    "gallery": {
+      "eyebrow": "رحلة بصرية",
+      "title": "معرض الصور",
+      "alt": "صورة المعرض {{number}}",
+      "lightboxAlt": "تكبير الصورة"
+    },
+    "itinerary": {
+      "eyebrow": "يوماً بيوم",
+      "title": "مسار الجولة",
+      "day": "اليوم {{day}}"
+    },
+    "review": {
+      "eyebrow": "قصص المسافرين",
+      "title": "آراء الضيوف",
+      "count_zero": "{{count}} تقييم",
+      "count_one": "{{count}} تقييم",
+      "count_other": "{{count}} تقييمات",
+      "success": "تم إرسال التقييم!"
+    },
+    "reviewForm": {
+      "title": "شارك تجربتك",
+      "subtitle": "ساعد المسافرين الآخرين بترك تقييم صادق",
+      "ratingLabel": "تقييمك *",
+      "commentLabel": "التعليق *",
+      "submit": "إرسال التقييم",
+      "success": "تم إرسال التقييم!",
+      "thanks": "شكراً لمشاركتك تجربتك.",
+      "writeAnother": "كتابة تقييم آخر",
+      "ratingLabels": {
+        "1": "ضعيف",
+        "2": "مقبول",
+        "3": "جيد",
+        "4": "جيد جداً",
+        "5": "ممتاز"
+      }
+    },
+    "map": {
+      "eyebrow": "أين ستذهب",
+      "title": "موقع الجولة"
+    },
+    "trust": {
+      "freeCancellation": "إلغاء مجاني حتى 48 ساعة",
+      "support": "دعم العملاء 24/7",
+      "guides": "مرشدون مرخصون ومؤمن عليهم"
+    },
+    "share": {
+      "title": "شارك هذا {{type}}"
+    },
+    "related": {
+      "eyebrow": "قد يعجبك أيضاً",
+      "title": "جولات ذات صلة",
+      "viewAll": "عرض الكل"
+    },
+    "relatedCard": {
+      "view": "عرض"
+    },
+    "tabs": {
+      "overview": "نظرة عامة",
+      "itinerary": "المسار",
+      "reviews": "التقييمات",
+      "map": "الخريطة"
+    },
+    "pricePerDay": "~{{price}}$/يوم",
+    "pricePerHour": "~{{price}}$/ساعة",
+    "departsAt": "تغادر الساعة {{time}}",
+    "errors": {
+      "maxGroup": "يجب أن يكون عدد الأشخاص أقل من أو يساوي {{max}}"
     }
   }
 }

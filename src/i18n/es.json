@@ -1124,26 +1124,32 @@
     }
   },
   "home": {
-    "badge": {
-      "hotDeal": "Oferta especial",
-      "featured": "Destacado"
+    "hero": {
+      "eyebrow": "Explora Marruecos",
+      "titleLine1": "Descubre la magia",
+      "titleLine2": "de Marruecos",
+      "titleLine3": "",
+      "subtitle": "Embárcate en un viaje inolvidable por los impresionantes paisajes y la rica herencia de Marruecos",
+      "searchPlaceholder": "¿A dónde quieres ir?",
+      "searchButton": "Buscar",
+      "scroll": "Desplazar"
     },
-    "tourCard": {
-      "durationDays_one": "{{count}} día",
-      "durationDays_other": "{{count}} días",
-      "from": "Desde",
-      "explore": "Explorar"
+    "quickTags": {
+      "sahara": "Desierto del Sáhara",
+      "marrakech": "Marrakech",
+      "atlasMountains": "Montañas del Atlas",
+      "coastalTours": "Tours Costeros"
     },
     "stats": {
       "destinations": "Destinos",
-      "avgRating": "Puntuación media",
+      "avgRating": "Valoración media",
       "happyTravelers": "Viajeros felices",
-      "experience": "Experiencia"
+      "experience": "Años de experiencia"
     },
     "categories": {
-      "eyebrow": "Explora por tipo",
-      "title": "Navega por categoría",
-      "subtitle": "Encuentra la experiencia perfecta para tu estilo de viaje",
+      "eyebrow": "Explora por categoría",
+      "title": "Elige tu aventura",
+      "subtitle": "Encuentra la actividad perfecta que se ajuste a tu estilo de viaje",
       "adventure": "Aventura",
       "beach": "Playa",
       "cultural": "Cultural",
@@ -1154,103 +1160,52 @@
     "featured": {
       "eyebrow": "Seleccionados para ti",
       "title": "Tours destacados",
-      "subtitle": "Experiencias que nuestros viajeros más aman",
-      "viewAll": "Ver todos",
-      "empty": "Aún no hay tours destacados"
+      "subtitle": "Experiencias de viaje más solicitadas",
+      "viewAll": "Ver todo",
+      "empty": "No hay tours destacados en este momento"
     },
     "hotDeals": {
-      "eyebrow": "Tiempo limitado",
+      "eyebrow": "Ofertas limitadas",
       "title": "Ofertas especiales",
-      "subtitle": "Aprovecha antes de que desaparezcan",
-      "viewAll": "Ver todos"
+      "subtitle": "Reserva antes de que se agoten",
+      "viewAll": "Ver todo"
     },
-    "hero": {
-      "eyebrow": "Descubre Marruecos y más allá",
-      "titleLine1": "Tu próxima",
-      "titleLine2": "Aventura",
-      "titleLine3": "te espera",
-      "subtitle": "Tours artesanales a través de antiguas medinas, desiertos dorados y pasos de montaña dramáticos, diseñados para el viajero curioso.",
-      "searchPlaceholder": "¿A dónde quieres ir?",
-      "searchButton": "Buscar",
-      "scroll": "Desplazar"
+    "section": {
+      "viewAll": "Ver todo"
     },
-    "quickTags": {
-      "sahara": "Sáhara",
-      "marrakech": "Marrakech",
-      "atlasMountains": "Montañas del Atlas",
-      "coastalTours": "Tours costeros"
+    "toursSection": {
+      "eyebrow": "Tours",
+      "title": "Tours populares"
+    },
+    "excursionsSection": {
+      "eyebrow": "Excursiones de un día",
+      "title": "Excursiones inolvidables"
+    },
+    "activitiesSection": {
+      "eyebrow": "Actividades",
+      "title": "Cosas que hacer"
     },
     "cta": {
-      "eyebrow": "Comienza tu viaje",
-      "title": "¿Listo para explorar?",
-      "subtitle": "Únete a miles de viajeros felices y comienza a planificar tu viaje soñado hoy.",
+      "eyebrow": "Comienza tu aventura",
+      "title": "¿Listo para explorar Marruecos?",
+      "subtitle": "Ponte en contacto con nuestros expertos en viajes y planifica hoy mismo tu viaje soñado",
       "browseButton": "Ver tours",
       "contactButton": "Contáctanos"
-    }
-  },
-  "home": {
+    },
     "badge": {
-      "hotDeal": "Heißer Deal",
-      "featured": "Empfohlen"
+      "hotDeal": "Oferta especial",
+      "featured": "Destacado"
     },
     "tourCard": {
-      "durationDays_one": "{{count}} Tag",
-      "durationDays_other": "{{count}} Tage",
-      "from": "Ab",
-      "explore": "Entdecken"
-    },
-    "stats": {
-      "destinations": "Reiseziele",
-      "avgRating": "Durchschnittliche Bewertung",
-      "happyTravelers": "Zufriedene Reisende",
-      "experience": "Erfahrung"
-    },
-    "categories": {
-      "eyebrow": "Nach Typ erkunden",
-      "title": "Nach Kategorie durchsuchen",
-      "subtitle": "Finden Sie das perfekte Erlebnis für Ihren Reisestil",
-      "adventure": "Abenteuer",
-      "beach": "Strand",
-      "cultural": "Kultur",
-      "wildlife": "Tierwelt",
-      "city": "Stadt",
-      "wellness": "Wellness"
-    },
-    "featured": {
-      "eyebrow": "Für Sie ausgewählt",
-      "title": "Empfohlene Touren",
-      "subtitle": "Erlebnisse, die unsere Reisenden am meisten lieben",
-      "viewAll": "Alle anzeigen",
-      "empty": "Noch keine empfohlenen Touren verfügbar"
-    },
-    "hotDeals": {
-      "eyebrow": "Begrenzte Zeit",
-      "title": "Heiße Deals",
-      "subtitle": "Sichern Sie sich diese, bevor sie weg sind",
-      "viewAll": "Alle anzeigen"
-    },
-    "hero": {
-      "eyebrow": "Entdecken Sie Marokko & darüber hinaus",
-      "titleLine1": "Ihr nächstes",
-      "titleLine2": "Abenteuer",
-      "titleLine3": "erwartet Sie",
-      "subtitle": "Handgefertigte Touren durch antike Medina, goldene Wüsten und dramatische Gebirgspässe – entworfen für den neugierigen Reisenden.",
-      "searchPlaceholder": "Wohin möchten Sie reisen?",
-      "searchButton": "Suchen",
-      "scroll": "Scrollen"
-    },
-    "quickTags": {
-      "sahara": "Sahara",
-      "marrakech": "Marrakesch",
-      "atlasMountains": "Atlasgebirge",
-      "coastalTours": "Küstentouren"
-    },
-    "cta": {
-      "eyebrow": "Beginnen Sie Ihre Reise",
-      "title": "Bereit zu entdecken?",
-      "subtitle": "Schließen Sie sich Tausenden zufriedenen Reisenden an und planen Sie noch heute Ihre Traumreise.",
-      "browseButton": "Touren durchstöbern",
-      "contactButton": "Kontaktieren Sie uns"
+      "from": "Desde",
+      "explore": "Explorar",
+      "durationDays_one": "{{count}} día",
+      "durationDays_other": "{{count}} días",
+      "type": {
+        "tour": "Tour",
+        "excursion": "Excursión",
+        "activity": "Actividad"
+      }
     }
   },
   "footer": {
@@ -1663,6 +1618,129 @@
       "failedToLoad": "Error al cargar la configuración de la agencia.",
       "fetchFailed": "Error al obtener la configuración de la agencia",
       "reverseGeocodeFailed": "Error al obtener la dirección desde las coordenadas"
+    }
+  },
+  "tourDetail": {
+    "allTours": "Todos los tours",
+    "backToTours": "Volver a los tours",
+    "notFound": {
+      "title": "Tour no encontrado",
+      "message": "Este tour puede haber sido eliminado o no existe."
+    },
+    "badge": {
+      "hotDeal": "Oferta especial",
+      "featured": "Destacado"
+    },
+    "types": {
+      "tour": "Tour",
+      "excursion": "Excursión",
+      "activity": "Actividad"
+    },
+    "unit": {
+      "days_one": "{{count}} día",
+      "days_other": "{{count}} días",
+      "hours_one": "{{count}} hora",
+      "hours_other": "{{count}} horas"
+    },
+    "stats": {
+      "duration": "Duración",
+      "departure": "Salida",
+      "return": "Regreso",
+      "meetingPoint": "Punto de encuentro",
+      "guide": "Guía",
+      "groupSize": "Tamaño del grupo",
+      "maxPeople": "Máx. {{count}} personas",
+      "difficulty": "Dificultad",
+      "equipment": "Equipo",
+      "category": "Categoría",
+      "destination": "Destino"
+    },
+    "difficulty": {
+      "easy": "Fácil",
+      "moderate": "Moderado",
+      "hard": "Difícil",
+      "expert": "Experto"
+    },
+    "included": "Incluido",
+    "notIncluded": "No incluido",
+    "overview": {
+      "eyebrow": "Acerca de este {{type}}",
+      "tourTitle": "Descripción del tour",
+      "excursionTitle": "Descripción de la excursión",
+      "activityTitle": "Descripción de la actividad"
+    },
+    "noDescription": "No hay descripción disponible.",
+    "inclusions": {
+      "eyebrow": "Qué está cubierto",
+      "title": "Inclusiones y exclusiones"
+    },
+    "gallery": {
+      "eyebrow": "Viaje visual",
+      "title": "Galería de fotos",
+      "alt": "Imagen de galería {{number}}",
+      "lightboxAlt": "Imagen ampliada"
+    },
+    "itinerary": {
+      "eyebrow": "Día a día",
+      "title": "Itinerario del tour",
+      "day": "Día {{day}}"
+    },
+    "review": {
+      "eyebrow": "Historias de viajeros",
+      "title": "Opiniones de huéspedes",
+      "count_zero": "{{count}} opiniones",
+      "count_one": "{{count}} opinión",
+      "count_other": "{{count}} opiniones",
+      "success": "¡Opinión enviada!"
+    },
+    "reviewForm": {
+      "title": "Comparte tu experiencia",
+      "subtitle": "Ayuda a otros viajeros dejando una opinión honesta",
+      "ratingLabel": "Tu puntuación *",
+      "commentLabel": "Comentario *",
+      "submit": "Enviar opinión",
+      "success": "¡Opinión enviada!",
+      "thanks": "Gracias por compartir tu experiencia.",
+      "writeAnother": "Escribir otra opinión",
+      "ratingLabels": {
+        "1": "Malo",
+        "2": "Regular",
+        "3": "Bueno",
+        "4": "Muy bueno",
+        "5": "Excelente"
+      }
+    },
+    "map": {
+      "eyebrow": "A dónde vas",
+      "title": "Ubicación del tour"
+    },
+    "trust": {
+      "freeCancellation": "Cancelación gratuita hasta 48h",
+      "support": "Atención al cliente 24/7",
+      "guides": "Guías con licencia y seguro"
+    },
+    "share": {
+      "title": "Comparte este {{type}}"
+    },
+    "related": {
+      "eyebrow": "También te puede gustar",
+      "title": "Tours relacionados",
+      "viewAll": "Ver todos"
+    },
+    "relatedCard": {
+      "view": "Ver"
+    },
+    "tabs": {
+      "overview": "Descripción",
+      "itinerary": "Itinerario",
+      "reviews": "Opiniones",
+      "map": "Mapa"
+    },
+    "pricePerDay": "~{{price}}$/día",
+    "pricePerHour": "~{{price}}$/hora",
+    "departsAt": "Sale a las {{time}}",
+    "errors": {
+      "maxGroup": "El número de personas debe ser menor o igual a {{max}}"
     }
   }
 }

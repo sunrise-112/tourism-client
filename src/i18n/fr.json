@@ -1124,26 +1124,32 @@
     }
   },
   "home": {
-    "badge": {
-      "hotDeal": "Offre chaude",
-      "featured": "À la une"
+    "hero": {
+      "eyebrow": "Explorez le Maroc",
+      "titleLine1": "Découvrez la magie",
+      "titleLine2": "du Maroc",
+      "titleLine3": "",
+      "subtitle": "Embarquez pour un voyage inoubliable à travers les paysages époustouflants et le riche patrimoine du Maroc",
+      "searchPlaceholder": "Où voulez-vous aller ?",
+      "searchButton": "Rechercher",
+      "scroll": "Défiler"
     },
-    "tourCard": {
-      "durationDays_one": "{{count}} jour",
-      "durationDays_other": "{{count}} jours",
-      "from": "À partir de",
-      "explore": "Explorer"
+    "quickTags": {
+      "sahara": "Désert du Sahara",
+      "marrakech": "Marrakech",
+      "atlasMountains": "Montagnes de l'Atlas",
+      "coastalTours": "Visites côtières"
     },
     "stats": {
       "destinations": "Destinations",
       "avgRating": "Note moyenne",
       "happyTravelers": "Voyageurs heureux",
-      "experience": "Expérience"
+      "experience": "Années d'expérience"
     },
     "categories": {
-      "eyebrow": "Explorer par type",
-      "title": "Parcourir par catégorie",
-      "subtitle": "Trouvez l'expérience parfaite pour votre style de voyage",
+      "eyebrow": "Explorer par catégorie",
+      "title": "Choisissez votre aventure",
+      "subtitle": "Trouvez l'activité parfaite qui correspond à votre style de voyage",
       "adventure": "Aventure",
       "beach": "Plage",
       "cultural": "Culturel",
@@ -1153,39 +1159,53 @@
     },
     "featured": {
       "eyebrow": "Sélectionnés pour vous",
-      "title": "Circuits à la une",
-      "subtitle": "Les expériences que nos voyageurs préfèrent",
+      "title": "Visites vedettes",
+      "subtitle": "Expériences de voyage les plus recherchées",
       "viewAll": "Voir tout",
-      "empty": "Aucun circuit à la une disponible pour le moment"
+      "empty": "Aucune visite vedette pour le moment"
     },
     "hotDeals": {
-      "eyebrow": "Temps limité",
+      "eyebrow": "Offres limitées",
       "title": "Offres spéciales",
-      "subtitle": "Attrapez-les avant qu'ils ne disparaissent",
+      "subtitle": "Réservez avant qu'elles ne disparaissent",
       "viewAll": "Voir tout"
     },
-    "hero": {
-      "eyebrow": "Découvrez le Maroc et au-delà",
-      "titleLine1": "Votre prochaine",
-      "titleLine2": "Aventure",
-      "titleLine3": "vous attend",
-      "subtitle": "Circuits artisanaux à travers les anciennes médinas, les déserts dorés et les cols de montagne spectaculaires – conçus pour le voyageur curieux.",
-      "searchPlaceholder": "Où voulez-vous aller ?",
-      "searchButton": "Rechercher",
-      "scroll": "Défiler"
+    "section": {
+      "viewAll": "Voir tout"
     },
-    "quickTags": {
-      "sahara": "Sahara",
-      "marrakech": "Marrakech",
-      "atlasMountains": "Montagnes de l'Atlas",
-      "coastalTours": "Circuits côtiers"
+    "toursSection": {
+      "eyebrow": "Visites",
+      "title": "Visites populaires"
+    },
+    "excursionsSection": {
+      "eyebrow": "Excursions d'une journée",
+      "title": "Excursions inoubliables"
+    },
+    "activitiesSection": {
+      "eyebrow": "Activités",
+      "title": "Choses à faire"
     },
     "cta": {
-      "eyebrow": "Commencez votre voyage",
-      "title": "Prêt à explorer ?",
-      "subtitle": "Rejoignez des milliers de voyageurs heureux et commencez à planifier votre voyage de rêve dès aujourd'hui.",
-      "browseButton": "Parcourir les circuits",
+      "eyebrow": "Commencez votre aventure",
+      "title": "Prêt à explorer le Maroc ?",
+      "subtitle": "Contactez nos experts en voyage et planifiez votre voyage de rêve dès aujourd'hui",
+      "browseButton": "Parcourir les visites",
       "contactButton": "Contactez-nous"
+    },
+    "badge": {
+      "hotDeal": "Offre spéciale",
+      "featured": "À la une"
+    },
+    "tourCard": {
+      "from": "À partir de",
+      "explore": "Explorer",
+      "durationDays_one": "{{count}} jour",
+      "durationDays_other": "{{count}} jours",
+      "type": {
+        "tour": "Visite",
+        "excursion": "Excursion",
+        "activity": "Activité"
+      }
     }
   },
   "footer": {
@@ -1598,6 +1618,129 @@
       "failedToLoad": "Échec du chargement des paramètres de l'agence.",
       "fetchFailed": "Erreur lors de la récupération des paramètres de l'agence",
       "reverseGeocodeFailed": "Échec de l'obtention de l'adresse à partir des coordonnées"
+    }
+  },
+  "tourDetail": {
+    "allTours": "Toutes les visites",
+    "backToTours": "Retour aux visites",
+    "notFound": {
+      "title": "Visite non trouvée",
+      "message": "Cette visite a peut-être été supprimée ou n'existe pas."
+    },
+    "badge": {
+      "hotDeal": "Offre spéciale",
+      "featured": "À la une"
+    },
+    "types": {
+      "tour": "Visite",
+      "excursion": "Excursion",
+      "activity": "Activité"
+    },
+    "unit": {
+      "days_one": "{{count}} jour",
+      "days_other": "{{count}} jours",
+      "hours_one": "{{count}} heure",
+      "hours_other": "{{count}} heures"
+    },
+    "stats": {
+      "duration": "Durée",
+      "departure": "Départ",
+      "return": "Retour",
+      "meetingPoint": "Point de rendez-vous",
+      "guide": "Guide",
+      "groupSize": "Taille du groupe",
+      "maxPeople": "Max. {{count}} personnes",
+      "difficulty": "Difficulté",
+      "equipment": "Équipement",
+      "category": "Catégorie",
+      "destination": "Destination"
+    },
+    "difficulty": {
+      "easy": "Facile",
+      "moderate": "Modéré",
+      "hard": "Difficile",
+      "expert": "Expert"
+    },
+    "included": "Inclus",
+    "notIncluded": "Non inclus",
+    "overview": {
+      "eyebrow": "À propos de ce {{type}}",
+      "tourTitle": "Aperçu de la visite",
+      "excursionTitle": "Aperçu de l'excursion",
+      "activityTitle": "Aperçu de l'activité"
+    },
+    "noDescription": "Aucune description disponible.",
+    "inclusions": {
+      "eyebrow": "Ce qui est couvert",
+      "title": "Inclusions et exclusions"
+    },
+    "gallery": {
+      "eyebrow": "Voyage visuel",
+      "title": "Galerie photos",
+      "alt": "Image de la galerie {{number}}",
+      "lightboxAlt": "Image agrandie"
+    },
+    "itinerary": {
+      "eyebrow": "Jour par jour",
+      "title": "Itinéraire de la visite",
+      "day": "Jour {{day}}"
+    },
+    "review": {
+      "eyebrow": "Histoires de voyageurs",
+      "title": "Avis des clients",
+      "count_zero": "{{count}} avis",
+      "count_one": "{{count}} avis",
+      "count_other": "{{count}} avis",
+      "success": "Avis soumis !"
+    },
+    "reviewForm": {
+      "title": "Partagez votre expérience",
+      "subtitle": "Aidez d'autres voyageurs en laissant un avis honnête",
+      "ratingLabel": "Votre note *",
+      "commentLabel": "Commentaire *",
+      "submit": "Soumettre l'avis",
+      "success": "Avis soumis !",
+      "thanks": "Merci d'avoir partagé votre expérience.",
+      "writeAnother": "Écrire un autre avis",
+      "ratingLabels": {
+        "1": "Mauvais",
+        "2": "Moyen",
+        "3": "Bon",
+        "4": "Très bien",
+        "5": "Excellent"
+      }
+    },
+    "map": {
+      "eyebrow": "Où vous allez",
+      "title": "Emplacement de la visite"
+    },
+    "trust": {
+      "freeCancellation": "Annulation gratuite jusqu'à 48h",
+      "support": "Support client 24/7",
+      "guides": "Guides agréés et assurés"
+    },
+    "share": {
+      "title": "Partager ce {{type}}"
+    },
+    "related": {
+      "eyebrow": "Vous pourriez aussi aimer",
+      "title": "Visites similaires",
+      "viewAll": "Voir tout"
+    },
+    "relatedCard": {
+      "view": "Voir"
+    },
+    "tabs": {
+      "overview": "Aperçu",
+      "itinerary": "Itinéraire",
+      "reviews": "Avis",
+      "map": "Carte"
+    },
+    "pricePerDay": "~{{price}}$/jour",
+    "pricePerHour": "~{{price}}$/heure",
+    "departsAt": "Départ à {{time}}",
+    "errors": {
+      "maxGroup": "Le nombre de personnes doit être inférieur ou égal à {{max}}"
     }
   }
 }

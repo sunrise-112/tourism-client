@@ -182,7 +182,7 @@ function LocationViewer({ isPublic }) {
           </MapContainer>
         </div>
 
-       {/*  <div className='alert alert-sm mt-4'>
+        {/*  <div className='alert alert-sm mt-4'>
           <MapPin className='w-4 h-4' />
           <div className='text-sm'>{t("locationViewer.helperText")}</div>
         </div> */}

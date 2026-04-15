@@ -31,6 +31,7 @@ import {
 } from "../../utils/formRenders";
 import renderImage from "../../utils/renderImage";
 import { toast } from "react-toastify";
+import LocationPicker from "../LocationPicker";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const DIFFICULTY_OPTIONS = [
@@ -762,6 +763,10 @@ const LivePreview = ({
 const TourForm = ({ Type }) => {
   const { t } = useTranslation();
   const { id } = useParams();
+  const [cordinates, setCordinates] = useState({
+    lat: "",
+    lng: "",
+  });
   const activeType = Type;
 
   const [formData, setFormData] = useState({
@@ -781,6 +786,10 @@ const TourForm = ({ Type }) => {
     { id: 3, name: t("tourForm.categories.coastal") },
     { id: 4, name: t("tourForm.categories.historical") },
   ];
+
+  useEffect(() => {
+    console.log("Cordinates: ", cordinates);
+  }, [cordinates]);
 
   const getSchema = (activeType) => {
     const common = {
@@ -894,7 +903,10 @@ const TourForm = ({ Type }) => {
       try {
         setIsLoading(true);
         const tour = await tourService.getById(id);
-
+        setCordinates({
+          lat: tour?.lat,
+          lng: tour?.lng,
+        });
         setFormData({
           id: tour.id,
           type: tour.type,
@@ -953,10 +965,6 @@ const TourForm = ({ Type }) => {
     fetchTour();
   }, [id]);
 
-  const mapToViewModel = (tour) => {
-    return;
-  };
-
   const doSubmit = async () => {
     try {
       if (isSubmitting) return;
@@ -964,6 +972,10 @@ const TourForm = ({ Type }) => {
 
       const fd = getFormData();
       fd.append("type", activeType);
+      if (cordinates?.lat && cordinates.lng) {
+        fd.append("lng", cordinates?.lng);
+        fd.append("lat", cordinates?.lat);
+      }
 
       itineraryData.forEach((day, index) => {
         Object.entries(day).forEach(([key, value]) => {
@@ -1330,6 +1342,10 @@ const TourForm = ({ Type }) => {
                     : t("tourForm.actions.publish", { type: Type })}
                 </button>
               </div>
+              <LocationPicker
+                onChange={(cords) => setCordinates(cords)}
+                initialPosition={cordinates}
+              />
             </div>
 
             {/* RIGHT — sticky preview */}

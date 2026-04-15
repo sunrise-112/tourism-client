@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Joi from "joi-browser";
+import { useTranslation } from "react-i18next";
 
 // Hooks
 import useForm from "../../hooks/useForm";
 
 // Components
 import BookingForm from "../bookings/BookingForm";
+import LocationViewer from "../../components/LocationViewer";
 
 // Services
 import tourService from "../../services/tourService";
@@ -23,36 +25,7 @@ import {
   renderTextarea,
 } from "../../utils/formRenders";
 import { formatDate } from "date-fns";
-
-const MOCK_REVIEWS = [
-  {
-    id: 1,
-    name: "Sarah Mitchell",
-    avatar: null,
-    rating: 5,
-    date: "March 2025",
-    comment:
-      "Absolutely breathtaking experience. Our guide was incredibly knowledgeable and the desert camp under the stars was unforgettable. Would recommend to anyone!",
-  },
-  {
-    id: 2,
-    name: "James Okafor",
-    avatar: null,
-    rating: 5,
-    date: "February 2025",
-    comment:
-      "The perfect mix of adventure and culture. Fez medina was mind-blowing and the food was incredible throughout. Already planning my return trip.",
-  },
-  {
-    id: 3,
-    name: "Lena Hoffmann",
-    avatar: null,
-    rating: 4,
-    date: "January 2025",
-    comment:
-      "Very well organized tour with great attention to detail. The Atlas mountains section was the highlight for me. Only minor issue was one hotel change.",
-  },
-];
+import TourLocationViewer from "../../components/TourLocationViewer";
 
 // ─── Helpers ──────────────────────────────────────────────────
 
@@ -107,17 +80,17 @@ const ReviewCard = ({ review }) => (
   </div>
 );
 
-const RelatedCard = ({ tour }) => (
+const RelatedCard = ({ tour, t }) => (
   <Link
-    to={`/tours/${tour.id}`}
+    to={`/tours/${tour?.id}`}
     className='group bg-white rounded-2xl overflow-hidden border border-stone-100
       hover:shadow-xl hover:shadow-amber-900/10 hover:-translate-y-1 transition-all duration-300'
   >
     <div className='relative h-44 overflow-hidden bg-stone-100'>
-      {tour.cover_image ? (
+      {tour?.cover_image ? (
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL}${tour.cover_image}`}
-          alt={tour.title}
+          src={`${import.meta.env.VITE_BACKEND_URL}${tour?.cover_image}`}
+          alt={tour?.title}
           className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-700'
         />
       ) : (
@@ -128,227 +101,32 @@ const RelatedCard = ({ tour }) => (
       <div className='absolute inset-0 bg-gradient-to-t from-black/40 to-transparent' />
       <div className='absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-sm'>
         <i className='fa fa-clock mr-1 text-[10px]' />
-        {tour.type === "tour"
-          ? `${tour.duration_days}d`
-          : `${tour.duration_hours}h`}
+        {tour?.type === "tour"
+          ? t("tourDetail.unit.days", { count: tour?.duration_days })
+          : t("tourDetail.unit.hours", { count: tour?.duration_hours })}
       </div>
     </div>
     <div className='p-4'>
       <p className='text-xs text-amber-600 font-semibold flex items-center gap-1 mb-1 uppercase tracking-wide'>
         <i className='fa fa-map-marker-alt text-[10px]' />
-        {tour.destination}
+        {tour?.destination}
       </p>
       <h3 className='font-bold text-sm text-stone-800 group-hover:text-amber-700 transition-colors line-clamp-1 mb-3'>
-        {tour.title}
+        {tour?.title}
       </h3>
       <div className='flex items-center justify-between pt-3 border-t border-stone-100'>
-        <p className='text-lg font-black text-amber-600'>${tour.price}</p>
+        <p className='text-lg font-black text-amber-600'>${tour?.price}</p>
         <span className='text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl'>
-          View <i className='fa fa-arrow-right ml-1 text-[10px]' />
+          {t("tourDetail.relatedCard.view")}{" "}
+          <i className='fa fa-arrow-right ml-1 text-[10px]' />
         </span>
       </div>
     </div>
   </Link>
 );
 
-// ─── Per-type config ───────────────────────────────────────────
-
-const getTypeConfig = (tour) => {
-  switch (tour.type) {
-    case "excursion":
-      return {
-        label: "Excursion",
-        icon: "fa-compass",
-        color: "text-sky-500",
-        quickStats: [
-          {
-            icon: "fa-clock",
-            label: "Duration",
-            value: tour.duration_hours ? `${tour.duration_hours} hours` : "—",
-          },
-          {
-            icon: "fa-bus",
-            label: "Departure",
-            value: tour.departure_time || "—",
-          },
-          {
-            icon: "fa-flag-checkered",
-            label: "Return",
-            value: tour.return_time || "—",
-          },
-          {
-            icon: "fa-map-marker-alt",
-            label: "Meeting Point",
-            value: tour.meeting_point || "—",
-          },
-          {
-            icon: "fa-users",
-            label: "Group Size",
-            value: tour.max_group_size ? `Max ${tour.max_group_size}` : "—",
-          },
-          {
-            icon: "fa-user-tie",
-            label: "Guide",
-            value: tour.guide_included ? "Included" : "Not included",
-          },
-        ],
-        sidebarStats: [
-          tour.duration_hours && {
-            icon: "fa-clock",
-            label: "Duration",
-            value: `${tour.duration_hours} hours`,
-          },
-          tour.departure_time && {
-            icon: "fa-bus",
-            label: "Departure",
-            value: tour.departure_time,
-          },
-          tour.return_time && {
-            icon: "fa-flag-checkered",
-            label: "Return",
-            value: tour.return_time,
-          },
-          tour.meeting_point && {
-            icon: "fa-map-marker-alt",
-            label: "Meeting Point",
-            value: tour.meeting_point,
-          },
-          tour.guide_included !== undefined && {
-            icon: "fa-user-tie",
-            label: "Guide",
-            value: tour.guide_included ? "Included" : "Not included",
-          },
-          tour.max_group_size && {
-            icon: "fa-users",
-            label: "Group Size",
-            value: `Max ${tour.max_group_size}`,
-          },
-        ].filter(Boolean),
-      };
-
-    case "activity":
-      return {
-        label: "Activity",
-        icon: "fa-hiking",
-        color: "text-emerald-500",
-        quickStats: [
-          {
-            icon: "fa-clock",
-            label: "Duration",
-            value: tour.duration_hours ? `${tour.duration_hours} hours` : "—",
-          },
-          {
-            icon: "fa-mountain",
-            label: "Difficulty",
-            value: tour.difficulty_level
-              ? tour.difficulty_level.charAt(0).toUpperCase() +
-                tour.difficulty_level.slice(1)
-              : "—",
-          },
-          {
-            icon: "fa-tools",
-            label: "Equipment",
-            value: tour.equipment_included ? "Included" : "Not included",
-          },
-          {
-            icon: "fa-users",
-            label: "Group Size",
-            value: tour.max_group_size ? `Max ${tour.max_group_size}` : "—",
-          },
-          {
-            icon: "fa-tag",
-            label: "Category",
-            value: tour.category || "—",
-          },
-          {
-            icon: "fa-map-marker-alt",
-            label: "Destination",
-            value: tour.destination || "—",
-          },
-        ],
-        sidebarStats: [
-          tour.duration_hours && {
-            icon: "fa-clock",
-            label: "Duration",
-            value: `${tour.duration_hours} hours`,
-          },
-          tour.difficulty_level && {
-            icon: "fa-mountain",
-            label: "Difficulty",
-            value:
-              tour.difficulty_level.charAt(0).toUpperCase() +
-              tour.difficulty_level.slice(1),
-          },
-          tour.equipment_included !== undefined && {
-            icon: "fa-tools",
-            label: "Equipment",
-            value: tour.equipment_included ? "Included" : "Not included",
-          },
-          tour.max_group_size && {
-            icon: "fa-users",
-            label: "Group Size",
-            value: `Max ${tour.max_group_size}`,
-          },
-          tour.destination && {
-            icon: "fa-map-marker-alt",
-            label: "Destination",
-            value: tour.destination,
-          },
-        ].filter(Boolean),
-      };
-
-    case "tour":
-    default:
-      return {
-        label: "Tour",
-        icon: "fa-route",
-        color: "text-amber-500",
-        quickStats: [
-          {
-            icon: "fa-clock",
-            label: "Duration",
-            value: tour.duration_days ? `${tour.duration_days} days` : "—",
-          },
-          {
-            icon: "fa-users",
-            label: "Group Size",
-            value: tour.max_group_size ? `Max ${tour.max_group_size}` : "—",
-          },
-          {
-            icon: "fa-tag",
-            label: "Category",
-            value: tour.category || "—",
-          },
-          {
-            icon: "fa-map-marker-alt",
-            label: "Destination",
-            value: tour.destination || "—",
-          },
-        ],
-        sidebarStats: [
-          tour.duration_days && {
-            icon: "fa-clock",
-            label: "Duration",
-            value: `${tour.duration_days} days`,
-          },
-          tour.max_group_size && {
-            icon: "fa-users",
-            label: "Group Size",
-            value: `Max ${tour.max_group_size}`,
-          },
-          tour.destination && {
-            icon: "fa-map-marker-alt",
-            label: "Destination",
-            value: tour.destination,
-          },
-        ].filter(Boolean),
-      };
-  }
-};
-
-// ─── Difficulty badge ──────────────────────────────────────────
-
-const DifficultyBadge = ({ level }) => {
+// ─── Difficulty badge (translated) ───────────────────────────
+const DifficultyBadge = ({ level, t }) => {
   const config = {
     easy: {
       color: "bg-emerald-50 text-emerald-600 border-emerald-200",
@@ -373,7 +151,7 @@ const DifficultyBadge = ({ level }) => {
       className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border ${c.color}`}
     >
       <i className={`fa ${c.icon} text-[10px]`} />
-      {level.charAt(0).toUpperCase() + level.slice(1)}
+      {t(`tourDetail.difficulty.${level}`)}
     </span>
   );
 };
@@ -381,6 +159,7 @@ const DifficultyBadge = ({ level }) => {
 // ─── TourDetail ───────────────────────────────────────────────
 
 const TourDetail = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
   const [tour, setTour] = useState(null);
@@ -391,9 +170,7 @@ const TourDetail = () => {
   const [formData, setFormData] = useState();
   const [reviews, setReviews] = useState([]);
   const [reviewData, setReviewData] = useState({
-    /*     name: "",
-    email: "",
- */ rating: 5,
+    rating: 5,
     comment: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -419,6 +196,7 @@ const TourDetail = () => {
     const fetchData = async () => {
       try {
         const data = await tourService.getById(id);
+        console.log("Tour detail: ", data);
         setTour(data);
         setItinerary(data?.itineraries || []);
         setInclusions(
@@ -433,10 +211,15 @@ const TourDetail = () => {
             limit: 3,
           });
           const list = related?.data?.tours || related?.data || [];
-          setRelatedTours(list.filter((t) => t.id !== data.id).slice(0, 3));
+          setRelatedTours(
+            list.filter((tourItem) => tourItem.id !== data.id).slice(0, 3)
+          );
         }
 
-        const fetchedReviews = await reviewService.getAll({ tour_id: id, approve: true });
+        const fetchedReviews = await reviewService.getAll({
+          tour_id: id,
+          approve: true,
+        });
         setReviews(fetchedReviews?.data);
       } finally {
         setLoading(false);
@@ -445,27 +228,14 @@ const TourDetail = () => {
     fetchData();
   }, [id]);
 
-  /*   const handleCommentChange = (e) =>
-    setComment((c) => ({ ...c, [e.target.name]: e.target.value }));
-
-  const handleCommentSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1000));
-    setIsSubmitting(false);
-    setSubmitted(true);
-    setComment({ name: "", email: "", rating: 5, comment: "" });
-  };
- */
   const galleryImages = tour
-    ? [tour.cover_image, ...(tour.images || [])].filter(Boolean).slice(0, 6)
+    ? [tour?.cover_image, ...(tour?.images || [])].filter(Boolean).slice(0, 6)
     : [];
 
   const avgRating = (
     reviews?.reduce((s, r) => s + r.rating, 0) / reviews?.length
   ).toFixed(1);
 
-  // Only show itinerary tab for tours
   const TABS =
     tour?.type === "tour"
       ? ["overview", "itinerary", "reviews", "map"]
@@ -532,19 +302,19 @@ const TourDetail = () => {
     validate,
   } = useForm(formData, bookingSchema, doSubmit);
 
-  console.log("validate: ", validate);
-
   useEffect(() => {
     const errs = { ...errors };
     if (data?.num_people > tour?.max_group_size) {
-      errs.num_people = `Num of people should be less than or equal to ${tour?.max_group_size}`;
+      errs.num_people = t("tourDetail.errors.maxGroup", {
+        max: tour?.max_group_size,
+      });
       setErrors(errs);
     } else {
       setErrors({});
     }
-  }, [data?.num_people]);
+  }, [data?.num_people, tour?.max_group_size, t]);
 
-  // Comments
+  // Reviews
   const reviewSchema = {
     rating: Joi.number().min(1).max(5).required().label("Rating"),
     comment: Joi.string().min(1).max(255).required().label("Comment"),
@@ -553,8 +323,14 @@ const TourDetail = () => {
   const doSubmitReview = async () => {
     try {
       setIsSubmitting(true);
-      await reviewService.create({ ...cData, tour_id: id, rating: 5 });
-      toast.success("Review submitted successfully!");
+      await reviewService.create({
+        ...cData,
+        tour_id: id,
+        rating: cData.rating,
+      });
+      toast.success(t("tourDetail.review.success"));
+      setSubmitted(true);
+      setReviewData({ rating: 5, comment: "" });
     } catch (error) {
       toast.error(error?.response?.data?.message);
       console.log("Error: ", error);
@@ -568,8 +344,246 @@ const TourDetail = () => {
     errors: cErrors,
     handleChange: cHandleChange,
     handleSubmit: cHandleSubmit,
-    validate: cValidate,
   } = useForm(reviewData, reviewSchema, doSubmitReview);
+
+  // Helper to get dynamic stats with translations
+  const getTypeConfig = (tour) => {
+    switch (tour?.type) {
+      case "excursion":
+        return {
+          label: t("tourDetail.types.excursion"),
+          icon: "fa-compass",
+          color: "text-sky-500",
+          quickStats: [
+            {
+              icon: "fa-clock",
+              label: t("tourDetail.stats.duration"),
+              value: tour?.duration_hours
+                ? t("tourDetail.unit.hours", { count: tour?.duration_hours })
+                : "—",
+            },
+            {
+              icon: "fa-bus",
+              label: t("tourDetail.stats.departure"),
+              value: tour?.departure_time || "—",
+            },
+            {
+              icon: "fa-flag-checkered",
+              label: t("tourDetail.stats.return"),
+              value: tour?.return_time || "—",
+            },
+            {
+              icon: "fa-map-marker-alt",
+              label: t("tourDetail.stats.meetingPoint"),
+              value: tour?.meeting_point || "—",
+            },
+            {
+              icon: "fa-users",
+              label: t("tourDetail.stats.groupSize"),
+              value: tour?.max_group_size
+                ? t("tourDetail.stats.maxPeople", {
+                    count: tour?.max_group_size,
+                  })
+                : "—",
+            },
+            {
+              icon: "fa-user-tie",
+              label: t("tourDetail.stats.guide"),
+              value: tour?.guide_included
+                ? t("tourDetail.included")
+                : t("tourDetail.notIncluded"),
+            },
+          ],
+          sidebarStats: [
+            tour?.duration_hours && {
+              icon: "fa-clock",
+              label: t("tourDetail.stats.duration"),
+              value: t("tourDetail.unit.hours", {
+                count: tour?.duration_hours,
+              }),
+            },
+            tour?.departure_time && {
+              icon: "fa-bus",
+              label: t("tourDetail.stats.departure"),
+              value: tour?.departure_time,
+            },
+            tour?.return_time && {
+              icon: "fa-flag-checkered",
+              label: t("tourDetail.stats.return"),
+              value: tour?.return_time,
+            },
+            tour?.meeting_point && {
+              icon: "fa-map-marker-alt",
+              label: t("tourDetail.stats.meetingPoint"),
+              value: tour?.meeting_point,
+            },
+            tour?.guide_included !== undefined && {
+              icon: "fa-user-tie",
+              label: t("tourDetail.stats.guide"),
+              value: tour?.guide_included
+                ? t("tourDetail.included")
+                : t("tourDetail.notIncluded"),
+            },
+            tour?.max_group_size && {
+              icon: "fa-users",
+              label: t("tourDetail.stats.groupSize"),
+              value: t("tourDetail.stats.maxPeople", {
+                count: tour?.max_group_size,
+              }),
+            },
+          ].filter(Boolean),
+        };
+
+      case "activity":
+        return {
+          label: t("tourDetail.types.activity"),
+          icon: "fa-hiking",
+          color: "text-emerald-500",
+          quickStats: [
+            {
+              icon: "fa-clock",
+              label: t("tourDetail.stats.duration"),
+              value: tour?.duration_hours
+                ? t("tourDetail.unit.hours", { count: tour?.duration_hours })
+                : "—",
+            },
+            {
+              icon: "fa-mountain",
+              label: t("tourDetail.stats.difficulty"),
+              value: tour?.difficulty_level
+                ? t(`tourDetail.difficulty.${tour?.difficulty_level}`)
+                : "—",
+            },
+            {
+              icon: "fa-tools",
+              label: t("tourDetail.stats.equipment"),
+              value: tour?.equipment_included
+                ? t("tourDetail.included")
+                : t("tourDetail.notIncluded"),
+            },
+            {
+              icon: "fa-users",
+              label: t("tourDetail.stats.groupSize"),
+              value: tour?.max_group_size
+                ? t("tourDetail.stats.maxPeople", {
+                    count: tour?.max_group_size,
+                  })
+                : "—",
+            },
+            {
+              icon: "fa-tag",
+              label: t("tourDetail.stats.category"),
+              value: tour?.category || "—",
+            },
+            {
+              icon: "fa-map-marker-alt",
+              label: t("tourDetail.stats.destination"),
+              value: tour?.destination || "—",
+            },
+          ],
+          sidebarStats: [
+            tour?.duration_hours && {
+              icon: "fa-clock",
+              label: t("tourDetail.stats.duration"),
+              value: t("tourDetail.unit.hours", {
+                count: tour?.duration_hours,
+              }),
+            },
+            tour?.difficulty_level && {
+              icon: "fa-mountain",
+              label: t("tourDetail.stats.difficulty"),
+              value: t(`tourDetail.difficulty.${tour?.difficulty_level}`),
+            },
+            tour?.equipment_included !== undefined && {
+              icon: "fa-tools",
+              label: t("tourDetail.stats.equipment"),
+              value: tour?.equipment_included
+                ? t("tourDetail.included")
+                : t("tourDetail.notIncluded"),
+            },
+            tour?.max_group_size && {
+              icon: "fa-users",
+              label: t("tourDetail.stats.groupSize"),
+              value: t("tourDetail.stats.maxPeople", {
+                count: tour?.max_group_size,
+              }),
+            },
+            tour?.destination && {
+              icon: "fa-map-marker-alt",
+              label: t("tourDetail.stats.destination"),
+              value: tour?.destination,
+            },
+          ].filter(Boolean),
+        };
+
+      case "tour":
+      default:
+        return {
+          label: t("tourDetail.types.tour"),
+          icon: "fa-route",
+          color: "text-amber-500",
+          quickStats: [
+            {
+              icon: "fa-clock",
+              label: t("tourDetail.stats.duration"),
+              value: tour?.duration_days
+                ? t("tourDetail.unit.days", { count: tour?.duration_days })
+                : "—",
+            },
+            {
+              icon: "fa-users",
+              label: t("tourDetail.stats.groupSize"),
+              value: tour?.max_group_size
+                ? t("tourDetail.stats.maxPeople", {
+                    count: tour?.max_group_size,
+                  })
+                : "—",
+            },
+            {
+              icon: "fa-tag",
+              label: t("tourDetail.stats.category"),
+              value: tour?.category || "—",
+            },
+            {
+              icon: "fa-map-marker-alt",
+              label: t("tourDetail.stats.destination"),
+              value: tour?.destination || "—",
+            },
+          ],
+          sidebarStats: [
+            tour?.duration_days && {
+              icon: "fa-clock",
+              label: t("tourDetail.stats.duration"),
+              value: t("tourDetail.unit.days", { count: tour?.duration_days }),
+            },
+            tour?.max_group_size && {
+              icon: "fa-users",
+              label: t("tourDetail.stats.groupSize"),
+              value: t("tourDetail.stats.maxPeople", {
+                count: tour?.max_group_size,
+              }),
+            },
+            tour?.destination && {
+              icon: "fa-map-marker-alt",
+              label: t("tourDetail.stats.destination"),
+              value: tour?.destination,
+            },
+          ].filter(Boolean),
+        };
+    }
+  };
+
+  const typeConfig = tour ? getTypeConfig(tour) : null;
+  const priceBreakdown =
+    tour?.type === "tour" && tour?.duration_days
+      ? t("tourDetail.pricePerDay", {
+          price: Math.round(tour?.price / tour?.duration_days),
+        })
+      : tour?.type === "excursion" && tour?.duration_hours
+      ? t("tourDetail.pricePerHour", {
+          price: Math.round(tour?.price / tour?.duration_hours),
+        })
+      : null;
 
   // ── Loading ──────────────────────────────────────────────
   if (loading)
@@ -596,30 +610,22 @@ const TourDetail = () => {
       >
         <i className='fa fa-map-marked-alt text-5xl text-stone-200 mb-4' />
         <h2 className='text-xl font-bold text-stone-600 mb-2'>
-          Tour not found
+          {t("tourDetail.notFound.title")}
         </h2>
         <p className='text-stone-400 text-sm mb-6'>
-          This tour may have been removed or doesn't exist.
+          {t("tourDetail.notFound.message")}
         </p>
         <Link
           to='/tours'
           className='flex items-center gap-2 text-sm font-bold text-amber-700 bg-amber-50 border border-amber-200 px-5 py-2.5 rounded-xl hover:bg-amber-100 transition-colors'
         >
-          <i className='fa fa-arrow-left text-xs' /> Back to Tours
+          <i className='fa fa-arrow-left text-xs' />{" "}
+          {t("tourDetail.backToTours")}
         </Link>
       </div>
     );
 
-  const typeConfig = getTypeConfig(tour);
-
-  // ── Per-day price ─────────────────────────────────────────
-  const priceBreakdown =
-    tour.type === "tour" && tour.duration_days
-      ? `~$${Math.round(tour.price / tour.duration_days)}/day`
-      : tour.type === "excursion" && tour.duration_hours
-      ? `~$${Math.round(tour.price / tour.duration_hours)}/hr`
-      : null;
-
+  // ── Render ────────────────────────────────────────────────
   return (
     <div
       className='min-h-screen bg-stone-50'
@@ -627,10 +633,10 @@ const TourDetail = () => {
     >
       {/* ── HERO ────────────────────────────────────────── */}
       <div className='relative h-[65vh] overflow-hidden bg-stone-900'>
-        {tour.cover_image && (
+        {tour?.cover_image && (
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}${tour.cover_image}`}
-            alt={tour.title}
+            src={`${import.meta.env.VITE_BACKEND_URL}${tour?.cover_image}`}
+            alt={tour?.title}
             className='w-full h-full object-cover opacity-75'
           />
         )}
@@ -641,83 +647,88 @@ const TourDetail = () => {
             to='/tours'
             className='flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white bg-black/30 hover:bg-black/50 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/10 transition-all'
           >
-            <i className='fa fa-arrow-left text-xs' /> All Tours
+            <i className='fa fa-arrow-left text-xs' />{" "}
+            {t("tourDetail.allTours")}
           </Link>
         </div>
 
         <div className='absolute top-6 right-6 flex gap-2'>
-          {/* Type badge */}
           <span className='flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-sm border border-white/20'>
             <i className={`fa ${typeConfig.icon} text-[10px]`} />
             {typeConfig.label}
           </span>
-          {tour.is_hot_deal && (
+          {tour?.is_hot_deal && (
             <span className='flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-red-500 text-white shadow'>
-              <i className='fa fa-fire text-[10px]' /> Hot Deal
+              <i className='fa fa-fire text-[10px]' />{" "}
+              {t("tourDetail.badge.hotDeal")}
             </span>
           )}
-          {tour.is_featured && (
+          {tour?.is_featured && (
             <span className='flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-amber-400 text-amber-900 shadow'>
-              <i className='fa fa-star text-[10px]' /> Featured
+              <i className='fa fa-star text-[10px]' />{" "}
+              {t("tourDetail.badge.featured")}
             </span>
           )}
         </div>
 
         <div className='absolute bottom-0 left-0 right-0 px-6 pb-10 md:px-12'>
           <div className='max-w-6xl mx-auto'>
-            {tour.category && (
+            {tour?.category && (
               <span className='inline-block text-xs font-bold uppercase tracking-[0.2em] text-amber-400 mb-3'>
-                {tour.category}
+                {tour?.category}
               </span>
             )}
             <h1
               className='text-4xl md:text-6xl font-black text-white leading-tight mb-3'
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              {tour.title}
+              {tour?.title}
             </h1>
             <div className='flex flex-wrap items-center gap-4 text-sm text-white/70'>
-              {tour.destination && (
+              {tour?.destination && (
                 <span className='flex items-center gap-1.5'>
                   <i className='fa fa-map-marker-alt text-amber-400' />{" "}
-                  {tour.destination}
+                  {tour?.destination}
                 </span>
               )}
-              {/* Duration — type-aware */}
-              {tour.type === "tour" && tour.duration_days && (
+              {tour?.type === "tour" && tour?.duration_days && (
                 <span className='flex items-center gap-1.5'>
                   <i className='fa fa-clock text-amber-400' />{" "}
-                  {tour.duration_days} days
+                  {t("tourDetail.unit.days", { count: tour?.duration_days })}
                 </span>
               )}
-              {(tour.type === "excursion" || tour.type === "activity") &&
-                tour.duration_hours && (
+              {(tour?.type === "excursion" || tour?.type === "activity") &&
+                tour?.duration_hours && (
                   <span className='flex items-center gap-1.5'>
                     <i className='fa fa-clock text-amber-400' />{" "}
-                    {tour.duration_hours} hours
+                    {t("tourDetail.unit.hours", {
+                      count: tour?.duration_hours,
+                    })}
                   </span>
                 )}
-              {/* Difficulty badge for activities */}
-              {tour.type === "activity" && tour.difficulty_level && (
-                <DifficultyBadge level={tour.difficulty_level} />
+              {tour?.type === "activity" && tour?.difficulty_level && (
+                <DifficultyBadge level={tour?.difficulty_level} t={t} />
               )}
-              {/* Departure time for excursions */}
-              {tour.type === "excursion" && tour.departure_time && (
+              {tour?.type === "excursion" && tour?.departure_time && (
                 <span className='flex items-center gap-1.5'>
-                  <i className='fa fa-bus text-amber-400' /> Departs{" "}
-                  {tour.departure_time}
+                  <i className='fa fa-bus text-amber-400' />{" "}
+                  {t("tourDetail.departsAt", { time: tour?.departure_time })}
                 </span>
               )}
-              {tour.max_group_size && (
+              {tour?.max_group_size && (
                 <span className='flex items-center gap-1.5'>
-                  <i className='fa fa-users text-amber-400' /> Max{" "}
-                  {tour.max_group_size} people
+                  <i className='fa fa-users text-amber-400' />{" "}
+                  {t("tourDetail.stats.maxPeople", {
+                    count: tour?.max_group_size,
+                  })}
                 </span>
               )}
               <span className='flex items-center gap-1.5'>
                 <StarRating rating={Math.round(avgRating)} size='text-xs' />
                 <span className='text-amber-400 font-bold'>{avgRating}</span>
-                <span>({reviews?.length} reviews)</span>
+                <span>
+                  {t("tourDetail.review.count", { count: reviews?.length })}
+                </span>
               </span>
             </div>
           </div>
@@ -737,7 +748,7 @@ const TourDetail = () => {
                   : "border-transparent text-stone-400 hover:text-stone-600"
               }`}
             >
-              {tab}
+              {t(`tourDetail.tabs.${tab}`)}
             </button>
           ))}
         </div>
@@ -751,7 +762,7 @@ const TourDetail = () => {
             {/* OVERVIEW TAB */}
             {activeTab === "overview" && (
               <>
-                {/* Quick stats — dynamic per type */}
+                {/* Quick stats */}
                 <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
                   {typeConfig.quickStats.map((s) => (
                     <div
@@ -774,62 +785,64 @@ const TourDetail = () => {
                 {/* Description */}
                 <div>
                   <SectionHeading
-                    eyebrow={`About this ${tour.type}`}
+                    eyebrow={t("tourDetail.overview.eyebrow", {
+                      type: typeConfig.label,
+                    })}
                     title={
-                      tour.type === "tour"
-                        ? "Tour Overview"
-                        : tour.type === "excursion"
-                        ? "Excursion Overview"
-                        : "Activity Overview"
+                      tour?.type === "tour"
+                        ? t("tourDetail.overview.tourTitle")
+                        : tour?.type === "excursion"
+                        ? t("tourDetail.overview.excursionTitle")
+                        : t("tourDetail.overview.activityTitle")
                     }
                   />
                   <p className='text-stone-500 leading-relaxed whitespace-pre-line text-[15px]'>
-                    {tour.description || "No description available."}
+                    {tour?.description || t("tourDetail.noDescription")}
                   </p>
                 </div>
 
                 {/* Excursion-specific: logistics strip */}
-                {tour.type === "excursion" && (
+                {tour?.type === "excursion" && (
                   <div className='bg-sky-50 border border-sky-100 rounded-2xl p-6 grid grid-cols-2 md:grid-cols-3 gap-5'>
-                    {tour.departure_time && (
+                    {tour?.departure_time && (
                       <div>
                         <p className='text-xs font-bold uppercase tracking-widest text-sky-500 mb-1'>
-                          Departure
+                          {t("tourDetail.stats.departure")}
                         </p>
                         <p className='text-sm font-bold text-stone-700'>
-                          {tour.departure_time}
+                          {tour?.departure_time}
                         </p>
                       </div>
                     )}
-                    {tour.return_time && (
+                    {tour?.return_time && (
                       <div>
                         <p className='text-xs font-bold uppercase tracking-widest text-sky-500 mb-1'>
-                          Return
+                          {t("tourDetail.stats.return")}
                         </p>
                         <p className='text-sm font-bold text-stone-700'>
-                          {tour.return_time}
+                          {tour?.return_time}
                         </p>
                       </div>
                     )}
-                    {tour.meeting_point && (
+                    {tour?.meeting_point && (
                       <div>
                         <p className='text-xs font-bold uppercase tracking-widest text-sky-500 mb-1'>
-                          Meeting Point
+                          {t("tourDetail.stats.meetingPoint")}
                         </p>
                         <p className='text-sm font-bold text-stone-700'>
-                          {tour.meeting_point}
+                          {tour?.meeting_point}
                         </p>
                       </div>
                     )}
-                    {tour.guide_included !== undefined && (
+                    {tour?.guide_included !== undefined && (
                       <div>
                         <p className='text-xs font-bold uppercase tracking-widest text-sky-500 mb-1'>
-                          Guide
+                          {t("tourDetail.stats.guide")}
                         </p>
                         <p className='text-sm font-bold text-stone-700'>
-                          {tour.guide_included
-                            ? "✓ Included"
-                            : "✗ Not included"}
+                          {tour?.guide_included
+                            ? t("tourDetail.included")
+                            : t("tourDetail.notIncluded")}
                         </p>
                       </div>
                     )}
@@ -837,36 +850,36 @@ const TourDetail = () => {
                 )}
 
                 {/* Activity-specific: difficulty + equipment strip */}
-                {tour.type === "activity" && (
+                {tour?.type === "activity" && (
                   <div className='bg-emerald-50 border border-emerald-100 rounded-2xl p-6 flex flex-wrap gap-8'>
-                    {tour.difficulty_level && (
+                    {tour?.difficulty_level && (
                       <div>
                         <p className='text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2'>
-                          Difficulty
+                          {t("tourDetail.stats.difficulty")}
                         </p>
-                        <DifficultyBadge level={tour.difficulty_level} />
+                        <DifficultyBadge level={tour?.difficulty_level} t={t} />
                       </div>
                     )}
-                    {tour.equipment_included !== undefined && (
+                    {tour?.equipment_included !== undefined && (
                       <div>
                         <p className='text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2'>
-                          Equipment
+                          {t("tourDetail.stats.equipment")}
                         </p>
                         <span
                           className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border ${
-                            tour.equipment_included
+                            tour?.equipment_included
                               ? "bg-emerald-100 text-emerald-700 border-emerald-200"
                               : "bg-stone-100 text-stone-500 border-stone-200"
                           }`}
                         >
                           <i
                             className={`fa ${
-                              tour.equipment_included ? "fa-check" : "fa-times"
+                              tour?.equipment_included ? "fa-check" : "fa-times"
                             } text-[10px]`}
                           />
-                          {tour.equipment_included
-                            ? "Included"
-                            : "Not included"}
+                          {tour?.equipment_included
+                            ? t("tourDetail.included")
+                            : t("tourDetail.notIncluded")}
                         </span>
                       </div>
                     )}
@@ -877,14 +890,14 @@ const TourDetail = () => {
                 {(inclusions.length > 0 || exclusions.length > 0) && (
                   <div>
                     <SectionHeading
-                      eyebrow="What's covered"
-                      title='Inclusions & Exclusions'
+                      eyebrow={t("tourDetail.inclusions.eyebrow")}
+                      title={t("tourDetail.inclusions.title")}
                     />
                     <div className='grid md:grid-cols-2 gap-6'>
                       {inclusions.length > 0 && (
                         <div className='bg-amber-50 border border-amber-100 rounded-2xl p-6 space-y-3'>
                           <p className='text-xs font-bold uppercase tracking-widest text-amber-600 mb-4'>
-                            Included
+                            {t("tourDetail.included")}
                           </p>
                           {inclusions.map((item) => (
                             <div
@@ -902,7 +915,7 @@ const TourDetail = () => {
                       {exclusions.length > 0 && (
                         <div className='bg-stone-50 border border-stone-200 rounded-2xl p-6 space-y-3'>
                           <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-4'>
-                            Not Included
+                            {t("tourDetail.notIncluded")}
                           </p>
                           {exclusions.map((item) => (
                             <div
@@ -925,8 +938,8 @@ const TourDetail = () => {
                 {galleryImages.length > 0 && (
                   <div>
                     <SectionHeading
-                      eyebrow='Visual journey'
-                      title='Photo Gallery'
+                      eyebrow={t("tourDetail.gallery.eyebrow")}
+                      title={t("tourDetail.gallery.title")}
                     />
                     <div className='grid grid-cols-3 gap-3'>
                       {galleryImages.map((img, i) => (
@@ -942,7 +955,7 @@ const TourDetail = () => {
                         >
                           <img
                             src={renderImage(img)}
-                            alt={`Gallery ${i + 1}`}
+                            alt={t("tourDetail.gallery.alt", { number: i + 1 })}
                             className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
                           />
                           <div className='absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center'>
@@ -956,10 +969,13 @@ const TourDetail = () => {
               </>
             )}
 
-            {/* ITINERARY TAB — tours only */}
-            {activeTab === "itinerary" && tour.type === "tour" && (
+            {/* ITINERARY TAB */}
+            {activeTab === "itinerary" && tour?.type === "tour" && (
               <div>
-                <SectionHeading eyebrow='Day by day' title='Tour Itinerary' />
+                <SectionHeading
+                  eyebrow={t("tourDetail.itinerary.eyebrow")}
+                  title={t("tourDetail.itinerary.title")}
+                />
                 <div className='relative'>
                   <div className='absolute left-5 top-0 bottom-0 w-px bg-amber-100' />
                   <div className='space-y-6'>
@@ -981,7 +997,7 @@ const TourDetail = () => {
                           )}
                           <div className='p-5'>
                             <p className='text-xs font-bold uppercase tracking-widest text-amber-500 mb-1'>
-                              Day {day.day}
+                              {t("tourDetail.itinerary.day", { day: day.day })}
                             </p>
                             <h3 className='font-black text-stone-800 text-base mb-1'>
                               {day.title}
@@ -1034,7 +1050,7 @@ const TourDetail = () => {
                     </p>
                     <StarRating rating={Math.round(avgRating)} size='text-lg' />
                     <p className='text-xs text-stone-400 mt-2'>
-                      {reviews?.length} reviews
+                      {t("tourDetail.review.count", { count: reviews?.length })}
                     </p>
                   </div>
                   <div className='flex-1 w-full space-y-2'>
@@ -1065,8 +1081,8 @@ const TourDetail = () => {
                 </div>
 
                 <SectionHeading
-                  eyebrow='Traveler stories'
-                  title='Guest Reviews'
+                  eyebrow={t("tourDetail.review.eyebrow")}
+                  title={t("tourDetail.review.title")}
                 />
                 <div className='space-y-4 mb-12'>
                   {reviews?.map((r) => (
@@ -1081,10 +1097,10 @@ const TourDetail = () => {
                       className='text-xl font-black text-stone-800 mb-1'
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
-                      Share Your Experience
+                      {t("tourDetail.reviewForm.title")}
                     </h3>
                     <p className='text-sm text-stone-400 mb-6'>
-                      Help fellow travelers by leaving an honest review
+                      {t("tourDetail.reviewForm.subtitle")}
                     </p>
                     {submitted ? (
                       <div className='text-center py-10'>
@@ -1092,68 +1108,23 @@ const TourDetail = () => {
                           <i className='fa fa-check text-amber-500 text-xl' />
                         </div>
                         <p className='font-bold text-stone-700 mb-1'>
-                          Review submitted!
+                          {t("tourDetail.reviewForm.success")}
                         </p>
                         <p className='text-sm text-stone-400'>
-                          Thank you for sharing your experience.
+                          {t("tourDetail.reviewForm.thanks")}
                         </p>
                         <button
                           onClick={() => setSubmitted(false)}
                           className='mt-4 text-sm text-amber-600 hover:text-amber-700 font-semibold'
                         >
-                          Write another review
+                          {t("tourDetail.reviewForm.writeAnother")}
                         </button>
                       </div>
                     ) : (
                       <form onSubmit={cHandleSubmit} className='space-y-4'>
-                        {/*  <div className='grid md:grid-cols-2 gap-4'>
-                          <div>
-                            <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1.5'>
-                              Name *
-                            </label>
-                            {renderInput(
-                              "",
-                              "name",
-                              cData,
-                              cErrors,
-                              cHandleChange,
-                              "text"
-                            )}
-                            <input
-                              name='name'
-                              value={cData?.name}
-                              onChange={handleCommentChange}
-                              required
-                              placeholder='Your full name'
-                              className='w-full px-4 py-3 text-sm bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/15 transition-all placeholder-stone-300 text-stone-700'
-                            />
-                          </div>
-                          <div>
-                            <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1.5'>
-                              Email *
-                            </label>
-                            {renderInput(
-                              "",
-                              "email",
-                              cData,
-                              cErrors,
-                              cHandleChange,
-                              "email"
-                            )}
-                            <input
-                              name='email'
-                              value={cData?.email}
-                              onChange={handleCommentChange}
-                              required
-                              type='email'
-                              placeholder='your@email.com'
-                              className='w-full px-4 py-3 text-sm bg-stone-50 border border-stone-200 rounded-xl outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/15 transition-all placeholder-stone-300 text-stone-700'
-                            />
-                          </div>
-                        </div> */}
                         <div>
                           <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-2'>
-                            Your Rating *
+                            {t("tourDetail.reviewForm.ratingLabel")} *
                           </label>
                           <div className='flex items-center gap-1'>
                             {[1, 2, 3, 4, 5].map((s) => (
@@ -1175,22 +1146,16 @@ const TourDetail = () => {
                               </button>
                             ))}
                             <span className='ml-2 text-sm font-semibold text-stone-500'>
-                              {
-                                [
-                                  "",
-                                  "Poor",
-                                  "Fair",
-                                  "Good",
-                                  "Very Good",
-                                  "Excellent",
-                                ][cData?.rating]
-                              }
+                              {cData?.rating &&
+                                t(
+                                  `tourDetail.reviewForm.ratingLabels.${cData.rating}`
+                                )}
                             </span>
                           </div>
                         </div>
                         <div>
                           <label className='block text-xs font-bold uppercase tracking-widest text-stone-400 mb-1.5'>
-                            Review *
+                            {t("tourDetail.reviewForm.commentLabel")} *
                           </label>
                           {renderTextarea(
                             "",
@@ -1202,28 +1167,13 @@ const TourDetail = () => {
                           )}
                         </div>
                         {renderButton(
-                          "Submit Review",
+                          t("tourDetail.reviewForm.submit"),
                           "submit",
-                          cValidate,
+                          () => true,
                           isSubmitting,
                           <i className='fa fa-paper-plane text-xs' />,
                           "submit"
                         )}
-                        {/*                         <button
-                          type='submit'
-                          disabled={isSubmitting}
-                          className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 transition-colors px-7 py-3 rounded-xl shadow-lg shadow-amber-200'
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <i className='fa fa-spinner fa-spin text-xs' />{" "}
-                              Submitting...
-                            </>
-                          ) : (
-                            <>Submit Review</>
-                          )}
-                        </button>
- */}{" "}
                       </form>
                     )}
                   </div>
@@ -1235,22 +1185,15 @@ const TourDetail = () => {
             {activeTab === "map" && (
               <div>
                 <SectionHeading
-                  eyebrow="Where you're going"
-                  title='Tour Location'
+                  eyebrow={t("tourDetail.map.eyebrow")}
+                  title={t("tourDetail.map.title")}
                 />
                 <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
-                  <iframe
-                    title='Tour location'
-                    width='100%'
-                    height='420'
-                    style={{ border: 0 }}
-                    loading='lazy'
-                    allowFullScreen
-                    src={`https://maps.google.com/maps?q=${encodeURIComponent(
-                      (tour.destination || tour.meeting_point || "") +
-                        ", Morocco"
-                    )}&output=embed`}
-                  />
+                  {tour?.lat && tour?.lng && (
+                    <TourLocationViewer
+                      coordinates={{ lng: tour?.lng, lat: tour?.lat }}
+                    />
+                  )}
                 </div>
               </div>
             )}
@@ -1259,28 +1202,29 @@ const TourDetail = () => {
           {/* ── RIGHT — STICKY BOOKING ───────────────── */}
           <div className='w-full lg:w-80 shrink-0'>
             <div className='sticky top-[65px] space-y-4'>
-              {
-                <BookingForm
-                  tour={tour}
-                  data={data}
-                  errors={errors}
-                  handleChange={handleChange}
-                  handleSubmit={handleSubmit}
-                  validate={validate}
-                  priceBreakdown={priceBreakdown}
-                  typeConfig={typeConfig}
-                  isSubmitting={isSubmitting}
-                />
-              }
+              <BookingForm
+                tour={tour}
+                data={data}
+                errors={errors}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                validate={validate}
+                priceBreakdown={priceBreakdown}
+                typeConfig={typeConfig}
+                isSubmitting={isSubmitting}
+              />
               {/* Trust badges */}
               <div className='bg-white rounded-2xl border border-stone-100 p-5 space-y-3'>
                 {[
                   {
                     icon: "fa-shield-alt",
-                    text: "Free cancellation up to 48h",
+                    text: t("tourDetail.trust.freeCancellation"),
                   },
-                  { icon: "fa-headset", text: "24/7 customer support" },
-                  { icon: "fa-certificate", text: "Licensed & insured guides" },
+                  { icon: "fa-headset", text: t("tourDetail.trust.support") },
+                  {
+                    icon: "fa-certificate",
+                    text: t("tourDetail.trust.guides"),
+                  },
                 ].map((b) => (
                   <div
                     key={b.text}
@@ -1297,7 +1241,7 @@ const TourDetail = () => {
               {/* Share */}
               <div className='bg-white rounded-2xl border border-stone-100 p-5'>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-3'>
-                  Share this {tour.type}
+                  {t("tourDetail.share.title", { type: typeConfig.label })}
                 </p>
                 <div className='flex gap-2'>
                   {[
@@ -1340,19 +1284,20 @@ const TourDetail = () => {
           <div className='mt-20'>
             <div className='flex items-end justify-between mb-8'>
               <SectionHeading
-                eyebrow='You might also like'
-                title='Related Tours'
+                eyebrow={t("tourDetail.related.eyebrow")}
+                title={t("tourDetail.related.title")}
               />
               <Link
-                to={`/tours?category=${tour.category}`}
+                to={`/tours?category=${tour?.category}`}
                 className='flex items-center gap-1.5 text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors mb-1'
               >
-                View all <i className='fa fa-arrow-right text-xs' />
+                {t("tourDetail.related.viewAll")}{" "}
+                <i className='fa fa-arrow-right text-xs' />
               </Link>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-              {relatedTours.map((t) => (
-                <RelatedCard key={t.id} tour={t} />
+              {relatedTours.map((relatedTour) => (
+                <RelatedCard key={relatedTour.id} tour={relatedTour} t={t} />
               ))}
             </div>
           </div>
@@ -1370,7 +1315,7 @@ const TourDetail = () => {
           </button>
           <img
             src={renderImage(lightbox)}
-            alt='Gallery'
+            alt={t("tourDetail.gallery.lightboxAlt")}
             className='max-w-full max-h-[90vh] rounded-2xl object-contain'
             onClick={(e) => e.stopPropagation()}
           />

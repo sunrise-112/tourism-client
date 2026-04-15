@@ -1124,26 +1124,32 @@
     }
   },
   "home": {
-    "badge": {
-      "hotDeal": "Hot Deal",
-      "featured": "Featured"
+    "hero": {
+      "eyebrow": "Explore Morocco",
+      "titleLine1": "Discover the Magic",
+      "titleLine2": "of Morocco",
+      "titleLine3": "",
+      "subtitle": "Embark on an unforgettable journey through Morocco's stunning landscapes and rich heritage",
+      "searchPlaceholder": "Where do you want to go?",
+      "searchButton": "Search",
+      "scroll": "Scroll"
     },
-    "tourCard": {
-      "durationDays_one": "{{count}} day",
-      "durationDays_other": "{{count}} days",
-      "from": "From",
-      "explore": "Explore"
+    "quickTags": {
+      "sahara": "Sahara Desert",
+      "marrakech": "Marrakech",
+      "atlasMountains": "Atlas Mountains",
+      "coastalTours": "Coastal Tours"
     },
     "stats": {
       "destinations": "Destinations",
       "avgRating": "Avg Rating",
       "happyTravelers": "Happy Travelers",
-      "experience": "Experience"
+      "experience": "Years Experience"
     },
     "categories": {
-      "eyebrow": "Explore by type",
-      "title": "Browse by Category",
-      "subtitle": "Find the perfect experience for your travel style",
+      "eyebrow": "Explore by Category",
+      "title": "Choose Your Adventure",
+      "subtitle": "Find the perfect activity that matches your travel style",
       "adventure": "Adventure",
       "beach": "Beach",
       "cultural": "Cultural",
@@ -1152,40 +1158,54 @@
       "wellness": "Wellness"
     },
     "featured": {
-      "eyebrow": "Handpicked for you",
+      "eyebrow": "Handpicked for You",
       "title": "Featured Tours",
-      "subtitle": "Experiences our travelers love most",
-      "viewAll": "View all",
-      "empty": "No featured tours available yet"
+      "subtitle": "Most sought-after travel experiences",
+      "viewAll": "View All",
+      "empty": "No featured tours at the moment"
     },
     "hotDeals": {
-      "eyebrow": "Limited time",
+      "eyebrow": "Limited Offers",
       "title": "Hot Deals",
-      "subtitle": "Grab these before they're gone",
-      "viewAll": "View all"
+      "subtitle": "Book before they're gone",
+      "viewAll": "View All"
     },
-    "hero": {
-      "eyebrow": "Discover Morocco & Beyond",
-      "titleLine1": "Your Next",
-      "titleLine2": "Adventure",
-      "titleLine3": "Awaits",
-      "subtitle": "Handcrafted tours through ancient medinas, golden deserts, and dramatic mountain passes — designed for the curious traveler.",
-      "searchPlaceholder": "Where do you want to go?",
-      "searchButton": "Search",
-      "scroll": "Scroll"
+    "section": {
+      "viewAll": "View All"
     },
-    "quickTags": {
-      "sahara": "Sahara",
-      "marrakech": "Marrakech",
-      "atlasMountains": "Atlas Mountains",
-      "coastalTours": "Coastal Tours"
+    "toursSection": {
+      "eyebrow": "Tours",
+      "title": "Popular Tours"
+    },
+    "excursionsSection": {
+      "eyebrow": "Day Trips",
+      "title": "Unforgettable Excursions"
+    },
+    "activitiesSection": {
+      "eyebrow": "Activities",
+      "title": "Things to Do"
     },
     "cta": {
-      "eyebrow": "Start your journey",
-      "title": "Ready to Explore?",
-      "subtitle": "Join thousands of happy travelers and start planning your dream trip today.",
+      "eyebrow": "Start Your Adventure",
+      "title": "Ready to Explore Morocco?",
+      "subtitle": "Get in touch with our travel experts and plan your dream trip today",
       "browseButton": "Browse Tours",
       "contactButton": "Contact Us"
+    },
+    "badge": {
+      "hotDeal": "Hot Deal",
+      "featured": "Featured"
+    },
+    "tourCard": {
+      "from": "From",
+      "explore": "Explore",
+      "durationDays_one": "{{count}} day",
+      "durationDays_other": "{{count}} days",
+      "type": {
+        "tour": "Tour",
+        "excursion": "Excursion",
+        "activity": "Activity"
+      }
     }
   },
   "footer": {
@@ -1602,6 +1622,129 @@
       "failedToLoad": "Failed to load agency settings.",
       "fetchFailed": "Error fetching agency settings",
       "reverseGeocodeFailed": "Failed to get address from coordinates"
+    }
+  },
+  "tourDetail": {
+    "allTours": "All Tours",
+    "backToTours": "Back to Tours",
+    "notFound": {
+      "title": "Tour not found",
+      "message": "This tour may have been removed or doesn't exist."
+    },
+    "badge": {
+      "hotDeal": "Hot Deal",
+      "featured": "Featured"
+    },
+    "types": {
+      "tour": "Tour",
+      "excursion": "Excursion",
+      "activity": "Activity"
+    },
+    "unit": {
+      "days_one": "{{count}} day",
+      "days_other": "{{count}} days",
+      "hours_one": "{{count}} hour",
+      "hours_other": "{{count}} hours"
+    },
+    "stats": {
+      "duration": "Duration",
+      "departure": "Departure",
+      "return": "Return",
+      "meetingPoint": "Meeting Point",
+      "guide": "Guide",
+      "groupSize": "Group Size",
+      "maxPeople": "Max {{count}} people",
+      "difficulty": "Difficulty",
+      "equipment": "Equipment",
+      "category": "Category",
+      "destination": "Destination"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "moderate": "Moderate",
+      "hard": "Hard",
+      "expert": "Expert"
+    },
+    "included": "Included",
+    "notIncluded": "Not included",
+    "overview": {
+      "eyebrow": "About this {{type}}",
+      "tourTitle": "Tour Overview",
+      "excursionTitle": "Excursion Overview",
+      "activityTitle": "Activity Overview"
+    },
+    "noDescription": "No description available.",
+    "inclusions": {
+      "eyebrow": "What's covered",
+      "title": "Inclusions & Exclusions"
+    },
+    "gallery": {
+      "eyebrow": "Visual journey",
+      "title": "Photo Gallery",
+      "alt": "Gallery image {{number}}",
+      "lightboxAlt": "Expanded image"
+    },
+    "itinerary": {
+      "eyebrow": "Day by day",
+      "title": "Tour Itinerary",
+      "day": "Day {{day}}"
+    },
+    "review": {
+      "eyebrow": "Traveler stories",
+      "title": "Guest Reviews",
+      "count_zero": "{{count}} reviews",
+      "count_one": "{{count}} review",
+      "count_other": "{{count}} reviews",
+      "success": "Review submitted!"
+    },
+    "reviewForm": {
+      "title": "Share Your Experience",
+      "subtitle": "Help fellow travelers by leaving an honest review",
+      "ratingLabel": "Your Rating *",
+      "commentLabel": "Review *",
+      "submit": "Submit Review",
+      "success": "Review submitted!",
+      "thanks": "Thank you for sharing your experience.",
+      "writeAnother": "Write another review",
+      "ratingLabels": {
+        "1": "Poor",
+        "2": "Fair",
+        "3": "Good",
+        "4": "Very Good",
+        "5": "Excellent"
+      }
+    },
+    "map": {
+      "eyebrow": "Where you're going",
+      "title": "Tour Location"
+    },
+    "trust": {
+      "freeCancellation": "Free cancellation up to 48h",
+      "support": "24/7 customer support",
+      "guides": "Licensed & insured guides"
+    },
+    "share": {
+      "title": "Share this {{type}}"
+    },
+    "related": {
+      "eyebrow": "You might also like",
+      "title": "Related Tours",
+      "viewAll": "View all"
+    },
+    "relatedCard": {
+      "view": "View"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "itinerary": "Itinerary",
+      "reviews": "Reviews",
+      "map": "Map"
+    },
+    "pricePerDay": "~${{price}}/day",
+    "pricePerHour": "~${{price}}/hr",
+    "departsAt": "Departs at {{time}}",
+    "errors": {
+      "maxGroup": "Number of people must be less than or equal to {{max}}"
     }
   }
 }
