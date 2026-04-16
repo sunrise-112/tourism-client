@@ -941,17 +941,14 @@ const TourDetail = () => {
                       eyebrow={t("tourDetail.gallery.eyebrow")}
                       title={t("tourDetail.gallery.title")}
                     />
-                    <div className='grid grid-cols-3 gap-3'>
+                    {/* Responsive grid – 2 columns on mobile, 3 on desktop, first image spans 2 cols on desktop */}
+                    <div className='grid grid-cols-2 md:grid-cols-3 gap-3'>
                       {galleryImages.map((img, i) => (
                         <button
                           key={i}
                           onClick={() => setLightbox(img)}
                           className={`relative overflow-hidden rounded-2xl bg-stone-100 group
-                            ${
-                              i === 0
-                                ? "col-span-2 row-span-2 h-64"
-                                : "h-[calc(8rem-6px)]"
-                            }`}
+            ${i === 0 ? "col-span-2 row-span-2 h-48 md:h-64" : "h-32 md:h-40"}`}
                         >
                           <img
                             src={renderImage(img)}
@@ -1247,32 +1244,68 @@ const TourDetail = () => {
                   {[
                     {
                       icon: "fa-facebook-f",
+                      name: "facebook",
                       color:
                         "hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200",
+                      shareUrl: (url, title) =>
+                        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                          url
+                        )}`,
                     },
                     {
                       icon: "fa-twitter",
+                      name: "twitter",
                       color:
                         "hover:bg-sky-50 hover:text-sky-500 hover:border-sky-200",
+                      shareUrl: (url, title) =>
+                        `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                          title
+                        )}&url=${encodeURIComponent(url)}`,
                     },
                     {
                       icon: "fa-whatsapp",
+                      name: "whatsapp",
                       color:
                         "hover:bg-green-50 hover:text-green-600 hover:border-green-200",
+                      shareUrl: (url, title) =>
+                        `https://wa.me/?text=${encodeURIComponent(
+                          title + " " + url
+                        )}`,
                     },
                     {
                       icon: "fa-link",
+                      name: "copy",
                       color:
                         "hover:bg-amber-50 hover:text-amber-600 hover:border-amber-200",
                     },
-                  ].map((s) => (
-                    <button
-                      key={s.icon}
-                      className={`flex-1 py-2 rounded-xl border border-stone-200 text-stone-400 text-sm transition-all ${s.color}`}
-                    >
-                      <i className={`fab ${s.icon}`} />
-                    </button>
-                  ))}
+                  ].map((s) => {
+                    const handleShare = () => {
+                      if (s.name === "copy") {
+                        navigator.clipboard.writeText(window.location.href);
+                        // Optional: show a toast or temporary feedback
+                        alert(
+                          t("tourDetail.share.linkCopied") || "Link copied!"
+                        );
+                      } else {
+                        const shareWindow = window.open(
+                          s.shareUrl(window.location.href, document.title),
+                          "_blank",
+                          "width=600,height=400"
+                        );
+                        if (shareWindow) shareWindow.focus();
+                      }
+                    };
+
+                    return (
+                      <button
+                        key={s.icon}
+                        onClick={handleShare}
+                        className={`flex-1 py-2 rounded-xl border border-stone-200 text-stone-400 text-sm transition-all ${s.color}`}
+                      >
+                        <i className={`fab ${s.icon}`} />
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>

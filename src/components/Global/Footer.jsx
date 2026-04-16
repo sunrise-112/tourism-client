@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+import settingsService from "../../services/adminSettings";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -36,19 +38,60 @@ const Footer = () => {
     ],
   };
 
-  const socials = [
-    { icon: "fa-facebook-f", href: "#", labelKey: "footer.socials.facebook" },
-    { icon: "fa-instagram", href: "#", labelKey: "footer.socials.instagram" },
-    { icon: "fa-twitter", href: "#", labelKey: "footer.socials.twitter" },
-    { icon: "fa-youtube", href: "#", labelKey: "footer.socials.youtube" },
+  // API state (initialized as null, not array)
+  const [companyInfo, setCompanyInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const data = await settingsService.get();
+        setCompanyInfo(data);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+    fetchSettings();
+  }, []);
+
+  // Build contact fields from API data
+  const contactFields = [
+    {
+      icon: "fa-map-marker-alt",
+      value: companyInfo?.address,
+    },
+    {
+      icon: "fa-phone",
+      value: companyInfo?.company_phone,
+    },
+    {
+      icon: "fa-clock",
+      value: companyInfo?.opening_hours,
+    },
   ];
 
-  const contacts = [
-    { icon: "fa-map-marker-alt", textKey: "footer.contacts.address" },
-    { icon: "fa-phone", textKey: "footer.contacts.phone" },
-    { icon: "fa-envelope", textKey: "footer.contacts.email" },
-    { icon: "fa-clock", textKey: "footer.contacts.hours" },
-  ];
+  // Build social links from API data (filter out empty URLs)
+  const socialLinks = [
+    {
+      icon: "fa-facebook-f",
+      url: companyInfo?.facebook_url,
+      labelKey: "footer.socials.facebook",
+    },
+    {
+      icon: "fa-instagram",
+      url: companyInfo?.instagram_url,
+      labelKey: "footer.socials.instagram",
+    },
+    {
+      icon: "fa-twitter",
+      url: companyInfo?.twitter_url,
+      labelKey: "footer.socials.twitter",
+    },
+    {
+      icon: "fa-youtube",
+      url: companyInfo?.youtube_url,
+      labelKey: "footer.socials.youtube",
+    },
+  ].filter((item) => item.url && item.url.trim() !== "");
 
   return (
     <footer className='bg-base-100 border-t border-base-200'>
@@ -65,7 +108,7 @@ const Footer = () => {
               <i className='fa fa-globe text-black text-sm' />
             </div>
             <div className='text-black'>
-              {import.meta.env.VITE_COMPANY || "TourApp"}
+              {import.meta.env.VITE_COMPANY || companyInfo?.company_name}
             </div>
           </Link>
 
@@ -73,36 +116,43 @@ const Footer = () => {
             {t("footer.brand.description")}
           </p>
 
-          {/* Contact info */}
+          {/* Contact info - dynamic from API */}
           <ul className='space-y-2.5'>
-            {contacts.map((c) => (
+            {contactFields.map((field) => (
               <li
-                key={c.textKey}
+                key={field.labelKey}
                 className='flex items-start gap-3 text-sm text-base-content/60'
               >
                 <i
-                  className={`fa ${c.icon} text-accent mt-0.5 w-4 text-center flex-shrink-0`}
+                  className={`fa ${field.icon} text-accent mt-0.5 w-4 text-center flex-shrink-0`}
                 />
-                <span>{t(c.textKey)}</span>
+                <span>
+                  <span className='font-medium'>{t(field.labelKey)}</span>{" "}
+                  {field.value || "-"}
+                </span>
               </li>
             ))}
           </ul>
 
-          {/* Socials */}
-          <div className='flex items-center gap-2 pt-1'>
-            {socials.map((s) => (
-              <a
-                key={s.labelKey}
-                href={s.href}
-                aria-label={t(s.labelKey)}
-                className='w-9 h-9 rounded-xl border border-base-300 flex items-center justify-center
-                  text-base-content/40 hover:text-accent hover:border-accent
-                  transition-colors duration-200'
-              >
-                <i className={`fab ${s.icon} text-sm`} />
-              </a>
-            ))}
-          </div>
+          {/* Socials - dynamic from API */}
+          {socialLinks.length > 0 && (
+            <div className='flex items-center gap-2 pt-1'>
+              {socialLinks.map((s) => (
+                <a
+                  key={s.labelKey}
+                  href={s.url}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  aria-label={t(s.labelKey)}
+                  className='w-9 h-9 rounded-xl border border-base-300 flex items-center justify-center
+                    text-base-content/40 hover:text-accent hover:border-accent
+                    transition-colors duration-200'
+                >
+                  <i className={`fab ${s.icon} text-sm`} />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Link columns */}
