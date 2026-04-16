@@ -48,6 +48,7 @@ const TextArea = ({
           placeholder={placeholder}
           required={required}
           rows={rows}
+          
           className={`
             w-full rounded-lg text-sm
             bg-white-900 

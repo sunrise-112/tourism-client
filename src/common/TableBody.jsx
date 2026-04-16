@@ -52,7 +52,7 @@ const TableBody = ({ items, columns }) => {
           {columns.map((column, colIndex) => (
             <td
               key={column.path || column.key || colIndex}
-              className='px-4 py-3 text-sm border border-gray-200 text-gray-700 whitespace-nowrap'
+              className='px-4 py-3 text-sm  text-gray-700 whitespace-nowrap'
             >
               {renderCell(item, column)}
             </td>

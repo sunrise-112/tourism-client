@@ -56,6 +56,8 @@ import UserPreview from "./pages/admin/UserPreview";
 import ManageNotifications from "./pages/admin/notifications/ManageNotifications";
 import Settings from "./pages/settings/Settings";
 import ManageInquiries from "./pages/admin/ManageInquiries";
+import TermsOfService from "./components/Global/TermsOfService";
+import PrivacyPolicy from "./components/Global/PrivacyPolicy";
 
 /* 
 
@@ -107,6 +109,9 @@ const App = () => {
       <Routes>
         {/* ─── Public ────────────────────────────────────── */}
         <Route element={<PublicLayout />}>
+          <Route path='/' element={<Home />} />
+          <Route path='/terms' element={<TermsOfService />} />
+          <Route path='/privacy' element={<PrivacyPolicy />} />
           <Route path='/' element={<Home />} />
           <Route path='/tours' element={<ToursList />} />
           <Route path='/tours/:id' element={<TourDetail />} />

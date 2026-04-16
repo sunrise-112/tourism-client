@@ -96,8 +96,9 @@ export const renderTextarea = (
   errors,
   handleChange,
   type,
+  rows,
   selected,
-  placeholder, 
+  placeholder,
   icon,
   required
 ) => {
@@ -112,6 +113,7 @@ export const renderTextarea = (
       type={type}
       selected={selected}
       icon={icon}
+      rows={rows}
       required={required}
     />
   );

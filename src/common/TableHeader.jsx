@@ -76,8 +76,8 @@ const TableHeader = ({
           <th
             key={column.path || column.key || index}
             onClick={() => column.path && onSort?.(column)}
-            className={`border border-gray-200
-              px-4 py-3 text-xs font-semibold text-base-content/60 uppercase tracking-wider
+            className={`
+              px-4 py-3 text-xs uppercase tracking-wider
               whitespace-nowrap select-none
               ${
                 column.path && onSort

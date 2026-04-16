@@ -8,7 +8,11 @@ import role from "../../constants/role";
 import LocationPicker from "../../components/LocationPicker";
 import Joi from "joi-browser";
 import useForm from "../../hooks/useForm";
-import { renderButton, renderInput } from "../../utils/formRenders";
+import {
+  renderButton,
+  renderInput,
+  renderTextarea,
+} from "../../utils/formRenders";
 import LocationViewer from "../../components/LocationViewer";
 
 // ─── primitives ───────────────────────────────────────────────────────────────
@@ -136,6 +140,8 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
     instagram_url: "",
     youtube_url: "",
     twitter_url: "",
+    privacy_policy: "",
+    terms_of_service: "",
   });
 
   const [darkMode, setDarkMode] = useState(() => {
@@ -161,6 +167,14 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
     instagram_url: Joi.string().uri().max(255).allow(null, "").optional(),
     youtube_url: Joi.string().uri().max(255).allow(null, "").optional(),
     twitter_url: Joi.string().uri().max(255).allow(null, "").optional(),
+    privacy_policy: Joi.string()
+      .allow(null, "")
+      .optional()
+      .label("Privacy Policy"),
+    terms_of_service: Joi.string()
+      .allow(null, "")
+      .optional()
+      .label("Terms of Service"),
   };
 
   useEffect(() => {
@@ -180,6 +194,8 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
           instagram_url: response.instagram_url || "",
           youtube_url: response.youtube_url || "",
           twitter_url: response.twitter_url || "",
+          privacy_policy: response.privacy_policy || "",
+          terms_of_service: response.terms_of_service || "",
         });
         console.log("Response: ", response);
       } catch (error) {
@@ -233,7 +249,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
     >
       <div className='space-y-6'>
         {/* Dark mode toggle */}
-        <ToggleRow
+        {/*         <ToggleRow
           icon='fa-moon'
           label={t("settings.general.darkModeLabel", "Dark Mode")}
           desc={t(
@@ -244,7 +260,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
           onChange={setDarkMode}
           color='bg-indigo-400'
           saving={false}
-        />
+        /> */}
 
         {/* User information card */}
         <div className='rounded-xl border border-stone-200 bg-white p-4'>
@@ -361,8 +377,8 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                     )}
                   </div>
                 </div>
-                )}
-              <LocationViewer/>
+              )}
+              <LocationViewer />
             </div>
           ) : (
             <form
@@ -426,6 +442,24 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                   data,
                   errors,
                   handleChange
+                )}
+                {renderTextarea(
+                  "Privacy Policy",
+                  "privacy_policy",
+                  data,
+                  errors,
+                  handleChange,
+                  "text",
+                  5
+                )}
+                {renderTextarea(
+                  "Terms of service",
+                  "terms_of_service",
+                  data,
+                  errors,
+                  handleChange,
+                  "text",
+                  5
                 )}
               </div>
 

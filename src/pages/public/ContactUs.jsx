@@ -13,6 +13,7 @@ import {
   renderButton,
   renderInput,
   renderSelect,
+  renderTextarea,
 } from "../../utils/formRenders";
 
 // Hooks
@@ -355,13 +356,14 @@ const ContactUs = () => {
                         )}
                       </div>
 
-                      {renderInput(
+                      {renderTextarea(
                         t("contactUs.form.message"),
                         "message",
                         data,
                         errors,
                         handleChange,
-                        "textarea"
+                        "textarea",
+                        5
                       )}
 
                       {renderButton(
