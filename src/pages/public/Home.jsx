@@ -1,36 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import tourService from "../../services/tourService";
 
-// ─── Hero Carousel Data (Moroccan Tourism) ──────────────────
-const heroSlides = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1592172578991-51bac865e437?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    alt: "Merzouga Sahara desert dunes, Morocco",
-  },
-  {
-    image:
-      "https://plus.unsplash.com/premium_photo-1761815601999-dff87de57763?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    alt: "Merzouga Sahara desert dunes, Morocco",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1569566658541-4c75a5ea0540?q=80&w=874&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    alt: "Merzouga Sahara desert dunes, Morocco",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1569383746724-6f1b882b8f46?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    alt: "Merzouga Sahara desert dunes, Morocco",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1534681866137-827460962827?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    alt: "Merzouga Sahara desert dunes, Morocco",
-  },
-];
+// ─── YouTube video configuration ─────────────────────────────
+const VIDEO_ID = "A5hYqA6-8_I";
+const LOOP_START = 5; // seconds
+const LOOP_END = 30; // seconds
+
 // ─── Stats ────────────────────────────────────────────────────
 const stats = [
   { value: "120+", labelKey: "home.stats.destinations" },
@@ -79,7 +56,7 @@ const categories = [
   },
 ];
 
-// ─── Tour Card (extended with type badge) ───────────────────
+// ─── Tour Card ───────────────────────────────────────────────
 const TourCard = ({ tour, t }) => {
   const typeLabelKey = tour.type
     ? `home.tourCard.type.${tour.type.toLowerCase()}`
@@ -96,7 +73,6 @@ const TourCard = ({ tour, t }) => {
         hover:shadow-2xl hover:shadow-amber-900/10 hover:-translate-y-1.5 transition-all duration-400'
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
-      {/* Image */}
       <div className='relative h-56 overflow-hidden bg-stone-100'>
         {tour.cover_image ? (
           <img
@@ -110,10 +86,8 @@ const TourCard = ({ tour, t }) => {
           </div>
         )}
 
-        {/* Gradient overlay */}
         <div className='absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent' />
 
-        {/* Badges (hot deal, featured, type) */}
         <div className='absolute top-3 left-3 flex gap-1.5'>
           {tour.is_hot_deal && (
             <span className='flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-red-500 text-white shadow-sm'>
@@ -133,14 +107,12 @@ const TourCard = ({ tour, t }) => {
           )}
         </div>
 
-        {/* Duration pill */}
         <div className='absolute bottom-3 right-3 bg-black/50 text-white text-xs font-medium px-2.5 py-1 rounded-full backdrop-blur-sm flex items-center gap-1'>
           <i className='fa fa-clock text-[10px]' />
           {t("home.tourCard.durationDays", { count: tour.duration_days })}
         </div>
       </div>
 
-      {/* Content */}
       <div className='p-5'>
         <p className='text-xs text-amber-600 font-semibold flex items-center gap-1 mb-1.5 uppercase tracking-wide'>
           <i className='fa fa-map-marker-alt' />
@@ -212,8 +184,68 @@ const Home = () => {
   const [activities, setActivities] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const playerRef = useRef(null);
+  const intervalRef = useRef(null);
 
+  // ─── YouTube Player API initialization ─────────────────────
+  useEffect(() => {
+    // Load YouTube IFrame API script
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Global callback when API is ready
+    window.onYouTubeIframeAPIReady = () => {
+      playerRef.current = new window.YT.Player("youtube-player", {
+        videoId: VIDEO_ID,
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          controls: 0,
+          modestbranding: 1,
+          loop: 0, // We handle looping manually
+          playlist: VIDEO_ID,
+          start: LOOP_START,
+          playsinline: 1,
+          rel: 0,
+          showinfo: 0,
+        },
+        events: {
+          onReady: (event) => {
+            event.target.playVideo();
+            // Start a timeupdate check every 250ms
+            intervalRef.current = setInterval(() => {
+              if (playerRef.current && playerRef.current.getCurrentTime) {
+                const currentTime = playerRef.current.getCurrentTime();
+                if (currentTime >= LOOP_END) {
+                  playerRef.current.seekTo(LOOP_START, true);
+                }
+              }
+            }, 250);
+          },
+          onStateChange: (event) => {
+            // If video ends (state = 0) or buffering, ensure it stays within loop
+            if (event.data === window.YT.PlayerState.ENDED) {
+              playerRef.current.seekTo(LOOP_START, true);
+              playerRef.current.playVideo();
+            }
+          },
+        },
+      });
+    };
+
+    return () => {
+      // Cleanup interval and player
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (playerRef.current && playerRef.current.destroy) {
+        playerRef.current.destroy();
+      }
+      delete window.onYouTubeIframeAPIReady;
+    };
+  }, []);
+
+  // ─── Fetch tours data ─────────────────────────────────────
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -238,14 +270,6 @@ const Home = () => {
       }
     };
     fetchData();
-  }, []);
-
-  // Auto‑slide for hero carousel
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(interval);
   }, []);
 
   const handleSearch = (e) => {
@@ -306,23 +330,23 @@ const Home = () => {
       className='min-h-screen bg-stone-50'
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
-      {/* ── HERO with Carousel (100vh) ─────────────────────────── */}
+      {/* ── HERO with YouTube Looping Video Background ─────────── */}
       <section className='relative h-screen flex items-center justify-center overflow-hidden'>
-        {heroSlides.map((slide, idx) => (
-          <div
-            key={idx}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              idx === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
-          >
+        {/* Video container */}
+        <div className='absolute inset-0 w-full h-full z-0'>
+          <div className='relative w-full h-full overflow-hidden'>
             <div
-              className='absolute inset-0 bg-cover bg-center'
-              style={{ backgroundImage: `url(${slide.image})` }}
-            />
-            <div className='absolute inset-0 bg-black/50' />
+              id='youtube-player'
+              className='absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2'
+              style={{ pointerEvents: "none" }}
+            ></div>
           </div>
-        ))}
+        </div>
 
+        {/* Dark overlay for readability */}
+        <div className='absolute inset-0 bg-black/50 z-5' />
+
+        {/* Hero content */}
         <div className='relative z-10 max-w-5xl mx-auto px-6 text-center'>
           <div className='inline-flex items-center gap-2 bg-amber-400/10 text-amber-300 text-xs font-semibold px-5 py-2.5 rounded-full border border-amber-400/20 mb-8 backdrop-blur-sm'>
             <i className='fa fa-globe-africa' />
@@ -386,21 +410,7 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Carousel dots */}
-        <div className='absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20'>
-          {heroSlides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentSlide(idx)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                idx === currentSlide
-                  ? "bg-amber-400 w-6"
-                  : "bg-white/50 hover:bg-white/80"
-              }`}
-            />
-          ))}
-        </div>
-
+        {/* Scroll indicator */}
         <div className='absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-stone-300 animate-bounce pointer-events-none z-10'>
           <span className='text-xs tracking-widest uppercase'>
             {t("home.hero.scroll")}

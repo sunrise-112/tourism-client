@@ -51,12 +51,12 @@ const update = async (id, data) => {
 };
 
 const markRead = async (id) => {
-  const response = await http.patch(`${SHARED}/${id}/read`);
+  const response = await http.put(`${SHARED}/${id}/read`);
   return response.data.data;
 };
 
 const markAllRead = async () => {
-  await http.patch(`${SHARED}/read-all`);
+  await http.put(`${SHARED}/read-all`);
 };
 
 const deleteOne = async (id) => {

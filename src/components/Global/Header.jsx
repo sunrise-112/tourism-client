@@ -75,9 +75,12 @@ const Header = ({
   useEffect(() => {
     const fetchNotifs = async () => {
       try {
+        const currentUser = userService.getCurrentUser();
+
         const notifs = await notificationService.getAll({
           is_read: false,
           limit: 6,
+          ...(currentUser?.role === role.ADMIN && { user_id: currentUser?.id }),
         });
         console.log("Notifs: ", notifs?.data);
         setNotifs(notifs?.data);

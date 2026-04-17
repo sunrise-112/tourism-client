@@ -3,9 +3,11 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import _ from "lodash";
 import notificationService from "../../../services/notificationService";
+import userService from "../../../services/userService";
 import Pagination from "../../../common/Pagination";
 import getTimeAgo from "../../../utils/getTimeAgo";
 
+import role from "../../../constants/role";
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
   <div className={`animate-pulse bg-stone-100 rounded-xl ${className}`} />
@@ -106,12 +108,15 @@ const ManageNotifications = ({ searchQuery }) => {
   const fetchData = async () => {
     try {
       setLoading(true);
+      const currentUser = userService.getCurrentUser();
+
       const params = {
         limit: pageSize,
         skip: (pageNumber - 1) * pageSize,
         ...(typeFilter !== "All" && { type: typeFilter }),
         ...(readFilter === "Unread" && { is_read: false }),
         ...(readFilter === "Read" && { is_read: true }),
+        ...(currentUser?.role === role.ADMIN && { user_id: currentUser?.id }),
       };
       const res = await notificationService.getAll(params);
       setNotifications(res?.data || []);
