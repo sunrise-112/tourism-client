@@ -37,6 +37,7 @@ const Sidebar = ({
         {
           icon: "fa-suitcase-rolling",
           label: isAdmin ? t("nav.bookings") : t("nav.myBookings"),
+          ...(isAdmin && { className: " animate-pulse" }),
           total: parseInt(bookings),
           path: isAdmin ? "/admin/bookings" : "/my-bookings",
         },
@@ -157,7 +158,7 @@ const Sidebar = ({
       >
         {/* Logo */}
         <div
-          className={`flex items-center h-16 px-4 border-b border-white/5 shrink-0 ${
+          className={`flex items-center h-16 px-4 border-b border-white/5 shrink-0  ${
             collapsed ? "justify-center" : "gap-3"
           }`}
         >
@@ -177,7 +178,7 @@ const Sidebar = ({
         {/* Nav */}
         <nav className='flex-1 overflow-y-auto py-4 px-2 space-y-1 scrollbar-hide'>
           {NAV.map(({ items }) => (
-            <div className='mb-2'>
+            <div className={`mb-2`}>
               {/* Section header */}
               {/*   {!collapsed && (
                 <button
@@ -215,7 +216,12 @@ const Sidebar = ({
                   )}
                   <i className={`fa ${item.icon} text-sm w-4 text-center`} />
                   {item.total ? (
-                    <div className='absolute  right-1.5 min-w-[18px] h-[18px] px-1 bg-amber-500 rounded-full text-[10px] font-bold text-white flex items-center justify-center leading-none'>
+                    <div
+                      className={`${bookings > 0 && item?.className}
+                                  absolute  right-1.5 min-w-[18px] h-[18px] px-1
+                                  bg-amber-500 rounded-full text-[10px] font-bold *
+                                  text-white flex items-center justify-center leading-none`}
+                    >
                       {item.total}
                     </div>
                   ) : (

@@ -428,7 +428,7 @@
       "title": "Title",
       "description": "Description",
       "destination": "Destination",
-      "price": "Price ($)",
+      "price": "Price per person ($)",
       "durationDays": "Duration (days)",
       "maxGroupSize": "Max Group Size",
       "category": "Category",
@@ -460,10 +460,10 @@
     },
     "preview": {
       "livePreview": "Live Preview",
+      "perPerson": "Per person",
       "live": "Live",
       "coverAlt": "cover",
       "noCoverImage": "No cover image",
-      "from": "From",
       "titlePlaceholder": "{{type}} title…",
       "excursionInfo": "Excursion Info",
       "activityInfo": "Activity Info",
@@ -1745,6 +1745,39 @@
     "departsAt": "Departs at {{time}}",
     "errors": {
       "maxGroup": "Number of people must be less than or equal to {{max}}"
+    }
+  },
+  "bookingSuccess": {
+    "hero": {
+      "confirmedBadge": "Booking Confirmed",
+      "title": "You're all set —",
+      "titleEmphasis": "thank you!",
+      "subtext": "Your booking has been received successfully. Here's everything that happens next."
+    },
+    "step1": {
+      "label": "Step 1",
+      "title": "Verifying your booking",
+      "desc": "Our team is reviewing your details and will begin processing shortly."
+    },
+    "step2": {
+      "label": "Step 2",
+      "title": "We'll be in touch",
+      "desc": "Expect a confirmation call or email from our team as soon as processed."
+    },
+    "step3": {
+      "label": "Step 3",
+      "title": "Track anytime",
+      "desc": "Access your dashboard at any time to check your booking status in real time."
+    },
+    "newUserBanner": {
+      "title": "First time here?",
+      "description": "A new account will be created automatically for you. Your login credentials will be sent to the email used during booking — use them to sign in to your dashboard and track your reservation anytime."
+    },
+    "cta": {
+      "title": "Ready to check in?",
+      "subtitle": "Your dashboard is just a click away.",
+      "homeButton": "Return home",
+      "dashboardButton": "Go to Dashboard"
     }
   }
 }

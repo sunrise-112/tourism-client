@@ -428,7 +428,7 @@
       "title": "标题",
       "description": "描述",
       "destination": "目的地",
-      "price": "价格（$）",
+      "price": "每人价格（美元）",
       "durationDays": "时长（天）",
       "maxGroupSize": "最大团队人数",
       "category": "类别",
@@ -463,7 +463,7 @@
       "live": "实时",
       "coverAlt": "封面",
       "noCoverImage": "暂无封面图片",
-      "from": "起价",
+      "perPerson": "每人",
       "titlePlaceholder": "{{type}}标题…",
       "excursionInfo": "短途游信息",
       "activityInfo": "活动信息",
@@ -1742,6 +1742,39 @@
     "departsAt": "{{time}} 出发",
     "errors": {
       "maxGroup": "人数必须小于或等于 {{max}}"
+    }
+  },
+  "bookingSuccess": {
+    "hero": {
+      "confirmedBadge": "预订已确认",
+      "title": "一切就绪 —",
+      "titleEmphasis": "谢谢您！",
+      "subtext": "您的预订已成功接收。接下来会发生的一切都在这里。"
+    },
+    "step1": {
+      "label": "第 1 步",
+      "title": "验证您的预订",
+      "desc": "我们的团队正在审核您的详细信息，并将很快开始处理。"
+    },
+    "step2": {
+      "label": "第 2 步",
+      "title": "我们会与您联系",
+      "desc": "处理完成后，您将收到我们团队的确认电话或电子邮件。"
+    },
+    "step3": {
+      "label": "第 3 步",
+      "title": "随时追踪",
+      "desc": "随时访问您的仪表板，实时查看预订状态。"
+    },
+    "newUserBanner": {
+      "title": "第一次来？",
+      "description": "系统将自动为您创建一个新帐户。您的登录凭据将发送至预订时使用的电子邮件 — 使用它们登录仪表板并随时追踪您的预订。"
+    },
+    "cta": {
+      "title": "准备好办理入住了吗？",
+      "subtitle": "您的仪表板只需点击一下即可。",
+      "homeButton": "返回首页",
+      "dashboardButton": "前往仪表板"
     }
   }
 }

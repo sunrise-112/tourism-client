@@ -428,7 +428,7 @@
       "title": "Título",
       "description": "Descripción",
       "destination": "Destino",
-      "price": "Precio ($)",
+      "price": "Precio por persona ($)",
       "durationDays": "Duración (días)",
       "maxGroupSize": "Tamaño máximo del grupo",
       "category": "Categoría",
@@ -463,7 +463,7 @@
       "live": "En vivo",
       "coverAlt": "portada",
       "noCoverImage": "Sin imagen de portada",
-      "from": "Desde",
+      "perPerson": "Por persona",
       "titlePlaceholder": "Título de {{type}}…",
       "excursionInfo": "Info de Excursión",
       "activityInfo": "Info de Actividad",
@@ -1741,6 +1741,39 @@
     "departsAt": "Sale a las {{time}}",
     "errors": {
       "maxGroup": "El número de personas debe ser menor o igual a {{max}}"
+    }
+  },
+  "bookingSuccess": {
+    "hero": {
+      "confirmedBadge": "Reserva Confirmada",
+      "title": "Todo está listo —",
+      "titleEmphasis": "¡gracias!",
+      "subtext": "Su reserva se ha recibido correctamente. Esto es todo lo que sucede a continuación."
+    },
+    "step1": {
+      "label": "Paso 1",
+      "title": "Verificando su reserva",
+      "desc": "Nuestro equipo está revisando sus datos y comenzará el proceso en breve."
+    },
+    "step2": {
+      "label": "Paso 2",
+      "title": "Nos pondremos en contacto",
+      "desc": "Espere una llamada de confirmación o un correo electrónico de nuestro equipo una vez procesado."
+    },
+    "step3": {
+      "label": "Paso 3",
+      "title": "Seguimiento en cualquier momento",
+      "desc": "Acceda a su panel de control en cualquier momento para consultar el estado de su reserva en tiempo real."
+    },
+    "newUserBanner": {
+      "title": "¿Primera vez aquí?",
+      "description": "Se creará automáticamente una nueva cuenta para usted. Sus credenciales de acceso se enviarán al correo electrónico utilizado durante la reserva — úselas para iniciar sesión en su panel y realizar el seguimiento de su reserva en cualquier momento."
+    },
+    "cta": {
+      "title": "¿Listo para registrarse?",
+      "subtitle": "Su panel de control está a solo un clic de distancia.",
+      "homeButton": "Volver al inicio",
+      "dashboardButton": "Ir al Panel"
     }
   }
 }

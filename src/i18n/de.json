@@ -428,7 +428,7 @@
       "title": "Titel",
       "description": "Beschreibung",
       "destination": "Reiseziel",
-      "price": "Preis ($)",
+      "price": "Preis pro Person ($)",
       "durationDays": "Dauer (Tage)",
       "maxGroupSize": "Maximale Gruppengröße",
       "category": "Kategorie",
@@ -463,7 +463,7 @@
       "live": "Live",
       "coverAlt": "Titelbild",
       "noCoverImage": "Kein Titelbild",
-      "from": "Ab",
+      "perPerson": "Pro Person",
       "titlePlaceholder": "{{type}}-Titel…",
       "excursionInfo": "Ausfluginfos",
       "activityInfo": "Aktivitätsinfos",
@@ -1718,6 +1718,39 @@
     "departsAt": "Abfahrt um {{time}}",
     "errors": {
       "maxGroup": "Die Anzahl der Personen muss kleiner oder gleich {{max}} sein"
+    }
+  },
+  "bookingSuccess": {
+    "hero": {
+      "confirmedBadge": "Buchung bestätigt",
+      "title": "Alles erledigt —",
+      "titleEmphasis": "vielen Dank!",
+      "subtext": "Ihre Buchung wurde erfolgreich entgegengenommen. Hier erfahren Sie, was als Nächstes passiert."
+    },
+    "step1": {
+      "label": "Schritt 1",
+      "title": "Ihre Buchung wird überprüft",
+      "desc": "Unser Team prüft Ihre Angaben und wird die Bearbeitung in Kürze aufnehmen."
+    },
+    "step2": {
+      "label": "Schritt 2",
+      "title": "Wir melden uns bei Ihnen",
+      "desc": "Sie erhalten eine Bestätigung per Anruf oder E-Mail, sobald die Bearbeitung abgeschlossen ist."
+    },
+    "step3": {
+      "label": "Schritt 3",
+      "title": "Jederzeit nachverfolgen",
+      "desc": "Greifen Sie jederzeit auf Ihr Dashboard zu, um den Status Ihrer Buchung in Echtzeit zu prüfen."
+    },
+    "newUserBanner": {
+      "title": "Zum ersten Mal hier?",
+      "description": "Für Sie wird automatisch ein neues Konto erstellt. Ihre Anmeldedaten werden an die bei der Buchung verwendete E-Mail-Adresse gesendet – nutzen Sie diese, um sich in Ihrem Dashboard anzumelden und Ihre Reservierung jederzeit zu verfolgen."
+    },
+    "cta": {
+      "title": "Bereit zum Einchecken?",
+      "subtitle": "Ihr Dashboard ist nur einen Klick entfernt.",
+      "homeButton": "Zurück zur Startseite",
+      "dashboardButton": "Zum Dashboard"
     }
   }
 }

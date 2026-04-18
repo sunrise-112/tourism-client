@@ -551,7 +551,7 @@ const LivePreview = ({
           {data?.price && (
             <div className='absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm rounded-xl px-3 py-1.5 shadow'>
               <span className='text-[10px] text-gray-400 font-medium block'>
-                {t("tourForm.preview.from")}
+                {t("tourForm.preview.perPerson")}
               </span>
               <p className='text-base font-bold text-gray-900 leading-none'>
                 ${Number(data.price).toLocaleString()}

@@ -428,7 +428,7 @@
       "title": "Titre",
       "description": "Description",
       "destination": "Destination",
-      "price": "Prix ($)",
+      "price": "Prix ​​par personne ($)",
       "durationDays": "Durée (jours)",
       "maxGroupSize": "Taille maximale du groupe",
       "category": "Catégorie",
@@ -463,7 +463,7 @@
       "live": "En direct",
       "coverAlt": "couverture",
       "noCoverImage": "Pas d'image de couverture",
-      "from": "À partir de",
+      "perPerson": "Par personne",
       "titlePlaceholder": "Titre de {{type}}…",
       "excursionInfo": "Infos Excursion",
       "activityInfo": "Infos Activité",
@@ -1741,6 +1741,39 @@
     "departsAt": "Départ à {{time}}",
     "errors": {
       "maxGroup": "Le nombre de personnes doit être inférieur ou égal à {{max}}"
+    }
+  },
+  "bookingSuccess": {
+    "hero": {
+      "confirmedBadge": "Réservation confirmée",
+      "title": "Tout est prêt —",
+      "titleEmphasis": "merci !",
+      "subtext": "Votre réservation a bien été reçue. Voici tout ce qui se passe ensuite."
+    },
+    "step1": {
+      "label": "Étape 1",
+      "title": "Vérification de votre réservation",
+      "desc": "Notre équipe examine vos coordonnées et commencera le traitement sous peu."
+    },
+    "step2": {
+      "label": "Étape 2",
+      "title": "Nous vous contacterons",
+      "desc": "Attendez un appel de confirmation ou un e-mail de notre équipe dès que le traitement sera terminé."
+    },
+    "step3": {
+      "label": "Étape 3",
+      "title": "Suivi à tout moment",
+      "desc": "Accédez à votre tableau de bord à tout moment pour consulter l’état de votre réservation en temps réel."
+    },
+    "newUserBanner": {
+      "title": "Première visite ?",
+      "description": "Un nouveau compte sera automatiquement créé pour vous. Vos identifiants de connexion seront envoyés à l’adresse e-mail utilisée lors de la réservation — utilisez-les pour vous connecter à votre tableau de bord et suivre votre réservation à tout moment."
+    },
+    "cta": {
+      "title": "Prêt à vous enregistrer ?",
+      "subtitle": "Votre tableau de bord est à un clic.",
+      "homeButton": "Retour à l’accueil",
+      "dashboardButton": "Aller au tableau de bord"
     }
   }
 }
