@@ -174,7 +174,7 @@ const ManageCategories = ({ searchQuery }) => {
     }
   };
 
-  // ─── Delete one ───────────────────────────────────────────
+  /* // ─── Delete one ───────────────────────────────────────────
   const handleDeleteOne = async () => {
     try {
       setDeleting(true);
@@ -212,7 +212,7 @@ const ManageCategories = ({ searchQuery }) => {
     } finally {
       setBulkDeleting(false);
     }
-  };
+  }; */
 
   // ─── Form (create / edit) ─────────────────────────────────
   const openCreate = () => {
@@ -530,13 +530,13 @@ const ManageCategories = ({ searchQuery }) => {
                           <i className='fa fa-pencil text-xs' />
                         </button>
                         {/* Delete */}
-                        <button
+{/*                         <button
                           onClick={() => setDeleteModal(c)}
                           title={t("manageCategories.tooltips.delete")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-trash text-xs' />
-                        </button>
+                        </button> */}
                       </div>
                     </td>
                   </tr>

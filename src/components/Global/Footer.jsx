@@ -27,13 +27,10 @@ const Footer = () => {
     Company: [
       { labelKey: "footer.links.company.aboutUs", to: "/about" },
       { labelKey: "footer.links.company.contactUs", to: "/contact" },
-      { labelKey: "footer.links.company.ourTeam", to: "/about#team" },
     ],
     Account: [
       { labelKey: "footer.links.account.login", to: "/login" },
       { labelKey: "footer.links.account.register", to: "/register" },
-      { labelKey: "footer.links.account.myBookings", to: "/bookings/my" },
-      { labelKey: "footer.links.account.myReviews", to: "/reviews/my" },
       { labelKey: "footer.links.account.profile", to: "/profile/me" },
     ],
   };
