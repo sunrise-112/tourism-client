@@ -1147,15 +1147,36 @@
       "experience": "Años de experiencia"
     },
     "categories": {
-      "eyebrow": "Explora por categoría",
-      "title": "Elige tu aventura",
-      "subtitle": "Encuentra la actividad perfecta que se ajuste a tu estilo de viaje",
+      "eyebrow": "Explorar por Categoría",
+      "title": "Elige Tu Aventura",
+      "subtitle": "Encuentra la actividad perfecta que se adapte a tu estilo de viaje",
+      "showMore": "Ver Más",
+      "showLess": "Ver Menos",
       "adventure": "Aventura",
       "beach": "Playa",
-      "cultural": "Cultural",
-      "wildlife": "Fauna",
       "city": "Ciudad",
-      "wellness": "Bienestar"
+      "culture": "Cultura",
+      "desert": "Desierto",
+      "saharaTour": "Tour por el Sáhara",
+      "camelTrekking": "Trekking en Camello",
+      "quadBuggy": "Quad y Buggy",
+      "mountainsHiking": "Montañas y Senderismo",
+      "surfing": "Surf",
+      "wildlife": "Fauna Salvaje",
+      "atlasMountains": "Montañas del Atlas",
+      "foodCulinary": "Gastronomía y Cocina",
+      "medinaTours": "Visitas a la Medina",
+      "historicalSites": "Sitios Históricos",
+      "photography": "Fotografía",
+      "luxuryRiads": "Lujo y Riads",
+      "spaHammam": "Spa y Hammam",
+      "dayTrips": "Excursiones de un Día",
+      "excursions": "Excursiones",
+      "transport": "Transporte",
+      "eventsFestivals": "Eventos y Festivales",
+      "shopping": "Compras",
+      "guidedTours": "Visitas Guiadas",
+      "sahara": "Sáhara"
     },
     "featured": {
       "eyebrow": "Seleccionados para ti",
@@ -1775,5 +1796,20 @@
       "homeButton": "Volver al inicio",
       "dashboardButton": "Ir al Panel"
     }
+  },
+  "tourCard": {
+    "hotDeal": "Oferta caliente",
+    "featured": "Destacado",
+    "from": "Desde",
+    "explore": "Explorar",
+    "daysAbbrev": "d"
+  },
+  "tourCardHorizontal": {
+    "hotDeal": "Oferta caliente",
+    "featured": "Destacado",
+    "days": "días",
+    "from": "Desde",
+    "max": "Máx.",
+    "explore": "Explorar"
   }
 }

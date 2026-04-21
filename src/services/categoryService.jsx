@@ -19,7 +19,7 @@ const getAll = async ({
     ...(sortBy && { sortBy }),
     ...(order && { order }),
   }).toString();
-  const response = await http.get(`${apiEndPoint}/admin?${query}`);
+  const response = await http.get(`${apiEndPoint}/shared?${query}`);
   return response?.data;
 };
 

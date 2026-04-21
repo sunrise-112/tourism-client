@@ -1150,13 +1150,34 @@
     "categories": {
       "eyebrow": "按类别探索",
       "title": "选择你的冒险",
-      "subtitle": "找到符合你旅行风格的完美活动",
+      "subtitle": "找到最适合你旅行风格的完美活动",
+      "showMore": "显示更多",
+      "": "显示更少",
       "adventure": "探险",
       "beach": "海滩",
-      "cultural": "文化",
-      "wildlife": "野生动物",
       "city": "城市",
-      "wellness": "康养"
+      "culture": "文化",
+      "desert": "沙漠",
+      "saharaTour": "撒哈拉之旅",
+      "camelTrekking": "骆驼徒步",
+      "quadBuggy": "越野四轮车",
+      "mountainsHiking": "山地徒步",
+      "surfing": "冲浪",
+      "wildlife": "野生动物",
+      "atlasMountains": "阿特拉斯山脉",
+      "foodCulinary": "美食与烹饪",
+      "medinaTours": "麦地那之旅",
+      "historicalSites": "历史遗迹",
+      "photography": "摄影",
+      "luxuryRiads": "奢华利亚德",
+      "spaHammam": "水疗与土耳其浴",
+      "dayTrips": "一日游",
+      "excursions": "短途旅行",
+      "transport": "交通",
+      "eventsFestivals": "活动与节庆",
+      "shopping": "购物",
+      "guidedTours": "导览游",
+      "sahara": "撒哈拉"
     },
     "featured": {
       "eyebrow": "为你精选",
@@ -1776,5 +1797,20 @@
       "homeButton": "返回首页",
       "dashboardButton": "前往仪表板"
     }
+  },
+  "tourCard": {
+    "hotDeal": "热销",
+    "featured": "精选",
+    "from": "起",
+    "explore": "探索",
+    "daysAbbrev": "天"
+  },
+  "tourCardHorizontal": {
+    "hotDeal": "热销",
+    "featured": "精选",
+    "days": "天",
+    "from": "起",
+    "max": "最多",
+    "explore": "探索"
   }
 }

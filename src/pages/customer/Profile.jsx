@@ -78,8 +78,6 @@ const Profile = () => {
     phone: "",
     nationality: "",
     role: "",
-    active: "",
-    verified: "",
   });
   const [user, setUser] = useState(null);
 
@@ -98,8 +96,6 @@ const Profile = () => {
           ...(currentUser?.role === "admin"
             ? {
                 role: fetchedUser?.role,
-                active: fetchedUser?.active,
-                verified: fetchedUser?.verified,
               }
             : {}),
         });
@@ -147,8 +143,6 @@ const Profile = () => {
       role: Joi.string()
         .valid(...ROLES)
         .label(t("profile.schema.role")),
-      verified: Joi.boolean().label(t("profile.schema.verified")),
-      active: Joi.boolean().label(t("profile.schema.active")),
     },
     customer: {},
   };
@@ -273,52 +267,6 @@ const Profile = () => {
                 </p>
               </div>
             </SectionCard>
-
-            {/* Quick stats */}
-            <div className='bg-white rounded-2xl border border-stone-100 p-6'>
-              <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-4'>
-                {t("profile.stats.title")}
-              </p>
-              <div className='space-y-3'>
-                {[
-                  {
-                    icon: "fa-calendar-alt",
-                    label: t("profile.stats.memberSince"),
-                    value: user?.created_at
-                      ? new Date(user.created_at).toLocaleDateString(
-                          t("locale", { defaultValue: "en-US" }),
-                          {
-                            month: "long",
-                            year: "numeric",
-                          }
-                        )
-                      : "—",
-                  },
-                  {
-                    icon: "fa-suitcase-rolling",
-                    label: t("profile.stats.totalBookings"),
-                    value: user?.bookings_count ?? "—",
-                  },
-                  {
-                    icon: "fa-star",
-                    label: t("profile.stats.reviewsWritten"),
-                    value: user?.reviews_count ?? "—",
-                  },
-                ].map((s) => (
-                  <div key={s.label} className='flex items-center gap-3'>
-                    <div className='w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center shrink-0'>
-                      <i className={`fa ${s.icon} text-amber-500 text-xs`} />
-                    </div>
-                    <div className='flex-1 min-w-0'>
-                      <p className='text-xs text-stone-400'>{s.label}</p>
-                      <p className='text-sm font-bold text-stone-700'>
-                        {s.value}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* ── Col 2-3: Forms ────────────────────────── */}
@@ -388,7 +336,7 @@ const Profile = () => {
                     true
                   )}
                 </div>
-                <div>
+                {/* <div>
                   <label className={labelClass}>
                     {t("profile.form.nationality")}
                   </label>
@@ -402,7 +350,7 @@ const Profile = () => {
                     true
                   )}
                 </div>
-                {user?.role === role.ADMIN && (
+                                {user?.role === role.ADMIN && (
                   <div>
                     <label className={labelClass}>
                       {t("profile.form.role")}
@@ -447,6 +395,7 @@ const Profile = () => {
                     </div>
                   </div>
                 )}
+ */}{" "}
                 <div className='sm:col-span-2 pt-1'>
                   {renderButton(
                     t("profile.form.saveButton"),

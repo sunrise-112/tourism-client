@@ -13,6 +13,7 @@ import {
 } from "../../utils/formRenders";
 
 import ToggleSwitcher from "../../common/ToggleSwitcher";
+import { Link } from "react-router-dom";
 
 const STEPS = [
   { id: 1, label: "Contact", icon: "fa-user" },
@@ -364,11 +365,13 @@ const BookingForm = ({
           </div>
         </form>
 
-        {/* Enquire button */}
-        <button className='w-full mt-5 py-3 rounded-xl text-sm font-semibold text-stone-500 hover:text-stone-700 bg-stone-50 hover:bg-stone-100 border border-stone-200 hover:border-stone-300 transition-all duration-200 flex items-center justify-center gap-2 group'>
+        <Link
+          to='/contact#contact'
+          className='w-full mt-5 py-3 rounded-xl text-sm font-semibold text-stone-500 hover:text-stone-700 bg-stone-50 hover:bg-stone-100 border border-stone-200 hover:border-stone-300 transition-all duration-200 flex items-center justify-center gap-2 group'
+        >
           <i className='fa fa-envelope text-xs group-hover:scale-110 transition-transform' />
-          Enquire Now
-        </button>
+          Enquire
+        </Link>
       </div>
     </div>
   );

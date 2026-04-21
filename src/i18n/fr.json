@@ -1147,15 +1147,36 @@
       "experience": "Années d'expérience"
     },
     "categories": {
-      "eyebrow": "Explorer par catégorie",
-      "title": "Choisissez votre aventure",
+      "eyebrow": "Explorer par Catégorie",
+      "title": "Choisissez Votre Aventure",
       "subtitle": "Trouvez l'activité parfaite qui correspond à votre style de voyage",
+      "showMore": "Voir Plus",
+      "showLess": "Voir Moins",
       "adventure": "Aventure",
-      "beach": "Plage",
-      "cultural": "Culturel",
-      "wildlife": "Faune",
+      "Beach": "Plage",
       "city": "Ville",
-      "wellness": "Bien-être"
+      "culture": "Culture",
+      "desert": "Désert",
+      "saharaTour": "Circuit Sahara",
+      "camelTrekking": "Trekking à Dos de Chameau",
+      "quadBuggy": "Quad & Buggy",
+      "mountainsHiking": "Montagnes & Randonnée",
+      "surfing": "Surf",
+      "wildlife": "Faune Sauvage",
+      "atlasMountains": "Montagnes de l'Atlas",
+      "foodCulinary": "Gastronomie & Cuisine",
+      "medinaTours": "Visites de la Médina",
+      "historicalSites": "Sites Historiques",
+      "photography": "Photographie",
+      "luxuryRiads": "Luxe & Riads",
+      "spaHammam": "Spa & Hammam",
+      "dayTrips": "Excursions d'une Journée",
+      "excursions": "Excursions",
+      "transport": "Transport",
+      "eventsFestivals": "Événements & Festivals",
+      "shopping": "Shopping",
+      "guidedTours": "Visites Guidées",
+      "sahara": "Sahara"
     },
     "featured": {
       "eyebrow": "Sélectionnés pour vous",
@@ -1775,5 +1796,20 @@
       "homeButton": "Retour à l’accueil",
       "dashboardButton": "Aller au tableau de bord"
     }
+  },
+  "tourCard": {
+    "hotDeal": "Offre chaude",
+    "featured": "À la une",
+    "from": "À partir de",
+    "explore": "Explorer",
+    "daysAbbrev": "j"
+  },
+  "tourCardHorizontal": {
+    "hotDeal": "Offre chaude",
+    "featured": "À la une",
+    "days": "jours",
+    "from": "À partir de",
+    "max": "Max.",
+    "explore": "Explorer"
   }
 }

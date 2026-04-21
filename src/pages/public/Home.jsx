@@ -1,7 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+
+// Services
 import tourService from "../../services/tourService";
+import categoryService from "../../services/categoryService";
+
+// Utils
+import { categoryKeyMap } from "../../utils/CategoriesMap";
 
 // ─── YouTube video configuration ─────────────────────────────
 const VIDEO_ID = "A5hYqA6-8_I";
@@ -184,8 +190,30 @@ const Home = () => {
   const [activities, setActivities] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [showMore, setShowMore] = useState(false);
   const playerRef = useRef(null);
   const intervalRef = useRef(null);
+
+  const fetchCategories = async (limit = 12) => {
+    try {
+      const categories = await categoryService.getAll({
+        is_active: true,
+        limit,
+      });
+      const transformed = categories?.data?.map((cat) => ({
+        ...cat,
+        labelKey: `home.categories.${cat?.name}`,
+      }));
+      setCategories(transformed);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   // ─── YouTube Player API initialization ─────────────────────
   useEffect(() => {
@@ -284,7 +312,7 @@ const Home = () => {
 
   const translatedCategories = categories.map((cat) => ({
     ...cat,
-    label: t(cat.labelKey),
+    label: t(`home.categories.${categoryKeyMap[cat.name] ?? cat?.name}`),
   }));
 
   const quickTags = [
@@ -434,32 +462,86 @@ const Home = () => {
       </section>
 
       {/* ── CATEGORIES ───────────────────────────────────── */}
-      <section className='max-w-6xl mx-auto px-6 py-20'>
+      <section className='max-w-6xl mx-auto px-6 py-24'>
         <SectionHeader
           eyebrowKey='home.categories.eyebrow'
           titleKey='home.categories.title'
           subtitleKey='home.categories.subtitle'
           t={t}
         />
-        <div className='grid grid-cols-3 md:grid-cols-6 gap-4'>
+
+        <div className='grid grid-cols-3 md:grid-cols-6 gap-3 mt-12'>
           {translatedCategories.map((cat) => (
             <Link
-              key={cat.label}
-              to={`/tours?category=${cat.label.toLowerCase()}`}
-              className='flex flex-col items-center gap-3 p-5 rounded-2xl border border-stone-100 bg-white
-                hover:-translate-y-1.5 hover:shadow-lg hover:shadow-stone-200/80 transition-all duration-200 group'
+              key={cat.labelKey}
+              to={`/tours?category=${cat?.id}`}
+              className='
+          flex flex-col items-center gap-3 p-5
+          rounded-2xl bg-white border border-stone-100
+          shadow-sm hover:shadow-xl hover:shadow-stone-200/60
+          hover:-translate-y-2 hover:border-stone-200
+          transition-all duration-300 ease-out group cursor-pointer
+        '
             >
               <div
-                className='w-12 h-12 rounded-xl flex items-center justify-center text-lg transition-transform group-hover:scale-110'
-                style={{ background: cat.bg, color: cat.color }}
+                className='w-12 h-12 rounded-xl flex items-center justify-center
+            transition-all duration-300 group-hover:scale-110 group-hover:rounded-2xl shadow-sm'
+                style={{ background: cat.bg }}
               >
-                <i className={`fa ${cat.icon}`} />
+                <i className={`${cat?.icon} text-white text-base`} />
               </div>
-              <span className='text-xs font-bold text-stone-500 group-hover:text-stone-700 transition-colors'>
+              <span
+                className='
+          text-[11px] font-semibold tracking-wide 
+          text-stone-400 group-hover:text-stone-700
+          text-center leading-tight transition-colors duration-200
+        '
+              >
                 {cat.label}
               </span>
             </Link>
           ))}
+        </div>
+
+        {/* Show More / Show Less buttons below the grid */}
+        <div className='flex items-center justify-center gap-3 mt-8'>
+          {!showMore ? (
+            <button
+              onClick={() => {
+                fetchCategories(30);
+                setShowMore(true);
+              }}
+              className='
+          flex items-center gap-2 px-6 py-2.5
+          rounded-full border border-stone-200 bg-white
+          text-xs font-semibold tracking-wide uppercase text-stone-500
+          hover:bg-stone-50 hover:border-stone-300 hover:text-stone-700
+          shadow-sm hover:shadow-md transition-all duration-300 ease-out
+          cursor-pointer
+        '
+            >
+              <i className='fa-solid fa-ellipsis text-stone-400' />
+              {t("home.categories.showMore")}
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                fetchCategories();
+                setShowMore(false);
+              }}
+              className='
+                flex items-center gap-2 px-6 py-2.5
+                rounded-full border border-stone-200 bg-white
+                text-xs font-semibold tracking-wide uppercase text-stone-500
+                hover:bg-stone-50 hover:border-stone-300 hover:text-stone-700
+                shadow-sm hover:shadow-md transition-all duration-300 ease-out
+                cursor-pointer
+              '
+            >
+              <i className='fa-solid fa-chevron-up text-stone-400' />
+              {t("home.categories.showLess")}
+            </button>
+          )}
         </div>
       </section>
 

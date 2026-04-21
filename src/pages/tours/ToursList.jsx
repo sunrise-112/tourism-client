@@ -1,10 +1,16 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+
+// Services
 import tourService from "../../services/tourService";
+import categoryService from "../../services/categoryService";
+
+// Components
 import TourCardGrid from "../../components/tours/TourCardGrid";
 import TourCardList from "../../components/tours/TourCardList";
 import { SkeletonGrid, SkeletonList } from "../../components/tours/skeleton";
+import { categoryKeyMap } from "../../utils/CategoriesMap";
 
 // ─── Constants ────────────────────────────────────────────────
 const CATEGORIES = [
@@ -31,7 +37,7 @@ const SORT_OPTIONS = [
 const TourList = () => {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const [categories, setCategories] = useState([]);
   const [tours, setTours] = useState([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
@@ -50,6 +56,22 @@ const TourList = () => {
   });
 
   const LIMIT = 9;
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categories = await categoryService.getAll({
+          is_active: true,
+          limit: 50,
+        });
+        setCategories(categories?.data);
+        console.log("Categories: ", categories);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   // ── Fetch ──────────────────────────────────────────────────
   const fetchTours = useCallback(async () => {
@@ -116,6 +138,11 @@ const TourList = () => {
     filters.max_price,
   ].filter(Boolean).length;
 
+  const translatedCategories = categories?.map((cat) => ({
+    ...cat,
+    label: t(`home.categories.${categoryKeyMap[cat?.name] ?? cat?.name}`),
+  }));
+
   return (
     <div
       className='min-h-screen bg-stone-50'
@@ -177,21 +204,25 @@ const TourList = () => {
               >
                 {t("tourList.filters.allCategories")}
               </button>
-              {CATEGORIES.map((cat) => (
+              {translatedCategories.map((cat) => (
                 <button
-                  key={cat}
+                  key={cat?.id}
                   onClick={() =>
-                    setFilter("category", filters.category === cat ? "" : cat)
+                    setFilter(
+                      "category",
+                      filters.category === cat.id ? "" : cat.id
+                    )
                   }
                   className={`w-full text-left text-sm px-3 py-2 rounded-xl transition-colors ${
-                    filters.category === cat
+                    filters.category === cat?.id
                       ? "bg-amber-50 text-amber-700 font-semibold border border-amber-200"
                       : "text-stone-500 hover:bg-stone-50"
                   }`}
                 >
-                  {t(`tourList.categories.${cat.toLowerCase()}`, {
+                  {/*  {t(`tourList.categories.${cat?.name.toLowerCase()}`, {
                     defaultValue: cat,
-                  })}
+                  })} */}
+                  {cat?.label}
                 </button>
               ))}
             </div>

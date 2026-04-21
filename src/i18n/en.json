@@ -1149,13 +1149,34 @@
     "categories": {
       "eyebrow": "Explore by Category",
       "title": "Choose Your Adventure",
-      "subtitle": "Find the perfect activity that matches your travel style",
+      "subtitle": "Find the perfect activity that suits your travel style",
+      "showMore": "Show More",
+      "showLess": "Show Less",
       "adventure": "Adventure",
       "beach": "Beach",
-      "cultural": "Cultural",
-      "wildlife": "Wildlife",
       "city": "City",
-      "wellness": "Wellness"
+      "culture": "Culture",
+      "desert": "Desert",
+      "saharaTour": "Sahara Tour",
+      "camelTrekking": "Camel Trekking",
+      "quadBuggy": "Quad & Buggy",
+      "mountainsHiking": "Mountains & Hiking",
+      "surfing": "Surfing",
+      "wildlife": "Wildlife",
+      "atlasMountains": "Atlas Mountains",
+      "foodCulinary": "Food & Culinary",
+      "medinaTours": "Medina Tours",
+      "historicalSites": "Historical Sites",
+      "photography": "Photography",
+      "luxuryRiads": "Luxury & Riads",
+      "spaHammam": "Spa & Hammam",
+      "dayTrips": "Day Trips",
+      "excursions": "Excursions",
+      "transport": "Transport",
+      "eventsFestivals": "Events & Festivals",
+      "shopping": "Shopping",
+      "guidedTours": "Guided Tours",
+      "sahara": "Sahara"
     },
     "featured": {
       "eyebrow": "Handpicked for You",
@@ -1779,5 +1800,20 @@
       "homeButton": "Return home",
       "dashboardButton": "Go to Dashboard"
     }
+  },
+  "tourCard": {
+    "hotDeal": "Hot Deal",
+    "featured": "Featured",
+    "from": "From",
+    "explore": "Explore",
+    "daysAbbrev": "d"
+  },
+  "tourCardHorizontal": {
+    "hotDeal": "Hot Deal",
+    "featured": "Featured",
+    "days": "days",
+    "from": "From",
+    "max": "Max",
+    "explore": "Explore"
   }
 }

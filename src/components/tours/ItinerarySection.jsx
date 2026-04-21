@@ -8,7 +8,6 @@ import useItinerary from "../../hooks/useItinerary";
 
 import TwoCol from "../../common/TwoCol";
 
-
 const ItineraryDay = ({ day, index, onRemove, onFieldChange }) => {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -121,18 +120,13 @@ const ItineraryDay = ({ day, index, onRemove, onFieldChange }) => {
 };
 
 const ItinerarySection = ({ onUpdate, initialData = [] }) => {
-  const { itinerary, addDay, removeDay, updateField, getItinerary } =
+  const { itinerary, addDay, removeDay, updateFieldAndNotify, getItinerary } =
     useItinerary(initialData);
 
-  const handleFieldChange = (index, field) => (e) => {
-    updateField(index, field)(e);
-    const updated = itinerary.map((day, i) => ({
-      day: i + 1,
-      ...day,
-      [field]: field === "image" ? e.target.files?.[0] || null : e.target.value,
-    }));
-    onUpdate(updated);
-  };
+  // ✅ Fix: no more stale closure — onUpdate is called inside setItinerary
+  // with always-fresh state via updateFieldAndNotify
+  const handleFieldChange = (index, field) =>
+    updateFieldAndNotify(index, field, onUpdate);
 
   const handleAdd = () => {
     addDay();

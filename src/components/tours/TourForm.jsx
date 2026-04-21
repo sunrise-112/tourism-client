@@ -32,6 +32,8 @@ import {
 import renderImage from "../../utils/renderImage";
 import { toast } from "react-toastify";
 import LocationPicker from "../LocationPicker";
+import categoryService from "../../services/categoryService";
+import { categoryKeyMap } from "../../utils/CategoriesMap";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const DIFFICULTY_OPTIONS = [
@@ -763,6 +765,7 @@ const LivePreview = ({
 const TourForm = ({ Type }) => {
   const { t } = useTranslation();
   const { id } = useParams();
+  const [categories, setCategories] = useState([]);
   const [cordinates, setCordinates] = useState({
     lat: "",
     lng: "",
@@ -780,12 +783,33 @@ const TourForm = ({ Type }) => {
   const [inclusions, setInclusions] = useState([]);
   const [exclusions, setExclusions] = useState([]);
 
-  const CATEGORIES = [
+  /*   const CATEGORIES = [
     { id: 1, name: t("tourForm.categories.adventure") },
     { id: 2, name: t("tourForm.categories.cultural") },
     { id: 3, name: t("tourForm.categories.coastal") },
     { id: 4, name: t("tourForm.categories.historical") },
-  ];
+  ]; */
+
+  const translatedCategories = categories?.map((cat) => ({
+    ...cat,
+    label: t(`home.categories.${categoryKeyMap[cat?.name] ?? cat?.name}`),
+  }));
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categories = await categoryService.getAll({
+          is_active: true,
+          limit: 100,
+        });
+        setCategories(categories?.data);
+        console.log("Categories: ", categories);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     console.log("Cordinates: ", cordinates);
@@ -811,11 +835,7 @@ const TourForm = ({ Type }) => {
         .label("Max Group Size"),
       is_featured: Joi.boolean().default(false).label("Is Featured"),
       is_hot_deal: Joi.boolean().default(false).label("Is Hot Deal"),
-      category: Joi.string()
-        .max(80)
-        .optional()
-        .allow("", null)
-        .label("Category"),
+      category_id: Joi.number().required().label("Category"),
       inclusions: Joi.array().items(Joi.number()).min(2).label("Inclusions"),
       exclusions: Joi.array()
         .items(Joi.number())
@@ -918,7 +938,7 @@ const TourForm = ({ Type }) => {
           cover_image: tour.cover_image,
           is_featured: tour.is_featured,
           is_hot_deal: tour.is_hot_deal,
-          category: tour.category,
+          category_id: tour.category_id,
           inclusions: tour.inclusions?.map((i) => parseInt(i.id)),
           exclusions: tour.exclusions?.map((e) => parseInt(e.id)),
           gallery: tour.images?.map((img) =>
@@ -1171,13 +1191,13 @@ const TourForm = ({ Type }) => {
                     <div>
                       {renderSelect(
                         t("tourForm.fields.category"),
-                        "category",
+                        "category_id",
                         data,
                         errors,
                         handleChange,
-                        CATEGORIES,
-                        "name",
-                        "name"
+                        translatedCategories,
+                        "label",
+                        "id"
                       )}
                     </div>
                   </TwoCol>
@@ -1185,13 +1205,13 @@ const TourForm = ({ Type }) => {
                   <div>
                     {renderSelect(
                       t("tourForm.fields.category"),
-                      "category",
+                      "category_id",
                       data,
                       errors,
                       handleChange,
-                      CATEGORIES,
+                      categories,
                       "name",
-                      "name"
+                      "id"
                     )}
                   </div>
                 )}

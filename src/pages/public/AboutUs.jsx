@@ -61,19 +61,34 @@ const AboutUs = () => {
       className='min-h-screen bg-stone-50'
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
-      {/* ── HERO ──────────────────────────────────────────── */}
+      {/* ── HERO with BACKGROUND IMAGE BANNER ───────────────── */}
       <div className='relative bg-[#1C1107] overflow-hidden'>
+        {/* Background image banner */}
         <div
-          className='absolute inset-0 opacity-[0.04]'
+          className='absolute inset-0 z-0'
+          style={{
+            backgroundImage:
+              "url('https://www.oag.com/hubfs/Morocco%20blog.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center 30%",
+          }}
+        />
+        {/* Dark overlay for readability */}
+        <div className='absolute inset-0 z-0 bg-black/50' />
+
+        {/* Existing pattern and glow effects (adjusted z-index) */}
+        <div
+          className='absolute inset-0 opacity-[0.04] z-0'
           style={{
             backgroundImage:
               "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
             backgroundSize: "28px 28px",
           }}
         />
-        <div className='absolute top-0 right-0 w-[500px] h-[400px] bg-amber-600/15 rounded-full blur-[100px] pointer-events-none' />
-        <div className='absolute bottom-0 left-0 w-[400px] h-[300px] bg-orange-800/15 rounded-full blur-[80px] pointer-events-none' />
+        <div className='absolute top-0 right-0 w-[500px] h-[400px] bg-amber-600/15 rounded-full blur-[100px] pointer-events-none z-0' />
+        <div className='absolute bottom-0 left-0 w-[400px] h-[300px] bg-orange-800/15 rounded-full blur-[80px] pointer-events-none z-0' />
 
+        {/* Hero content - higher z-index */}
         <div className='relative z-10 max-w-5xl mx-auto px-6 py-24 md:py-32 text-center'>
           <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-400 mb-4'>
             {t("aboutUs.hero.eyebrow")}
@@ -93,7 +108,7 @@ const AboutUs = () => {
               {t("aboutUs.hero.titleLine2")}
             </span>
           </h1>
-          <p className='text-stone-400 text-lg max-w-2xl mx-auto leading-relaxed'>
+          <p className='text-stone-200 text-lg max-w-2xl mx-auto leading-relaxed'>
             {t("aboutUs.hero.subtitle")}
           </p>
         </div>
@@ -146,7 +161,7 @@ const AboutUs = () => {
             <div className='absolute inset-0 bg-gradient-to-br from-amber-100 to-orange-50 rounded-3xl' />
             <div className='absolute top-6 left-6 right-6 bottom-6 bg-white rounded-2xl border border-stone-100 shadow-lg overflow-hidden'>
               <img
-                src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Jamaa_el_Fna_at_dusk.jpg/1280px-Jamaa_el_Fna_at_dusk.jpg'
+                src='https://i0.wp.com/jalehmichelle.com/wp-content/uploads/2019/05/7585679840_IMG_5861-2.jpg'
                 alt='Morocco'
                 className='w-full h-full object-cover opacity-90'
               />
@@ -197,7 +212,7 @@ const AboutUs = () => {
       </div>
 
       {/* ── TEAM ──────────────────────────────────────────── */}
-      <div className='max-w-6xl mx-auto px-6 py-20'>
+      {/* <div className='max-w-6xl mx-auto px-6 py-20'>
         <div className='text-center mb-12'>
           <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-3'>
             {t("aboutUs.team.eyebrow")}
@@ -230,7 +245,7 @@ const AboutUs = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* ── CTA ───────────────────────────────────────────── */}
       <div className='max-w-6xl mx-auto px-6 pb-20'>

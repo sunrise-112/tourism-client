@@ -1147,15 +1147,36 @@
       "experience": "Jahre Erfahrung"
     },
     "categories": {
-      "eyebrow": "Nach Kategorie entdecken",
-      "title": "Wählen Sie Ihr Abenteuer",
-      "subtitle": "Finden Sie die perfekte Aktivität, die zu Ihrem Reisestil passt",
+      "eyebrow": "Nach Kategorie Entdecken",
+      "title": "Wähle Dein Abenteuer",
+      "subtitle": "Finde die perfekte Aktivität, die zu deinem Reisestil passt",
+      "showMore": "Mehr Anzeigen",
+      "showLess": "Weniger Anzeigen",
       "adventure": "Abenteuer",
       "beach": "Strand",
-      "cultural": "Kultur",
-      "wildlife": "Wildtiere",
       "city": "Stadt",
-      "wellness": "Wellness"
+      "culture": "Kultur",
+      "desert": "Wüste",
+      "saharaTour": "Sahara-Tour",
+      "camelTrekking": "Kamelwanderung",
+      "quadBuggy": "Quad & Buggy",
+      "mountainsHiking": "Berge & Wandern",
+      "surfing": "Surfen",
+      "wildlife": "Tierwelt",
+      "atlasMountains": "Atlasgebirge",
+      "foodCulinary": "Essen & Kulinarik",
+      "medinaTours": "Medina-Touren",
+      "historicalSites": "Historische Stätten",
+      "photography": "Fotografie",
+      "luxuryRiads": "Luxus & Riads",
+      "spaHammam": "Spa & Hammam",
+      "dayTrips": "Tagesausflüge",
+      "excursions": "Ausflüge",
+      "transport": "Transport",
+      "eventsFestivals": "Veranstaltungen & Festivals",
+      "shopping": "Einkaufen",
+      "guidedTours": "Geführte Touren",
+      "sahara": "Sahara"
     },
     "featured": {
       "eyebrow": "Für Sie ausgewählt",
@@ -1752,5 +1773,20 @@
       "homeButton": "Zurück zur Startseite",
       "dashboardButton": "Zum Dashboard"
     }
+  },
+  "tourCard": {
+    "hotDeal": "Heißer Deal",
+    "featured": "Empfohlen",
+    "from": "Ab",
+    "explore": "Entdecken Sie",
+    "daysAbbrev": "T"
+  },
+  "tourCardHorizontal": {
+    "hotDeal": "Heißer Deal",
+    "featured": "Empfohlen",
+    "days": "Tage",
+    "from": "Ab",
+    "max": "Max.",
+    "explore": "Entdecken Sie"
   }
 }

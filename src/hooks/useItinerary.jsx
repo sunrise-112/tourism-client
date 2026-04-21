@@ -34,22 +34,42 @@ const useItinerary = (initialData) => {
     );
   };
 
+  // ✅ Fix: calls onUpdate inside setItinerary so it always gets fresh state
+  const updateFieldAndNotify = (index, field, onUpdate) => (e) => {
+    const value =
+      field === "image" ? e.target.files?.[0] || null : e.target.value;
+    setItinerary((prev) => {
+      const updated = prev.map((day, i) =>
+        i === index ? { ...day, [field]: value } : day
+      );
+      onUpdate(updated.map((day, i) => ({ day: i + 1, ...day })));
+      return updated;
+    });
+  };
+
   const getItinerary = () =>
     itinerary.map((day, index) => {
       const entry = { day: index + 1 };
 
       Object.entries(day).forEach(([key, value]) => {
         if (value instanceof File) {
-          entry[key] = value; // keep File as-is
+          entry[key] = value;
         } else if (value !== null && value !== undefined && value !== "") {
-          entry[key] = value; // keep non-empty strings
+          entry[key] = value;
         }
       });
 
       return entry;
     });
 
-  return { itinerary, addDay, removeDay, updateField, getItinerary };
+  return {
+    itinerary,
+    addDay,
+    removeDay,
+    updateField,
+    updateFieldAndNotify,
+    getItinerary,
+  };
 };
 
 export default useItinerary;

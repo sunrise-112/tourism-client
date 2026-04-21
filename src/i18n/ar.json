@@ -1151,12 +1151,33 @@
       "eyebrow": "استكشف حسب الفئة",
       "title": "اختر مغامرتك",
       "subtitle": "ابحث عن النشاط المثالي الذي يناسب أسلوب سفرك",
+      "showMore": "عرض المزيد",
+      "showLess": "عرض أقل",
       "adventure": "مغامرة",
       "beach": "شاطئ",
-      "cultural": "ثقافي",
-      "wildlife": "الحياة البرية",
       "city": "مدينة",
-      "wellness": "صحة"
+      "culture": "ثقافة",
+      "desert": "صحراء",
+      "saharaTour": "جولة الصحراء",
+      "camelTrekking": "ركوب الجمال",
+      "quadBuggy": "رباعي الدفع وباغي",
+      "mountainsHiking": "الجبال والتنزه",
+      "surfing": "ركوب الأمواج",
+      "wildlife": "الحياة البرية",
+      "atlasMountains": "جبال الأطلس",
+      "foodCulinary": "الطعام والطهي",
+      "medinaTours": "جولات المدينة القديمة",
+      "historicalSites": "المواقع التاريخية",
+      "photography": "التصوير",
+      "luxuryRiads": "الفنادق الفاخرة والرياض",
+      "spaHammam": "سبا وحمام",
+      "dayTrips": "رحلات يومية",
+      "excursions": "رحلات استكشافية",
+      "transport": "النقل",
+      "eventsFestivals": "الفعاليات والمهرجانات",
+      "shopping": "التسوق",
+      "guidedTours": "جولات مع مرشد",
+      "sahara": "الصحراء الكبرى"
     },
     "featured": {
       "eyebrow": "مختارة لكم",
@@ -1785,5 +1806,20 @@
       "homeButton": "العودة إلى الرئيسية",
       "dashboardButton": "الذهاب إلى لوحة التحكم"
     }
+  },
+  "tourCard": {
+    "hotDeal": "صفقة ساخنة",
+    "featured": "مميز",
+    "from": "من",
+    "explore": "استكشف",
+    "daysAbbrev": "ي"
+  },
+  "tourCardHorizontal": {
+    "hotDeal": "صفقة ساخنة",
+    "featured": "مميز",
+    "days": "أيام",
+    "from": "من",
+    "max": "الحد الأقصى",
+    "explore": "استكشف"
   }
 }

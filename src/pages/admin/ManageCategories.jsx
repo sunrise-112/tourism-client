@@ -8,12 +8,12 @@ import categoryService from "../../services/categoryService";
 // Commons
 import Pagination from "../../common/Pagination";
 
+import Select from "react-select";
+
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
   <div className={`animate-pulse bg-stone-100 rounded-xl ${className}`} />
 );
-
-const FILTERS = ["All", "Active", "Inactive"];
 
 // ─── ManageCategories ─────────────────────────────────────────
 const ManageCategories = ({ searchQuery }) => {
@@ -36,8 +36,57 @@ const ManageCategories = ({ searchQuery }) => {
 
   // ── Form modal (create / edit)
   const [formModal, setFormModal] = useState(null); // null | { mode: "create" | "edit", data?: category }
-  const [formValue, setFormValue] = useState({ name: "", is_active: true });
+  const [formValue, setFormValue] = useState({
+    name: "",
+    icon: "",
+    bg: "",
+    is_active: true,
+  });
   const [formSaving, setFormSaving] = useState(false);
+
+  const FILTERS = ["All", "Active", "Inactive"];
+  const ICONS = [
+    // Core travel
+    { label: "Adventure", value: "fa-solid fa-mountain" },
+    { label: "Beach", value: "fa-solid fa-umbrella-beach" },
+    { label: "City", value: "fa-solid fa-city" },
+    { label: "Culture", value: "fa-solid fa-landmark" },
+
+    // Morocco-specific highlights
+    { label: "Desert", value: "fa-solid fa-sun" },
+    { label: "Sahara Tour", value: "fa-solid fa-route" },
+    { label: "Camel Trekking", value: "fa-solid fa-horse" }, // closest FA match
+    { label: "Quad & Buggy", value: "fa-solid fa-motorcycle" },
+
+    // Nature & activities
+    { label: "Mountains & Hiking", value: "fa-solid fa-person-hiking" },
+    { label: "Surfing", value: "fa-solid fa-water" },
+    { label: "Wildlife", value: "fa-solid fa-paw" },
+
+    // Experiences
+    { label: "Food & Culinary", value: "fa-solid fa-utensils" },
+    { label: "Medina Tours", value: "fa-solid fa-archway" },
+    { label: "Historical Sites", value: "fa-solid fa-monument" },
+    { label: "Photography", value: "fa-solid fa-camera" },
+
+    // Comfort & services
+    { label: "Luxury & Riads", value: "fa-solid fa-hotel" },
+    { label: "Spa & Hammam", value: "fa-solid fa-spa" },
+    { label: "Day Trips", value: "fa-solid fa-calendar-day" },
+    { label: "Transport", value: "fa-solid fa-bus" },
+
+    // Extras (good for marketing pages)
+    { label: "Events & Festivals", value: "fa-solid fa-music" },
+    { label: "Shopping", value: "fa-solid fa-bag-shopping" },
+    { label: "Guided Tours", value: "fa-solid fa-user-group" },
+  ];
+
+  const options = ICONS.map((icon) => ({
+    value: icon.value,
+    label: icon.label,
+  }));
+
+  const selectedOption = options?.find((opt) => opt.value === formValue.icon);
 
   // ─── Fetch ────────────────────────────────────────────────
   const fetchData = async () => {
@@ -172,7 +221,12 @@ const ManageCategories = ({ searchQuery }) => {
   };
 
   const openEdit = (category) => {
-    setFormValue({ name: category.name, is_active: category.is_active });
+    setFormValue({
+      name: category.name,
+      bg: category.bg,
+      icon: category.icon,
+      is_active: category.is_active,
+    });
     setFormModal({ mode: "edit", data: category });
   };
 
@@ -527,7 +581,7 @@ const ManageCategories = ({ searchQuery }) => {
                 </span>
                 <input
                   type='text'
-                  value={formValue.name}
+                  value={formValue?.name}
                   onChange={(e) =>
                     setFormValue((v) => ({ ...v, name: e.target.value }))
                   }
@@ -537,6 +591,50 @@ const ManageCategories = ({ searchQuery }) => {
                 />
               </label>
 
+              {/* Color */}
+              <label className='block mb-4'>
+                <span className='text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 block'>
+                  color
+                </span>
+                <label className='w-20 h-10 rounded-full overflow-hidden cursor-pointer border border-stone-300 flex items-center justify-center'>
+                  <input
+                    type='color'
+                    value={formValue.bg}
+                    onChange={(e) =>
+                      setFormValue((v) => ({ ...v, bg: e.target.value }))
+                    }
+                    className='w-full h-full opacity-1 cursor-pointer'
+                  />
+                  <div
+                    className='absolute w-16 h-6 rounded-full'
+                    style={{ background: formValue.bg }}
+                  />
+                </label>
+              </label>
+
+              {/* ICONS */}
+              <Select
+                options={options}
+                value={selectedOption} // 👈 sets the initial/default value
+                onChange={(option) => {
+                  setFormValue((v) => ({
+                    ...v,
+                    icon: option.value,
+                  }));
+                }}
+                menuPortalTarget={document.body}
+                menuPosition='fixed'
+                styles={{
+                  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                }}
+                formatOptionLabel={(option) => (
+                  <div className='flex items-center gap-2'>
+                    <i className={option.value}></i>
+                    <span>{option.label}</span>
+                  </div>
+                )}
+              />
+              <br />
               {/* Is active */}
               <label className='flex items-center gap-3 mb-6 cursor-pointer'>
                 <div

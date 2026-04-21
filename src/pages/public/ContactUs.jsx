@@ -185,11 +185,12 @@ const ContactUs = () => {
       {/* ── HERO ──────────────────────────────────────────── */}
       <div className='relative bg-[#1C1107] overflow-hidden'>
         <div
-          className='absolute inset-0 opacity-[0.04]'
+          className='absolute inset-0 opacity-[0.5]'
           style={{
             backgroundImage:
-              "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-            backgroundSize: "28px 28px",
+              "url('https://www.mosaicnorthafrica.com/wp-content/uploads/2020/10/sahara-camel-trek.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center 30%",
           }}
         />
         <div className='absolute top-0 right-0 w-[400px] h-[350px] bg-amber-600/15 rounded-full blur-[100px] pointer-events-none' />
@@ -306,6 +307,7 @@ const ContactUs = () => {
                 ) : (
                   <>
                     <h3
+                      id='contact'
                       className='text-xl font-black text-stone-800 mb-1'
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
