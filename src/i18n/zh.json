@@ -1074,6 +1074,28 @@
     }
   },
   "settings": {
+    "general": {
+      "eyebrow": "偏好设置",
+      "title": "常规设置",
+      "profile": "个人信息",
+      "editProfile": "编辑个人信息",
+      "company_name": "公司名称",
+      "address": "地址",
+      "company_phone": "电话号码",
+      "opening_hours": "营业时间",
+      "social_media": "社交媒体",
+      "facebook_url": "脸书链接",
+      "instagram_url": "Instagram 链接",
+      "youtube_url": "YouTube 链接",
+      "twitter_url": "Twitter 链接",
+      "privacy_policy": "隐私政策",
+      "terms_of_service": "服务条款",
+      "privacyPolicyLabel": "隐私政策",
+      "termsOfServiceLabel": "服务条款",
+      "companySettings": "公司设置",
+      "updateSuccess": "设置已成功更新！",
+      "updateError": "更新设置时出错！"
+    },
     "admin": "管理员",
     "title": "设置",
     "description": "管理平台范围内的通信渠道",
@@ -1082,6 +1104,10 @@
     },
     "savingIndicator": "保存中…",
     "tabs": {
+      "general": {
+        "label": "常规",
+        "eyebrow": "基本"
+      },
       "language": {
         "label": "语言",
         "eyebrow": "本地化"
@@ -1812,5 +1838,284 @@
     "from": "起",
     "max": "最多",
     "explore": "探索"
+  },
+  "manageExclusions": {
+    "admin": "管理员",
+    "title": "管理排除项",
+    "totalExclusions": "排除项总数：{{count}}",
+    "newExclusion": "新建排除项",
+    "filters": {
+      "all": "全部",
+      "active": "已启用",
+      "inactive": "已禁用"
+    },
+    "stats": {
+      "total": "排除项总数",
+      "active": "已启用",
+      "inactive": "已禁用"
+    },
+    "table": {
+      "serial": "#",
+      "name": "名称",
+      "status": "状态",
+      "created": "创建时间",
+      "actions": "操作"
+    },
+    "status": {
+      "active": "已启用",
+      "inactive": "已禁用"
+    },
+    "tooltips": {
+      "activate": "启用",
+      "deactivate": "禁用",
+      "edit": "编辑",
+      "delete": "删除"
+    },
+    "modal": {
+      "createTitle": "创建排除项",
+      "editTitle": "编辑排除项",
+      "nameLabel": "名称",
+      "namePlaceholder": "输入排除项文本",
+      "cancel": "取消",
+      "create": "创建",
+      "saveChanges": "保存更改",
+      "saving": "保存中..."
+    },
+    "deleteModal": {
+      "title": "删除排除项",
+      "description": "确定要删除“{{name}}”吗？此操作不可撤销。",
+      "cancel": "取消",
+      "delete": "删除",
+      "deleting": "删除中..."
+    },
+    "bulkDeleteModal": {
+      "title": "删除 {{count}} 个排除项",
+      "description": "确定要删除所选排除项吗？此操作不可撤销。",
+      "cancel": "取消",
+      "delete": "删除 {{count}} 个",
+      "deleting": "删除中..."
+    },
+    "bulkDeleteButton": "删除所选 ({{count}})",
+    "empty": {
+      "title": "未找到排除项",
+      "description": "请尝试调整筛选条件或新建排除项。"
+    },
+    "errors": {
+      "fetchFailed": "加载排除项失败。",
+      "updateFailed": "更新排除项失败。",
+      "deleteFailed": "删除排除项失败。",
+      "bulkDeleteFailed": "批量删除排除项失败。",
+      "saveFailed": "保存排除项失败。",
+      "nameRequired": "名称不能为空。"
+    },
+    "toasts": {
+      "deactivated": "已禁用排除项。",
+      "activated": "已启用排除项。",
+      "deleteSuccess": "排除项删除成功。",
+      "bulkDeleteSuccess": "排除项批量删除成功。",
+      "createSuccess": "排除项创建成功。",
+      "updateSuccess": "排除项更新成功。"
+    },
+    "exclusions": {
+      "internationalFlights": "国际航班",
+      "visaFees": "签证费（如适用）",
+      "passportDocumentFees": "护照及证件费用",
+      "travelVaccinations": "旅行疫苗接种",
+      "personalExpenses": "个人开支",
+      "tipsGratuities": "小费",
+      "souvenirsShopping": "纪念品和购物",
+      "currencyExchangeFees": "货币兑换费",
+      "lunchesUnlessSpecified": "午餐（除非另有说明）",
+      "dinnersUnlessSpecified": "晚餐（除非另有说明）",
+      "alcoholicBeverages": "酒精饮料",
+      "laundryServices": "洗衣服务",
+      "roomServiceCharges": "客房送餐服务费",
+      "earlyCheckInLateCheckOut": "提前入住/延迟退房",
+      "hotelMinibarCharges": "酒店迷你吧费用",
+      "excessBaggageFees": "超重行李费",
+      "porterLuggageHandlingFees": "行李搬运费",
+      "travelInsuranceUnlessSpecified": "旅行保险（除非另有说明）",
+      "medicalExpenses": "医疗费用",
+      "optionalActivitiesExcursions": "可选活动和短途旅行",
+      "entryFeesNotMentioned": "行程中未提及的入场费",
+      "additionalExperiencesNotListed": "未列出的额外体验",
+      "phoneCallsInternetCharges": "电话和网络费用",
+      "cityTouristTax": "城市旅游税（直接在酒店支付）"
+    }
+  },
+  "manageInclusions": {
+    "admin": "管理员",
+    "title": "管理附加项目",
+    "totalInclusions": "附加项目总数：{{count}}",
+    "newInclusion": "新建附加项目",
+    "stats": {
+      "total": "总计",
+      "active": "启用",
+      "inactive": "停用"
+    },
+    "filters": {
+      "all": "全部",
+      "active": "启用",
+      "inactive": "停用"
+    },
+    "bulkDeleteButton": "删除所选 ({{count}})",
+    "table": {
+      "serial": "序号",
+      "name": "名称",
+      "status": "状态",
+      "created": "创建时间",
+      "actions": "操作"
+    },
+    "status": {
+      "active": "启用",
+      "inactive": "停用"
+    },
+    "tooltips": {
+      "deactivate": "停用",
+      "activate": "启用",
+      "edit": "编辑",
+      "delete": "删除"
+    },
+    "modal": {
+      "createTitle": "创建附加项目",
+      "editTitle": "编辑附加项目",
+      "nameLabel": "名称",
+      "namePlaceholder": "输入附加项目名称（最多300个字符）",
+      "cancel": "取消",
+      "create": "创建",
+      "saveChanges": "保存更改",
+      "saving": "保存中..."
+    },
+    "deleteModal": {
+      "title": "删除附加项目",
+      "description": "确定要删除 \"{{name}}\" 吗？此操作无法撤销。",
+      "cancel": "取消",
+      "delete": "删除",
+      "deleting": "删除中..."
+    },
+    "bulkDeleteModal": {
+      "title": "删除 {{count}} 个附加项目",
+      "description": "确定要删除所选附加项目吗？此操作无法撤销。",
+      "cancel": "取消",
+      "delete": "删除 ({{count}})",
+      "deleting": "删除中..."
+    },
+    "errors": {
+      "fetchFailed": "加载附加项目失败，请重试。",
+      "updateFailed": "更新附加项目状态失败。",
+      "deleteFailed": "删除附加项目失败。",
+      "bulkDeleteFailed": "删除所选附加项目失败。",
+      "nameRequired": "附加项目名称不能为空。",
+      "saveFailed": "保存附加项目失败。"
+    },
+    "toasts": {
+      "deactivated": "附加项目已停用。",
+      "activated": "附加项目已启用。",
+      "deleteSuccess": "附加项目删除成功。",
+      "bulkDeleteSuccess": "所选附加项目删除成功。",
+      "createSuccess": "附加项目创建成功。",
+      "updateSuccess": "附加项目更新成功。"
+    },
+    "empty": {
+      "title": "未找到附加项目",
+      "description": "请尝试调整筛选条件或新建附加项目。"
+    },
+    "inclusions": {
+      "wifi": "无线网络",
+      "breakfast": "早餐",
+      "parking": "停车场",
+      "swimming_pool": "游泳池",
+      "air_conditioning": "空调",
+      "pets_allowed": "允许携带宠物",
+      "smoking_allowed": "允许吸烟",
+      "tv": "电视",
+      "private_bathroom": "独立卫生间"
+    },
+    "locale": "zh-CN",
+    "inclusions": {
+      "hotelRiadAccommodation": "酒店/里亚德住宿",
+      "dailyBreakfast": "每日早餐",
+      "halfBoard": "半食宿（早餐和晚餐）",
+      "fullBoard": "全食宿（包含所有餐食）",
+      "airportPickupDropoff": "机场接送",
+      "airConditionedTransport": "空调交通",
+      "professionalDriver": "专业司机",
+      "licensedLocalTourGuide": "持牌当地导游",
+      "fuelTollsParking": "燃油、过路费和停车费",
+      "monumentAttractionEntryFees": "古迹和景点门票",
+      "guidedCityTours": "导游城市游览",
+      "museumVisits": "参观博物馆",
+      "desertExcursion": "沙漠之旅",
+      "camelRideExperience": "骑骆驼体验",
+      "desertCampOvernight": "沙漠营地过夜",
+      "traditionalMoroccanDinner": "传统摩洛哥晚餐",
+      "welcomeTeaCeremony": "迎宾茶仪式",
+      "cookingClassWithLocals": "与当地人一起烹饪课",
+      "lunchDuringExcursions": "游览期间的午餐",
+      "streetFoodTasting": "街头美食品尝",
+      "surfingLessons": "冲浪课程",
+      "quadBikingSession": "四轮摩托车骑行",
+      "buggyDrivingExperience": "越野车驾驶体验",
+      "sandboarding": "滑沙",
+      "mountainTrekkingGuide": "山地徒步向导",
+      "boatCruise": "游船巡游",
+      "snorkelingEquipment": "浮潜装备",
+      "spaHammamSession": "水疗和土耳其浴",
+      "massageSession": "按摩",
+      "beachClubAccess": "海滩俱乐部入场",
+      "professionalPhotographySession": "专业摄影",
+      "travelAssistance247": "24/7 旅行协助",
+      "localSimCardMobileData": "本地SIM卡/移动数据",
+      "dailyBottledWater": "每日瓶装水",
+      "personalizedItineraryPlanning": "个性化行程规划",
+      "multilingualSupport": "多语言支持",
+      "travelInsurance": "旅行保险",
+      "emergencyAssistance": "紧急援助",
+      "childFriendlyEquipment": "儿童友好设备",
+      "luxuryDesertCampUpgrade": "豪华沙漠营地升级",
+      "privateDriverService": "私人司机服务",
+      "fiveStarHotelUpgrade": "升级至五星级酒店",
+      "hotAirBalloonExperience": "热气球体验",
+      "privateYachtBoatTrip": "私人游艇/船之旅",
+      "helicopterTransfer": "直升机接送"
+    }
+  },
+  "bookingForm": {
+    "pricePerPersonLabel": "每人价格",
+    "numberOfPeopleLabel": "人数",
+    "total": "总计",
+    "continue": "继续",
+    "back": "返回",
+    "enquire": "咨询",
+    "contactInformation": "联系信息",
+    "bookingDetails": "预订详情",
+    "stepLabel": {
+      "1": "联系人",
+      "2": "详情"
+    },
+    "stepStatus": {
+      "completed": "已完成",
+      "inProgress": "进行中",
+      "upcoming": "即将到来"
+    },
+    "stepsLeft": "还剩 {{count}} 步",
+    "stepsLeft_plural": "还剩 {{count}} 步",
+    "lastStep": "✨ 最后一步",
+    "fullName": "全名",
+    "email": "电子邮箱",
+    "phone": "电话",
+    "nationality": "国籍",
+    "date": "日期",
+    "time": "时间",
+    "pickupLocation": "接载地点",
+    "specialRequests": "特殊要求",
+    "specialRequestsPlaceholder": "饮食要求、无障碍需求、偏好…",
+    "stepCounter": "第 {{current}} 步，共 {{total}} 步",
+    "bookTour": "预订此{{type}}"
+  },
+  "common": {
+    "cancel": "取消",
+    "edit": "编辑",
+    "saveChanges": "保存更改"
   }
 }

@@ -34,6 +34,8 @@ import { toast } from "react-toastify";
 import LocationPicker from "../LocationPicker";
 import categoryService from "../../services/categoryService";
 import { categoryKeyMap } from "../../utils/CategoriesMap";
+import { inclusionKeyMap } from "../../utils/inclusionsKeyMap";
+import { exclusionKeyMap } from "../../utils/exclusionKeyMap";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const DIFFICULTY_OPTIONS = [
@@ -917,6 +919,18 @@ const TourForm = ({ Type }) => {
     fetchOptions();
   }, [id]);
 
+  const translatedInclusions = inclusions?.map((inc) => ({
+    ...inc,
+    label: t(`manageInclusions.inclusions.${inclusionKeyMap[inc?.name]}`),
+  }));
+
+  const translatedExclusions = exclusions?.map((exc) => ({
+    ...exc,
+    label:
+      t(`manageExclusions.exclusions.${exclusionKeyMap[exc?.name]}`) ??
+      exc.text,
+  }));
+
   useEffect(() => {
     if (!id) return;
     const fetchTour = async () => {
@@ -1318,8 +1332,8 @@ const TourForm = ({ Type }) => {
                       data,
                       errors,
                       handleChange,
-                      inclusions,
-                      "name",
+                      translatedInclusions,
+                      "label",
                       "id",
                       undefined,
                       undefined,
@@ -1335,8 +1349,8 @@ const TourForm = ({ Type }) => {
                       data,
                       errors,
                       handleChange,
-                      exclusions,
-                      "name",
+                      translatedExclusions,
+                      "label",
                       "id",
                       undefined,
                       undefined,

@@ -58,6 +58,8 @@ import Settings from "./pages/settings/Settings";
 import ManageInquiries from "./pages/admin/ManageInquiries";
 import TermsOfService from "./components/Global/TermsOfService";
 import PrivacyPolicy from "./components/Global/PrivacyPolicy";
+import ManageExclusions from "./pages/admin/ManageExclusions";
+import ManageInclusions from "./pages/admin/ManageInclusions";
 
 /* 
 
@@ -418,6 +420,26 @@ const App = () => {
             <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
               <AdminLayout>
                 <ManageCategories />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/exclusions'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <ManageExclusions />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />{" "}
+        <Route
+          path='/inclusions'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <ManageInclusions />
               </AdminLayout>
             </ProtectedRoute>
           }

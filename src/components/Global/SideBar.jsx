@@ -75,9 +75,19 @@ const Sidebar = ({
                 path: "/admin/inquiries",
               },
               {
-                icon: "fa-list",
+                icon: "fa-layer-group",
                 label: t("nav.categories"),
                 path: "/categories",
+              },
+              {
+                icon: "fa-ban",
+                label: t("tourForm.fields.exclusions"),
+                path: "/exclusions",
+              },
+              {
+                icon: "fa-check-circle",
+                label: t("tourForm.fields.inclusions"),
+                path: "/inclusions",
               },
             ]
           : []),

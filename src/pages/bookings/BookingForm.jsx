@@ -1,5 +1,6 @@
-// ── BookingForm.jsx (Enhanced + Responsive Step Badge Fix) ──────────────────
+// ── BookingForm.jsx (Enhanced + Responsive Step Badge Fix + i18n) ──────────────────
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // Utils
 import {
@@ -16,8 +17,8 @@ import ToggleSwitcher from "../../common/ToggleSwitcher";
 import { Link } from "react-router-dom";
 
 const STEPS = [
-  { id: 1, label: "Contact", icon: "fa-user" },
-  { id: 2, label: "Details", icon: "fa-calendar-alt" },
+  { id: 1, icon: "fa-user" },
+  { id: 2, icon: "fa-calendar-alt" },
 ];
 
 const BookingForm = ({
@@ -31,6 +32,7 @@ const BookingForm = ({
   typeConfig,
   isSubmitting,
 }) => {
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState("forward");
 
@@ -50,6 +52,9 @@ const BookingForm = ({
       ? tour.price * Number(data.num_people)
       : null;
 
+  const tourTypeCapitalized =
+    tour?.type?.charAt(0).toUpperCase() + tour?.type?.slice(1) || "";
+
   return (
     <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden shadow-xl shadow-stone-200/50 transition-all duration-300 hover:shadow-2xl'>
       {/* Top accent - more vibrant gradient */}
@@ -59,7 +64,7 @@ const BookingForm = ({
         {/* Price section with improved hierarchy */}
         <div className='mb-5'>
           <p className='text-xs text-stone-400 uppercase tracking-wider mb-1 font-semibold'>
-            Price per person
+            {t("bookingForm.pricePerPersonLabel")}
           </p>
           <div className='flex items-baseline gap-1'>
             <span className='text-3xl font-black text-amber-600'>$</span>
@@ -128,14 +133,14 @@ const BookingForm = ({
                         isActive ? "text-stone-800" : "text-stone-400"
                       }`}
                     >
-                      {s.label}
+                      {t(`bookingForm.stepLabel.${s.id}`)}
                     </p>
                     <p className='text-[10px] text-stone-400 leading-tight'>
                       {isDone
-                        ? "Completed"
+                        ? t("bookingForm.stepStatus.completed")
                         : isActive
-                        ? "In progress"
-                        : "Upcoming"}
+                        ? t("bookingForm.stepStatus.inProgress")
+                        : t("bookingForm.stepStatus.upcoming")}
                     </p>
                   </div>
 
@@ -166,10 +171,8 @@ const BookingForm = ({
             `}
           >
             {step === STEPS.length
-              ? "✨ Last step"
-              : `${STEPS.length - step} step${
-                  STEPS.length - step > 1 ? "s" : ""
-                } left`}
+              ? t("bookingForm.lastStep")
+              : t("bookingForm.stepsLeft", { count: STEPS.length - step })}
           </span>
         </div>
 
@@ -188,16 +191,16 @@ const BookingForm = ({
             >
               <div className='flex items-center justify-between mb-1'>
                 <p className='text-[11px] font-bold text-stone-400 uppercase tracking-wider'>
-                  Contact Information
+                  {t("bookingForm.contactInformation")}
                 </p>
                 <span className='text-[10px] text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full'>
-                  Step 1 of 2
+                  {t("bookingForm.stepCounter", { current: 1, total: 2 })}
                 </span>
               </div>
 
               <div className='space-y-4'>
                 {renderInput(
-                  "Full Name",
+                  t("bookingForm.fullName"),
                   "full_name",
                   data,
                   errors,
@@ -205,7 +208,7 @@ const BookingForm = ({
                   "text"
                 )}
                 {renderInput(
-                  "Email",
+                  t("bookingForm.email"),
                   "email",
                   data,
                   errors,
@@ -213,7 +216,7 @@ const BookingForm = ({
                   "email"
                 )}
                 {renderInput(
-                  "Phone",
+                  t("bookingForm.phone"),
                   "phone",
                   data,
                   errors,
@@ -221,7 +224,7 @@ const BookingForm = ({
                   "tel"
                 )}
                 {renderInput(
-                  "Nationality",
+                  t("bookingForm.nationality"),
                   "nationality",
                   data,
                   errors,
@@ -240,7 +243,7 @@ const BookingForm = ({
                   disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:from-amber-400
                   transition-all duration-200 flex items-center justify-center gap-2 shadow-md shadow-amber-200/50'
               >
-                Continue{" "}
+                {t("bookingForm.continue")}{" "}
                 <i className='fa fa-arrow-right text-xs transition-transform group-hover:translate-x-0.5' />
               </button>
             </div>
@@ -257,16 +260,16 @@ const BookingForm = ({
             >
               <div className='flex items-center justify-between mb-1'>
                 <p className='text-[11px] font-bold text-stone-400 uppercase tracking-wider'>
-                  Booking Details
+                  {t("bookingForm.bookingDetails")}
                 </p>
                 <span className='text-[10px] text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full'>
-                  Step 2 of 2
+                  {t("bookingForm.stepCounter", { current: 2, total: 2 })}
                 </span>
               </div>
 
               <div className='space-y-4'>
                 {renderDateInput(
-                  "Date",
+                  t("bookingForm.date"),
                   "booking_date",
                   data,
                   errors,
@@ -274,7 +277,7 @@ const BookingForm = ({
                   true
                 )}
                 {renderTimeInput(
-                  "Time",
+                  t("bookingForm.time"),
                   "booking_time",
                   data,
                   errors,
@@ -282,7 +285,7 @@ const BookingForm = ({
                   true
                 )}
                 {renderInput(
-                  "Number of People",
+                  t("bookingForm.numberOfPeopleLabel"),
                   "num_people",
                   data,
                   errors,
@@ -294,7 +297,7 @@ const BookingForm = ({
                   tour?.max_group_size?.toString()
                 )}
                 {renderInput(
-                  "Pickup Location",
+                  t("bookingForm.pickupLocation"),
                   "pickup_location",
                   data,
                   errors,
@@ -302,14 +305,14 @@ const BookingForm = ({
                   "text"
                 )}
                 {renderTextarea(
-                  "Special Requests",
+                  t("bookingForm.specialRequests"),
                   "special_requests",
                   data,
                   errors,
                   handleChange,
                   false,
                   undefined,
-                  "Dietary requirements, accessibility needs, preferences…"
+                  t("bookingForm.specialRequestsPlaceholder")
                 )}
               </div>
 
@@ -318,19 +321,25 @@ const BookingForm = ({
                 <div className='bg-gradient-to-br from-amber-50 to-white border border-amber-100 rounded-2xl p-4 shadow-sm transition-all duration-200 hover:shadow-md'>
                   <div className='space-y-2'>
                     <div className='flex justify-between text-sm'>
-                      <span className='text-stone-500'>Price per person</span>
+                      <span className='text-stone-500'>
+                        {t("bookingForm.pricePerPersonLabel")}
+                      </span>
                       <span className='font-semibold text-stone-800'>
                         ${tour.price}
                       </span>
                     </div>
                     <div className='flex justify-between text-sm'>
-                      <span className='text-stone-500'>Number of people</span>
+                      <span className='text-stone-500'>
+                        {t("bookingForm.numberOfPeopleLabel")}
+                      </span>
                       <span className='font-semibold text-stone-800'>
                         × {data.num_people}
                       </span>
                     </div>
                     <div className='border-t border-amber-200 pt-2 mt-1 flex justify-between items-baseline'>
-                      <span className='font-bold text-stone-700'>Total</span>
+                      <span className='font-bold text-stone-700'>
+                        {t("bookingForm.total")}
+                      </span>
                       <span className='font-black text-2xl text-amber-600'>
                         ${Number(totalPrice).toLocaleString()}
                       </span>
@@ -349,13 +358,12 @@ const BookingForm = ({
                     hover:border-stone-300 hover:text-stone-800 hover:bg-stone-50
                     transition-all duration-200 flex items-center gap-2 shrink-0'
                 >
-                  <i className='fa fa-arrow-left text-xs' /> Back
+                  <i className='fa fa-arrow-left text-xs' />{" "}
+                  {t("bookingForm.back")}
                 </button>
 
                 {renderButton(
-                  `Book this ${
-                    tour.type.charAt(0).toUpperCase() + tour.type.slice(1)
-                  }`,
+                  t("bookingForm.bookTour", { type: tourTypeCapitalized }),
                   "submit",
                   validate(),
                   isSubmitting
@@ -370,7 +378,7 @@ const BookingForm = ({
           className='w-full mt-5 py-3 rounded-xl text-sm font-semibold text-stone-500 hover:text-stone-700 bg-stone-50 hover:bg-stone-100 border border-stone-200 hover:border-stone-300 transition-all duration-200 flex items-center justify-center gap-2 group'
         >
           <i className='fa fa-envelope text-xs group-hover:scale-110 transition-transform' />
-          Enquire
+          {t("bookingForm.enquire")}
         </Link>
       </div>
     </div>

@@ -8,11 +8,41 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Official Font Awesome 6 (free CDN) -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
+
     <title>Maghreb Tours</title>
+
+    <script>
+  (function() {
+    const lang = localStorage.getItem('lang');
+    if (lang === 'ar') {
+      document.documentElement.setAttribute('lang', 'ar');
+      document.documentElement.classList.add('lang-ar');
+
+      // Load Arabic font
+      const link = document.createElement('link');
+      link.href = 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;900&display=swap';
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+
+      // Apply Arabic font to everything EXCEPT Font Awesome icons
+      const style = document.createElement('style');
+      style.textContent = `
+        body, body *:not(.fa):not(.fas):not(.far):not(.fal):not(.fab):not([class^="fa-"]):not([class*=" fa-"]) {
+          font-family: 'Cairo', 'DM Sans', sans-serif !important;
+        }
+        h1, h2, h3, .playfair {
+          font-family: 'Cairo', 'Playfair Display', serif !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  })();
+</script>
   </head>
   <body>
     <div id="root"></div>

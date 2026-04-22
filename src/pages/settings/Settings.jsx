@@ -170,11 +170,11 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
     privacy_policy: Joi.string()
       .allow(null, "")
       .optional()
-      .label("Privacy Policy"),
+      .label(t("settings.general.privacyPolicyLabel", "Privacy Policy")),
     terms_of_service: Joi.string()
       .allow(null, "")
       .optional()
-      .label("Terms of Service"),
+      .label(t("settings.general.termsOfServiceLabel", "Terms of Service")),
   };
 
   useEffect(() => {
@@ -219,13 +219,17 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
       };
 
       await settingsService.update(updateData);
-      toast.success("Settings updated successfully!");
+      toast.success(
+        t("settings.general.updateSuccess", "Settings updated successfully!")
+      );
       setTimeout(() => {
         setIsEditing(false);
       }, 1500);
     } catch (error) {
       console.log("Error: ", error);
-      toast.error("Error updating Settings!");
+      toast.error(
+        t("settings.general.updateError", "Error updating Settings!")
+      );
     }
   };
 
@@ -235,7 +239,6 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
     doSubmit
   );
 
-  // Placeholder edit handler – replace with actual logic
   const handleEdit = () => {
     setIsEditing(!isEditing);
   };
@@ -248,30 +251,16 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
       title={t("settings.general.title", "General Settings")}
     >
       <div className='space-y-6'>
-        {/* Dark mode toggle */}
-        {/*         <ToggleRow
-          icon='fa-moon'
-          label={t("settings.general.darkModeLabel", "Dark Mode")}
-          desc={t(
-            "settings.general.darkModeDesc",
-            "Switch between light and dark appearance"
-          )}
-          checked={darkMode}
-          onChange={setDarkMode}
-          color='bg-indigo-400'
-          saving={false}
-        /> */}
+        {/* Dark mode toggle (commented out, no translation needed) */}
+        {/* <ToggleRow ... /> */}
 
         {/* User information card */}
         <div className='rounded-xl border border-stone-200 bg-white p-4'>
           <div className='flex justify-between items-center mb-3'>
             <p className='text-sm font-bold text-stone-700'>
-              {t(
-                "settings.general.profile",
-                `${
-                  isEditing ? "Edit Profile Information" : "Profile Information"
-                }`
-              )}
+              {isEditing
+                ? t("settings.general.editProfile", "Edit Profile Information")
+                : t("settings.general.profile", "Profile Information")}
             </p>
             <button
               onClick={handleEdit}
@@ -279,7 +268,9 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                 isEditing ? "bg-red-600" : "bg-amber-600"
               } text-white rounded-xl text w-20 h-7 cursor-pointer text-center text-md font-medium hover:bg-amber-700 transition-colors`}
             >
-              {isEditing ? "Cancel" : "Edit"}
+              {isEditing
+                ? t("common.cancel", "Cancel")
+                : t("common.edit", "Edit")}
             </button>
           </div>
 
@@ -386,28 +377,34 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
               className='bg-white rounded-xl shadow-md p-6'
             >
               <h2 className='text-xl font-bold text-stone-800 mb-6 pb-2 border-b border-stone-200'>
-                Company Settings
+                {t("settings.general.companySettings", "Company Settings")}
               </h2>
 
               <div className='grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2'>
                 {/* Basic info */}
                 {renderInput(
-                  "Company name",
+                  t("settings.general.company_name", "Company name"),
                   "company_name",
                   data,
                   errors,
                   handleChange
                 )}
-                {renderInput("Address", "address", data, errors, handleChange)}
                 {renderInput(
-                  "Phone number",
+                  t("settings.general.address", "Address"),
+                  "address",
+                  data,
+                  errors,
+                  handleChange
+                )}
+                {renderInput(
+                  t("settings.general.company_phone", "Phone number"),
                   "company_phone",
                   data,
                   errors,
                   handleChange
                 )}
                 {renderInput(
-                  "Opening hours",
+                  t("settings.general.opening_hours", "Opening hours"),
                   "opening_hours",
                   data,
                   errors,
@@ -416,35 +413,35 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
 
                 {/* Social media */}
                 {renderInput(
-                  "Facebook URL",
+                  t("settings.general.facebook_url", "Facebook URL"),
                   "facebook_url",
                   data,
                   errors,
                   handleChange
                 )}
                 {renderInput(
-                  "Instagram URL",
+                  t("settings.general.instagram_url", "Instagram URL"),
                   "instagram_url",
                   data,
                   errors,
                   handleChange
                 )}
                 {renderInput(
-                  "YouTube URL",
+                  t("settings.general.youtube_url", "YouTube URL"),
                   "youtube_url",
                   data,
                   errors,
                   handleChange
                 )}
                 {renderInput(
-                  "Twitter URL",
+                  t("settings.general.twitter_url", "Twitter URL"),
                   "twitter_url",
                   data,
                   errors,
                   handleChange
                 )}
                 {renderTextarea(
-                  "Privacy Policy",
+                  t("settings.general.privacy_policy", "Privacy Policy"),
                   "privacy_policy",
                   data,
                   errors,
@@ -453,7 +450,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                   5
                 )}
                 {renderTextarea(
-                  "Terms of service",
+                  t("settings.general.terms_of_service", "Terms of service"),
                   "terms_of_service",
                   data,
                   errors,
@@ -468,7 +465,11 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                 initialPosition={cordinates}
               />
               <div className='mt-8 flex justify-end'>
-                {renderButton("Save changes", "submit", validate())}
+                {renderButton(
+                  t("common.saveChanges", "Save changes"),
+                  "submit",
+                  validate()
+                )}
               </div>
             </form>
           )}

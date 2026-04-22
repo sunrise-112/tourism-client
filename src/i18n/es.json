@@ -1073,6 +1073,28 @@
     }
   },
   "settings": {
+    "general": {
+      "eyebrow": "PREFERENCIAS",
+      "title": "Configuración general",
+      "profile": "Información del perfil",
+      "editProfile": "Editar información del perfil",
+      "company_name": "Nombre de la empresa",
+      "address": "Dirección",
+      "company_phone": "Número de teléfono",
+      "opening_hours": "Horario de apertura",
+      "social_media": "Redes sociales",
+      "facebook_url": "URL de Facebook",
+      "instagram_url": "URL de Instagram",
+      "youtube_url": "URL de YouTube",
+      "twitter_url": "URL de Twitter",
+      "privacy_policy": "Política de privacidad",
+      "terms_of_service": "Términos de servicio",
+      "privacyPolicyLabel": "Política de privacidad",
+      "termsOfServiceLabel": "Términos de servicio",
+      "companySettings": "Configuración de la empresa",
+      "updateSuccess": "¡Configuración actualizada correctamente!",
+      "updateError": "Error al actualizar la configuración."
+    },
     "admin": "Administrador",
     "title": "Configuración",
     "description": "Administrar los canales de comunicación de toda la plataforma",
@@ -1081,6 +1103,10 @@
     },
     "savingIndicator": "Guardando…",
     "tabs": {
+      "general": {
+        "label": "General",
+        "eyebrow": "BÁSICO"
+      },
       "language": {
         "label": "Idioma",
         "eyebrow": "Localización"
@@ -1811,5 +1837,284 @@
     "from": "Desde",
     "max": "Máx.",
     "explore": "Explorar"
+  },
+  "manageExclusions": {
+    "admin": "Administrador",
+    "title": "Gestionar Exclusiones",
+    "totalExclusions": "Total de exclusiones: {{count}}",
+    "newExclusion": "Nueva exclusión",
+    "filters": {
+      "all": "Todos",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "stats": {
+      "total": "Total de exclusiones",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "table": {
+      "serial": "#",
+      "name": "Nombre",
+      "status": "Estado",
+      "created": "Creado",
+      "actions": "Acciones"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "tooltips": {
+      "activate": "Activar",
+      "deactivate": "Desactivar",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "modal": {
+      "createTitle": "Crear exclusión",
+      "editTitle": "Editar exclusión",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Ingrese el texto de exclusión",
+      "cancel": "Cancelar",
+      "create": "Crear",
+      "saveChanges": "Guardar cambios",
+      "saving": "Guardando..."
+    },
+    "deleteModal": {
+      "title": "Eliminar exclusión",
+      "description": "¿Está seguro de que desea eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando..."
+    },
+    "bulkDeleteModal": {
+      "title": "Eliminar {{count}} exclusiones",
+      "description": "¿Está seguro de que desea eliminar las exclusiones seleccionadas? Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar {{count}}",
+      "deleting": "Eliminando..."
+    },
+    "bulkDeleteButton": "Eliminar seleccionados ({{count}})",
+    "empty": {
+      "title": "No se encontraron exclusiones",
+      "description": "Intente ajustar los filtros o cree una nueva exclusión."
+    },
+    "errors": {
+      "fetchFailed": "Error al cargar las exclusiones.",
+      "updateFailed": "Error al actualizar la exclusión.",
+      "deleteFailed": "Error al eliminar la exclusión.",
+      "bulkDeleteFailed": "Error al eliminar las exclusiones.",
+      "saveFailed": "Error al guardar la exclusión.",
+      "nameRequired": "El nombre es obligatorio."
+    },
+    "toasts": {
+      "deactivated": "Exclusión desactivada.",
+      "activated": "Exclusión activada.",
+      "deleteSuccess": "Exclusión eliminada correctamente.",
+      "bulkDeleteSuccess": "Exclusiones eliminadas correctamente.",
+      "createSuccess": "Exclusión creada correctamente.",
+      "updateSuccess": "Exclusión actualizada correctamente."
+    },
+    "exclusions": {
+      "internationalFlights": "Vuelos internacionales",
+      "visaFees": "Tarifas de visa (si corresponde)",
+      "passportDocumentFees": "Gastos de pasaporte y documentos",
+      "travelVaccinations": "Vacunas para viajes",
+      "personalExpenses": "Gastos personales",
+      "tipsGratuities": "Propinas",
+      "souvenirsShopping": "Recuerdos y compras",
+      "currencyExchangeFees": "Comisiones de cambio de divisas",
+      "lunchesUnlessSpecified": "Almuerzos (a menos que se especifique)",
+      "dinnersUnlessSpecified": "Cenas (a menos que se especifique)",
+      "alcoholicBeverages": "Bebidas alcohólicas",
+      "laundryServices": "Servicios de lavandería",
+      "roomServiceCharges": "Cargos de servicio a la habitación",
+      "earlyCheckInLateCheckOut": "Check-in temprano / Check-out tardío",
+      "hotelMinibarCharges": "Cargos del minibar del hotel",
+      "excessBaggageFees": "Gastos de exceso de equipaje",
+      "porterLuggageHandlingFees": "Gastos de porte de equipaje",
+      "travelInsuranceUnlessSpecified": "Seguro de viaje (a menos que se especifique)",
+      "medicalExpenses": "Gastos médicos",
+      "optionalActivitiesExcursions": "Actividades y excursiones opcionales",
+      "entryFeesNotMentioned": "Tarifas de entrada no mencionadas en el itinerario",
+      "additionalExperiencesNotListed": "Experiencias adicionales no incluidas",
+      "phoneCallsInternetCharges": "Cargos de llamadas telefónicas e internet",
+      "cityTouristTax": "Tasa turística municipal (se paga directamente en el hotel)"
+    }
+  },
+  "manageInclusions": {
+    "admin": "Administrador",
+    "title": "Gestionar inclusiones",
+    "totalInclusions": "Total de inclusiones: {{count}}",
+    "newInclusion": "Nueva inclusión",
+    "stats": {
+      "total": "Total",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "filters": {
+      "all": "Todos",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "bulkDeleteButton": "Eliminar seleccionados ({{count}})",
+    "table": {
+      "serial": "N.º",
+      "name": "Nombre",
+      "status": "Estado",
+      "created": "Creado",
+      "actions": "Acciones"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "tooltips": {
+      "deactivate": "Desactivar",
+      "activate": "Activar",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "modal": {
+      "createTitle": "Crear inclusión",
+      "editTitle": "Editar inclusión",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Ingrese el nombre de la inclusión (máx. 300 caracteres)",
+      "cancel": "Cancelar",
+      "create": "Crear",
+      "saveChanges": "Guardar cambios",
+      "saving": "Guardando..."
+    },
+    "deleteModal": {
+      "title": "Eliminar inclusión",
+      "description": "¿Está seguro de que desea eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando..."
+    },
+    "bulkDeleteModal": {
+      "title": "Eliminar {{count}} inclusiones",
+      "description": "¿Está seguro de que desea eliminar las inclusiones seleccionadas? Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar ({{count}})",
+      "deleting": "Eliminando..."
+    },
+    "errors": {
+      "fetchFailed": "Error al cargar las inclusiones. Intente de nuevo.",
+      "updateFailed": "Error al actualizar el estado de la inclusión.",
+      "deleteFailed": "Error al eliminar la inclusión.",
+      "bulkDeleteFailed": "Error al eliminar las inclusiones seleccionadas.",
+      "nameRequired": "El nombre de la inclusión es obligatorio.",
+      "saveFailed": "Error al guardar la inclusión."
+    },
+    "toasts": {
+      "deactivated": "Inclusión desactivada.",
+      "activated": "Inclusión activada.",
+      "deleteSuccess": "Inclusión eliminada correctamente.",
+      "bulkDeleteSuccess": "Inclusiones seleccionadas eliminadas correctamente.",
+      "createSuccess": "Inclusión creada correctamente.",
+      "updateSuccess": "Inclusión actualizada correctamente."
+    },
+    "empty": {
+      "title": "No se encontraron inclusiones",
+      "description": "Intente ajustar los filtros o cree una nueva inclusión."
+    },
+    "inclusions": {
+      "wifi": "Wi-Fi",
+      "breakfast": "Desayuno",
+      "parking": "Estacionamiento",
+      "swimming_pool": "Piscina",
+      "air_conditioning": "Aire acondicionado",
+      "pets_allowed": "Se admiten mascotas",
+      "smoking_allowed": "Se permite fumar",
+      "tv": "TV",
+      "private_bathroom": "Baño privado"
+    },
+    "locale": "es-ES",
+    "inclusions": {
+      "hotelRiadAccommodation": "Alojamiento en hotel / riad",
+      "dailyBreakfast": "Desayuno diario",
+      "halfBoard": "Media pensión (desayuno y cena)",
+      "fullBoard": "Pensión completa (todas las comidas)",
+      "airportPickupDropoff": "Recogida y regreso al aeropuerto",
+      "airConditionedTransport": "Transporte con aire acondicionado",
+      "professionalDriver": "Conductor profesional",
+      "licensedLocalTourGuide": "Guía turístico local autorizado",
+      "fuelTollsParking": "Combustible, peajes y estacionamiento",
+      "monumentAttractionEntryFees": "Entradas a monumentos y atracciones",
+      "guidedCityTours": "Visitas guiadas por la ciudad",
+      "museumVisits": "Visitas a museos",
+      "desertExcursion": "Excursión al desierto",
+      "camelRideExperience": "Experiencia en camello",
+      "desertCampOvernight": "Noche en campamento desértico",
+      "traditionalMoroccanDinner": "Cena tradicional marroquí",
+      "welcomeTeaCeremony": "Ceremonia del té de bienvenida",
+      "cookingClassWithLocals": "Clase de cocina con lugareños",
+      "lunchDuringExcursions": "Almuerzo durante las excursiones",
+      "streetFoodTasting": "Degustación de comida callejera",
+      "surfingLessons": "Clases de surf",
+      "quadBikingSession": "Sesión de quad",
+      "buggyDrivingExperience": "Experiencia de conducción de buggy",
+      "sandboarding": "Sandboard",
+      "mountainTrekkingGuide": "Guía de senderismo de montaña",
+      "boatCruise": "Crucero en barco",
+      "snorkelingEquipment": "Equipo de esnórquel",
+      "spaHammamSession": "Sesión de spa y hammam",
+      "massageSession": "Sesión de masaje",
+      "beachClubAccess": "Acceso a club de playa",
+      "professionalPhotographySession": "Sesión de fotografía profesional",
+      "travelAssistance247": "Asistencia de viaje 24/7",
+      "localSimCardMobileData": "Tarjeta SIM local / datos móviles",
+      "dailyBottledWater": "Agua embotellada diaria",
+      "personalizedItineraryPlanning": "Planificación personalizada del itinerario",
+      "multilingualSupport": "Soporte multilingüe",
+      "travelInsurance": "Seguro de viaje",
+      "emergencyAssistance": "Asistencia de emergencia",
+      "childFriendlyEquipment": "Equipo apto para niños",
+      "luxuryDesertCampUpgrade": "Mejora a campamento desértico de lujo",
+      "privateDriverService": "Servicio de conductor privado",
+      "fiveStarHotelUpgrade": "Mejora a hotel 5 estrellas",
+      "hotAirBalloonExperience": "Experiencia en globo aerostático",
+      "privateYachtBoatTrip": "Viaje en yate / barco privado",
+      "helicopterTransfer": "Traslado en helicóptero"
+    }
+  },
+  "bookingForm": {
+    "pricePerPersonLabel": "Precio por persona",
+    "numberOfPeopleLabel": "Número de personas",
+    "total": "Total",
+    "continue": "Continuar",
+    "back": "Atrás",
+    "enquire": "Consultar",
+    "contactInformation": "Información de contacto",
+    "bookingDetails": "Detalles de la reserva",
+    "stepLabel": {
+      "1": "Contacto",
+      "2": "Detalles"
+    },
+    "stepStatus": {
+      "completed": "Completado",
+      "inProgress": "En progreso",
+      "upcoming": "Próximo"
+    },
+    "stepsLeft": "{{count}} paso restante",
+    "stepsLeft_plural": "{{count}} pasos restantes",
+    "lastStep": "✨ Último paso",
+    "fullName": "Nombre completo",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "nationality": "Nacionalidad",
+    "date": "Fecha",
+    "time": "Hora",
+    "pickupLocation": "Lugar de recogida",
+    "specialRequests": "Peticiones especiales",
+    "specialRequestsPlaceholder": "Requisitos dietéticos, necesidades de accesibilidad, preferencias…",
+    "stepCounter": "Paso {{current}} de {{total}}",
+    "bookTour": "Reservar este {{type}}"
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "saveChanges": "Guardar cambios"
   }
 }

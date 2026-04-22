@@ -26,6 +26,8 @@ import {
 } from "../../utils/formRenders";
 import { formatDate } from "date-fns";
 import TourLocationViewer from "../../components/TourLocationViewer";
+import { inclusionKeyMap } from "../../utils/inclusionsKeyMap";
+import { exclusionKeyMap } from "../../utils/exclusionKeyMap";
 
 // ─── Helpers ──────────────────────────────────────────────────
 
@@ -102,10 +104,10 @@ const RelatedCard = ({ tour, t }) => (
       <div className='absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-sm'>
         <i className='fa fa-clock mr-1 text-[10px]' />
         {tour?.type === "tour"
-          ? t("tourDetail.unit.days", { count: tour?.duration_days })
-          : t("tourDetail.unit.hours", { count: tour?.duration_hours })}
+          ? t("tourDetail.unit.days_other", { count: tour?.duration_days })
+          : t("tourDetail.unit.hours_other", { count: tour?.duration_hours })}
       </div>
-    </div>
+    </div> 
     <div className='p-4'>
       <p className='text-xs text-amber-600 font-semibold flex items-center gap-1 mb-1 uppercase tracking-wide'>
         <i className='fa fa-map-marker-alt text-[10px]' />
@@ -585,6 +587,18 @@ const TourDetail = () => {
         })
       : null;
 
+  const translatedInclusions = inclusions?.map((inc) => ({
+    ...inc,
+    label: t(`manageInclusions.inclusions.${inclusionKeyMap[inc?.name]}`),
+  }));
+
+  const translatedExclusions = exclusions?.map((exc) => ({
+    ...exc,
+    label:
+      t(`manageExclusions.exclusions.${exclusionKeyMap[exc?.name]}`) ??
+      exc.text,
+  }));
+
   // ── Loading ──────────────────────────────────────────────
   if (loading)
     return (
@@ -725,10 +739,16 @@ const TourDetail = () => {
               )}
               <span className='flex items-center gap-1.5'>
                 <StarRating rating={Math.round(avgRating)} size='text-xs' />
-                <span className='text-amber-400 font-bold'>{avgRating}</span>
-                <span>
-                  {t("tourDetail.review.count", { count: reviews?.length })}
-                </span>
+                {avgRating > 0 && (
+                  <>
+                    <span className='text-amber-400 font-bold'>
+                      {avgRating}
+                    </span>
+                    <span>
+                      {t("tourDetail.review.count", { count: reviews?.length })}
+                    </span>
+                  </>
+                )}
               </span>
             </div>
           </div>
@@ -899,7 +919,7 @@ const TourDetail = () => {
                           <p className='text-xs font-bold uppercase tracking-widest text-amber-600 mb-4'>
                             {t("tourDetail.included")}
                           </p>
-                          {inclusions.map((item) => (
+                          {translatedInclusions.map((item) => (
                             <div
                               key={item.id}
                               className='flex items-center gap-3 text-sm text-stone-600'
@@ -907,7 +927,7 @@ const TourDetail = () => {
                               <span className='w-6 h-6 rounded-full bg-amber-400/20 flex items-center justify-center shrink-0'>
                                 <i className='fa fa-check text-amber-600 text-[10px]' />
                               </span>
-                              {item.name}
+                              {item.label}
                             </div>
                           ))}
                         </div>
@@ -917,7 +937,7 @@ const TourDetail = () => {
                           <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-4'>
                             {t("tourDetail.notIncluded")}
                           </p>
-                          {exclusions.map((item) => (
+                          {translatedExclusions.map((item) => (
                             <div
                               key={item.id}
                               className='flex items-center gap-3 text-sm text-stone-400'
@@ -925,7 +945,7 @@ const TourDetail = () => {
                               <span className='w-6 h-6 rounded-full bg-stone-200 flex items-center justify-center shrink-0'>
                                 <i className='fa fa-times text-stone-400 text-[10px]' />
                               </span>
-                              {item.name}
+                              {item.label}
                             </div>
                           ))}
                         </div>
@@ -1042,13 +1062,20 @@ const TourDetail = () => {
               <div>
                 <div className='bg-white rounded-2xl border border-stone-100 p-8 mb-8 flex flex-col md:flex-row items-center gap-8'>
                   <div className='text-center shrink-0'>
-                    <p className='text-6xl font-black text-amber-500'>
-                      {avgRating}
-                    </p>
-                    <StarRating rating={Math.round(avgRating)} size='text-lg' />
-                    <p className='text-xs text-stone-400 mt-2'>
-                      {t("tourDetail.review.count", { count: reviews?.length })}
-                    </p>
+                    <>
+                      <p className='text-6xl font-black text-amber-500'>
+                        {avgRating > 0 && avgRating}
+                      </p>
+                      <StarRating
+                        rating={Math.round(avgRating)}
+                        size='text-lg'
+                      />
+                      <p className='text-xs text-stone-400 mt-2'>
+                        {t("tourDetail.review.count", {
+                          count: reviews?.length,
+                        })}
+                      </p>
+                    </>
                   </div>
                   <div className='flex-1 w-full space-y-2'>
                     {[5, 4, 3, 2, 1].map((star) => {

@@ -1074,6 +1074,28 @@
     }
   },
   "settings": {
+    "general": {
+      "eyebrow": "التفضيلات",
+      "title": "الإعدادات العامة",
+      "profile": "معلومات الملف الشخصي",
+      "editProfile": "تعديل معلومات الملف الشخصي",
+      "company_name": "اسم الشركة",
+      "address": "العنوان",
+      "company_phone": "رقم الهاتف",
+      "opening_hours": "ساعات العمل",
+      "social_media": "وسائل التواصل الاجتماعي",
+      "facebook_url": "رابط فيسبوك",
+      "instagram_url": "رابط إنستغرام",
+      "youtube_url": "رابط يوتيوب",
+      "twitter_url": "رابط تويتر",
+      "privacy_policy": "سياسة الخصوصية",
+      "terms_of_service": "شروط الخدمة",
+      "privacyPolicyLabel": "سياسة الخصوصية",
+      "termsOfServiceLabel": "شروط الخدمة",
+      "companySettings": "إعدادات الشركة",
+      "updateSuccess": "تم تحديث الإعدادات بنجاح!",
+      "updateError": "حدث خطأ أثناء تحديث الإعدادات!"
+    },
     "admin": "المشرف",
     "title": "الإعدادات",
     "description": "إدارة قنوات الاتصال على مستوى المنصة",
@@ -1082,6 +1104,10 @@
     },
     "savingIndicator": "جاري الحفظ…",
     "tabs": {
+      "general": {
+        "label": "عام",
+        "eyebrow": "أساسي"
+      },
       "language": {
         "label": "اللغة",
         "eyebrow": "التوطين"
@@ -1821,5 +1847,284 @@
     "from": "من",
     "max": "الحد الأقصى",
     "explore": "استكشف"
+  },
+  "manageExclusions": {
+    "admin": "مدير",
+    "title": "إدارة الاستثناءات",
+    "totalExclusions": "إجمالي الاستثناءات: {{count}}",
+    "newExclusion": "استثناء جديد",
+    "filters": {
+      "all": "الكل",
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "stats": {
+      "total": "إجمالي الاستثناءات",
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "table": {
+      "serial": "#",
+      "name": "الاسم",
+      "status": "الحالة",
+      "created": "تاريخ الإنشاء",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "tooltips": {
+      "activate": "تفعيل",
+      "deactivate": "إلغاء التفعيل",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "modal": {
+      "createTitle": "إنشاء استثناء",
+      "editTitle": "تعديل الاستثناء",
+      "nameLabel": "الاسم",
+      "namePlaceholder": "أدخل نص الاستثناء",
+      "cancel": "إلغاء",
+      "create": "إنشاء",
+      "saveChanges": "حفظ التغييرات",
+      "saving": "جارٍ الحفظ..."
+    },
+    "deleteModal": {
+      "title": "حذف الاستثناء",
+      "description": "هل أنت متأكد من حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "deleting": "جارٍ الحذف..."
+    },
+    "bulkDeleteModal": {
+      "title": "حذف {{count}} استثناءات",
+      "description": "هل أنت متأكد من حذف الاستثناءات المحددة؟ لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف {{count}}",
+      "deleting": "جارٍ الحذف..."
+    },
+    "bulkDeleteButton": "حذف المحدد ({{count}})",
+    "empty": {
+      "title": "لا توجد استثناءات",
+      "description": "حاول تعديل عوامل التصفية أو إنشاء استثناء جديد."
+    },
+    "errors": {
+      "fetchFailed": "فشل تحميل الاستثناءات.",
+      "updateFailed": "فشل تحديث الاستثناء.",
+      "deleteFailed": "فشل حذف الاستثناء.",
+      "bulkDeleteFailed": "فشل حذف الاستثناءات.",
+      "saveFailed": "فشل حفظ الاستثناء.",
+      "nameRequired": "الاسم مطلوب."
+    },
+    "toasts": {
+      "deactivated": "تم إلغاء تنشيط الاستثناء.",
+      "activated": "تم تنشيط الاستثناء.",
+      "deleteSuccess": "تم حذف الاستثناء بنجاح.",
+      "bulkDeleteSuccess": "تم حذف الاستثناءات بنجاح.",
+      "createSuccess": "تم إنشاء الاستثناء بنجاح.",
+      "updateSuccess": "تم تحديث الاستثناء بنجاح."
+    },
+    "exclusions": {
+      "internationalFlights": "رحلات جوية دولية",
+      "visaFees": "رسوم التأشيرة (إن وجدت)",
+      "passportDocumentFees": "رسوم جواز السفر والوثائق",
+      "travelVaccinations": "التطعيمات الخاصة بالسفر",
+      "personalExpenses": "النفقات الشخصية",
+      "tipsGratuities": "البقشيش والإكراميات",
+      "souvenirsShopping": "الهدايا التذكارية والتسوق",
+      "currencyExchangeFees": "رسوم تحويل العملات",
+      "lunchesUnlessSpecified": "وجبات الغداء (ما لم يُنص على خلاف ذلك)",
+      "dinnersUnlessSpecified": "وجبات العشاء (ما لم يُنص على خلاف ذلك)",
+      "alcoholicBeverages": "المشروبات الكحولية",
+      "laundryServices": "خدمات الغسيل",
+      "roomServiceCharges": "رسوم خدمة الغرف",
+      "earlyCheckInLateCheckOut": "تسجيل الوصول المبكر / المغادرة المتأخرة",
+      "hotelMinibarCharges": "رسوم ميني بار الفندق",
+      "excessBaggageFees": "رسوم الأمتعة الزائدة",
+      "porterLuggageHandlingFees": "رسوم حمل الأمتعة",
+      "travelInsuranceUnlessSpecified": "تأمين السفر (ما لم يُنص على خلاف ذلك)",
+      "medicalExpenses": "النفقات الطبية",
+      "optionalActivitiesExcursions": "الأنشطة والرحلات الاختيارية",
+      "entryFeesNotMentioned": "رسوم الدخول غير المذكورة في البرنامج",
+      "additionalExperiencesNotListed": "تجارب إضافية غير مدرجة",
+      "phoneCallsInternetCharges": "رسوم المكالمات الهاتفية والإنترنت",
+      "cityTouristTax": "ضريبة السياحة المحلية (تُدفع مباشرة في الفندق)"
+    }
+  },
+  "manageInclusions": {
+    "admin": "مدير",
+    "title": "إدارة الإضافات",
+    "totalInclusions": "إجمالي الإضافات: {{count}}",
+    "newInclusion": "إضافة جديدة",
+    "stats": {
+      "total": "الإجمالي",
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "filters": {
+      "all": "الكل",
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "bulkDeleteButton": "حذف المحدد ({{count}})",
+    "table": {
+      "serial": "مسلسل",
+      "name": "الاسم",
+      "status": "الحالة",
+      "created": "تاريخ الإنشاء",
+      "actions": "إجراءات"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "tooltips": {
+      "deactivate": "إلغاء التنشيط",
+      "activate": "تنشيط",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "modal": {
+      "createTitle": "إنشاء إضافة",
+      "editTitle": "تعديل الإضافة",
+      "nameLabel": "الاسم",
+      "namePlaceholder": "أدخل اسم الإضافة (حد أقصى 300 حرف)",
+      "cancel": "إلغاء",
+      "create": "إنشاء",
+      "saveChanges": "حفظ التغييرات",
+      "saving": "جاري الحفظ..."
+    },
+    "deleteModal": {
+      "title": "حذف الإضافة",
+      "description": "هل أنت متأكد من حذف \"{{name}}\"? لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "deleting": "جاري الحذف..."
+    },
+    "bulkDeleteModal": {
+      "title": "حذف {{count}} إضافة",
+      "description": "هل أنت متأكد من حذف الإضافات المحددة? لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "delete": "حذف ({{count}})",
+      "deleting": "جاري الحذف..."
+    },
+    "errors": {
+      "fetchFailed": "فشل تحميل الإضافات. حاول مرة أخرى.",
+      "updateFailed": "فشل تحديث حالة الإضافة.",
+      "deleteFailed": "فشل حذف الإضافة.",
+      "bulkDeleteFailed": "فشل حذف الإضافات المحددة.",
+      "nameRequired": "اسم الإضافة مطلوب.",
+      "saveFailed": "فشل حفظ الإضافة."
+    },
+    "toasts": {
+      "deactivated": "تم إلغاء تنشيط الإضافة.",
+      "activated": "تم تنشيط الإضافة.",
+      "deleteSuccess": "تم حذف الإضافة بنجاح.",
+      "bulkDeleteSuccess": "تم حذف الإضافات المحددة بنجاح.",
+      "createSuccess": "تم إنشاء الإضافة بنجاح.",
+      "updateSuccess": "تم تحديث الإضافة بنجاح."
+    },
+    "empty": {
+      "title": "لا توجد إضافات",
+      "description": "حاول تعديل الفلاتر أو إنشاء إضافة جديدة."
+    },
+    "inclusions": {
+      "wifi": "واي فاي",
+      "breakfast": "إفطار",
+      "parking": "موقف سيارات",
+      "swimming_pool": "مسبح",
+      "air_conditioning": "تكييف هواء",
+      "pets_allowed": "مسموح بالحيوانات الأليفة",
+      "smoking_allowed": "مسموح بالتدخين",
+      "tv": "تلفزيون",
+      "private_bathroom": "حمام خاص"
+    },
+    "locale": "ar-EG",
+    "inclusions": {
+      "hotelRiadAccommodation": "إقامة في فندق / رياض",
+      "dailyBreakfast": "وجبة إفطار يومية",
+      "halfBoard": "نصف إقامة (إفطار وعشاء)",
+      "fullBoard": "إقامة كاملة (جميع الوجبات)",
+      "airportPickupDropoff": "الاستقبال والتوصيل من/إلى المطار",
+      "airConditionedTransport": "وسائل نقل مكيفة",
+      "professionalDriver": "سائق محترف",
+      "licensedLocalTourGuide": "مرشد سياحي محلي مرخص",
+      "fuelTollsParking": "الوقود والرسوم ومواقف السيارات",
+      "monumentAttractionEntryFees": "رسوم دخول المعالم والمناطق السياحية",
+      "guidedCityTours": "جولات مدنية بصحبة مرشد",
+      "museumVisits": "زيارات المتاحف",
+      "desertExcursion": "رحلة إلى الصحراء",
+      "camelRideExperience": "تجربة ركوب الجمل",
+      "desertCampOvernight": "مبيت في مخيم صحراوي",
+      "traditionalMoroccanDinner": "عشاء مغربي تقليدي",
+      "welcomeTeaCeremony": "مراسم شاي الترحيب",
+      "cookingClassWithLocals": "درس طبخ مع السكان المحليين",
+      "lunchDuringExcursions": "غداء أثناء الرحلات",
+      "streetFoodTasting": "تذوق طعام الشارع",
+      "surfingLessons": "دروس ركوب الأمواج",
+      "quadBikingSession": "جلسة ركوب الدراجات الرباعية",
+      "buggyDrivingExperience": "تجربة قيادة البغي",
+      "sandboarding": "التزلج على الرمال",
+      "mountainTrekkingGuide": "مرشد للمشي في الجبال",
+      "boatCruise": "رحلة بحرية",
+      "snorkelingEquipment": "معدات الغطس",
+      "spaHammamSession": "جلسة سبا وحمام",
+      "massageSession": "جلسة مساج",
+      "beachClubAccess": "الدخول إلى نادي شاطئي",
+      "professionalPhotographySession": "جلسة تصوير احترافية",
+      "travelAssistance247": "مساعدة سفر 24/7",
+      "localSimCardMobileData": "بطاقة SIM محلية / بيانات الجوال",
+      "dailyBottledWater": "مياه معبأة يومياً",
+      "personalizedItineraryPlanning": "تخطيط مخصص لمسار الرحلة",
+      "multilingualSupport": "دعم متعدد اللغات",
+      "travelInsurance": "تأمين السفر",
+      "emergencyAssistance": "مساعدة طارئة",
+      "childFriendlyEquipment": "معدات مناسبة للأطفال",
+      "luxuryDesertCampUpgrade": "ترقية إلى مخيم صحراوي فاخر",
+      "privateDriverService": "خدمة سائق خاص",
+      "fiveStarHotelUpgrade": "ترقية إلى فندق 5 نجوم",
+      "hotAirBalloonExperience": "تجربة منطاد الهواء الساخن",
+      "privateYachtBoatTrip": "رحلة يخت / قارب خاص",
+      "helicopterTransfer": "نقل بطائرة هليكوبتر"
+    }
+  },
+  "bookingForm": {
+    "pricePerPersonLabel": "السعر للفرد",
+    "numberOfPeopleLabel": "عدد الأشخاص",
+    "total": "الإجمالي",
+    "continue": "متابعة",
+    "back": "رجوع",
+    "enquire": "استفسار",
+    "contactInformation": "معلومات الاتصال",
+    "bookingDetails": "تفاصيل الحجز",
+    "stepLabel": {
+      "1": "جهة الاتصال",
+      "2": "التفاصيل"
+    },
+    "stepStatus": {
+      "completed": "مكتمل",
+      "inProgress": "قيد التنفيذ",
+      "upcoming": "قادم"
+    },
+    "stepsLeft": "{{count}} خطوة متبقية",
+    "stepsLeft_plural": "{{count}} خطوات متبقية",
+    "lastStep": "✨ الخطوة الأخيرة",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "nationality": "الجنسية",
+    "date": "التاريخ",
+    "time": "الوقت",
+    "pickupLocation": "موقع الاستلام",
+    "specialRequests": "طلبات خاصة",
+    "specialRequestsPlaceholder": "متطلبات غذائية، احتياجات الوصول، تفضيلات…",
+    "stepCounter": "الخطوة {{current}} من {{total}}",
+    "bookTour": "احجز هذه {{type}}"
+  },
+  "common": {
+    "cancel": "إلغاء",
+    "edit": "تعديل",
+    "saveChanges": "حفظ التغييرات"
   }
 }
