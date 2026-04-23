@@ -16,6 +16,7 @@ import useSocketEvent from "../../hooks/useSocketEvent";
 // Context
 import { useSocket } from "../../context/SocketContext";
 import role from "../../constants/role";
+import authService from "../../services/authService";
 
 const Header = ({
   isOpen = false,
@@ -54,6 +55,16 @@ const Header = ({
     const fetchedUser = await userService.getMe();
     setUser(fetchedUser);
     console.log("Fetched User: ", fetchedUser);
+  };
+
+  const handleLogOut = async () => {
+    try {
+      await authService.logout();
+      setDropOpen(false);
+      navigate("/login");
+    } catch (error) {
+      console.log("Error: ", error);
+    }
   };
 
   useEffect(() => {
@@ -330,10 +341,7 @@ const Header = ({
             ))}
             <div className='border-t border-stone-100'>
               <button
-                onClick={() => {
-                  setDropOpen(false);
-                  navigate("/login");
-                }}
+                onClick={() => handleLogOut()}
                 className='w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition-colors text-sm text-red-500 hover:text-red-600'
               >
                 <i className='fa fa-sign-out-alt text-xs w-4 text-center' />
