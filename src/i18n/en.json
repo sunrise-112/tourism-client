@@ -1501,6 +1501,7 @@
     "loginButton": "Login",
     "noAccount": "Don't have an account?",
     "createOne": "Create one",
+    "forgotPassword": "Forgot password?",
     "schema": {
       "email": "Email",
       "password": "Password"

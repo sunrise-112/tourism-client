@@ -1502,6 +1502,7 @@
     "loginButton": "登录",
     "noAccount": "还没有账户？",
     "createOne": "创建账户",
+    "forgotPassword": "忘记密码？",
     "schema": {
       "email": "电子邮箱",
       "password": "密码"

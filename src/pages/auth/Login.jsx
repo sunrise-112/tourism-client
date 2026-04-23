@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Joi from "joi-browser";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 // Services
 import authService from "../../services/authService";
@@ -114,14 +114,20 @@ const Login = () => {
 
           {/* Footer */}
           <p className='text-center text-sm text-gray-400 mt-6'>
-            {t("login.noAccount")}{" "}
-            <button
-              type='button'
-              onClick={() => navigate("/register")}
-              className='text-orange-500 hover:text-orange-600 font-medium transition-colors'
+            <Link
+              to='/forgot-password'
+              className='text-orange-500 hover:text-orange-600 font-medium transition-colors hover:underline'
             >
-              {t("login.createOne")}
+              {t("login.forgotPassword")}
+            </Link>
+            <span className='mx-2'>•</span>
+            <button className=''>
+              {t("login.noAccount")} {" "}
+              <Link to={"/register"} className='text-orange-500 underline'>
+                {t("login.createOne")}
+              </Link>
             </button>
+            {"  "}
           </p>
         </div>
       </div>

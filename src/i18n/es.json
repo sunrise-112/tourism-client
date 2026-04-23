@@ -1501,6 +1501,7 @@
     "loginButton": "Iniciar sesión",
     "noAccount": "¿No tienes una cuenta?",
     "createOne": "Crear una",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
     "schema": {
       "email": "Correo electrónico",
       "password": "Contraseña"
