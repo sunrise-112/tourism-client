@@ -1508,6 +1508,7 @@
     "loginButton": "تسجيل الدخول",
     "noAccount": "ليس لديك حساب؟",
     "createOne": "إنشاء حساب",
+    "forgotPassword": "نسيت كلمة المرور؟",
     "schema": {
       "email": "البريد الإلكتروني",
       "password": "كلمة المرور"
