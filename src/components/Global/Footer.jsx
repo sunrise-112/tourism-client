@@ -35,7 +35,6 @@ const Footer = () => {
     ],
   };
 
-  // API state (initialized as null, not array)
   const [companyInfo, setCompanyInfo] = useState(null);
 
   useEffect(() => {
@@ -50,7 +49,6 @@ const Footer = () => {
     fetchSettings();
   }, []);
 
-  // Build contact fields from API data
   const contactFields = [
     {
       icon: "fa-map-marker-alt",
@@ -66,7 +64,6 @@ const Footer = () => {
     },
   ];
 
-  // Build social links from API data (filter out empty URLs)
   const socialLinks = [
     {
       icon: "fa-facebook-f",
@@ -91,37 +88,36 @@ const Footer = () => {
   ].filter((item) => item.url && item.url.trim() !== "");
 
   return (
-    <footer className='bg-base-100 border-t border-base-200'>
-      {/* ── Main footer ───────────────────────────────── */}
+    <footer className='bg-stone-50 border-t border-stone-200'>
+      {/* Main footer */}
       <div className='max-w-6xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10'>
-        {/* Brand col — spans 2 on lg */}
+        {/* Brand column */}
         <div className='lg:col-span-2 flex flex-col gap-5'>
-          {/* Logo */}
           <Link
             to='/'
-            className='flex items-center gap-2 text-xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent w-fit'
+            className='flex items-center gap-2 text-xl font-black w-fit'
           >
-            <div className='w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0'>
-              <i className='fa fa-globe text-black text-sm' />
+            <div className='w-8 h-8 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center flex-shrink-0 shadow-sm'>
+              <i className='fa fa-globe text-white text-sm' />
             </div>
-            <div className='text-black'>
+            <div className='text-stone-800'>
               {import.meta.env.VITE_COMPANY || companyInfo?.company_name}
             </div>
           </Link>
 
-          <p className='text-sm text-base-content/50 leading-relaxed max-w-xs'>
+          <p className='text-sm text-stone-500 leading-relaxed max-w-xs'>
             {t("footer.brand.description")}
           </p>
 
-          {/* Contact info - dynamic from API */}
+          {/* Contact info */}
           <ul className='space-y-2.5'>
             {contactFields.map((field) => (
               <li
-                key={field.labelKey}
-                className='flex items-start gap-3 text-sm text-base-content/60'
+                key={field.icon}
+                className='flex items-start gap-3 text-sm text-stone-600'
               >
                 <i
-                  className={`fa ${field.icon} text-accent mt-0.5 w-4 text-center flex-shrink-0`}
+                  className={`fa ${field.icon} text-orange-500 mt-0.5 w-4 text-center flex-shrink-0`}
                 />
                 <span>
                   <span className='font-medium'>{t(field.labelKey)}</span>{" "}
@@ -131,7 +127,7 @@ const Footer = () => {
             ))}
           </ul>
 
-          {/* Socials - dynamic from API */}
+          {/* Social links */}
           {socialLinks.length > 0 && (
             <div className='flex items-center gap-2 pt-1'>
               {socialLinks.map((s) => (
@@ -141,8 +137,8 @@ const Footer = () => {
                   target='_blank'
                   rel='noopener noreferrer'
                   aria-label={t(s.labelKey)}
-                  className='w-9 h-9 rounded-xl border border-base-300 flex items-center justify-center
-                    text-base-content/40 hover:text-accent hover:border-accent
+                  className='w-9 h-9 rounded-xl border border-stone-300 flex items-center justify-center
+                    text-stone-400 hover:text-orange-500 hover:border-orange-500
                     transition-colors duration-200'
                 >
                   <i className={`fab ${s.icon} text-sm`} />
@@ -155,7 +151,7 @@ const Footer = () => {
         {/* Link columns */}
         {Object.entries(links).map(([title, items]) => (
           <div key={title}>
-            <h4 className='text-sm font-bold text-base-content uppercase tracking-widest mb-4'>
+            <h4 className='text-sm font-bold text-stone-700 uppercase tracking-widest mb-4'>
               {t(`footer.sections.${title.toLowerCase()}`)}
             </h4>
             <ul className='space-y-2.5'>
@@ -163,9 +159,9 @@ const Footer = () => {
                 <li key={item.labelKey}>
                   <Link
                     to={item.to}
-                    className='text-sm text-base-content/50 hover:text-accent transition-colors duration-150 flex items-center gap-1.5 group'
+                    className='text-sm text-stone-500 hover:text-orange-500 transition-colors duration-150 flex items-center gap-1.5 group'
                   >
-                    <span className='w-0 group-hover:w-2 h-px bg-accent transition-all duration-200 rounded' />
+                    <span className='w-0 group-hover:w-2 h-px bg-orange-500 transition-all duration-200 rounded' />
                     {t(item.labelKey)}
                   </Link>
                 </li>
@@ -175,14 +171,14 @@ const Footer = () => {
         ))}
       </div>
 
-      {/* ── Newsletter strip ──────────────────────────── */}
-      <div className='border-t border-base-200 bg-base-200/50'>
+      {/* Newsletter strip */}
+      {/*       <div className='border-t border-stone-200 bg-stone-100/50'>
         <div className='max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-6'>
           <div>
-            <p className='text-sm font-semibold text-base-content'>
+            <p className='text-sm font-semibold text-stone-800'>
               {t("footer.newsletter.title")}
             </p>
-            <p className='text-xs text-base-content/40 mt-0.5'>
+            <p className='text-xs text-stone-400 mt-0.5'>
               {t("footer.newsletter.subtitle")}
             </p>
           </div>
@@ -193,23 +189,23 @@ const Footer = () => {
             <input
               type='email'
               placeholder={t("footer.newsletter.placeholder")}
-              className='input input-bordered input-sm rounded-xl flex-1 sm:w-64 text-sm'
+              className='input border-stone-300 rounded-xl flex-1 sm:w-64 text-sm px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500'
             />
             <button
               type='submit'
-              className='btn btn-accent btn-sm rounded-xl gap-1.5'
+              className='bg-orange-500 hover:bg-orange-600 text-white rounded-xl px-4 py-2 text-sm font-medium flex items-center gap-1.5 transition-colors'
             >
               {t("footer.newsletter.button")}{" "}
               <i className='fa fa-paper-plane text-xs' />
             </button>
           </form>
         </div>
-      </div>
+      </div> */}
 
-      {/* ── Bottom bar ────────────────────────────────── */}
-      <div className='border-t border-base-200'>
+      {/* Bottom bar */}
+      <div className='border-t border-stone-200'>
         <div className='max-w-6xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3'>
-          <p className='text-xs text-base-content/40'>
+          <p className='text-xs text-stone-400'>
             {t("footer.copyright", {
               year,
               company: import.meta.env.VITE_COMPANY || "TourApp",
@@ -218,19 +214,19 @@ const Footer = () => {
           <div className='flex items-center gap-4'>
             <Link
               to='/privacy'
-              className='text-xs text-base-content/40 hover:text-accent transition-colors'
+              className='text-xs text-stone-400 hover:text-orange-500 transition-colors'
             >
               {t("footer.bottomLinks.privacy")}
             </Link>
             <Link
               to='/terms'
-              className='text-xs text-base-content/40 hover:text-accent transition-colors'
+              className='text-xs text-stone-400 hover:text-orange-500 transition-colors'
             >
               {t("footer.bottomLinks.terms")}
             </Link>
             <Link
               to='/sitemap'
-              className='text-xs text-base-content/40 hover:text-accent transition-colors'
+              className='text-xs text-stone-400 hover:text-orange-500 transition-colors'
             >
               {t("footer.bottomLinks.sitemap")}
             </Link>

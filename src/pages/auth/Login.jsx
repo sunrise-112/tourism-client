@@ -122,7 +122,7 @@ const Login = () => {
             </Link>
             <span className='mx-2'>•</span>
             <button className=''>
-              {t("login.noAccount")} {" "}
+              {t("login.noAccount")}{" "}
               <Link to={"/register"} className='text-orange-500 underline'>
                 {t("login.createOne")}
               </Link>

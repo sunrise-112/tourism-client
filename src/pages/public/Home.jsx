@@ -638,40 +638,44 @@ const Home = () => {
       )}
 
       {/* ── CTA ──────────────────────────────────────────── */}
+
       <section className='max-w-6xl mx-auto px-6 py-20'>
-        <div className='relative rounded-3xl overflow-hidden bg-[#1C1107] p-16 text-center'>
-          <div
-            className='absolute inset-0 opacity-[0.04]'
+        <div className='relative rounded-3xl overflow-hidden bg-lame-50 p-16 text-center shadow-xl'>
+          {/* Subtle sand pattern overlay */} 
+          <div 
+            className='absolute inset-0 opacity-[0.03]'
             style={{
               backgroundImage:
-                "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+                "radial-gradient(circle at 1px 1px, #d6a354 1px, transparent 0)",
               backgroundSize: "24px 24px",
             }}
-          />
-          <div className='absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-amber-500/20 rounded-full blur-[80px] pointer-events-none' />
+          /> 
+          {/* Warm glow (like desert sun) */}
+          <div className='absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-orange-500/10 rounded-full blur-[80px] pointer-events-none' />
+
           <div className='relative z-10'>
-            <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-400 mb-4'>
+            <p className='text-xs font-bold uppercase tracking-[0.2em] text-orange-500 mb-4'>
               {t("home.cta.eyebrow")}
             </p>
             <h2
-              className='text-5xl font-black text-white mb-4'
+              className='text-5xl font-black text-stone-800 mb-4'
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               {t("home.cta.title")}
             </h2>
-            <p className='text-stone-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed'>
+            <p className='text-stone-500 text-lg mb-10 max-w-xl mx-auto leading-relaxed'>
               {t("home.cta.subtitle")}
             </p>
             <div className='flex items-center justify-center gap-4 flex-wrap'>
               <Link
                 to='/tours'
-                className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-8 py-3.5 rounded-xl'
+                className='flex items-center gap-2 text-sm font-bold text-white bg-orange-500 hover:bg-orange-600 transition-colors px-8 py-3.5 rounded-xl shadow-md'
               >
                 {t("home.cta.browseButton")} <i className='fa fa-arrow-right' />
               </Link>
               <Link
                 to='/contact'
-                className='flex items-center gap-2 text-sm font-semibold text-stone-300 hover:text-white border border-white/15 hover:border-white/30 px-8 py-3.5 rounded-xl transition-all'
+                className='flex items-center gap-2 text-sm font-semibold text-orange-600 hover:text-orange-700 border border-orange-300 hover:border-orange-400 px-8 py-3.5 rounded-xl transition-all'
               >
                 {t("home.cta.contactButton")}
               </Link>

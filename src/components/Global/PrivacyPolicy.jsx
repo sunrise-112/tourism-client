@@ -31,27 +31,16 @@ const PrivacyPolicy = () => {
   }
 
   const contactInfo = {
-    company_name: settings?.company_name || "MAghreb Tours",
-    address: settings?.address || "",
-    phone: settings?.company_phone || "",
-    email: import.meta.env.VITE_CONTACT_EMAIL || "contact@maghrebtours.com", // fallback
-    opening_hours: settings?.opening_hours || "",
+    company_name: settings?.company_name,
+    address: settings?.address,
+    phone: settings?.company_phone,
+    email: import.meta.env.VITE_CONTACT_EMAIL,
+    opening_hours: settings?.opening_hours,
   };
 
   return (
     <div className='min-h-screen bg-stone-50 py-12 px-4 sm:px-6'>
       <div className='max-w-4xl mx-auto'>
-        {/* Breadcrumb */}
-        <div className='mb-6 text-sm text-stone-500'>
-          <Link to='/' className='hover:text-accent transition-colors'>
-            {t("common.home", "Home")}
-          </Link>
-          <span className='mx-2'>/</span>
-          <span className='text-stone-800 font-medium'>
-            {t("footer.bottomLinks.privacy", "Privacy Policy")}
-          </span>
-        </div>
-
         {/* Main Card */}
         <div className='bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden'>
           <div className='p-6 sm:p-8 md:p-10'>
