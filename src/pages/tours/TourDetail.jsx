@@ -475,7 +475,7 @@ const TourDetail = () => {
             {
               icon: "fa-tag",
               label: t("tourDetail.stats.category"),
-              value: tour?.category || "—",
+              value: tour?.category_name || "—",
             },
             {
               icon: "fa-map-marker-alt",
@@ -544,7 +544,7 @@ const TourDetail = () => {
             {
               icon: "fa-tag",
               label: t("tourDetail.stats.category"),
-              value: tour?.category || "—",
+              value: tour?.category_name || "—",
             },
             {
               icon: "fa-map-marker-alt",

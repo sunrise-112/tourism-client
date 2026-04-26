@@ -3,6 +3,27 @@ import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import bookingService from "../../services/bookingService";
 
+// ─── Helper: format "HH:MM" to "h:MM AM/PM" ─────────────────
+const formatTimeWithMeridiem = (timeString) => {
+  if (!timeString || typeof timeString !== "string") return null;
+  const [hourStr, minute] = timeString.split(":");
+  let hour = parseInt(hourStr, 10);
+  if (isNaN(hour)) return timeString; // fallback
+  const ampm = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12 || 12; // convert 0 -> 12, 12 -> 12, 13->1, etc.
+  return `${hour}:${minute} ${ampm}`;
+};
+
+// ─── Helper: return FontAwesome icon class based on AM/PM ────
+const getTimeIcon = (timeString) => {
+  if (!timeString || typeof timeString !== "string") return "fa-clock";
+  const [hourStr] = timeString.split(":");
+  let hour = parseInt(hourStr, 10);
+  if (isNaN(hour)) return "fa-clock";
+  return hour >= 12 ? "fa-moon" : "fa-sun";
+};
+
+// ─── StatusBadge, InfoRow, Section (unchanged) ───────────────
 const StatusBadge = ({ status }) => {
   const { t } = useTranslation();
   const config = {
@@ -27,9 +48,7 @@ const StatusBadge = ({ status }) => {
       label: t("bookingPreview.statuses.completed"),
     },
   };
-
   const c = config[status] || config.pending;
-
   return (
     <span
       className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border ${c.color}`}
@@ -70,6 +89,7 @@ const Section = ({ title, children }) => (
   </div>
 );
 
+// ─── Main Component ──────────────────────────────────────────
 const BookingPreview = () => {
   const { t } = useTranslation();
   const { id } = useParams();
@@ -90,9 +110,9 @@ const BookingPreview = () => {
       }
     };
     fetch();
-  }, [id]);
+  }, [id, t]);
 
-  // ── Loading ───────────────────────────────────────────────
+  // Loading state
   if (loading)
     return (
       <div className='min-h-screen bg-stone-50 animate-pulse p-6 md:p-10'>
@@ -105,7 +125,7 @@ const BookingPreview = () => {
       </div>
     );
 
-  // ── Error ─────────────────────────────────────────────────
+  // Error state
   if (error || !booking)
     return (
       <div className='min-h-screen bg-stone-50 flex flex-col items-center justify-center text-center px-6'>
@@ -126,9 +146,14 @@ const BookingPreview = () => {
       </div>
     );
 
+  // Helper for price per person
   const pricePerPerson = booking.num_people
     ? (booking.total_price / booking.num_people).toFixed(2)
     : null;
+
+  // Time formatting & icon
+  const formattedTime = formatTimeWithMeridiem(booking.booking_time);
+  const timeIcon = getTimeIcon(booking.booking_time);
 
   return (
     <div
@@ -136,7 +161,7 @@ const BookingPreview = () => {
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
       <div className='max-w-4xl mx-auto space-y-6'>
-        {/* ── Header ──────────────────────────────────── */}
+        {/* Header */}
         <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
           <div>
             <Link
@@ -164,10 +189,9 @@ const BookingPreview = () => {
           <StatusBadge status={booking.status} />
         </div>
 
-        {/* ── Tour Card ────────────────────────────────── */}
+        {/* Tour Card */}
         {booking && (
           <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden flex flex-col sm:flex-row'>
-            {/* Cover image */}
             <div className='w-full sm:w-48 h-44 sm:h-auto bg-stone-100 shrink-0 relative overflow-hidden'>
               {booking.tour_cover_image ? (
                 <img
@@ -184,8 +208,6 @@ const BookingPreview = () => {
               )}
               <div className='absolute inset-0 bg-gradient-to-t from-black/30 to-transparent sm:bg-gradient-to-r' />
             </div>
-
-            {/* Tour info */}
             <div className='flex-1 p-6'>
               <p className='text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-1'>
                 {booking.type} · {booking.category}
@@ -237,7 +259,7 @@ const BookingPreview = () => {
         )}
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-          {/* ── Booking Details ───────────────────────── */}
+          {/* Booking Details */}
           <Section title={t("bookingPreview.sections.bookingDetails")}>
             <InfoRow
               icon='fa-calendar'
@@ -252,11 +274,22 @@ const BookingPreview = () => {
                 }
               )}
             />
-            <InfoRow
-              icon='fa-clock'
-              label={t("bookingPreview.fields.bookingTime")}
-              value={booking.booking_time}
-            />
+            {/* ── Custom Time Row with dynamic sun/moon icon ── */}
+            {booking.booking_time && formattedTime && (
+              <div className='flex items-start gap-3 py-3 border-b border-stone-100'>
+                <div className='w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0 mt-0.5'>
+                  <i className={`fa ${timeIcon} text-amber-500 text-xs`} />
+                </div>
+                <div className='flex-1 min-w-0'>
+                  <p className='text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-0.5'>
+                    {t("bookingPreview.fields.bookingTime")}
+                  </p>
+                  <p className='text-sm font-semibold text-stone-700 break-words'>
+                    {formattedTime}
+                  </p>
+                </div>
+              </div>
+            )}
             <InfoRow
               icon='fa-users'
               label={t("bookingPreview.fields.numberOfPeople")}
@@ -276,7 +309,7 @@ const BookingPreview = () => {
             )}
           </Section>
 
-          {/* ── Guest Details ─────────────────────────── */}
+          {/* Guest Details */}
           <Section title={t("bookingPreview.sections.guestDetails")}>
             <InfoRow
               icon='fa-user'
@@ -301,7 +334,7 @@ const BookingPreview = () => {
           </Section>
         </div>
 
-        {/* ── Pricing Summary ──────────────────────────── */}
+        {/* Pricing Summary */}
         <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
           <div className='px-6 py-4 border-b border-stone-100 bg-stone-50/50'>
             <h3 className='text-xs font-bold uppercase tracking-widest text-stone-400'>
@@ -332,7 +365,7 @@ const BookingPreview = () => {
           </div>
         </div>
 
-        {/* ── Actions ──────────────────────────────────── */}
+        {/* Actions */}
         <div className='flex flex-wrap gap-3 justify-end pb-8'>
           <Link
             to={`/bookings/${id}/edit`}
