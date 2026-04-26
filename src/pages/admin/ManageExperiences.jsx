@@ -90,8 +90,8 @@ const ManageExperiences = ({ Type }) => {
       label: t("manageExperiences.table.category"),
       path: "category",
       content: (item) => (
-        <div className='rounded-2xl border text-center border-amber-800 text-amber-800 bg-amber-100'>
-          {item.category}
+        <div className='rounded-2xl p-1 border text-center border-amber-800 text-amber-800 bg-amber-100'>
+          {item.category_name}
         </div>
       ),
     },

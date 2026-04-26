@@ -43,10 +43,10 @@ const Register = () => {
     try {
       setIsSubmitting(true);
       const result = await authService.register(data);
-      toast.success(result?.data.message);
-      setTimeout(() => navigate("/"), 1400);
-    } catch (error) {
-      console.log("Error response: ", error.response);
+      toast.success(result?.data?.message);
+/*       setTimeout(() => navigate("/"), 1400);
+ */    } catch (error) {
+      console.log("Error response: ", error.response?.data.message);
       toast.error(error.response?.data.message);
     } finally {
       setIsSubmitting(false);

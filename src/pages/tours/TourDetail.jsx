@@ -28,7 +28,7 @@ import { formatDate } from "date-fns";
 import TourLocationViewer from "../../components/TourLocationViewer";
 import { inclusionKeyMap } from "../../utils/inclusionsKeyMap";
 import { exclusionKeyMap } from "../../utils/exclusionKeyMap";
-
+import { LightboxGallery } from "../../common/LightBoxGallery";
 // ─── Helpers ──────────────────────────────────────────────────
 
 const StarRating = ({ rating, size = "text-sm" }) => (
@@ -107,7 +107,7 @@ const RelatedCard = ({ tour, t }) => (
           ? t("tourDetail.unit.days_other", { count: tour?.duration_days })
           : t("tourDetail.unit.hours_other", { count: tour?.duration_hours })}
       </div>
-    </div> 
+    </div>
     <div className='p-4'>
       <p className='text-xs text-amber-600 font-semibold flex items-center gap-1 mb-1 uppercase tracking-wide'>
         <i className='fa fa-map-marker-alt text-[10px]' />
@@ -168,7 +168,7 @@ const TourDetail = () => {
   const [relatedTours, setRelatedTours] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
-  const [lightbox, setLightbox] = useState(null);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
   const [formData, setFormData] = useState();
   const [reviews, setReviews] = useState([]);
   const [reviewData, setReviewData] = useState({
@@ -966,7 +966,7 @@ const TourDetail = () => {
                       {galleryImages.map((img, i) => (
                         <button
                           key={i}
-                          onClick={() => setLightbox(img)}
+                          onClick={() => setLightboxIndex(i)}
                           className={`relative overflow-hidden rounded-2xl bg-stone-100 group
             ${i === 0 ? "col-span-2 row-span-2 h-48 md:h-64" : "h-32 md:h-40"}`}
                         >
@@ -1365,21 +1365,12 @@ const TourDetail = () => {
       </div>
 
       {/* ── LIGHTBOX ────────────────────────────────────── */}
-      {lightbox && (
-        <div
-          className='fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm'
-          onClick={() => setLightbox(null)}
-        >
-          <button className='absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors'>
-            <i className='fa fa-times' />
-          </button>
-          <img
-            src={renderImage(lightbox)}
-            alt={t("tourDetail.gallery.lightboxAlt")}
-            className='max-w-full max-h-[90vh] rounded-2xl object-contain'
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
+      {lightboxIndex !== null && (
+        <LightboxGallery
+          images={galleryImages}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
       )}
     </div>
   );

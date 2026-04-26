@@ -6,25 +6,40 @@ import authService from "../../services/authService";
 const VerifyEmail = () => {
   const navigate = useNavigate();
   const { token } = useParams();
-  const [status, setStatus] = useState("loading"); // "loading" | "success" | "error"
+  const [status, setStatus] = useState("loading");
 
   useEffect(() => {
+    // If no token in URL, immediately show error
+    if (!token) {
+      setStatus("error");
+      toast.error("No verification token provided.");
+      return;
+    }
+
     const verify = async () => {
       try {
         const result = await authService.verifyEmail(token);
         toast.success(result?.data.message);
         setStatus("success");
-        setTimeout(() => navigate("/login"), 2500);
       } catch (error) {
-        console.log("Error response: ", error.response);
-        toast.error(error.response?.data.message);
+        console.error("Verification error:", error.response);
+        toast.error(error.response?.data.message || "Verification failed");
         setStatus("error");
       }
     };
 
-    if (token) verify();
-    else setStatus("error");
+    verify();
   }, [token]);
+
+  // Auto‑redirect after successful verification
+  useEffect(() => {
+    if (status === "success") {
+      const timeout = setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [status, navigate]);
 
   const states = {
     loading: {
@@ -49,7 +64,7 @@ const VerifyEmail = () => {
           />
         </svg>
       ),
-      iconBg: "from-amber-400 to-orange-500",
+      iconBg: "from-orange-400 to-orange-600",
       title: "Verifying your email...",
       subtitle: "Please wait a moment",
     },
@@ -98,9 +113,10 @@ const VerifyEmail = () => {
   const current = states[status];
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-orange-50 to-amber-100 flex items-center justify-center px-4'>
-      <div className='w-full max-w-md bg-white rounded-2xl shadow-xl shadow-amber-200/60 overflow-hidden'>
-        <div className='h-1.5 w-full bg-gradient-to-r from-amber-400 via-orange-500 to-rose-400' />
+    <div className='min-h-screen bg-stone-50 flex items-center justify-center px-4'>
+      <div className='w-full max-w-md bg-white rounded-2xl shadow-xl shadow-stone-200/60 overflow-hidden'>
+        {/* Top accent bar - warm desert gradient */}
+        <div className='h-1.5 w-full bg-gradient-to-r from-orange-400 via-orange-500 to-amber-500' />
 
         <div className='px-8 py-12 text-center'>
           <div
@@ -108,8 +124,8 @@ const VerifyEmail = () => {
           >
             {current.icon}
           </div>
-          <h1 className='text-2xl font-bold text-gray-800'>{current.title}</h1>
-          <p className='text-gray-400 text-sm mt-2'>{current.subtitle}</p>
+          <h1 className='text-2xl font-bold text-stone-800'>{current.title}</h1>
+          <p className='text-stone-400 text-sm mt-2'>{current.subtitle}</p>
 
           {status === "error" && (
             <button

@@ -151,7 +151,7 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
     try {
       setDeleting(true);
       setUsers((prev) => prev.filter((u) => u.id !== deleteModal.id));
-      await userService.deleteById(deleteModal.id);
+      await userService.deleteOne(deleteModal.id);
       setTotalItems((n) => n - 1);
       toast.success(t("manageUsers.toasts.deleteSuccess"));
       setDeleteModal(null);
