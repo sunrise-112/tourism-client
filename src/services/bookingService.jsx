@@ -16,8 +16,11 @@ const create = async (data) => {
   return response.data.data;
 };
 
-const update = async (id, data) => {
-  const response = await http.put(`${apiEndPoint}/shared/${id}`, data);
+const update = async (id, tourId, data) => {
+  const response = await http.put(
+    `${apiEndPoint}/shared/${id}?tourId=${tourId}`,
+    data
+  );
   if (response) toast.success("Booking updated successfully!");
   return response.data.data;
 };

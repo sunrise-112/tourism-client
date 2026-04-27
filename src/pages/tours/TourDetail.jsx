@@ -361,7 +361,9 @@ const TourDetail = () => {
               icon: "fa-clock",
               label: t("tourDetail.stats.duration"),
               value: tour?.duration_hours
-                ? t("tourDetail.unit.hours", { count: tour?.duration_hours })
+                ? t("tourDetail.unit.hours_other", {
+                    count: tour?.duration_hours,
+                  })
                 : "—",
             },
             {
@@ -400,7 +402,7 @@ const TourDetail = () => {
             tour?.duration_hours && {
               icon: "fa-clock",
               label: t("tourDetail.stats.duration"),
-              value: t("tourDetail.unit.hours", {
+              value: t("tourDetail.unit.hours_other", {
                 count: tour?.duration_hours,
               }),
             },
@@ -446,7 +448,9 @@ const TourDetail = () => {
               icon: "fa-clock",
               label: t("tourDetail.stats.duration"),
               value: tour?.duration_hours
-                ? t("tourDetail.unit.hours", { count: tour?.duration_hours })
+                ? t("tourDetail.unit.hours_other", {
+                    count: tour?.duration_hours,
+                  })
                 : "—",
             },
             {
@@ -487,7 +491,7 @@ const TourDetail = () => {
             tour?.duration_hours && {
               icon: "fa-clock",
               label: t("tourDetail.stats.duration"),
-              value: t("tourDetail.unit.hours", {
+              value: t("tourDetail.unit.hours_other", {
                 count: tour?.duration_hours,
               }),
             },
@@ -715,7 +719,7 @@ const TourDetail = () => {
                 tour?.duration_hours && (
                   <span className='flex items-center gap-1.5'>
                     <i className='fa fa-clock text-amber-400' />{" "}
-                    {t("tourDetail.unit.hours", {
+                    {t("tourDetail.unit.hours_other", {
                       count: tour?.duration_hours,
                     })}
                   </span>

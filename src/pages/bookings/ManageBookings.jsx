@@ -414,9 +414,9 @@ const ManageBookings = ({ searchQuery }) => {
                     </td>
                     {/* Duration */}
                     <td className='px-4 py-3 text-xs text-stone-500 whitespace-nowrap'>
-                      {b.duration_days
+                      {b.tour_durations_days
                         ? t("manageBookings.table.durationValue", {
-                            count: b.duration_days,
+                            count: b.tour_durations_days,
                           })
                         : "—"}
                     </td>
@@ -439,7 +439,15 @@ const ManageBookings = ({ searchQuery }) => {
                           className='cursor-pointer w-8 h-8 rounded-xl bg-stone-100 hover:bg-amber-50 hover:text-amber-600 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-exchange-alt text-xs' />
-                        </button>
+                        </button>{" "}
+                        <Link to={`/admin/booking/edit/${b.id}`}>
+                          <button
+                            title={t("manageBookings.actions.updateStatus")}
+                            className='cursor-pointer w-8 h-8 rounded-xl bg-stone-100 hover:bg-amber-50 hover:text-amber-600 flex items-center justify-center text-stone-400 transition-colors'
+                          >
+                            <i className='fa fa-edit text-xs' />
+                          </button>
+                        </Link>
                         <button
                           title={t("manageBookings.actions.view")}
                           className='cursor-pointer w-8 h-8 rounded-xl bg-stone-100 hover:bg-amber-50 hover:text-amber-600 flex items-center justify-center text-stone-400 transition-colors'

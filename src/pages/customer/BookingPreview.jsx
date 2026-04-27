@@ -367,25 +367,25 @@ const BookingPreview = () => {
 
         {/* Actions */}
         <div className='flex flex-wrap gap-3 justify-end pb-8'>
-          <Link
+         {/*  <Link
             to={`/bookings/${id}/edit`}
             className='flex items-center gap-2 text-sm font-bold text-stone-600 bg-white border border-stone-200 hover:border-stone-300 px-5 py-2.5 rounded-xl transition-colors'
           >
             <i className='fa fa-edit text-xs' />{" "}
             {t("bookingPreview.actions.editBooking")}
-          </Link>
-          {booking.status !== "cancelled" && booking.status !== "completed" && (
+          </Link> */}
+          {/* {booking.status !== "cancelled" && booking.status !== "completed" && (
             <button className='flex items-center gap-2 text-sm font-bold text-red-600 bg-red-50 border border-red-200 hover:bg-red-100 px-5 py-2.5 rounded-xl transition-colors'>
               <i className='fa fa-times text-xs' />{" "}
               {t("bookingPreview.actions.cancelBooking")}
             </button>
-          )}
-          {booking.status === "confirmed" && (
+          )} */}
+          {/* {booking.status === "confirmed" && (
             <button className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 px-5 py-2.5 rounded-xl transition-colors shadow-lg shadow-amber-100'>
               <i className='fa fa-download text-xs' />{" "}
               {t("bookingPreview.actions.downloadVoucher")}
             </button>
-          )}
+          )} */}
         </div>
       </div>
     </div>

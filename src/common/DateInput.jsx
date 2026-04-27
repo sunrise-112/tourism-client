@@ -12,6 +12,14 @@ const DateInput = ({
   const hasError = !!errors?.[name];
   const value = data?.[name] ?? "";
 
+  // GMT (UTC) today in YYYY-MM-DD format
+  const now = new Date();
+  const minDate = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+  )
+    .toISOString()
+    .split("T")[0];
+
   return (
     <div className='flex flex-col gap-1.5 w-full group'>
       {label && (
@@ -32,7 +40,6 @@ const DateInput = ({
       )}
 
       <div className='relative'>
-        {/* Clock icon */}
         <span
           className='
           absolute left-3.5 top-1/2 -translate-y-1/2
@@ -64,6 +71,7 @@ const DateInput = ({
           onChange={onChange}
           required={required}
           placeholder={placeholder}
+          min={minDate} // ← GMT‑based restriction
           className={`
             w-full rounded-lg text-sm
             bg-white text-gray-800

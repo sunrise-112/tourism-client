@@ -567,12 +567,12 @@ const Settings = ({ className = "" }) => {
     },
     ...(isAdmin
       ? [
-          {
+          /* {
             id: "sms",
             label: t("settings.tabs.sms.label"),
             icon: "fa-comment-alt",
             eyebrow: t("settings.tabs.sms.eyebrow"),
-          },
+          }, */
           {
             id: "email",
             label: t("settings.tabs.email.label"),

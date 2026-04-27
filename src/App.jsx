@@ -49,6 +49,7 @@ import BookingPreview from "./pages/customer/BookingPreview";
 
 // ─── Components
 import TourForm from "./components/tours/TourForm";
+import BookingFormEdit from "../src/pages/bookings/BookingFormEdit";
 import TourPreview from "./components/tours/TourPreview";
 import ManageCategories from "./pages/admin/ManageCategories";
 import UserForm from "./pages/admin/UserForm";
@@ -304,6 +305,16 @@ const App = () => {
             <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
               <AdminLayout>
                 <ManageBookings />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/booking/edit/:id'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.ADMIN]}>
+              <AdminLayout>
+                <BookingFormEdit />
               </AdminLayout>
             </ProtectedRoute>
           }

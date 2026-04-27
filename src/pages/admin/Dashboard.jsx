@@ -228,6 +228,7 @@ const AdminDashboard = () => {
   const hasCompare = !!cs;
 
   const totalRevenue = ps?.totalRevenue ?? 0;
+  const confirmedRevenue = ps?.confirmedRevenue || 0;
   const confirmedCount = ps?.confirmedBookings ?? 0;
   const pendingCount = ps?.pendingBookings ?? 0;
   const cancelledCount = ps?.cancelledBookings ?? 0;
@@ -243,6 +244,8 @@ const AdminDashboard = () => {
   }));
 
   const cTotalRevenue = cs?.totalRevenue ?? null;
+  const cConfirmedRevenue = cs?.confirmedRevenue || 0;
+
   const cTotalBookings = cs?.totalBookings ?? null;
   const cConfirmed = cs?.confirmedBookings ?? null;
   const cPending = cs?.pendingBookings ?? null;
@@ -289,9 +292,9 @@ const AdminDashboard = () => {
     {
       icon: "fa-dollar-sign",
       label: t("dashboard.kpi.totalRevenue"),
-      value: loading ? "—" : `$${totalRevenue.toLocaleString()}`,
-      primaryRaw: totalRevenue,
-      compareRaw: cTotalRevenue,
+      value: loading ? "—" : `$${confirmedRevenue.toLocaleString()}`,
+      primaryRaw: confirmedRevenue,
+      compareRaw: cConfirmedRevenue,
       formatter: (v) => `$${Number(v).toLocaleString()}`,
       sub: t("dashboard.kpi.avgPerBooking", { value: avgValue }),
       color: "from-amber-400 to-orange-500",
@@ -311,7 +314,7 @@ const AdminDashboard = () => {
       sub: t("dashboard.kpi.confirmedPending", {
         confirmed: confirmedCount,
         pending: pendingCount,
-      }),
+      }), 
       color: "from-emerald-400 to-teal-500",
       ring: "ring-emerald-200",
       trend: t("dashboard.kpi.cancelledCount", { count: cancelledCount }),
