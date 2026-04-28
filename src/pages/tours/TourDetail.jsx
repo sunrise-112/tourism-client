@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import Joi from "joi-browser";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import Joi from "joi-browser";
 
 // Hooks
 import useForm from "../../hooks/useForm";
@@ -9,27 +10,28 @@ import useForm from "../../hooks/useForm";
 // Components
 import BookingForm from "../bookings/BookingForm";
 import LocationViewer from "../../components/LocationViewer";
+import TourLocationViewer from "../../components/TourLocationViewer";
 
 // Services
 import tourService from "../../services/tourService";
+import inclusionsService from "../../services/inclusionsService";
+import exclusionsService from "../../services/exclusionsService";
 import bookingService from "../../services/bookingService";
 import reviewService from "../../services/reviewService";
 import userService from "../../services/userService";
 
 // Utils
 import renderImage from "../../utils/renderImage";
-import { toast } from "react-toastify";
 import {
   renderButton,
   renderInput,
   renderTextarea,
 } from "../../utils/formRenders";
-import { formatDate } from "date-fns";
-import TourLocationViewer from "../../components/TourLocationViewer";
 import { inclusionKeyMap } from "../../utils/inclusionsKeyMap";
 import { exclusionKeyMap } from "../../utils/exclusionKeyMap";
+
+// Common
 import { LightboxGallery } from "../../common/LightBoxGallery";
-// ─── Helpers ──────────────────────────────────────────────────
 
 const StarRating = ({ rating, size = "text-sm" }) => (
   <div className='flex items-center gap-0.5'>
@@ -178,8 +180,8 @@ const TourDetail = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [itinerary, setItinerary] = useState([]);
-  const [exclusions, setExclusions] = useState([]);
   const [inclusions, setInclusions] = useState([]);
+  const [exclusions, setExclusions] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -197,24 +199,34 @@ const TourDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await tourService.getById(id);
-        console.log("Tour detail: ", data);
-        setTour(data);
-        setItinerary(data?.itineraries || []);
+        const [t, i, e] = await Promise.all([
+          tourService.getById(id),
+          inclusionsService.getAll(),
+          exclusionsService.getAll(),
+        ]);
+
+        setTour(t);
+        setItinerary(t?.itineraries || []);
+
         setInclusions(
-          data.inclusions?.map((inc) => ({ id: inc.id, name: inc.text })) || []
+          t?.inclusions?.flatMap((ti) => {
+            return i?.data?.filter((i) => i.id === parseInt(ti));
+          })
         );
         setExclusions(
-          data.exclusions?.map((exc) => ({ id: exc.id, name: exc.text })) || []
+          t?.exclusions?.flatMap((te) => {
+            return e?.data?.filter((e) => e.id === parseInt(te));
+          })
         );
-        if (data?.category) {
+
+        if (t?.category_id) {
           const related = await tourService.getAll({
-            category: data.category,
+            category_id: t.category_id,
             limit: 3,
           });
           const list = related?.data?.tours || related?.data || [];
           setRelatedTours(
-            list.filter((tourItem) => tourItem.id !== data.id).slice(0, 3)
+            list.filter((tourItem) => tourItem.id !== t.id).slice(0, 3)
           );
         }
 
@@ -229,6 +241,18 @@ const TourDetail = () => {
     };
     fetchData();
   }, [id]);
+
+  const translatedInclusions = inclusions?.map((inc) => ({
+    ...inc,
+    label: t(`manageInclusions.inclusions.${inclusionKeyMap[inc?.text]}`),
+  }));
+
+  const translatedExclusions = exclusions?.map((exc) => ({
+    ...exc,
+    label:
+      t(`manageExclusions.exclusions.${exclusionKeyMap[exc?.text]}`) ??
+      exc.text,
+  }));
 
   const galleryImages = tour
     ? [tour?.cover_image, ...(tour?.images || [])].filter(Boolean).slice(0, 6)
@@ -590,18 +614,6 @@ const TourDetail = () => {
           price: Math.round(tour?.price / tour?.duration_hours),
         })
       : null;
-
-  const translatedInclusions = inclusions?.map((inc) => ({
-    ...inc,
-    label: t(`manageInclusions.inclusions.${inclusionKeyMap[inc?.name]}`),
-  }));
-
-  const translatedExclusions = exclusions?.map((exc) => ({
-    ...exc,
-    label:
-      t(`manageExclusions.exclusions.${exclusionKeyMap[exc?.name]}`) ??
-      exc.text,
-  }));
 
   // ── Loading ──────────────────────────────────────────────
   if (loading)
