@@ -542,7 +542,7 @@ const EmailPanel = ({ settings, onToggle, saving, t }) => (
 
 const Settings = ({ className = "" }) => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("general"); // default to general
+  const [activeTab, setActiveTab] = useState("language");
   const [settings, setSettings] = useState({ smtp: false, sms: false });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -554,17 +554,22 @@ const Settings = ({ className = "" }) => {
   // TABS definition – General is always first
   const TABS = [
     {
-      id: "general",
-      label: t("settings.tabs.general.label", "General"),
-      icon: "fa-sliders-h",
-      eyebrow: t("settings.tabs.general.eyebrow", "BASIC"),
-    },
-    {
       id: "language",
       label: t("settings.tabs.language.label"),
       icon: "fa-globe",
       eyebrow: t("settings.tabs.language.eyebrow"),
     },
+    ...(isAdmin
+      ? [
+          {
+            id: "general",
+            label: t("settings.tabs.general.label", "General"),
+            icon: "fa-sliders-h",
+            eyebrow: t("settings.tabs.general.eyebrow", "BASIC"),
+          },
+        ]
+      : []),
+
     ...(isAdmin
       ? [
           /* {
@@ -629,7 +634,7 @@ const Settings = ({ className = "" }) => {
   const renderPanel = () => {
     if (loading) return <PanelSkeleton />;
 
-    if (activeTab === "general")
+    if (activeTab === "general" && isAdmin)
       return (
         <GeneralPanel
           isEditing={isEditing}

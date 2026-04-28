@@ -667,23 +667,7 @@ const TourPreview = ({ tourId }) => {
       </div>
 
       {/* Mobile sticky bottom CTA */}
-      <div className='lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 flex items-center justify-between shadow-lg z-30'>
-        <div>
-          <p className='text-xs text-gray-400 font-medium'>
-            {t("tourPreview.mobileCta.startingFrom")}
-          </p>
-          <p className='text-xl font-black text-gray-900'>
-            ${Number(tour.price ?? 0).toLocaleString()}
-          </p>
-        </div>
-        <button
-          type='button'
-          className={`bg-gradient-to-r ${config.gradient} text-white font-bold text-sm px-8 py-3 rounded-xl shadow active:scale-95 transition-all`}
-        >
-          {t("tourPreview.mobileCta.bookNow")}
-        </button>
-      </div>
-      <div className='lg:hidden h-20' />
+
     </div>
   );
 };

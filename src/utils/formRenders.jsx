@@ -206,7 +206,24 @@ export const renderTimeInput = (
     onChange,
     required,
   });
-w
+
+export const renderDateInput = (
+  label,
+  name,
+  data,
+  errors,
+  onChange,
+  required
+) =>
+  React.createElement(DateInput, {
+    label,
+    name,
+    data,
+    errors,
+    onChange,
+    required,
+  });
+
 export const renderCheckBox = (
   label,
   name,

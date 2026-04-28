@@ -393,6 +393,16 @@ const App = () => {
             </ProtectedRoute>
           }
         ></Route>
+        <Route
+          path='/customer/notifications'
+          element={
+            <ProtectedRoute allowedRoles={[Roles.CUSTOMER]}>
+              <CustomerLayout>
+                <ManageNotifications />
+              </CustomerLayout>
+            </ProtectedRoute>
+          }
+        ></Route>
         {/* Shared ADMIN - CUSTOMER */}
         <Route
           path='/settings'

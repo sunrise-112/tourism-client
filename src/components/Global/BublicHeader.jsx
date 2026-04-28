@@ -73,11 +73,6 @@ const PublicHeader = () => {
       labelKey: "publicHeader.dropdown.profile",
       path: "/profile/me",
     },
-    {
-      icon: "fa-suitcase-rolling",
-      labelKey: "publicHeader.dropdown.bookings",
-      path: "/my-bookings",
-    },
   ];
 
   return (

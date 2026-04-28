@@ -91,16 +91,6 @@ const Sidebar = ({
               },
             ]
           : []),
-
-        ...(isCustomer
-          ? [
-              {
-                icon: "fa-heart",
-                label: t("nav.favorites"),
-                path: "/favorites",
-              },
-            ]
-          : []),
       ],
     },
     {
@@ -114,7 +104,7 @@ const Sidebar = ({
         {
           icon: "fa-bell",
           label: t("nav.notifications"),
-          path: "/admin/notifications",
+          path: isAdmin ? "/admin/notifications" : "/customer/notifications",
         },
         {
           icon: "fa-cog",
@@ -180,7 +170,7 @@ const Sidebar = ({
               className='text-white font-black text-base tracking-tight'
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              MaghribTours
+              {import.meta.env.VITE_COMPANY}
             </span>
           )}
         </div>
