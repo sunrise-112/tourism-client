@@ -100,7 +100,7 @@ const PublicHeader = () => {
               <i className='fa fa-globe text-white text-sm' />
             </div>
             <span
-              className='text-base font-black text-stone-800 tracking-tight hidden sm:block'
+              className='text-base font-black text-stone-800 tracking-tight sm:block'
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               {import.meta.env.VITE_COMPANY}

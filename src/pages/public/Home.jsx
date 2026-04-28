@@ -9,10 +9,18 @@ import categoryService from "../../services/categoryService";
 // Utils
 import { categoryKeyMap } from "../../utils/CategoriesMap";
 
-// ─── YouTube video configuration ─────────────────────────────
-const VIDEO_ID = "A5hYqA6-8_I";
-const LOOP_START = 5; // seconds
-const LOOP_END = 30; // seconds
+// ─── Hero background images carousel configuration ─────────────
+// Easily edit this array to add, remove, or change background images
+const HERO_BACKGROUND_IMAGES = [
+  "https://static.nationalgeographic.fr/files/styles/image_3200/public/gettyimages-2152143162-sergioformoso.webp?w=1600&h=900",
+  "https://cdn.kimkim.com/files/a/images/894bcea8f7b3280f46fc3e578957b3e0d539c3d1/big-17b6d7f2b8f83830737bf1e34760346a.jpg",
+  "https://desert-maroc.com/wordpress2012/wp-content/uploads/Merzouga-quad-dunes.jpg",
+  "https://www.tracedirecte.com/media/original_images/merzouga-maroc.jpg.1920x0_q85_format-jpg.jpg",
+  "https://cdn.getyourguide.com/img/location/5ce40df7ba69b.jpeg/99.jpg",
+  "https://www.visitmorocco.com/sites/default/files/styles/thumbnail_events_slider/public/thumbnails/image/taroudant-region.jpg?itok=Bg7aCk73",
+  "https://images.contentstack.io/v3/assets/blt06f605a34f1194ff/blta948221ad65d5977/6897a1fdf5108cc1f790d3b3/iStock-2188765875-MOBILE-HEADER.jpg?fit=crop&disable=upscale&auto=webp&quality=60&crop=smart",
+];
+const CAROUSEL_INTERVAL_MS = 3000; // 5 seconds per image
 
 // ─── Stats ────────────────────────────────────────────────────
 const stats = [
@@ -192,8 +200,10 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [showMore, setShowMore] = useState(false);
-  const playerRef = useRef(null);
-  const intervalRef = useRef(null);
+
+  // Hero carousel state
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const carouselIntervalRef = useRef(null);
 
   const fetchCategories = async (limit = 12) => {
     try {
@@ -215,63 +225,34 @@ const Home = () => {
     fetchCategories();
   }, []);
 
-  // ─── YouTube Player API initialization ─────────────────────
+  // ─── Hero image carousel auto-advance ─────────────────────
   useEffect(() => {
-    // Load YouTube IFrame API script
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName("script")[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    // Start auto-advancing carousel
+    carouselIntervalRef.current = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === HERO_BACKGROUND_IMAGES.length - 1 ? 0 : prevIndex + 1
+      );
+    }, CAROUSEL_INTERVAL_MS);
 
-    // Global callback when API is ready
-    window.onYouTubeIframeAPIReady = () => {
-      playerRef.current = new window.YT.Player("youtube-player", {
-        videoId: VIDEO_ID,
-        playerVars: {
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          modestbranding: 1,
-          loop: 0, // We handle looping manually
-          playlist: VIDEO_ID,
-          start: LOOP_START,
-          playsinline: 1,
-          rel: 0,
-          showinfo: 0,
-        },
-        events: {
-          onReady: (event) => {
-            event.target.playVideo();
-            // Start a timeupdate check every 250ms
-            intervalRef.current = setInterval(() => {
-              if (playerRef.current && playerRef.current.getCurrentTime) {
-                const currentTime = playerRef.current.getCurrentTime();
-                if (currentTime >= LOOP_END) {
-                  playerRef.current.seekTo(LOOP_START, true);
-                }
-              }
-            }, 250);
-          },
-          onStateChange: (event) => {
-            // If video ends (state = 0) or buffering, ensure it stays within loop
-            if (event.data === window.YT.PlayerState.ENDED) {
-              playerRef.current.seekTo(LOOP_START, true);
-              playerRef.current.playVideo();
-            }
-          },
-        },
-      });
-    };
-
+    // Cleanup interval on unmount
     return () => {
-      // Cleanup interval and player
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      if (playerRef.current && playerRef.current.destroy) {
-        playerRef.current.destroy();
+      if (carouselIntervalRef.current) {
+        clearInterval(carouselIntervalRef.current);
       }
-      delete window.onYouTubeIframeAPIReady;
     };
   }, []);
+
+  // Optional: Pause carousel on hover (uncomment if desired)
+  // const pauseCarousel = () => {
+  //   if (carouselIntervalRef.current) clearInterval(carouselIntervalRef.current);
+  // };
+  // const resumeCarousel = () => {
+  //   carouselIntervalRef.current = setInterval(() => {
+  //     setCurrentImageIndex((prevIndex) =>
+  //       prevIndex === HERO_BACKGROUND_IMAGES.length - 1 ? 0 : prevIndex + 1
+  //     );
+  //   }, CAROUSEL_INTERVAL_MS);
+  // };
 
   // ─── Fetch tours data ─────────────────────────────────────
   useEffect(() => {
@@ -358,17 +339,27 @@ const Home = () => {
       className='min-h-screen bg-stone-50'
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
-      {/* ── HERO with YouTube Looping Video Background ─────────── */}
-      <section className='relative h-screen flex items-center justify-center overflow-hidden'>
-        {/* Video container */}
+      {/* ── HERO with Background Image Carousel ─────────────────── */}
+      <section
+        className='relative h-screen flex items-center justify-center overflow-hidden'
+        // Optional: pause on hover - uncomment the following line and add handlers
+        // onMouseEnter={pauseCarousel} onMouseLeave={resumeCarousel}
+      >
+        {/* Carousel Images Container */}
         <div className='absolute inset-0 w-full h-full z-0'>
-          <div className='relative w-full h-full overflow-hidden'>
+          {HERO_BACKGROUND_IMAGES.map((image, index) => (
             <div
-              id='youtube-player'
-              className='absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2'
-              style={{ pointerEvents: "none" }}
-            ></div>
-          </div>
+              key={index}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+                index === currentImageIndex ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <div
+                className='w-full h-full bg-cover bg-center bg-no-repeat'
+                style={{ backgroundImage: `url(${image})` }}
+              />
+            </div>
+          ))}
         </div>
 
         {/* Dark overlay for readability */}
@@ -438,8 +429,40 @@ const Home = () => {
           </div>
         </div>
 
+        {/* Optional: Carousel navigation dots */}
+        <div className='absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
+          {HERO_BACKGROUND_IMAGES.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setCurrentImageIndex(index);
+                // Reset interval timer when manually changing
+                if (carouselIntervalRef.current) {
+                  clearInterval(carouselIntervalRef.current);
+                  carouselIntervalRef.current = setInterval(() => {
+                    setCurrentImageIndex((prevIndex) =>
+                      prevIndex === HERO_BACKGROUND_IMAGES.length - 1
+                        ? 0
+                        : prevIndex + 1
+                    );
+                  }, CAROUSEL_INTERVAL_MS);
+                }
+              }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentImageIndex
+                  ? "w-6 bg-amber-400"
+                  : "bg-white/50 hover:bg-white/80"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+
         {/* Scroll indicator */}
-        <div className='absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-stone-300 animate-bounce pointer-events-none z-10'>
+        <div
+          className='absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-stone-300 animate-bounce pointer-events-none z-10'
+          style={{ marginBottom: "1.5rem" }} // Offset to avoid overlap with dots
+        >
           <span className='text-xs tracking-widest uppercase'>
             {t("home.hero.scroll")}
           </span>
@@ -641,15 +664,15 @@ const Home = () => {
 
       <section className='max-w-6xl mx-auto px-6 py-20'>
         <div className='relative rounded-3xl overflow-hidden bg-lame-50 p-16 text-center shadow-xl'>
-          {/* Subtle sand pattern overlay */} 
-          <div 
+          {/* Subtle sand pattern overlay */}
+          <div
             className='absolute inset-0 opacity-[0.03]'
             style={{
               backgroundImage:
                 "radial-gradient(circle at 1px 1px, #d6a354 1px, transparent 0)",
               backgroundSize: "24px 24px",
             }}
-          /> 
+          />
           {/* Warm glow (like desert sun) */}
           <div className='absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-orange-500/10 rounded-full blur-[80px] pointer-events-none' />
 

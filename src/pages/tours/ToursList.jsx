@@ -89,6 +89,7 @@ const TourList = () => {
         sort_order: sortOrder,
         page: filters.page,
         limit: LIMIT,
+        searchQuery: filters.q,
       };
       const res = await tourService.getAll(params);
       setTours(res?.data?.tours || res?.data || []);
