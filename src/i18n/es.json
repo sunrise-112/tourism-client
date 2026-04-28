@@ -2117,5 +2117,48 @@
     "cancel": "Cancelar",
     "edit": "Editar",
     "saveChanges": "Guardar cambios"
+  },
+  "edit_booking": "Editar reserva",
+  "update_booking_details": "Actualizar detalles de la reserva",
+  "cancel": "Cancelar",
+  "update": "Actualizar",
+  "booking_date": "Fecha de reserva",
+  "booking_time": "Hora de reserva",
+  "pickup_location": "Lugar de recogida",
+  "num_people": "Número de personas",
+  "special_requests": "Solicitudes especiales",
+  "booking_preview": {
+    "booking_ref": "Vista previa de la reserva",
+    "tour_info": "Información del tour",
+    "id_label": "ID:",
+    "not_specified": "No especificado",
+    "travelers": "viajeros",
+    "updating": "Actualizando...",
+    "loading": "Cargando reserva...",
+    "tour_unknown": "Tour desconocido",
+    "scroll_hint": "Desplácese para ver la vista previa en vivo y actualizar",
+    "live_preview": "Vista previa en vivo",
+    "live": "En vivo"
+  },
+  "booking_errors": {
+    "load_failed": "Error al cargar los datos de la reserva",
+    "update_failed": "Error al actualizar la reserva"
+  },
+  "booking_messages": {
+    "update_success": "Reserva actualizada correctamente"
+  },
+  "booking_section": {
+    "when": {
+      "title": "Cuándo",
+      "desc": "Seleccione fecha y hora"
+    },
+    "logistics": {
+      "title": "Logística",
+      "desc": "Recogida y tamaño del grupo"
+    },
+    "requests": {
+      "title": "Solicitudes especiales",
+      "desc": "Cualquier nota adicional"
+    }
   }
 }

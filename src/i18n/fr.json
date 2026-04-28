@@ -2117,5 +2117,48 @@
     "cancel": "Annuler",
     "edit": "Modifier",
     "saveChanges": "Enregistrer les modifications"
+  },
+  "edit_booking": "Modifier la réservation",
+  "update_booking_details": "Mettre à jour les détails de la réservation",
+  "cancel": "Annuler",
+  "update": "Mettre à jour",
+  "booking_date": "Date de réservation",
+  "booking_time": "Heure de réservation",
+  "pickup_location": "Lieu de prise en charge",
+  "num_people": "Nombre de personnes",
+  "special_requests": "Demandes spéciales",
+  "booking_preview": {
+    "booking_ref": "Aperçu de la réservation",
+    "tour_info": "Informations sur la visite",
+    "id_label": "ID :",
+    "not_specified": "Non spécifié",
+    "travelers": "voyageurs",
+    "updating": "Mise à jour en cours...",
+    "loading": "Chargement de la réservation...",
+    "tour_unknown": "Visite inconnue",
+    "scroll_hint": "Faites défiler pour voir l'aperçu en direct et mettre à jour",
+    "live_preview": "Aperçu en direct",
+    "live": "En direct"
+  },
+  "booking_errors": {
+    "load_failed": "Échec du chargement des données de réservation",
+    "update_failed": "Échec de la mise à jour de la réservation"
+  },
+  "booking_messages": {
+    "update_success": "Réservation mise à jour avec succès"
+  },
+  "booking_section": {
+    "when": {
+      "title": "Quand",
+      "desc": "Sélectionnez la date et l'heure"
+    },
+    "logistics": {
+      "title": "Logistique",
+      "desc": "Prise en charge et taille du groupe"
+    },
+    "requests": {
+      "title": "Demandes spéciales",
+      "desc": "Toute note supplémentaire"
+    }
   }
 }

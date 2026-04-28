@@ -2119,5 +2119,48 @@
     "cancel": "Cancel",
     "edit": "Edit",
     "saveChanges": "Save changes"
+  },
+  "edit_booking": "Edit Booking",
+  "update_booking_details": "Update booking details",
+  "cancel": "Cancel",
+  "update": "Update",
+  "booking_date": "Booking Date",
+  "booking_time": "Booking Time",
+  "pickup_location": "Pickup Location",
+  "num_people": "Number of People",
+  "special_requests": "Special Requests",
+  "booking_preview": {
+    "booking_ref": "Booking preview",
+    "tour_info": "Tour information",
+    "id_label": "ID:",
+    "not_specified": "Not specified",
+    "travelers": "travelers",
+    "updating": "Updating...",
+    "loading": "Loading booking...",
+    "tour_unknown": "Unknown tour",
+    "scroll_hint": "Scroll to see live preview and update",
+    "live_preview": "Live preview",
+    "live": "Live"
+  },
+  "booking_errors": {
+    "load_failed": "Failed to load booking data",
+    "update_failed": "Failed to update booking"
+  },
+  "booking_messages": {
+    "update_success": "Booking updated successfully"
+  },
+  "booking_section": {
+    "when": {
+      "title": "When",
+      "desc": "Select date and time"
+    },
+    "logistics": {
+      "title": "Logistics",
+      "desc": "Pickup and group size"
+    },
+    "requests": {
+      "title": "Special requests",
+      "desc": "Any additional notes"
+    }
   }
 }

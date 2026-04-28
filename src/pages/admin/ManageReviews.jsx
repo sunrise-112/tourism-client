@@ -6,6 +6,7 @@ import reviewService from "../../services/reviewService";
 import getTimeAgo from "../../utils/getTimeAgo";
 
 import Pagination from "../../common/Pagination";
+import { useSearchParams } from "react-router-dom";
 
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
@@ -28,8 +29,11 @@ const StarRating = ({ rating }) => (
 const FILTERS = ["All", "Approved", "Pending"];
 
 // ─── ManageReviews ────────────────────────────────────────────
-const ManageReviews = ({ searchQuery }) => {
+const ManageReviews = () => {
   const { t } = useTranslation();
+  const [searchParam] = useSearchParams();
+  const q = searchParam.get("q");
+
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -70,14 +74,16 @@ const ManageReviews = ({ searchQuery }) => {
   }, [pageNumber, pageSize, filter, trigger]);
 
   useEffect(() => {
-    if (!String(searchQuery || "").trim()) {
+    if (!String(q || "").trim()) {
       setTrigger((t) => !t);
       return;
     }
     const run = async () => {
       try {
         setLoading(true);
-        const res = await reviewService.getAll({ q: searchQuery });
+        const res = await reviewService.getAll({ searchQuery: q });
+
+        console.log("Res: ", res);
         setReviews(res?.data);
         setTotalItems(res?.pagination?.totalItems);
       } catch {
@@ -87,7 +93,7 @@ const ManageReviews = ({ searchQuery }) => {
       }
     };
     run();
-  }, [searchQuery]);
+  }, [q]);
 
   const handleApprove = async (review) => {
     const approved = review?.approve;

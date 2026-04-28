@@ -2127,5 +2127,48 @@
     "cancel": "إلغاء",
     "edit": "تعديل",
     "saveChanges": "حفظ التغييرات"
+  },
+  "edit_booking": "تعديل الحجز",
+  "update_booking_details": "تحديث تفاصيل الحجز",
+  "cancel": "إلغاء",
+  "update": "تحديث",
+  "booking_date": "تاريخ الحجز",
+  "booking_time": "وقت الحجز",
+  "pickup_location": "موقع الاستلام",
+  "num_people": "عدد الأشخاص",
+  "special_requests": "طلبات خاصة",
+  "booking_preview": {
+    "booking_ref": "معاينة الحجز",
+    "tour_info": "معلومات الجولة",
+    "id_label": "المعرف:",
+    "not_specified": "غير محدد",
+    "travelers": "مسافر",
+    "updating": "جاري التحديث...",
+    "loading": "جاري تحميل الحجز...",
+    "tour_unknown": "جولة غير معروفة",
+    "scroll_hint": "مرر لرؤية المعاينة المباشرة والتحديث",
+    "live_preview": "معاينة مباشرة",
+    "live": "مباشر"
+  },
+  "booking_errors": {
+    "load_failed": "فشل تحميل بيانات الحجز",
+    "update_failed": "فشل تحديث الحجز"
+  },
+  "booking_messages": {
+    "update_success": "تم تحديث الحجز بنجاح"
+  },
+  "booking_section": {
+    "when": {
+      "title": "متى",
+      "desc": "اختر التاريخ والوقت"
+    },
+    "logistics": {
+      "title": "الخدمات اللوجستية",
+      "desc": "الاستلام وحجم المجموعة"
+    },
+    "requests": {
+      "title": "طلبات خاصة",
+      "desc": "أي ملاحظات إضافية"
+    }
   }
 }

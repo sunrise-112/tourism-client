@@ -10,6 +10,7 @@ import Pagination from "../../common/Pagination";
 
 import Select from "react-select";
 import { categoryKeyMap } from "../../utils/CategoriesMap";
+import { useSearchParams } from "react-router-dom";
 
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
@@ -19,6 +20,9 @@ const Sk = ({ className }) => (
 // ─── ManageCategories ─────────────────────────────────────────
 const ManageCategories = ({ searchQuery }) => {
   const { t } = useTranslation();
+  const [searchParam] = useSearchParams();
+  const q = searchParam.get("q");
+
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -120,14 +124,14 @@ const ManageCategories = ({ searchQuery }) => {
 
   // ── Search
   useEffect(() => {
-    if (!String(searchQuery || "").trim()) {
+    if (!String(q || "").trim()) {
       setTrigger((t) => !t);
       return;
     }
     const run = async () => {
       try {
         setLoading(true);
-        const res = await categoryService.getAll({ search: searchQuery });
+        const res = await categoryService.getAll({ search: q });
         setCategories(res?.data ?? []);
         setTotalItems(res?.pagination?.totalItems ?? 0);
       } catch {
@@ -137,7 +141,7 @@ const ManageCategories = ({ searchQuery }) => {
       }
     };
     run();
-  }, [searchQuery]);
+  }, [q]);
 
   // ─── Selection ────────────────────────────────────────────
   const allSelected =

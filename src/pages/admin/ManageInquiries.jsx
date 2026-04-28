@@ -6,6 +6,7 @@ import inquiriesService from "../../services/inquiriesService";
 import getTimeAgo from "../../utils/getTimeAgo";
 
 import Pagination from "../../common/Pagination";
+import { useSearchParams } from "react-router-dom";
 
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
@@ -52,6 +53,9 @@ const getDateRange = (filter) => {
 // ─── ManageInquiries ────────────────────────────────────────────
 const ManageInquiries = ({ searchQuery }) => {
   const { t } = useTranslation();
+  const [searchParam] = useSearchParams();
+  const q = searchParam.get("q");
+
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -96,14 +100,14 @@ const ManageInquiries = ({ searchQuery }) => {
 
   // Handle global search
   useEffect(() => {
-    if (!String(searchQuery || "").trim()) {
+    if (!String(q || "").trim()) {
       setTrigger((t) => !t);
       return;
     }
     const run = async () => {
       try {
         setLoading(true);
-        const res = await inquiriesService.getAll({ search: searchQuery });
+        const res = await inquiriesService.getAll({ search: q });
         setInquiries(res?.data);
         setTotalItems(res?.pagination?.totalItems);
       } catch {
@@ -113,7 +117,7 @@ const ManageInquiries = ({ searchQuery }) => {
       }
     };
     run();
-  }, [searchQuery]);
+  }, [q]);
 
   const handleValidation = async (inq) => {
     const originalInquiries = [...inquiries];

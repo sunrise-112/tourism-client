@@ -10,6 +10,7 @@ import Pagination from "../../common/Pagination";
 
 // Utils
 import { exclusionKeyMap } from "../../utils/exclusionKeyMap";
+import { useSearchParams } from "react-router-dom";
 
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
@@ -17,8 +18,11 @@ const Sk = ({ className }) => (
 );
 
 // ─── ManageExclusions ─────────────────────────────────────────
-const ManageExclusions = ({ searchQuery }) => {
+const ManageExclusions = () => {
   const { t } = useTranslation();
+    const [searchParam] = useSearchParams();
+    const q = searchParam.get("q");
+
   const [exclusions, setExclusions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -78,14 +82,14 @@ const ManageExclusions = ({ searchQuery }) => {
 
   // ── Search
   useEffect(() => {
-    if (!String(searchQuery || "").trim()) {
+    if (!String(q || "").trim()) {
       setTrigger((t) => !t);
       return;
     }
     const run = async () => {
       try {
         setLoading(true);
-        const res = await exclusionService.getAll({ search: searchQuery });
+        const res = await exclusionService.getAll({ search: q });
         setExclusions(res?.data ?? []);
         setTotalItems(res?.pagination?.totalItems ?? 0);
       } catch {
@@ -95,7 +99,7 @@ const ManageExclusions = ({ searchQuery }) => {
       }
     };
     run();
-  }, [searchQuery]);
+  }, [q]);
 
   // ─── Selection ────────────────────────────────────────────
   const allSelected =

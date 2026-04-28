@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTranslation, Trans } from "react-i18next";
 import _ from "lodash";
@@ -88,8 +88,11 @@ const StatusDot = ({ active, t }) => (
 const ROLE_FILTERS = ["All", Roles.ADMIN, Roles.CUSTOMER];
 
 // ─── ManageUsers ──────────────────────────────────────────────
-const ManageUsers = ({ searchQuery, user: currentUser }) => {
+const ManageUsers = ({ user: currentUser }) => {
   const { t } = useTranslation();
+  const [searchParam] = useSearchParams();
+  const q = searchParam.get("q");
+
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -127,15 +130,16 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
   }, [roleFilter, pageNumber, pageSize, trigger]);
 
   useEffect(() => {
-    if (!String(searchQuery || "").trim()) {
+    if (!String(q || "").trim()) {
       setTrigger((t) => !t);
       return;
     }
     const run = async () => {
       try {
         setLoading(true);
-        const res = await userService.getUserBySearchQuery(searchQuery);
-        setUsers(res?.data || []);
+        const res = await userService.getByName(q);
+        console.log("res?.data: ", res);
+        setUsers(res);
         setTotalItems(1);
       } catch {
         setUsers([]);
@@ -144,7 +148,7 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
       }
     };
     run();
-  }, [searchQuery]);
+  }, [q]);
 
   const handleDelete = async () => {
     const original = [...users];
@@ -178,8 +182,8 @@ const ManageUsers = ({ searchQuery, user: currentUser }) => {
   const sorted = _.orderBy(users, [sortColumn.path], [sortColumn.order]);
 
   // Stats
-  const active = users.filter((u) => u.active).length;
-  const verified = users.filter((u) => u.verified).length;
+  const active = users?.filter((u) => u?.active).length;
+  const verified = users?.filter((u) => u?.verified).length;
 
   return (
     <div

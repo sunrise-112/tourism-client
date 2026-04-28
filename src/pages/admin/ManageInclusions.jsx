@@ -10,6 +10,7 @@ import Pagination from "../../common/Pagination";
 
 // Utils
 import { inclusionKeyMap } from "../../utils/inclusionsKeyMap";
+import { useSearchParams } from "react-router-dom";
 
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
@@ -17,8 +18,11 @@ const Sk = ({ className }) => (
 );
 
 // ─── ManageInclusions ─────────────────────────────────────────
-const ManageInclusions = ({ searchQuery }) => {
+const ManageInclusions = () => {
   const { t } = useTranslation();
+  const [searchParam] = useSearchParams();
+  const q = searchParam.get("q");
+
   const [inclusions, setInclusions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -78,14 +82,15 @@ const ManageInclusions = ({ searchQuery }) => {
 
   // ── Search
   useEffect(() => {
-    if (!String(searchQuery || "").trim()) {
+    if (!String(q || "").trim()) {
       setTrigger((t) => !t);
       return;
     }
     const run = async () => {
       try {
         setLoading(true);
-        const res = await inclusionService.getAll({ search: searchQuery });
+        const res = await inclusionService.getAll({ search: q });
+        console.log("Response: ", res);
         setInclusions(res?.data ?? []);
         setTotalItems(res?.pagination?.totalItems ?? 0);
       } catch {
@@ -95,7 +100,7 @@ const ManageInclusions = ({ searchQuery }) => {
       }
     };
     run();
-  }, [searchQuery]);
+  }, [q]);
 
   // ─── Selection ────────────────────────────────────────────
   const allSelected =

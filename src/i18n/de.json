@@ -2094,5 +2094,48 @@
     "cancel": "Abbrechen",
     "edit": "Bearbeiten",
     "saveChanges": "Änderungen speichern"
+  },
+  "edit_booking": "Buchung bearbeiten",
+  "update_booking_details": "Buchungsdetails aktualisieren",
+  "cancel": "Abbrechen",
+  "update": "Aktualisieren",
+  "booking_date": "Buchungsdatum",
+  "booking_time": "Buchungszeit",
+  "pickup_location": "Abholort",
+  "num_people": "Anzahl der Personen",
+  "special_requests": "Besondere Wünsche",
+  "booking_preview": {
+    "booking_ref": "Buchungsvorschau",
+    "tour_info": "Tourinformationen",
+    "id_label": "ID:",
+    "not_specified": "Nicht angegeben",
+    "travelers": "Reisende",
+    "updating": "Wird aktualisiert...",
+    "loading": "Buchung wird geladen...",
+    "tour_unknown": "Unbekannte Tour",
+    "scroll_hint": "Scrollen Sie, um die Live-Vorschau zu sehen und zu aktualisieren",
+    "live_preview": "Live-Vorschau",
+    "live": "Live"
+  },
+  "booking_errors": {
+    "load_failed": "Fehler beim Laden der Buchungsdaten",
+    "update_failed": "Fehler beim Aktualisieren der Buchung"
+  },
+  "booking_messages": {
+    "update_success": "Buchung erfolgreich aktualisiert"
+  },
+  "booking_section": {
+    "when": {
+      "title": "Wann",
+      "desc": "Wählen Sie Datum und Uhrzeit"
+    },
+    "logistics": {
+      "title": "Logistik",
+      "desc": "Abholung und Gruppengröße"
+    },
+    "requests": {
+      "title": "Besondere Wünsche",
+      "desc": "Zusätzliche Hinweise"
+    }
   }
 }

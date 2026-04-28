@@ -12,7 +12,6 @@ const getById = async (id) => {
 
 const create = async (data) => {
   const response = await http.post(`${apiEndPoint}/public`, data);
-  if (response) toast.success("Booking created successfully!");
   return response.data.data;
 };
 
@@ -37,6 +36,7 @@ const getMyBookings = async () => {
 const getAll = async ({
   status,
   user_id,
+  sq,
   tour_id,
   limit = 10,
   skip = 0,
@@ -48,6 +48,7 @@ const getAll = async ({
   const query = new URLSearchParams({
     ...(status && { status }),
     ...(user_id && { user_id }),
+    ...(sq && { sq }),
     ...(tour_id && { tour_id }),
     ...(limit && { limit }),
     ...(skip && { skip }),

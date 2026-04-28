@@ -2118,5 +2118,48 @@
     "cancel": "取消",
     "edit": "编辑",
     "saveChanges": "保存更改"
+  },
+  "edit_booking": "编辑预订",
+  "update_booking_details": "更新预订详情",
+  "cancel": "取消",
+  "update": "更新",
+  "booking_date": "预订日期",
+  "booking_time": "预订时间",
+  "pickup_location": "接载地点",
+  "num_people": "人数",
+  "special_requests": "特殊要求",
+  "booking_preview": {
+    "booking_ref": "预订预览",
+    "tour_info": "行程信息",
+    "id_label": "ID：",
+    "not_specified": "未指定",
+    "travelers": "位旅客",
+    "updating": "更新中...",
+    "loading": "加载预订中...",
+    "tour_unknown": "未知行程",
+    "scroll_hint": "滚动查看实时预览并更新",
+    "live_preview": "实时预览",
+    "live": "实时"
+  },
+  "booking_errors": {
+    "load_failed": "加载预订数据失败",
+    "update_failed": "更新预订失败"
+  },
+  "booking_messages": {
+    "update_success": "预订更新成功"
+  },
+  "booking_section": {
+    "when": {
+      "title": "时间",
+      "desc": "选择日期和时间"
+    },
+    "logistics": {
+      "title": "后勤",
+      "desc": "接载和团队规模"
+    },
+    "requests": {
+      "title": "特殊要求",
+      "desc": "任何附加说明"
+    }
   }
 }

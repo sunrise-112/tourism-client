@@ -40,6 +40,7 @@ const deleteOne = async (id) => {
 // ─── Admin ───────────────────────────────────────────────────────────────────
 
 const getAll = async ({
+  searchQuery, 
   tour_id,
   user_id,
   rating,
@@ -52,6 +53,7 @@ const getAll = async ({
   endDate,
 } = {}) => {
   const query = new URLSearchParams({
+    ...(searchQuery && { searchQuery }),
     ...(tour_id && { tour_id }),
     ...(user_id && { user_id }),
     ...(rating && { rating }),

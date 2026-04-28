@@ -97,6 +97,7 @@ const ManageNotifications = ({ searchQuery }) => {
   const [deleteModal, setDeleteModal] = useState(null);
   const [deleting, setDeleting] = useState(false);
   const [trigger, setTrigger] = useState(false);
+  const [user, setUser] = useState({});
 
   // create / edit modal
   const [formModal, setFormModal] = useState(false);
@@ -109,13 +110,14 @@ const ManageNotifications = ({ searchQuery }) => {
     try {
       setLoading(true);
       const currentUser = userService.getCurrentUser();
-
+      setUser(currentUser);
       const params = {
         limit: pageSize,
         skip: (pageNumber - 1) * pageSize,
         ...(typeFilter !== "All" && { type: typeFilter }),
         ...(readFilter === "Unread" && { is_read: false }),
         ...(readFilter === "Read" && { is_read: true }),
+
         ...(currentUser?.role === role.ADMIN && { user_id: currentUser?.id }),
       };
       const res = await notificationService.getAll(params);
@@ -300,13 +302,15 @@ const ManageNotifications = ({ searchQuery }) => {
               {t("manageNotifications.markAllRead")}
             </button>
           )}
-          <button
-            onClick={openCreate}
-            className='inline-flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-5 py-2.5 rounded-xl shadow-sm shadow-amber-200'
-          >
-            <i className='fa fa-bell text-xs' />{" "}
-            {t("manageNotifications.sendNotification")}
-          </button>
+          {user?.role === role.ADMIN && (
+            <button
+              onClick={openCreate}
+              className='inline-flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-5 py-2.5 rounded-xl shadow-sm shadow-amber-200'
+            >
+              <i className='fa fa-bell text-xs' />{" "}
+              {t("manageNotifications.sendNotification")}
+            </button>
+          )}
         </div>
       </div>
 

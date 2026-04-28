@@ -4,7 +4,7 @@ import _ from "lodash";
 import { useTranslation } from "react-i18next";
 import bookingService from "../../services/bookingService";
 import Pagination from "../../common/Pagination";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import renderImage from "../../utils/renderImage";
 
@@ -124,8 +124,11 @@ const StatusModal = ({ booking, onConfirm, onClose, loading }) => {
 };
 
 // ─── ManageBookings ───────────────────────────────────────────
-const ManageBookings = ({ searchQuery }) => {
+const ManageBookings = () => {
   const { t } = useTranslation();
+  const [searchParam] = useSearchParams();
+  const q = searchParam.get("q");
+
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -173,14 +176,14 @@ const ManageBookings = ({ searchQuery }) => {
   }, [pageNumber, pageSize, statusFilter, trigger]);
 
   useEffect(() => {
-    if (!String(searchQuery || "").trim()) {
+    if (!String(q || "").trim()) {
       setTrigger((t) => !t);
       return;
     }
     const run = async () => {
       try {
         setLoading(true);
-        const res = await bookingService.getAll({ q: searchQuery });
+        const res = await bookingService.getAll({ sq: q });
         setBookings(res?.data?.bookings || res?.data || []);
         setTotalItems(res?.data?.total || 0);
       } catch {
@@ -190,7 +193,7 @@ const ManageBookings = ({ searchQuery }) => {
       }
     };
     run();
-  }, [searchQuery]);
+  }, [q]);
 
   const handleUpdateStatus = async (newStatus) => {
     try {
