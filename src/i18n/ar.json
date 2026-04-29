@@ -2170,5 +2170,18 @@
       "title": "طلبات خاصة",
       "desc": "أي ملاحظات إضافية"
     }
+  },
+  "contact": {
+    "subject": {
+      "desert_tour": "جولة الصحراء المغربية",
+      "atlas_hiking": "المشي في جبال الأطلس",
+      "imperial_cities": "جولة المدن الإمبراطورية",
+      "camel_trekking": "تجربة ركوب الجمال",
+      "cultural_workshop": "ورشة عمل ثقافية",
+      "riad_accommodation": "حجز رياض / إقامة",
+      "group_travel": "عرض سفر جماعي",
+      "cancellation": "إلغاء / استرداد",
+      "other": "أخرى"
+    }
   }
 }

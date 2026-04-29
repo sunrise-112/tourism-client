@@ -2162,5 +2162,18 @@
       "title": "Special requests",
       "desc": "Any additional notes"
     }
+  },
+  "contact": {
+    "subject": {
+      "desert_tour": "Moroccan Desert Tour",
+      "atlas_hiking": "Atlas Mountains Hiking",
+      "imperial_cities": "Imperial Cities Tour",
+      "camel_trekking": "Camel Trekking Experience",
+      "cultural_workshop": "Cultural Workshop",
+      "riad_accommodation": "Riad / Accommodation Booking",
+      "group_travel": "Group Travel Quote",
+      "cancellation": "Cancellation / Refund",
+      "other": "Other"
+    }
   }
 }

@@ -2137,5 +2137,18 @@
       "title": "Besondere Wünsche",
       "desc": "Zusätzliche Hinweise"
     }
+  },
+  "contact": {
+    "subject": {
+      "desert_tour": "Marokko-Wüstentour",
+      "atlas_hiking": "Wandern im Atlasgebirge",
+      "imperial_cities": "Tour durch die Kaiserstädte",
+      "camel_trekking": "Kamelreit-Erlebnis",
+      "cultural_workshop": "Kulturworkshop",
+      "riad_accommodation": "Riad / Unterkunft buchen",
+      "group_travel": "Gruppenreise-Angebot",
+      "cancellation": "Stornierung / Rückerstattung",
+      "other": "Sonstiges"
+    }
   }
 }

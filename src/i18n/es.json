@@ -2160,5 +2160,18 @@
       "title": "Solicitudes especiales",
       "desc": "Cualquier nota adicional"
     }
+  },
+  "contact": {
+    "subject": {
+      "desert_tour": "Tour por el desierto de Marruecos",
+      "atlas_hiking": "Senderismo en el Atlas",
+      "imperial_cities": "Tour de las Ciudades Imperiales",
+      "camel_trekking": "Experiencia en camello",
+      "cultural_workshop": "Taller cultural",
+      "riad_accommodation": "Reserva de Riad / Alojamiento",
+      "group_travel": "Presupuesto para viaje en grupo",
+      "cancellation": "Cancelación / Reembolso",
+      "other": "Otro"
+    }
   }
 }

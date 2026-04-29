@@ -2161,5 +2161,18 @@
       "title": "特殊要求",
       "desc": "任何附加说明"
     }
+  },
+  "contact": {
+    "subject": {
+      "desert_tour": "摩洛哥沙漠之旅",
+      "atlas_hiking": "阿特拉斯山脉徒步",
+      "imperial_cities": "皇城之旅",
+      "camel_trekking": "骆驼骑行体验",
+      "cultural_workshop": "文化工作坊",
+      "riad_accommodation": "里亚德/住宿预订",
+      "group_travel": "团体旅行报价",
+      "cancellation": "取消/退款",
+      "other": "其他"
+    }
   }
 }

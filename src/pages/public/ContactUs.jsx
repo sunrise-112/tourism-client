@@ -44,15 +44,6 @@ const CONTACT_INFO_TEMPLATE = [
   },
 ];
 
-const subjectOptions = [
-  { label: "General Inquiry" },
-  { label: "Tour Booking" },
-  { label: "Custom Itinerary" },
-  { label: "Group Travel" },
-  { label: "Cancellation / Refund" },
-  { label: "Other" },
-];
-
 const ContactUs = () => {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({
@@ -79,6 +70,18 @@ const ContactUs = () => {
     lng: null,
   });
   const [loadingSettings, setLoadingSettings] = useState(true);
+
+  const subjectOptions = [
+    { label: t("contact.subject.desert_tour") },
+    { label: t("contact.subject.atlas_hiking") },
+    { label: t("contact.subject.imperial_cities") },
+    { label: t("contact.subject.camel_trekking") },
+    { label: t("contact.subject.cultural_workshop") },
+    { label: t("contact.subject.riad_accommodation") },
+    { label: t("contact.subject.group_travel") },
+    { label: t("contact.subject.cancellation") },
+    { label: t("contact.subject.other") },
+  ];
 
   // Fetch admin settings on mount
   useEffect(() => {
