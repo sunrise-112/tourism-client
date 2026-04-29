@@ -286,14 +286,14 @@ const Home = () => {
     if (search.trim()) window.location.href = `/tours?q=${search}`;
   };
 
-  const translatedStats = stats.map((s) => ({
+  const translatedStats = stats?.map((s) => ({
     value: s.value,
     label: t(s.labelKey),
   }));
 
-  const translatedCategories = categories.map((cat) => ({
+  const translatedCategories = categories?.map((cat) => ({
     ...cat,
-    label: t(`home.categories.${categoryKeyMap[cat.name] ?? cat?.name}`),
+    label: t(`home.categories.${categoryKeyMap[cat?.name] ?? cat?.name}`),
   }));
 
   const quickTags = [
