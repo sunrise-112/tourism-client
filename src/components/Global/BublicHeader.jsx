@@ -223,7 +223,7 @@ const PublicHeader = () => {
               </>
             ) : (
               /* Guest buttons */
-             /*  <div className='flex items-center gap-1.5 sm:gap-2'>
+              <div className='hidden lg:flex items-center gap-1.5 sm:gap-2'>
                 <Link
                   to='/login'
                   className='text-xs sm:text-sm font-semibold text-stone-600 hover:text-stone-800 px-3 sm:px-4 py-2 rounded-xl hover:bg-stone-50 transition-colors'
@@ -236,8 +236,7 @@ const PublicHeader = () => {
                 >
                   {t("publicHeader.auth.getStarted")}
                 </Link>
-              </div> */
-                <div></div>
+              </div>
             )}
 
             {/* Hamburger — visible below lg */}
