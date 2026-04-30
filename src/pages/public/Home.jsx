@@ -325,7 +325,7 @@ const Home = () => {
             t={t}
           />
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {data.map((item) => (
+            {data?.map((item) => (
               <TourCard key={item.id} tour={item} t={t} />
             ))}
           </div>
@@ -347,7 +347,7 @@ const Home = () => {
       >
         {/* Carousel Images Container */}
         <div className='absolute inset-0 w-full h-full z-0'>
-          {HERO_BACKGROUND_IMAGES.map((image, index) => (
+          {HERO_BACKGROUND_IMAGES?.map((image, index) => (
             <div
               key={index}
               className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
@@ -417,7 +417,7 @@ const Home = () => {
           </form>
 
           <div className='flex flex-wrap justify-center gap-2'>
-            {quickTags.map((tag) => (
+            {quickTags?.map((tag) => (
               <Link
                 key={tag.key}
                 to={`/tours?q=${tag.query}`}
@@ -431,7 +431,7 @@ const Home = () => {
 
         {/* Optional: Carousel navigation dots */}
         <div className='absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
-          {HERO_BACKGROUND_IMAGES.map((_, index) => (
+          {HERO_BACKGROUND_IMAGES?.map((_, index) => (
             <button
               key={index}
               onClick={() => {
@@ -494,7 +494,7 @@ const Home = () => {
         />
 
         <div className='grid grid-cols-3 md:grid-cols-6 gap-3 mt-12'>
-          {translatedCategories.map((cat) => (
+          {translatedCategories?.map((cat) => (
             <Link
               key={cat.labelKey}
               to={`/tours?category=${cat?.id}`}
@@ -589,7 +589,7 @@ const Home = () => {
 
           {loading ? (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-              {[...Array(6)].map((_, i) => (
+              {[...Array(6)]?.map((_, i) => (
                 <SkeletonCard key={i} />
               ))}
             </div>
@@ -600,7 +600,7 @@ const Home = () => {
             </div>
           ) : (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-              {featuredTours.map((tour) => (
+              {featuredTours?.map((tour) => (
                 <TourCard key={tour.id} tour={tour} t={t} />
               ))}
             </div>
@@ -628,7 +628,7 @@ const Home = () => {
               t={t}
             />
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-              {hotDeals.map((tour) => (
+              {hotDeals?.map((tour) => (
                 <TourCard key={tour.id} tour={tour} t={t} />
               ))}
             </div>
