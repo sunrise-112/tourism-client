@@ -3,6 +3,10 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import tourService from "../../services/tourService";
 import renderImage from "../../utils/renderImage";
+import inclusionsService from "../../services/inclusionsService";
+import exclusionsService from "../../services/exclusionsService";
+import { inclusionKeyMap } from "../../utils/inclusionsKeyMap";
+import { exclusionKeyMap } from "../../utils/exclusionKeyMap";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const TYPE_CONFIG = {
@@ -49,7 +53,9 @@ const SectionTitle = ({ children }) => (
 
 const StatCard = ({ icon, label, value }) => (
   <div className='flex flex-col items-center justify-center bg-white rounded-2xl p-4 border border-gray-100 shadow-sm gap-1 text-center min-h-[84px]'>
-    <span className='text-xl'>{icon}</span>
+    <div className='w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center mb-1'>
+      <i className={`fa ${icon} text-amber-500 text-sm`} />
+    </div>
     <p className='text-sm font-bold text-gray-800 leading-tight'>
       {value ?? "—"}
     </p>
@@ -61,7 +67,9 @@ const StatCard = ({ icon, label, value }) => (
 
 const InfoRow = ({ icon, label, value }) => (
   <div className='flex items-center gap-3 py-3 border-b border-gray-50 last:border-0'>
-    <span className='text-base w-6 text-center flex-shrink-0'>{icon}</span>
+    <span className='text-base w-6 text-center shrink-0'>
+      <i className={`${icon} text-amber-500 text-sm`}></i>
+    </span>
     <span className='text-sm text-gray-500'>{label}</span>
     <span className='text-sm font-semibold text-gray-800 ml-auto text-right'>
       {value}
@@ -128,7 +136,7 @@ const InclusionsExclusions = ({ inclusions, exclusions }) => {
                   ✓
                 </span>
                 <span className='text-sm text-gray-700'>
-                  {inc.text ?? inc.name}
+                  {inc.label ?? inc.text}
                 </span>
               </div>
             ))}
@@ -145,7 +153,7 @@ const InclusionsExclusions = ({ inclusions, exclusions }) => {
                   ✕
                 </span>
                 <span className='text-sm text-gray-700'>
-                  {exc.text ?? exc.name}
+                  {exc.label ?? exc.text}
                 </span>
               </div>
             ))}
@@ -163,7 +171,7 @@ const TourDetails = ({ tour }) => {
     <>
       <div className='grid grid-cols-3 gap-3'>
         <StatCard
-          icon='📅'
+          icon='fa-calendar-alt'
           label={t("tourPreview.stats.duration")}
           value={
             tour.duration_days
@@ -172,19 +180,19 @@ const TourDetails = ({ tour }) => {
           }
         />
         <StatCard
-          icon='👥'
+          icon='fa-users'
           label={t("tourPreview.stats.maxGroup")}
           value={tour.max_group_size}
         />
         <StatCard
-          icon='💰'
+          icon='fa-tag'
           label={t("tourPreview.stats.perDay")}
           value={
             tour.price && tour.duration_days
               ? `$${Math.round(tour.price / tour.duration_days)}`
               : null
           }
-        />
+        />{" "}
       </div>
 
       {tour.itineraries?.length > 0 && (
@@ -260,17 +268,17 @@ const ExcursionDetails = ({ tour }) => {
     <>
       <div className='grid grid-cols-3 gap-3'>
         <StatCard
-          icon='⏱️'
+          icon='fa-hourglass-half'
           label={t("tourPreview.stats.duration")}
           value={tour.duration_hours ? `${tour.duration_hours}h` : null}
         />
         <StatCard
-          icon='👥'
+          icon='fa-users'
           label={t("tourPreview.stats.maxGroup")}
           value={tour.max_group_size}
         />
         <StatCard
-          icon='💰'
+          icon='fa-tag'
           label={t("tourPreview.stats.price")}
           value={tour.price ? `$${Number(tour.price).toLocaleString()}` : null}
         />
@@ -280,27 +288,27 @@ const ExcursionDetails = ({ tour }) => {
         <div className='bg-white rounded-2xl border border-gray-100 shadow-sm px-4'>
           {tour.departure_time && (
             <InfoRow
-              icon='🕗'
+              icon='fas fa-hourglass-half'
               label={t("tourPreview.logistics.departure")}
               value={tour.departure_time}
             />
           )}
           {tour.return_time && (
             <InfoRow
-              icon='🕕'
+              icon='fas fa-flag-checkered'
               label={t("tourPreview.logistics.return")}
               value={tour.return_time}
             />
           )}
           {tour.meeting_point && (
             <InfoRow
-              icon='📍'
+              icon='fas fa-location-arrow'
               label={t("tourPreview.logistics.meetingPoint")}
               value={tour.meeting_point}
             />
           )}
           <InfoRow
-            icon={tour.guide_included ? "✅" : "❌"}
+            icon={"fas fa-user"}
             label={t("tourPreview.logistics.guide")}
             value={
               tour.guide_included
@@ -320,17 +328,17 @@ const ActivityDetails = ({ tour }) => {
     <>
       <div className='grid grid-cols-3 gap-3'>
         <StatCard
-          icon='⏱️'
+          icon='fa-stopwatch'
           label={t("tourPreview.stats.duration")}
           value={tour.duration_hours ? `${tour.duration_hours}h` : null}
         />
         <StatCard
-          icon='👥'
+          icon='fa-users'
           label={t("tourPreview.stats.maxGroup")}
           value={tour.max_group_size}
         />
         <StatCard
-          icon='💰'
+          icon='fa-tag'
           label={t("tourPreview.stats.price")}
           value={tour.price ? `$${Number(tour.price).toLocaleString()}` : null}
         />
@@ -354,7 +362,11 @@ const ActivityDetails = ({ tour }) => {
             </div>
           )}
           <InfoRow
-            icon={tour.equipment_included ? "✅" : "❌"}
+            icon={
+              tour.equipment_included
+                ? "fas fa-check-circle"
+                : "fas fa-times-circle"
+            }
             label={t("tourPreview.activityDetails.equipment")}
             value={
               tour.equipment_included
@@ -510,14 +522,31 @@ const TourPreview = ({ tourId }) => {
   const [tour, setTour] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [inclusions, setInclusions] = useState([]);
+  const [exclusions, setExclusions] = useState([]);
 
   useEffect(() => {
     if (!id) return;
     const fetchTour = async () => {
       try {
         setLoading(true);
-        const data = await tourService.getById(id);
-        setTour(data);
+        const [t, i, e] = await Promise.all([
+          tourService.getById(id),
+          inclusionsService.getAll(),
+          exclusionsService.getAll(),
+        ]);
+
+        setTour(t);
+        setInclusions(
+          t?.inclusions?.flatMap((ti) =>
+            i?.data?.filter((i) => i.id === parseInt(ti))
+          )
+        );
+        setExclusions(
+          t?.exclusions?.flatMap((te) =>
+            e?.data?.filter((e) => e.id === parseInt(te))
+          )
+        );
       } catch (err) {
         setError(t("tourPreview.error.failedToLoad"));
         console.error(err);
@@ -528,6 +557,17 @@ const TourPreview = ({ tourId }) => {
     fetchTour();
   }, [id]);
 
+  const translatedInclusions = inclusions?.map((inc) => ({
+    ...inc,
+    label: t(`manageInclusions.inclusions.${inclusionKeyMap[inc?.text]}`),
+  }));
+
+  const translatedExclusions = exclusions?.map((exc) => ({
+    ...exc,
+    label:
+      t(`manageExclusions.exclusions.${exclusionKeyMap[exc?.text]}`) ??
+      exc.text,
+  }));
   if (loading) return <Skeleton />;
   if (error)
     return (
@@ -654,8 +694,8 @@ const TourPreview = ({ tourId }) => {
             <GallerySection images={tour.images} />
 
             <InclusionsExclusions
-              inclusions={tour.inclusions}
-              exclusions={tour.exclusions}
+              inclusions={translatedInclusions}
+              exclusions={translatedExclusions}
             />
           </div>
 
@@ -667,7 +707,6 @@ const TourPreview = ({ tourId }) => {
       </div>
 
       {/* Mobile sticky bottom CTA */}
-
     </div>
   );
 };

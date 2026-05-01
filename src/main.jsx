@@ -5,11 +5,13 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { SocketProvider } from "./context/SocketContext";
 import "./i18n/i18n";
+import ScrollToTop from "./components/Global/ScrollTop";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <SocketProvider >
+    <SocketProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <App />
       </BrowserRouter>
     </SocketProvider>
