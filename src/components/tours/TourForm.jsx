@@ -949,8 +949,12 @@ const TourForm = ({ Type }) => {
           is_featured: tour.is_featured,
           is_hot_deal: tour.is_hot_deal,
           category_id: tour.category_id,
-          inclusions: tour.inclusions?.map((i) => parseInt(i.id)),
-          exclusions: tour.exclusions?.map((e) => parseInt(e.id)),
+          inclusions: tour.inclusions
+            ?.map((i) => parseInt(i.id))
+            .filter(Boolean),
+          exclusions: tour.exclusions
+            ?.map((e) => parseInt(e.id))
+            .filter(Boolean),
           gallery: tour.images?.map((img) =>
             typeof img === "object" && img?.url ? img.url : img
           ),
