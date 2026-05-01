@@ -486,13 +486,13 @@ const ManageInclusions = () => {
                         >
                           <i className='fa fa-pencil text-xs' />
                         </button>
-                        <button
+                        {/* <button
                           onClick={() => setDeleteModal(e)}
                           title={t("manageInclusions.tooltips.delete")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-trash text-xs' />
-                        </button>
+                        </button> */}
                       </div>
                     </td>
                   </tr>

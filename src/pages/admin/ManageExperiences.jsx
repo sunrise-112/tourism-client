@@ -137,10 +137,11 @@ const ManageExperiences = ({ Type }) => {
     );
 
     return (
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-around'>
         {canEdit && editIcon}
         {canView && viewIcon}
-        {canDelete && deleteIcon}
+        {/*         {canDelete && deleteIcon}
+         */}{" "}
       </div>
     );
   };

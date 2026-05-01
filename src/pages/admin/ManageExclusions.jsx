@@ -20,8 +20,8 @@ const Sk = ({ className }) => (
 // ─── ManageExclusions ─────────────────────────────────────────
 const ManageExclusions = () => {
   const { t } = useTranslation();
-    const [searchParam] = useSearchParams();
-    const q = searchParam.get("q");
+  const [searchParam] = useSearchParams();
+  const q = searchParam.get("q");
 
   const [exclusions, setExclusions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -494,13 +494,13 @@ const ManageExclusions = () => {
                           <i className='fa fa-pencil text-xs' />
                         </button>
                         {/* Delete */}
-                        <button
+                        {/* <button
                           onClick={() => setDeleteModal(e)}
                           title={t("manageExclusions.tooltips.delete")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-stone-400 transition-colors'
                         >
                           <i className='fa fa-trash text-xs' />
-                        </button>
+                        </button> */}
                       </div>
                     </td>
                   </tr>
