@@ -204,7 +204,10 @@ const Sidebar = ({
                   key={item.path}
                   to={item.path}
                   title={collapsed ? item.label : undefined}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setIsOpen(false);
+                  }}
                   className={`
                     flex items-center gap-3 px-3 py-2.5 rounded-xl mb-0.5 transition-all duration-150 group relative
                     ${
