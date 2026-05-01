@@ -8,6 +8,7 @@ import categoryService from "../../services/categoryService";
 
 // Utils
 import { categoryKeyMap } from "../../utils/CategoriesMap";
+import renderImage from "../../utils/renderImage";
 
 // ─── Hero background images carousel configuration ─────────────
 // Easily edit this array to add, remove, or change background images
@@ -90,7 +91,7 @@ const TourCard = ({ tour, t }) => {
       <div className='relative h-56 overflow-hidden bg-stone-100'>
         {tour.cover_image ? (
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}${tour.cover_image}`}
+            src={renderImage(tour.cover_image)}
             alt={tour.title}
             className='w-full h-full object-cover group-hover:scale-108 transition-transform duration-700'
           />
