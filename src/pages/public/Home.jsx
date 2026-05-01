@@ -374,15 +374,17 @@ const Home = () => {
           </div>
 
           <h1
-            className='text-6xl md:text-8xl font-black text-white leading-[0.95] tracking-tight mb-6'
+            className='text-5xl sm:text-6xl md:text-8xl font-black text-white leading-[0.95] tracking-tight mb-6'
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             {t("home.hero.titleLine1")}
             <span
-              className='block text-transparent bg-clip-text'
+              className='block text-transparent bg-clip-text py-4'
               style={{
                 backgroundImage:
                   "linear-gradient(135deg, #F59E0B, #FB923C, #FBBF24)",
+                paddingLeft: "0.05em",
+                paddingRight: "0.05em",
               }}
             >
               {t("home.hero.titleLine2")}
