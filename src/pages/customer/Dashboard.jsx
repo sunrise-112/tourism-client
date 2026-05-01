@@ -230,11 +230,7 @@ const Topbar = ({ user, collapsed, mobileOpen, setMobileOpen }) => {
         >
           <Avatar
             name={user?.name}
-            src={
-              user?.avatar
-                ? `${import.meta.env.VITE_BACK_END_URL}${user.avatar}`
-                : null
-            }
+            src={user?.avatar && renderImage(user?.Avatar)}
             size='w-8 h-8'
             textSize='text-xs'
           />
@@ -448,7 +444,6 @@ const CustomerDashboard = () => {
                     user?.name?.split(" ")[0] ||
                     t("customerDashboard.banner.defaultTraveler"),
                 })}{" "}
-                👋
               </h1>
               <p className='text-stone-400 text-sm'>
                 {t("customerDashboard.banner.subtitle")}
