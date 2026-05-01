@@ -11,6 +11,7 @@ const isCustomer = user?.role === role.CUSTOMER;
 
 const Sidebar = ({
   collapsed,
+  setIsOpen,
   setCollapsed,
   user,
   mobileOpen,
@@ -142,7 +143,10 @@ const Sidebar = ({
       {mobileOpen && (
         <div
           className='fixed inset-0 z-30 bg-black/50 lg:hidden'
-          onClick={() => setMobileOpen(false)}
+          onClick={() => {
+            setMobileOpen(false);
+            setIsOpen(false);
+          }}
         />
       )}
 

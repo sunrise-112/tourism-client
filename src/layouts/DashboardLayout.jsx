@@ -45,6 +45,7 @@ export default ({ children, allowedRole = [] }) => {
       <Sidebar
         collapsed={collapsed}
         setCollapsed={setCollapsed}
+        setIsOpen={setIsOpen}
         user={user}
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
