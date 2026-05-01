@@ -335,20 +335,23 @@ const Profile = () => {
                     true
                   )}
                 </div>
-                {/* <div>
-                  <label className={labelClass}>
-                    {t("profile.form.nationality")}
-                  </label>
-                  {renderInput(
-                    "",
-                    "nationality",
-                    data,
-                    errors,
-                    handleChange,
-                    "text",
-                    true
-                  )}
-                </div>
+                {user?.role === role.CUSTOMER && (
+                  <div>
+                    <label className={labelClass}>
+                      {t("profile.form.nationality")}
+                    </label>
+                    {renderInput(
+                      "",
+                      "nationality",
+                      data,
+                      errors,
+                      handleChange,
+                      "text",
+                      true
+                    )}
+                  </div>
+                )}
+                {/* 
                                 {user?.role === role.ADMIN && (
                   <div>
                     <label className={labelClass}>
