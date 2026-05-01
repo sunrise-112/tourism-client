@@ -173,6 +173,7 @@ const Header = ({
       </div>
 
       {/* Notifications */}
+      {/* Notifications */}
       <div ref={notifRef} className='relative shrink-0'>
         <button
           onClick={() => {
@@ -190,7 +191,7 @@ const Header = ({
         </button>
 
         {notifOpen && (
-          <div className='absolute right-0 top-12 w-[calc(100vw-32px)] max-w-[288px] bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
+          <div className='fixed left-4 right-4 top-20 sm:absolute sm:left-auto sm:right-0 sm:top-12 sm:w-[288px] bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
             <div className='px-4 py-3 border-b border-stone-100 flex items-center justify-between'>
               <p className='font-bold text-stone-800 text-sm'>
                 {t("header.notifications.title")}
@@ -200,46 +201,49 @@ const Header = ({
               </span>
             </div>
 
-            {notifs?.map((n) => {
-              const { icon, color } = iconMap[n?.type] ?? iconMap.info;
-              return (
-                <div
-                  key={n.id}
-                  className={`flex items-start gap-3 px-4 py-3 hover:bg-stone-50 transition-colors cursor-pointer border-b border-stone-50 last:border-0 ${
-                    !n.is_read ? "bg-blue-50/40" : ""
-                  }`}
-                >
-                  <div className='w-8 h-8 rounded-xl bg-stone-100 flex items-center justify-center shrink-0 mt-0.5'>
-                    <i className={`fa ${icon} ${color} text-xs`} />
+            {/* Max height + scroll for many notifications */}
+            <div className='max-h-[60vh] overflow-y-auto'>
+              {notifs?.map((n) => {
+                const { icon, color } = iconMap[n?.type] ?? iconMap.info;
+                return (
+                  <div
+                    key={n.id}
+                    className={`flex items-start gap-3 px-4 py-3 hover:bg-stone-50 transition-colors cursor-pointer border-b border-stone-50 last:border-0 ${
+                      !n.is_read ? "bg-blue-50/40" : ""
+                    }`}
+                  >
+                    <div className='w-8 h-8 rounded-xl bg-stone-100 flex items-center justify-center shrink-0 mt-0.5'>
+                      <i className={`fa ${icon} ${color} text-xs`} />
+                    </div>
+                    <div className='flex-1 min-w-0'>
+                      <p className='text-xs font-semibold text-stone-700 leading-snug'>
+                        {n?.title}
+                      </p>
+                      <p className='text-xs text-stone-500 leading-snug mt-0.5'>
+                        {n?.message}
+                      </p>
+                      <p className='text-[10px] text-stone-400 mt-0.5'>
+                        {getRelativeTime(n?.created_at)}
+                      </p>
+                    </div>
+                    {!n.is_read && (
+                      <span className='w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 mt-1.5' />
+                    )}
                   </div>
-                  <div className='flex-1 min-w-0'>
-                    <p className='text-xs font-semibold text-stone-700 leading-snug'>
-                      {n?.title}
-                    </p>
-                    <p className='text-xs text-stone-500 leading-snug mt-0.5'>
-                      {n?.message}
-                    </p>
-                    <p className='text-[10px] text-stone-400 mt-0.5'>
-                      {getRelativeTime(n?.created_at)}
-                    </p>
-                  </div>
-                  {!n.is_read && (
-                    <span className='w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 mt-1.5' />
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
 
-            <div className='px-4 py-2.5 text-center'>
-              <button className='text-xs font-semibold text-amber-600 hover:text-amber-700 transition-colors'>
-                <Link
-                  to={
-                    isAdmin ? "/admin/notifications" : "/customer/notifications"
-                  }
-                >
-                  {t("header.notifications.viewAll")}
-                </Link>
-              </button>
+            <div className='px-4 py-2.5 text-center border-t border-stone-100'>
+              <Link
+                to={
+                  isAdmin ? "/admin/notifications" : "/customer/notifications"
+                }
+                onClick={() => setNotifOpen(false)}
+                className='text-xs font-semibold text-amber-600 hover:text-amber-700 transition-colors'
+              >
+                {t("header.notifications.viewAll")}
+              </Link>
             </div>
           </div>
         )}
