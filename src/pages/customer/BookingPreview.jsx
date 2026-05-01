@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import bookingService from "../../services/bookingService";
+import renderImage from "../../utils/renderImage";
 
 // ─── Helper: format "HH:MM" to "h:MM AM/PM" ─────────────────
 const formatTimeWithMeridiem = (timeString) => {
@@ -195,9 +196,7 @@ const BookingPreview = () => {
             <div className='w-full sm:w-48 h-44 sm:h-auto bg-stone-100 shrink-0 relative overflow-hidden'>
               {booking.tour_cover_image ? (
                 <img
-                  src={`${import.meta.env.VITE_BACKEND_URL}${
-                    booking.tour_cover_image
-                  }`}
+                  src={renderImage(booking?.tour_cover_image)}
                   alt={booking.title}
                   className='w-full h-full object-cover'
                 />
@@ -367,7 +366,7 @@ const BookingPreview = () => {
 
         {/* Actions */}
         <div className='flex flex-wrap gap-3 justify-end pb-8'>
-         {/*  <Link
+          {/*  <Link
             to={`/bookings/${id}/edit`}
             className='flex items-center gap-2 text-sm font-bold text-stone-600 bg-white border border-stone-200 hover:border-stone-300 px-5 py-2.5 rounded-xl transition-colors'
           >
