@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import renderImage from "../../utils/renderImage";
 
 export default ({ tour }) => {
   const { t } = useTranslation();
@@ -13,7 +14,7 @@ export default ({ tour }) => {
       <div className='relative h-52 overflow-hidden bg-stone-100'>
         {tour.cover_image ? (
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}${tour.cover_image}`}
+            src={renderImage(tour.cover_image)}
             alt={tour.title}
             className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-700'
           />
