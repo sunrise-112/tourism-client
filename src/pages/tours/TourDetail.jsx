@@ -55,14 +55,14 @@ const InitialAvatar = ({ name, size = "w-10 h-10" }) => (
 );
 
 const SectionHeading = ({ eyebrow, title }) => (
-  <div className='mb-8'>
+  <div className='mb-6 sm:mb-8'>
     {eyebrow && (
       <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-2'>
         {eyebrow}
       </p>
     )}
     <h2
-      className='text-2xl md:text-3xl font-black text-stone-800'
+      className='text-xl sm:text-2xl md:text-3xl font-black text-stone-800'
       style={{ fontFamily: "'Playfair Display', serif" }}
     >
       {title}
@@ -71,8 +71,8 @@ const SectionHeading = ({ eyebrow, title }) => (
 );
 
 const ReviewCard = ({ review }) => (
-  <div className='bg-white rounded-2xl border border-stone-100 p-6'>
-    <div className='flex items-start gap-4 mb-4'>
+  <div className='bg-white rounded-2xl border border-stone-100 p-4 sm:p-6'>
+    <div className='flex items-start gap-3 sm:gap-4 mb-4'>
       <InitialAvatar name={review.user_name} />
       <div className='flex-1 min-w-0'>
         <p className='font-bold text-stone-800 text-sm'>{review.user_name}</p>
@@ -129,7 +129,6 @@ const RelatedCard = ({ tour, t }) => (
   </Link>
 );
 
-// ─── Difficulty badge (translated) ───────────────────────────
 const DifficultyBadge = ({ level, t }) => {
   const config = {
     easy: {
@@ -173,10 +172,7 @@ const TourDetail = () => {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [formData, setFormData] = useState();
   const [reviews, setReviews] = useState([]);
-  const [reviewData, setReviewData] = useState({
-    rating: 5,
-    comment: "",
-  });
+  const [reviewData, setReviewData] = useState({ rating: 5, comment: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [itinerary, setItinerary] = useState([]);
@@ -207,16 +203,15 @@ const TourDetail = () => {
 
         setTour(t);
         setItinerary(t?.itineraries || []);
-
         setInclusions(
-          t?.inclusions?.flatMap((ti) => {
-            return i?.data?.filter((i) => i.id === parseInt(ti));
-          })
+          t?.inclusions?.flatMap((ti) =>
+            i?.data?.filter((i) => i.id === parseInt(ti))
+          )
         );
         setExclusions(
-          t?.exclusions?.flatMap((te) => {
-            return e?.data?.filter((e) => e.id === parseInt(te));
-          })
+          t?.exclusions?.flatMap((te) =>
+            e?.data?.filter((e) => e.id === parseInt(te))
+          )
         );
 
         if (t?.category_id) {
@@ -303,16 +298,10 @@ const TourDetail = () => {
   const doSubmit = async () => {
     try {
       setIsSubmitting(true);
-      const createData = {
-        tour_id: parseInt(id),
-        ...data,
-      };
-
-      await bookingService.create(createData);
+      await bookingService.create({ tour_id: parseInt(id), ...data });
       navigate("/booking/successfull");
     } catch (error) {
       toast.error(error?.response?.data?.message || error?.response?.data?.err);
-      console.log("Error: ", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -340,7 +329,6 @@ const TourDetail = () => {
     }
   }, [data?.num_people, tour?.max_group_size, t]);
 
-  // Reviews
   const reviewSchema = {
     rating: Joi.number().min(1).max(5).required().label("Rating"),
     comment: Joi.string().min(1).max(255).required().label("Comment"),
@@ -359,7 +347,6 @@ const TourDetail = () => {
       setReviewData({ rating: 5, comment: "" });
     } catch (error) {
       toast.error(error?.response?.data?.message);
-      console.log("Error: ", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -372,7 +359,6 @@ const TourDetail = () => {
     handleSubmit: cHandleSubmit,
   } = useForm(reviewData, reviewSchema, doSubmitReview);
 
-  // Helper to get dynamic stats with translations
   const getTypeConfig = (tour) => {
     switch (tour?.type) {
       case "excursion":
@@ -622,8 +608,8 @@ const TourDetail = () => {
         className='min-h-screen bg-stone-50 animate-pulse'
         style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
-        <div className='h-[60vh] bg-stone-200' />
-        <div className='max-w-6xl mx-auto px-6 py-10 space-y-4'>
+        <div className='h-[50vh] sm:h-[60vh] bg-stone-200' />
+        <div className='max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-4'>
           <div className='h-5 bg-stone-200 rounded w-1/4' />
           <div className='h-10 bg-stone-200 rounded w-2/3' />
           <div className='h-4 bg-stone-200 rounded w-full' />
@@ -662,7 +648,7 @@ const TourDetail = () => {
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
       {/* ── HERO ────────────────────────────────────────── */}
-      <div className='relative h-[65vh] overflow-hidden bg-stone-900'>
+      <div className='relative h-[55vh] sm:h-[65vh] overflow-hidden bg-stone-900'>
         {tour?.cover_image && (
           <img
             src={renderImage(tour?.cover_image)}
@@ -672,49 +658,56 @@ const TourDetail = () => {
         )}
         <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent' />
 
-        <div className='absolute top-6 left-6'>
+        {/* ✅ Back button */}
+        <div className='absolute top-4 left-4'>
           <Link
             to='/tours'
-            className='flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white bg-black/30 hover:bg-black/50 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/10 transition-all'
+            className='flex items-center gap-2 text-xs sm:text-sm font-semibold text-white/90 hover:text-white bg-black/30 hover:bg-black/50 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-xl border border-white/10 transition-all'
           >
             <i className='fa fa-arrow-left text-xs' />{" "}
             {t("tourDetail.allTours")}
           </Link>
         </div>
 
-        <div className='absolute top-6 right-6 flex gap-2'>
-          <span className='flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-sm border border-white/20'>
+        {/* ✅ Badges — wrap on mobile */}
+        <div className='absolute top-4 right-4 flex flex-wrap gap-1.5 max-w-[55%] sm:max-w-none justify-end'>
+          <span className='flex items-center gap-1.5 text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-sm border border-white/20'>
             <i className={`fa ${typeConfig.icon} text-[10px]`} />
-            {typeConfig.label}
+            <span className='hidden sm:inline'>{typeConfig.label}</span>
           </span>
           {tour?.is_hot_deal && (
-            <span className='flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-red-500 text-white shadow'>
-              <i className='fa fa-fire text-[10px]' />{" "}
-              {t("tourDetail.badge.hotDeal")}
+            <span className='flex items-center gap-1.5 text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-full bg-red-500 text-white shadow'>
+              <i className='fa fa-fire text-[10px]' />
+              <span className='hidden sm:inline'>
+                {t("tourDetail.badge.hotDeal")}
+              </span>
             </span>
           )}
           {tour?.is_featured && (
-            <span className='flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-amber-400 text-amber-900 shadow'>
-              <i className='fa fa-star text-[10px]' />{" "}
-              {t("tourDetail.badge.featured")}
+            <span className='flex items-center gap-1.5 text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-full bg-amber-400 text-amber-900 shadow'>
+              <i className='fa fa-star text-[10px]' />
+              <span className='hidden sm:inline'>
+                {t("tourDetail.badge.featured")}
+              </span>
             </span>
           )}
         </div>
 
-        <div className='absolute bottom-0 left-0 right-0 px-6 pb-10 md:px-12'>
+        {/* ✅ Hero content */}
+        <div className='absolute bottom-0 left-0 right-0 px-4 pb-6 sm:px-6 sm:pb-10 md:px-12'>
           <div className='max-w-6xl mx-auto'>
             {tour?.category && (
-              <span className='inline-block text-xs font-bold uppercase tracking-[0.2em] text-amber-400 mb-3'>
+              <span className='inline-block text-xs font-bold uppercase tracking-[0.2em] text-amber-400 mb-2 sm:mb-3'>
                 {tour?.category}
               </span>
             )}
             <h1
-              className='text-4xl md:text-6xl font-black text-white leading-tight mb-3'
+              className='text-2xl sm:text-4xl md:text-6xl font-black text-white leading-tight mb-2 sm:mb-3'
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               {tour?.title}
             </h1>
-            <div className='flex flex-wrap items-center gap-4 text-sm text-white/70'>
+            <div className='flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-white/70'>
               {tour?.destination && (
                 <span className='flex items-center gap-1.5'>
                   <i className='fa fa-map-marker-alt text-amber-400' />{" "}
@@ -773,12 +766,12 @@ const TourDetail = () => {
 
       {/* ── STICKY TABS ─────────────────────────────────── */}
       <div className='sticky top-0 z-20 bg-white border-b border-stone-100 shadow-sm'>
-        <div className='max-w-6xl mx-auto px-6 md:px-12 flex items-center gap-1 overflow-x-auto scrollbar-hide'>
+        <div className='max-w-6xl mx-auto px-2 sm:px-6 md:px-12 flex items-center gap-1 overflow-x-auto scrollbar-hide'>
           {TABS.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-5 py-4 text-sm font-semibold capitalize whitespace-nowrap border-b-2 transition-colors ${
+              className={`px-3 sm:px-5 py-4 text-xs sm:text-sm font-semibold capitalize whitespace-nowrap border-b-2 transition-colors ${
                 activeTab === tab
                   ? "border-amber-400 text-amber-600"
                   : "border-transparent text-stone-400 hover:text-stone-600"
@@ -791,21 +784,22 @@ const TourDetail = () => {
       </div>
 
       {/* ── BODY ────────────────────────────────────────── */}
-      <div className='max-w-6xl mx-auto px-6 md:px-12 py-12'>
-        <div className='flex flex-col lg:flex-row gap-12'>
+      <div className='max-w-6xl mx-auto px-4 sm:px-6 md:px-12 py-8 sm:py-12'>
+        {/* ✅ flex-col-reverse so booking shows BELOW content on mobile */}
+        <div className='flex flex-col-reverse lg:flex-row gap-8 lg:gap-12'>
           {/* ── LEFT CONTENT ────────────────────────── */}
-          <div className='flex-1 min-w-0 space-y-16'>
+          <div className='flex-1 min-w-0 space-y-12 sm:space-y-16'>
             {/* OVERVIEW TAB */}
             {activeTab === "overview" && (
               <>
                 {/* Quick stats */}
-                <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
+                <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4'>
                   {typeConfig.quickStats.map((s) => (
                     <div
                       key={s.label}
-                      className='bg-white rounded-2xl border border-stone-100 p-5'
+                      className='bg-white rounded-2xl border border-stone-100 p-4 sm:p-5'
                     >
-                      <div className='w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center mb-3'>
+                      <div className='w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-50 flex items-center justify-center mb-2 sm:mb-3'>
                         <i className={`fa ${s.icon} text-amber-500 text-sm`} />
                       </div>
                       <p className='text-xs text-stone-400 uppercase tracking-wide font-medium mb-1'>
@@ -832,14 +826,14 @@ const TourDetail = () => {
                         : t("tourDetail.overview.activityTitle")
                     }
                   />
-                  <p className='text-stone-500 leading-relaxed whitespace-pre-line text-[15px]'>
+                  <p className='text-stone-500 leading-relaxed whitespace-pre-line text-sm sm:text-[15px]'>
                     {tour?.description || t("tourDetail.noDescription")}
                   </p>
                 </div>
 
-                {/* Excursion-specific: logistics strip */}
+                {/* Excursion logistics strip */}
                 {tour?.type === "excursion" && (
-                  <div className='bg-sky-50 border border-sky-100 rounded-2xl p-6 grid grid-cols-2 md:grid-cols-3 gap-5'>
+                  <div className='bg-sky-50 border border-sky-100 rounded-2xl p-4 sm:p-6 grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5'>
                     {tour?.departure_time && (
                       <div>
                         <p className='text-xs font-bold uppercase tracking-widest text-sky-500 mb-1'>
@@ -885,9 +879,9 @@ const TourDetail = () => {
                   </div>
                 )}
 
-                {/* Activity-specific: difficulty + equipment strip */}
+                {/* Activity strip */}
                 {tour?.type === "activity" && (
-                  <div className='bg-emerald-50 border border-emerald-100 rounded-2xl p-6 flex flex-wrap gap-8'>
+                  <div className='bg-emerald-50 border border-emerald-100 rounded-2xl p-4 sm:p-6 flex flex-wrap gap-6 sm:gap-8'>
                     {tour?.difficulty_level && (
                       <div>
                         <p className='text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2'>
@@ -929,9 +923,9 @@ const TourDetail = () => {
                       eyebrow={t("tourDetail.inclusions.eyebrow")}
                       title={t("tourDetail.inclusions.title")}
                     />
-                    <div className='grid md:grid-cols-2 gap-6'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6'>
                       {inclusions.length > 0 && (
-                        <div className='bg-amber-50 border border-amber-100 rounded-2xl p-6 space-y-3'>
+                        <div className='bg-amber-50 border border-amber-100 rounded-2xl p-4 sm:p-6 space-y-3'>
                           <p className='text-xs font-bold uppercase tracking-widest text-amber-600 mb-4'>
                             {t("tourDetail.included")}
                           </p>
@@ -949,7 +943,7 @@ const TourDetail = () => {
                         </div>
                       )}
                       {exclusions.length > 0 && (
-                        <div className='bg-stone-50 border border-stone-200 rounded-2xl p-6 space-y-3'>
+                        <div className='bg-stone-50 border border-stone-200 rounded-2xl p-4 sm:p-6 space-y-3'>
                           <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-4'>
                             {t("tourDetail.notIncluded")}
                           </p>
@@ -977,14 +971,17 @@ const TourDetail = () => {
                       eyebrow={t("tourDetail.gallery.eyebrow")}
                       title={t("tourDetail.gallery.title")}
                     />
-                    {/* Responsive grid – 2 columns on mobile, 3 on desktop, first image spans 2 cols on desktop */}
-                    <div className='grid grid-cols-2 md:grid-cols-3 gap-3'>
+                    <div className='grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3'>
                       {galleryImages.map((img, i) => (
                         <button
                           key={i}
                           onClick={() => setLightboxIndex(i)}
                           className={`relative overflow-hidden rounded-2xl bg-stone-100 group
-            ${i === 0 ? "col-span-2 row-span-2 h-48 md:h-64" : "h-32 md:h-40"}`}
+                            ${
+                              i === 0
+                                ? "col-span-2 row-span-2 h-40 sm:h-48 md:h-64"
+                                : "h-28 sm:h-32 md:h-40"
+                            }`}
                         >
                           <img
                             src={renderImage(img)}
@@ -1010,16 +1007,20 @@ const TourDetail = () => {
                   title={t("tourDetail.itinerary.title")}
                 />
                 <div className='relative'>
-                  <div className='absolute left-5 top-0 bottom-0 w-px bg-amber-100' />
-                  <div className='space-y-6'>
+                  {/* ✅ Hide timeline line on very small screens */}
+                  <div className='hidden sm:block absolute left-5 top-0 bottom-0 w-px bg-amber-100' />
+                  <div className='space-y-4 sm:space-y-6'>
                     {itinerary.map((day) => (
-                      <div key={day.day} className='flex gap-6 relative'>
-                        <div className='w-10 h-10 rounded-full bg-amber-400 flex items-center justify-center text-amber-900 font-black text-sm shrink-0 z-10 shadow-md shadow-amber-200'>
+                      <div
+                        key={day.day}
+                        className='flex gap-3 sm:gap-6 relative'
+                      >
+                        <div className='w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-amber-400 flex items-center justify-center text-amber-900 font-black text-sm shrink-0 z-10 shadow-md shadow-amber-200'>
                           {day.day}
                         </div>
                         <div className='flex-1 bg-white rounded-2xl border border-stone-100 overflow-hidden'>
                           {day.image && (
-                            <div className='relative h-44 overflow-hidden'>
+                            <div className='relative h-36 sm:h-44 overflow-hidden'>
                               <img
                                 src={renderImage(day.image)}
                                 alt={day.title}
@@ -1028,11 +1029,11 @@ const TourDetail = () => {
                               <div className='absolute inset-0 bg-gradient-to-t from-white/60 to-transparent' />
                             </div>
                           )}
-                          <div className='p-5'>
+                          <div className='p-4 sm:p-5'>
                             <p className='text-xs font-bold uppercase tracking-widest text-amber-500 mb-1'>
                               {t("tourDetail.itinerary.day", { day: day.day })}
                             </p>
-                            <h3 className='font-black text-stone-800 text-base mb-1'>
+                            <h3 className='font-black text-stone-800 text-sm sm:text-base mb-1'>
                               {day.title}
                             </h3>
                             {day.location && (
@@ -1076,22 +1077,15 @@ const TourDetail = () => {
             {/* REVIEWS TAB */}
             {activeTab === "reviews" && (
               <div>
-                <div className='bg-white rounded-2xl border border-stone-100 p-8 mb-8 flex flex-col md:flex-row items-center gap-8'>
+                <div className='bg-white rounded-2xl border border-stone-100 p-5 sm:p-8 mb-8 flex flex-col md:flex-row items-center gap-6 md:gap-8'>
                   <div className='text-center shrink-0'>
-                    <>
-                      <p className='text-6xl font-black text-amber-500'>
-                        {avgRating > 0 && avgRating}
-                      </p>
-                      <StarRating
-                        rating={Math.round(avgRating)}
-                        size='text-lg'
-                      />
-                      <p className='text-xs text-stone-400 mt-2'>
-                        {t("tourDetail.review.count", {
-                          count: reviews?.length,
-                        })}
-                      </p>
-                    </>
+                    <p className='text-5xl sm:text-6xl font-black text-amber-500'>
+                      {avgRating > 0 && avgRating}
+                    </p>
+                    <StarRating rating={Math.round(avgRating)} size='text-lg' />
+                    <p className='text-xs text-stone-400 mt-2'>
+                      {t("tourDetail.review.count", { count: reviews?.length })}
+                    </p>
                   </div>
                   <div className='flex-1 w-full space-y-2'>
                     {[5, 4, 3, 2, 1].map((star) => {
@@ -1124,7 +1118,7 @@ const TourDetail = () => {
                   eyebrow={t("tourDetail.review.eyebrow")}
                   title={t("tourDetail.review.title")}
                 />
-                <div className='space-y-4 mb-12'>
+                <div className='space-y-4 mb-10 sm:mb-12'>
                   {reviews?.map((r) => (
                     <ReviewCard key={r.id} review={r} />
                   ))}
@@ -1132,9 +1126,9 @@ const TourDetail = () => {
 
                 <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
                   <div className='h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-400' />
-                  <div className='p-7'>
+                  <div className='p-5 sm:p-7'>
                     <h3
-                      className='text-xl font-black text-stone-800 mb-1'
+                      className='text-lg sm:text-xl font-black text-stone-800 mb-1'
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       {t("tourDetail.reviewForm.title")}
@@ -1239,9 +1233,10 @@ const TourDetail = () => {
             )}
           </div>
 
-          {/* ── RIGHT — STICKY BOOKING ───────────────── */}
+          {/* ── RIGHT — BOOKING SIDEBAR ──────────────── */}
+          {/* ✅ sticky only on desktop, shows ABOVE content on mobile (flex-col-reverse) */}
           <div className='w-full lg:w-80 shrink-0'>
-            <div className='sticky top-[65px] space-y-4'>
+            <div className='lg:sticky lg:top-[65px] space-y-4'>
               <BookingForm
                 tour={tour}
                 data={data}
@@ -1253,8 +1248,9 @@ const TourDetail = () => {
                 typeConfig={typeConfig}
                 isSubmitting={isSubmitting}
               />
+
               {/* Trust badges */}
-              <div className='bg-white rounded-2xl border border-stone-100 p-5 space-y-3'>
+              <div className='bg-white rounded-2xl border border-stone-100 p-4 sm:p-5 space-y-3'>
                 {[
                   {
                     icon: "fa-shield-alt",
@@ -1279,7 +1275,7 @@ const TourDetail = () => {
               </div>
 
               {/* Share */}
-              <div className='bg-white rounded-2xl border border-stone-100 p-5'>
+              <div className='bg-white rounded-2xl border border-stone-100 p-4 sm:p-5'>
                 <p className='text-xs font-bold uppercase tracking-widest text-stone-400 mb-3'>
                   {t("tourDetail.share.title", { type: typeConfig.label })}
                 </p>
@@ -1290,7 +1286,7 @@ const TourDetail = () => {
                       name: "facebook",
                       color:
                         "hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200",
-                      shareUrl: (url, title) =>
+                      shareUrl: (url) =>
                         `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
                           url
                         )}`,
@@ -1325,20 +1321,18 @@ const TourDetail = () => {
                     const handleShare = () => {
                       if (s.name === "copy") {
                         navigator.clipboard.writeText(window.location.href);
-                        // Optional: show a toast or temporary feedback
                         alert(
                           t("tourDetail.share.linkCopied") || "Link copied!"
                         );
                       } else {
-                        const shareWindow = window.open(
+                        const w = window.open(
                           s.shareUrl(window.location.href, document.title),
                           "_blank",
                           "width=600,height=400"
                         );
-                        if (shareWindow) shareWindow.focus();
+                        if (w) w.focus();
                       }
                     };
-
                     return (
                       <button
                         key={s.icon}
@@ -1357,21 +1351,22 @@ const TourDetail = () => {
 
         {/* ── RELATED TOURS ────────────────────────────── */}
         {relatedTours.length > 0 && (
-          <div className='mt-20'>
-            <div className='flex items-end justify-between mb-8'>
+          <div className='mt-16 sm:mt-20'>
+            {/* ✅ Stack on mobile */}
+            <div className='flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6 sm:mb-8'>
               <SectionHeading
                 eyebrow={t("tourDetail.related.eyebrow")}
                 title={t("tourDetail.related.title")}
               />
               <Link
                 to={`/tours?category=${tour?.category}`}
-                className='flex items-center gap-1.5 text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors mb-1'
+                className='flex items-center gap-1.5 text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors mb-1 shrink-0'
               >
                 {t("tourDetail.related.viewAll")}{" "}
                 <i className='fa fa-arrow-right text-xs' />
               </Link>
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6'>
               {relatedTours.map((relatedTour) => (
                 <RelatedCard key={relatedTour.id} tour={relatedTour} t={t} />
               ))}
