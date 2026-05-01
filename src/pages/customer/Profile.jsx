@@ -76,7 +76,6 @@ const Profile = () => {
     email: "",
     password: "",
     phone: "",
-    nationality: "",
     role: "",
   });
   const [user, setUser] = useState(null);
@@ -92,7 +91,6 @@ const Profile = () => {
           email: fetchedUser?.email || "",
           password: "",
           phone: fetchedUser?.phone || "",
-          nationality: fetchedUser?.nationality || "",
           ...(currentUser?.role === "admin"
             ? {
                 role: fetchedUser?.role,
@@ -135,7 +133,6 @@ const Profile = () => {
     email: Joi.string().email().max(150).label(t("profile.schema.email")),
     password: Joi.optional().label(t("profile.schema.password")),
     phone: Joi.string().max(20).label(t("profile.schema.phone")),
-    nationality: Joi.string().max(100).label(t("profile.schema.nationality")),
   };
 
   const roleExtensions = {
@@ -144,7 +141,9 @@ const Profile = () => {
         .valid(...ROLES)
         .label(t("profile.schema.role")),
     },
-    customer: {},
+    customer: {
+      nationality: Joi.string().max(100).label(t("profile.schema.nationality")),
+    },
   };
 
   const buildUserSchema = () => {

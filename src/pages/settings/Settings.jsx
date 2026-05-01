@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import settingsService from "../../services/adminSettings";
@@ -45,7 +45,7 @@ const Toggle = ({
 const SectionCard = ({ title, eyebrow, children }) => (
   <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
     <div className='h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-400' />
-    <div className='p-6'>
+    <div className='p-4 sm:p-6'>
       {eyebrow && (
         <p className='text-xs font-bold uppercase tracking-[0.2em] mb-1 text-amber-500'>
           {eyebrow}
@@ -127,10 +127,7 @@ const PanelSkeleton = () => (
 );
 
 const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
-  const [cordinates, setCordinates] = useState({
-    lng: "",
-    lat: "",
-  });
+  const [cordinates, setCordinates] = useState({ lng: "", lat: "" });
   const [formData, setFormData] = useState({
     company_name: "",
     address: "",
@@ -143,20 +140,6 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
     privacy_policy: "",
     terms_of_service: "",
   });
-
-  const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem("darkMode");
-    return saved === "true";
-  });
-
-  useEffect(() => {
-    localStorage.setItem("darkMode", darkMode);
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
 
   const schema = {
     company_name: Joi.string().max(255).allow(null, "").optional(),
@@ -181,10 +164,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
     const fetchSettings = async () => {
       try {
         const response = await settingsService.get();
-        setCordinates({
-          lat: response?.lat || "",
-          lng: response?.lng || "",
-        });
+        setCordinates({ lat: response?.lat || "", lng: response?.lng || "" });
         setFormData({
           company_name: response.company_name || "",
           address: response.address || "",
@@ -197,18 +177,12 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
           privacy_policy: response.privacy_policy || "",
           terms_of_service: response.terms_of_service || "",
         });
-        console.log("Response: ", response);
       } catch (error) {
         console.log("Error: ", error);
       }
     };
-
     fetchSettings();
   }, []);
-
-  useEffect(() => {
-    console.log("cordinates: ", cordinates);
-  }, [cordinates]);
 
   const doSubmit = async () => {
     try {
@@ -217,16 +191,12 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
         lat: cordinates?.lat,
         lng: cordinates?.lng,
       };
-
       await settingsService.update(updateData);
       toast.success(
         t("settings.general.updateSuccess", "Settings updated successfully!")
       );
-      setTimeout(() => {
-        setIsEditing(false);
-      }, 1500);
+      setTimeout(() => setIsEditing(false), 1500);
     } catch (error) {
-      console.log("Error: ", error);
       toast.error(
         t("settings.general.updateError", "Error updating Settings!")
       );
@@ -239,34 +209,25 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
     doSubmit
   );
 
-  const handleEdit = () => {
-    setIsEditing(!isEditing);
-  };
-
-  console.log("Validate: ", validate());
-
   return (
     <SectionCard
       eyebrow={t("settings.general.eyebrow", "PREFERENCES")}
       title={t("settings.general.title", "General Settings")}
     >
       <div className='space-y-6'>
-        {/* Dark mode toggle (commented out, no translation needed) */}
-        {/* <ToggleRow ... /> */}
-
-        {/* User information card */}
         <div className='rounded-xl border border-stone-200 bg-white p-4'>
-          <div className='flex justify-between items-center mb-3'>
+          {/* Header row */}
+          <div className='flex justify-between items-center mb-4'>
             <p className='text-sm font-bold text-stone-700'>
               {isEditing
                 ? t("settings.general.editProfile", "Edit Profile Information")
                 : t("settings.general.profile", "Profile Information")}
             </p>
             <button
-              onClick={handleEdit}
-              className={`${
-                isEditing ? "bg-red-600" : "bg-amber-600"
-              } text-white rounded-xl text w-20 h-7 cursor-pointer text-center text-md font-medium hover:bg-amber-700 transition-colors`}
+              onClick={() => setIsEditing(!isEditing)}
+              className={`${isEditing ? "bg-red-600" : "bg-amber-600"} 
+                text-white rounded-xl w-20 h-7 cursor-pointer text-center text-sm 
+                font-medium hover:opacity-90 transition-opacity`}
             >
               {isEditing
                 ? t("common.cancel", "Cancel")
@@ -276,43 +237,41 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
 
           {!isEditing ? (
             <div className='space-y-4'>
-              {/* Company & contact info - two columns */}
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3'>
-                <div className='flex justify-between items-center border-b border-stone-100 pb-2'>
-                  <span className='text-stone-500 text-sm'>
-                    {t("settings.general.company_name", "Company name")}:
-                  </span>
-                  <span className='font-medium text-stone-800 text-sm'>
-                    {data?.company_name || "-"}
-                  </span>
-                </div>
-                <div className='flex justify-between items-center border-b border-stone-100 pb-2'>
-                  <span className='text-stone-500 text-sm'>
-                    {t("settings.general.address", "Address")}:
-                  </span>
-                  <span className='font-medium text-stone-800 text-sm'>
-                    {data?.address || "-"}
-                  </span>
-                </div>
-                <div className='flex justify-between items-center border-b border-stone-100 pb-2'>
-                  <span className='text-stone-500 text-sm'>
-                    {t("settings.general.company_phone", "Phone number")}:
-                  </span>
-                  <span className='font-medium text-stone-800 text-sm'>
-                    {data?.company_phone || "-"}
-                  </span>
-                </div>
-                <div className='flex justify-between items-center border-b border-stone-100 pb-2'>
-                  <span className='text-stone-500 text-sm'>
-                    {t("settings.general.opening_hours", "Opening hours")}:
-                  </span>
-                  <span className='font-medium text-stone-800 text-sm'>
-                    {data?.opening_hours || "-"}
-                  </span>
-                </div>
+              {/* Info grid */}
+              <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3'>
+                {[
+                  {
+                    label: t("settings.general.company_name", "Company name"),
+                    value: data?.company_name,
+                  },
+                  {
+                    label: t("settings.general.address", "Address"),
+                    value: data?.address,
+                  },
+                  {
+                    label: t("settings.general.company_phone", "Phone number"),
+                    value: data?.company_phone,
+                  },
+                  {
+                    label: t("settings.general.opening_hours", "Opening hours"),
+                    value: data?.opening_hours,
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    className='flex justify-between items-center border-b border-stone-100 pb-2 gap-2'
+                  >
+                    <span className='text-stone-500 text-sm shrink-0'>
+                      {item.label}:
+                    </span>
+                    <span className='font-medium text-stone-800 text-sm text-right truncate max-w-[60%]'>
+                      {item.value || "-"}
+                    </span>
+                  </div>
+                ))}
               </div>
 
-              {/* Social media section */}
+              {/* Social links */}
               {(data?.facebook_url ||
                 data?.instagram_url ||
                 data?.youtube_url ||
@@ -329,7 +288,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                         rel='noopener noreferrer'
                         className='flex items-center gap-2 text-sm text-stone-600 hover:text-blue-600 transition-colors'
                       >
-                        <i className='fab fa-facebook-f w-4 text-blue-500'></i>
+                        <i className='fab fa-facebook-f w-4 text-blue-500' />
                         <span className='truncate'>{data.facebook_url}</span>
                       </a>
                     )}
@@ -340,7 +299,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                         rel='noopener noreferrer'
                         className='flex items-center gap-2 text-sm text-stone-600 hover:text-pink-600 transition-colors'
                       >
-                        <i className='fab fa-instagram w-4 text-pink-500'></i>
+                        <i className='fab fa-instagram w-4 text-pink-500' />
                         <span className='truncate'>{data.instagram_url}</span>
                       </a>
                     )}
@@ -351,7 +310,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                         rel='noopener noreferrer'
                         className='flex items-center gap-2 text-sm text-stone-600 hover:text-red-600 transition-colors'
                       >
-                        <i className='fab fa-youtube w-4 text-red-500'></i>
+                        <i className='fab fa-youtube w-4 text-red-500' />
                         <span className='truncate'>{data.youtube_url}</span>
                       </a>
                     )}
@@ -362,7 +321,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                         rel='noopener noreferrer'
                         className='flex items-center gap-2 text-sm text-stone-600 hover:text-sky-600 transition-colors'
                       >
-                        <i className='fab fa-twitter w-4 text-sky-500'></i>
+                        <i className='fab fa-twitter w-4 text-sky-500' />
                         <span className='truncate'>{data.twitter_url}</span>
                       </a>
                     )}
@@ -374,14 +333,12 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className='bg-white rounded-xl shadow-md p-6'
+              className='bg-white rounded-xl p-2 sm:p-4'
             >
-              <h2 className='text-xl font-bold text-stone-800 mb-6 pb-2 border-b border-stone-200'>
+              <h2 className='text-lg font-bold text-stone-800 mb-4 pb-2 border-b border-stone-200'>
                 {t("settings.general.companySettings", "Company Settings")}
               </h2>
-
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2'>
-                {/* Basic info */}
+              <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2'>
                 {renderInput(
                   t("settings.general.company_name", "Company name"),
                   "company_name",
@@ -410,8 +367,6 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                   errors,
                   handleChange
                 )}
-
-                {/* Social media */}
                 {renderInput(
                   t("settings.general.facebook_url", "Facebook URL"),
                   "facebook_url",
@@ -440,31 +395,34 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                   errors,
                   handleChange
                 )}
-                {renderTextarea(
-                  t("settings.general.privacy_policy", "Privacy Policy"),
-                  "privacy_policy",
-                  data,
-                  errors,
-                  handleChange,
-                  "text",
-                  5
-                )}
-                {renderTextarea(
-                  t("settings.general.terms_of_service", "Terms of service"),
-                  "terms_of_service",
-                  data,
-                  errors,
-                  handleChange,
-                  "text",
-                  5
-                )}
+                <div className='col-span-1 sm:col-span-2'>
+                  {renderTextarea(
+                    t("settings.general.privacy_policy", "Privacy Policy"),
+                    "privacy_policy",
+                    data,
+                    errors,
+                    handleChange,
+                    "text",
+                    5
+                  )}
+                </div>
+                <div className='col-span-1 sm:col-span-2'>
+                  {renderTextarea(
+                    t("settings.general.terms_of_service", "Terms of service"),
+                    "terms_of_service",
+                    data,
+                    errors,
+                    handleChange,
+                    "text",
+                    5
+                  )}
+                </div>
               </div>
-
               <LocationPicker
                 onChange={(cords) => setCordinates(cords)}
                 initialPosition={cordinates}
               />
-              <div className='mt-8 flex justify-end'>
+              <div className='mt-6 flex justify-end'>
                 {renderButton(
                   t("common.saveChanges", "Save changes"),
                   "submit",
@@ -538,7 +496,7 @@ const EmailPanel = ({ settings, onToggle, saving, t }) => (
   </SectionCard>
 );
 
-// ─── Settings ─────────────────────────────────────────────────────────────────
+// ─── Settings Page ────────────────────────────────────────────────────────────
 
 const Settings = ({ className = "" }) => {
   const { t } = useTranslation();
@@ -548,10 +506,10 @@ const Settings = ({ className = "" }) => {
   const [saving, setSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState({});
+  const [sidebarOpen, setSidebarOpen] = useState(false); // ✅ mobile sidebar toggle
 
   const isAdmin = user?.role === role.ADMIN;
 
-  // TABS definition – General is always first
   const TABS = [
     {
       id: "language",
@@ -569,15 +527,8 @@ const Settings = ({ className = "" }) => {
           },
         ]
       : []),
-
     ...(isAdmin
       ? [
-          /* {
-            id: "sms",
-            label: t("settings.tabs.sms.label"),
-            icon: "fa-comment-alt",
-            eyebrow: t("settings.tabs.sms.eyebrow"),
-          }, */
           {
             id: "email",
             label: t("settings.tabs.email.label"),
@@ -588,15 +539,12 @@ const Settings = ({ className = "" }) => {
       : []),
   ];
 
-  // ── fetch on mount ──────────────────────────────────────────────────────────
   useEffect(() => {
     const fetchSettings = async () => {
       try {
         const currentUser = userService.getCurrentUser();
         setUser(currentUser);
-        console.log("CurrentUser: ", currentUser);
         if (currentUser?.role !== role.ADMIN) return;
-
         const data = await settingsService.get();
         setSettings({ smtp: data.smtp, sms: data.sms });
       } catch {
@@ -605,15 +553,12 @@ const Settings = ({ className = "" }) => {
         setLoading(false);
       }
     };
-
     fetchSettings();
   }, [t]);
 
-  // ── optimistic toggle ───────────────────────────────────────────────────────
   const handleToggle = async (key, value) => {
-    setSettings((prev) => ({ ...prev, [key]: value })); // optimistic
+    setSettings((prev) => ({ ...prev, [key]: value }));
     setSaving(true);
-
     try {
       const updated = await settingsService.update({ [key]: value });
       setSettings({ smtp: updated.smtp, sms: updated.sms });
@@ -623,17 +568,15 @@ const Settings = ({ className = "" }) => {
           : t("settings.toasts.disabled", { channel: key.toUpperCase() })
       );
     } catch {
-      setSettings((prev) => ({ ...prev, [key]: !value })); // rollback
+      setSettings((prev) => ({ ...prev, [key]: !value }));
       toast.error(t("settings.errors.updateFailed"));
     } finally {
       setSaving(false);
     }
   };
 
-  // ── panel renderer ──────────────────────────────────────────────────────────
   const renderPanel = () => {
     if (loading) return <PanelSkeleton />;
-
     if (activeTab === "general" && isAdmin)
       return (
         <GeneralPanel
@@ -643,9 +586,8 @@ const Settings = ({ className = "" }) => {
           user={user}
         />
       );
-
     if (activeTab === "language") return <LanguagePanel t={t} />;
-    if (activeTab === "sms" && user?.role === role?.ADMIN)
+    if (activeTab === "sms" && isAdmin)
       return (
         <SMSPanel
           settings={settings}
@@ -654,7 +596,7 @@ const Settings = ({ className = "" }) => {
           t={t}
         />
       );
-    if (activeTab === "email" && user?.role === role?.ADMIN)
+    if (activeTab === "email" && isAdmin)
       return (
         <EmailPanel
           settings={settings}
@@ -665,15 +607,11 @@ const Settings = ({ className = "" }) => {
       );
   };
 
-  const current = TABS.find((t) => t.id === activeTab);
-
-  // ── sidebar status dot (no dot for general) ─────────────────────────────────
   const statusDot = (tabId) => {
     if (loading || tabId === "general") return null;
     const active =
       tabId === "sms" ? settings.sms : tabId === "email" ? settings.smtp : null;
     if (active === null) return null;
-
     return (
       <span
         className={`w-2 h-2 rounded-full shrink-0 ${
@@ -683,32 +621,106 @@ const Settings = ({ className = "" }) => {
     );
   };
 
-  // ── render ──────────────────────────────────────────────────────────────────
+  const current = TABS.find((tab) => tab.id === activeTab);
+
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId);
+    setSidebarOpen(false); // close mobile sidebar on selection
+  };
+
   return (
     <div
-      className={`min-h-screen bg-stone-50 p-6 md:p-8 ${className}`}
+      className={`min-h-screen bg-stone-50 p-4 sm:p-6 md:p-8 ${className}`}
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
-      {/* page header */}
-      <div className='mb-8'>
+      {/* Page header */}
+      <div className='mb-6 sm:mb-8'>
         <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
           {t("settings.admin")}
         </p>
-        <h1
-          className='text-3xl font-black text-stone-800'
-          style={{ fontFamily: "'Playfair Display', serif" }}
-        >
-          {t("settings.title")}
-        </h1>
+        <div className='flex items-center justify-between gap-4'>
+          <h1
+            className='text-2xl sm:text-3xl font-black text-stone-800'
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            {t("settings.title")}
+          </h1>
+
+          {/* ✅ Mobile tab picker button */}
+          <button
+            className='lg:hidden flex items-center gap-2 px-3 py-2 rounded-xl border border-stone-200 bg-white text-sm font-semibold text-stone-600 hover:bg-stone-50 transition-colors'
+            onClick={() => setSidebarOpen((o) => !o)}
+          >
+            <i className={`fa ${current?.icon} text-amber-500 text-xs`} />
+            {current?.label}
+            <i
+              className={`fa fa-chevron-down text-stone-400 text-[10px] transition-transform ${
+                sidebarOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+        </div>
         <p className='text-stone-400 text-sm mt-1'>
           {t("settings.description")}
         </p>
       </div>
 
-      {/* two-column layout */}
+      {/* ✅ Mobile dropdown tab menu */}
+      {sidebarOpen && (
+        <div className='lg:hidden mb-4 bg-white rounded-2xl border border-stone-100 overflow-hidden shadow-lg'>
+          <div className='h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-400' />
+          <nav className='p-2 space-y-1'>
+            {TABS.map((tab) => {
+              const isActive = tab.id === activeTab;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabClick(tab.id)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all
+                    ${
+                      isActive
+                        ? "bg-amber-50 border border-amber-200"
+                        : "hover:bg-stone-50 border border-transparent"
+                    }`}
+                >
+                  <div
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors
+                    ${
+                      isActive
+                        ? "bg-gradient-to-br from-amber-400 to-orange-500"
+                        : "bg-stone-100"
+                    }`}
+                  >
+                    <i
+                      className={`fa ${tab.icon} text-xs ${
+                        isActive ? "text-white" : "text-stone-500"
+                      }`}
+                    />
+                  </div>
+                  <div className='flex-1 min-w-0'>
+                    <p
+                      className={`text-sm font-bold truncate ${
+                        isActive ? "text-amber-700" : "text-stone-600"
+                      }`}
+                    >
+                      {tab.label}
+                    </p>
+                    <p className='text-[10px] text-stone-400 uppercase tracking-widest'>
+                      {tab.eyebrow}
+                    </p>
+                  </div>
+                  {statusDot(tab.id)}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+      )}
+
+      {/* Two-column layout */}
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-6 items-start'>
-        {/* sidebar */}
-        <aside className='lg:col-span-1'>
+        {/* Sidebar — desktop only */}
+        <aside className='hidden lg:block lg:col-span-1'>
           <div className='bg-white rounded-2xl border border-stone-100 overflow-hidden'>
             <div className='h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-400' />
             <nav className='p-3 space-y-1'>
@@ -727,21 +739,23 @@ const Settings = ({ className = "" }) => {
                   >
                     <div
                       className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors
-                        ${
-                          isActive
-                            ? "bg-gradient-to-br from-amber-400 to-orange-500"
-                            : "bg-stone-100 group-hover:bg-stone-200"
-                        }`}
+                      ${
+                        isActive
+                          ? "bg-gradient-to-br from-amber-400 to-orange-500"
+                          : "bg-stone-100 group-hover:bg-stone-200"
+                      }`}
                     >
                       <i
-                        className={`fa ${tab.icon} text-xs
-                          ${isActive ? "text-white" : "text-stone-500"}`}
+                        className={`fa ${tab.icon} text-xs ${
+                          isActive ? "text-white" : "text-stone-500"
+                        }`}
                       />
                     </div>
                     <div className='flex-1 min-w-0'>
                       <p
-                        className={`text-sm font-bold truncate
-                          ${isActive ? "text-amber-700" : "text-stone-600"}`}
+                        className={`text-sm font-bold truncate ${
+                          isActive ? "text-amber-700" : "text-stone-600"
+                        }`}
                       >
                         {tab.label}
                       </p>
@@ -757,9 +771,9 @@ const Settings = ({ className = "" }) => {
           </div>
         </aside>
 
-        {/* dynamic panel */}
+        {/* Panel */}
         <main className='lg:col-span-3'>
-          <div className='flex items-center gap-2 mb-5'>
+          <div className='flex items-center gap-2 mb-4 sm:mb-5'>
             <span className='text-xs text-stone-400'>
               {t("settings.breadcrumb.settings")}
             </span>

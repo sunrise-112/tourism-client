@@ -40,6 +40,7 @@ const Header = ({
   const isAdmin = user?.role === role.ADMIN;
 
   const events = ["booking_created", "ad_created"];
+
   useEffect(() => {
     audioRef.current = new Audio("/sounds/notify.mp3");
     audioRef.current.volume = 0.8;
@@ -54,7 +55,6 @@ const Header = ({
   const fetchUser = async () => {
     const fetchedUser = await userService.getMe();
     setUser(fetchedUser);
-    console.log("Fetched User: ", fetchedUser);
   };
 
   const handleLogOut = async () => {
@@ -87,19 +87,16 @@ const Header = ({
     const fetchNotifs = async () => {
       try {
         const currentUser = userService.getCurrentUser();
-
         const notifs = await notificationService.getAll({
           is_read: false,
           limit: 6,
           ...(currentUser?.role === role.ADMIN && { user_id: currentUser?.id }),
         });
-        console.log("Notifs: ", notifs?.data);
         setNotifs(notifs?.data);
       } catch (error) {
         console.log("Error: ", error);
       }
     };
-
     fetchNotifs();
   }, []);
 
@@ -110,10 +107,33 @@ const Header = ({
     });
   });
 
+  const getRelativeTime = (dateStr) => {
+    const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+    if (diff < 60) return t("header.notifications.time.justNow");
+    if (diff < 3600)
+      return t("header.notifications.time.minutesAgo", {
+        count: Math.floor(diff / 60),
+      });
+    if (diff < 86400)
+      return t("header.notifications.time.hoursAgo", {
+        count: Math.floor(diff / 3600),
+      });
+    if (diff < 86400 * 7)
+      return t("header.notifications.time.daysAgo", {
+        count: Math.floor(diff / 86400),
+      });
+    return new Date(dateStr).toLocaleDateString();
+  };
+
+  const iconMap = {
+    info: { icon: "fa-info-circle", color: "text-blue-400" },
+    success: { icon: "fa-check-circle", color: "text-green-400" },
+    warning: { icon: "fa-exclamation-triangle", color: "text-yellow-400" },
+    error: { icon: "fa-times-circle", color: "text-red-400" },
+  };
+
   return (
-    <div
-      className={`w-auto h-16 z-20 bg-white border-b border-stone-100 shadow-sm flex items-center px-4 gap-3 transition-all duration-300 lg:ml-60 md:ml-0 sm:ml-0`}
-    >
+    <div className='w-auto h-16 z-20 bg-white border-b border-stone-100 shadow-sm flex items-center px-4 gap-3 transition-all duration-300 lg:ml-60 md:ml-0 sm:ml-0'>
       {/* Hamburger — mobile only */}
       <button
         className='lg:hidden w-9 h-9 flex items-center justify-center rounded-xl border border-stone-200 hover:bg-stone-50 transition-colors text-stone-500 shrink-0'
@@ -147,9 +167,7 @@ const Header = ({
         <i className='fa fa-search text-stone-300 text-xs' />
         <input
           placeholder={t("header.search.placeholder")}
-          onChange={(e) => {
-            setSearchParam({ q: e.currentTarget.value });
-          }}
+          onChange={(e) => setSearchParam({ q: e.currentTarget.value })}
           className='bg-transparent text-xs outline-none text-stone-500 placeholder-stone-300 w-full'
         />
       </div>
@@ -172,7 +190,7 @@ const Header = ({
         </button>
 
         {notifOpen && (
-          <div className='absolute right-0 top-12 w-72 bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
+          <div className='absolute right-0 top-12 w-[calc(100vw-32px)] max-w-[288px] bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
             <div className='px-4 py-3 border-b border-stone-100 flex items-center justify-between'>
               <p className='font-bold text-stone-800 text-sm'>
                 {t("header.notifications.title")}
@@ -181,39 +199,9 @@ const Header = ({
                 {t("header.notifications.newCount", { count: notifs?.length })}
               </span>
             </div>
+
             {notifs?.map((n) => {
-              const iconMap = {
-                info: { icon: "fa-info-circle", color: "text-blue-400" },
-                success: { icon: "fa-check-circle", color: "text-green-400" },
-                warning: {
-                  icon: "fa-exclamation-triangle",
-                  color: "text-yellow-400",
-                },
-                error: { icon: "fa-times-circle", color: "text-red-400" },
-              };
-
               const { icon, color } = iconMap[n?.type] ?? iconMap.info;
-
-              const getRelativeTime = (dateStr) => {
-                const diff = Math.floor(
-                  (Date.now() - new Date(dateStr)) / 1000
-                );
-                if (diff < 60) return t("header.notifications.time.justNow");
-                if (diff < 3600)
-                  return t("header.notifications.time.minutesAgo", {
-                    count: Math.floor(diff / 60),
-                  });
-                if (diff < 86400)
-                  return t("header.notifications.time.hoursAgo", {
-                    count: Math.floor(diff / 3600),
-                  });
-                if (diff < 86400 * 7)
-                  return t("header.notifications.time.daysAgo", {
-                    count: Math.floor(diff / 86400),
-                  });
-                return new Date(dateStr).toLocaleDateString();
-              };
-
               return (
                 <div
                   key={n.id}
@@ -240,18 +228,17 @@ const Header = ({
                   )}
                 </div>
               );
-            })}{" "}
+            })}
+
             <div className='px-4 py-2.5 text-center'>
               <button className='text-xs font-semibold text-amber-600 hover:text-amber-700 transition-colors'>
-                {user?.role === role.ADMIN ? (
-                  <Link to={"/admin/notifications"}>
-                    {t("header.notifications.viewAll")}
-                  </Link>
-                ) : (
-                  <Link to={"/customer/notifications"}>
-                    {t("header.notifications.viewAll")}
-                  </Link>
-                )}{" "}
+                <Link
+                  to={
+                    isAdmin ? "/admin/notifications" : "/customer/notifications"
+                  }
+                >
+                  {t("header.notifications.viewAll")}
+                </Link>
               </button>
             </div>
           </div>
@@ -268,11 +255,11 @@ const Header = ({
             setDropOpen((o) => !o);
             setNotifOpen(false);
           }}
-          className='flex items-center gap-2.5 pl-1 pr-2 py-1 rounded-xl hover:bg-stone-50 border border-transparent hover:border-stone-200 transition-all'
+          className='flex items-center gap-2 pl-1 pr-2 py-1 rounded-xl hover:bg-stone-50 border border-transparent hover:border-stone-200 transition-all'
         >
           {/* Avatar */}
           {user?.avatar ? (
-            <div className='w-8 h-8 rounded-xl overflow-hidden ring-2 ring-amber-400/40 ring-offset-1'>
+            <div className='w-8 h-8 rounded-xl overflow-hidden ring-2 ring-amber-400/40 ring-offset-1 shrink-0'>
               <img
                 src={renderImage(user?.avatar)}
                 alt={t("header.userMenu.avatarAlt")}
@@ -285,9 +272,9 @@ const Header = ({
             </div>
           )}
 
-          {/* Name + role — hidden on small */}
-          <div className='hidden sm:flex flex-col items-start leading-tight'>
-            <span className='text-xs font-bold text-stone-700 leading-none mb-0.5'>
+          {/* ✅ Name + role — visible on ALL screens */}
+          <div className='flex flex-col items-start leading-tight'>
+            <span className='text-xs font-bold text-stone-700 leading-none mb-0.5 max-w-[80px] truncate'>
               {user.name}
             </span>
             <span className='text-[10px] text-stone-400 capitalize'>
@@ -303,11 +290,14 @@ const Header = ({
         </button>
 
         {dropOpen && (
-          <div className='absolute right-0 top-12 w-52 bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
+          <div className='absolute right-0 top-12 w-[calc(100vw-32px)] max-w-[208px] bg-white rounded-2xl border border-stone-100 shadow-2xl shadow-stone-300/30 overflow-hidden z-50'>
             <div className='px-4 py-3 border-b border-stone-100'>
-              <p className='font-bold text-stone-800 text-sm'>{user.name}</p>
+              <p className='font-bold text-stone-800 text-sm truncate'>
+                {user.name}
+              </p>
               <p className='text-xs text-stone-400 truncate'>{user.email}</p>
             </div>
+
             {[
               {
                 icon: "fa-user",
@@ -339,9 +329,10 @@ const Header = ({
                 {item.label}
               </Link>
             ))}
+
             <div className='border-t border-stone-100'>
               <button
-                onClick={() => handleLogOut()}
+                onClick={handleLogOut}
                 className='w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition-colors text-sm text-red-500 hover:text-red-600'
               >
                 <i className='fa fa-sign-out-alt text-xs w-4 text-center' />

@@ -1,11 +1,12 @@
 export default (data) => {
-  let image_url;
+  if (!data) return undefined;
 
-  if (data && data instanceof File) {
-    image_url = URL?.createObjectURL(data);
-  } else if (data) {
-    image_url = import.meta.env.VITE_BACKEND_URL + data;
-  }
+  // Blob preview (before upload)
+  if (data instanceof File) return URL.createObjectURL(data);
 
-  return image_url;
+  // Cloudinary URL (already absolute)
+  if (data.startsWith("http")) return data;
+
+  // Fallback for any old local paths still in DB
+  return import.meta.env.VITE_BACKEND_URL + data;
 };
