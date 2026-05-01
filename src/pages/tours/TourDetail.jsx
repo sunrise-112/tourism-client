@@ -93,7 +93,7 @@ const RelatedCard = ({ tour, t }) => (
     <div className='relative h-44 overflow-hidden bg-stone-100'>
       {tour?.cover_image ? (
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL}${tour?.cover_image}`}
+          src={renderImage(tour?.cover_image)}
           alt={tour?.title}
           className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-700'
         />
@@ -665,7 +665,7 @@ const TourDetail = () => {
       <div className='relative h-[65vh] overflow-hidden bg-stone-900'>
         {tour?.cover_image && (
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}${tour?.cover_image}`}
+            src={renderImage(tour?.cover_image)}
             alt={tour?.title}
             className='w-full h-full object-cover opacity-75'
           />
