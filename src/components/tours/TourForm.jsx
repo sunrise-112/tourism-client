@@ -838,12 +838,8 @@ const TourForm = ({ Type }) => {
       is_featured: Joi.boolean().default(false).label("Is Featured"),
       is_hot_deal: Joi.boolean().default(false).label("Is Hot Deal"),
       category_id: Joi.number().required().label("Category"),
-      inclusions: Joi.array().items(Joi.number()).min(2).label("Inclusions"),
-      exclusions: Joi.array()
-        .items(Joi.number())
-        .min(2)
-        .optional()
-        .label("Exclusions"),
+      inclusions: Joi.optional().label("Inclusions"),
+      exclusions: Joi.optional().label("Exclusions"),
       type: Joi.string().optional().allow("", null).label("Type"),
       created_at: Joi.any(),
       updated_at: Joi.any(),
