@@ -384,7 +384,6 @@ const AdminDashboard = () => {
                 {getGreeting()},{" "}
                 {user?.name?.split(" ")[0] ||
                   t("dashboard.banner.defaultAdmin")}{" "}
-                👋
               </h1>
               <p className='text-stone-400 text-sm'>
                 {new Date().toLocaleDateString("en-US", {
