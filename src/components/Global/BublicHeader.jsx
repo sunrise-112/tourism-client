@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import userService from "../../services/userService";
 import role from "../../constants/role";
 import renderImage from "../../utils/renderImage";
+import authService from "../../services/authService";
 
 const NAV_LINKS = [
   { labelKey: "publicHeader.nav.home", path: "/" },
@@ -57,6 +58,17 @@ const PublicHeader = () => {
   const translateRole = (roleValue) => {
     if (!roleValue) return "";
     return t(`roles.${roleValue}`, { defaultValue: roleValue });
+  };
+
+  const handleLogOut = async () => {
+    try {
+      await authService.logout();
+      setMenuOpen(false);
+      navigate("/login");
+      window.location.reload();
+    } catch (error) {
+      console.log("Error: ", error);
+    }
   };
 
   const dropdownItems = [
@@ -207,10 +219,7 @@ const PublicHeader = () => {
 
                       <div className='border-t border-stone-100'>
                         <button
-                          onClick={() => {
-                            setDropOpen(false);
-                            navigate("/login");
-                          }}
+                          onClick={handleLogOut}
                           className='w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition-colors text-sm text-red-500 hover:text-red-600'
                         >
                           <i className='fa fa-sign-out-alt text-xs w-4 text-center' />
@@ -225,7 +234,7 @@ const PublicHeader = () => {
               /* Guest buttons */
               <div className='hidden lg:flex items-center gap-1.5 sm:gap-2'>
                 <Link
-                   to='/login'
+                  to='/login'
                   className='text-xs sm:text-sm font-semibold text-stone-600 hover:text-stone-800 px-3 sm:px-4 py-2 rounded-xl hover:bg-stone-50 transition-colors'
                 >
                   {t("publicHeader.auth.signIn")}
@@ -318,15 +327,12 @@ const PublicHeader = () => {
                   </Link>
                 ))}
                 <button
-                  onClick={() => {
-                    setMenuOpen(false);
-                    navigate("/login");
-                  }}
+                  onClick={handleLogOut}
                   className='w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors'
                 >
                   <i className='fa fa-sign-out-alt text-xs w-4 text-center' />
                   {t("publicHeader.dropdown.signOut")}
-                </button>
+                </button>{" "}
               </div>
             )}
           </nav>

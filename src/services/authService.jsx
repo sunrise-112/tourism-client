@@ -20,8 +20,8 @@ const login = async (data) => {
 };
 
 const logout = async () => {
-  await http.post(`${apiEndPoint}/logout`);
   localStorage.removeItem(tokenKey);
+  await http.post(`${apiEndPoint}/logout`);
 };
 
 const verifyEmail = async (token) => {
