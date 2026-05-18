@@ -14,7 +14,8 @@ const Register = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isSubmtting, setIsSubmitting] = useState(false);
-  const [formData] = useState({
+  const [successMessage, setSuccessMessage] = useState("");
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
@@ -43,13 +44,21 @@ const Register = () => {
     try {
       setIsSubmitting(true);
       const result = await authService.register(data);
+      setSuccessMessage(result?.data?.message);
       toast.success(result?.data?.message);
-/*       setTimeout(() => navigate("/"), 1400);
- */    } catch (error) {
+      setTimeout(() => navigate("/login"), 1400);
+    } catch (error) {
       console.log("Error response: ", error.response?.data.message);
       toast.error(error.response?.data.message);
     } finally {
       setIsSubmitting(false);
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        phone: "",
+        nationality: "",
+      });
     }
   };
 
@@ -92,6 +101,9 @@ const Register = () => {
             </p>
           </div>
 
+          <div className='bg-green-500 text-white font-bold'>
+            {successMessage}
+          </div>
           {/* Form */}
           <form onSubmit={handleSubmit} className='space-y-4'>
             {renderInput(
