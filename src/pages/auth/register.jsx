@@ -100,10 +100,11 @@ const Register = () => {
               {t("register.joinPrompt")}
             </p>
           </div>
-
-          <div className='bg-green-500 text-white font-bold'>
-            {successMessage}
-          </div>
+          {successMessage && (
+            <div className='bg-green-500 text-white font-bold'>
+              {successMessage}
+            </div>
+          )}
           {/* Form */}
           <form onSubmit={handleSubmit} className='space-y-4'>
             {renderInput(
