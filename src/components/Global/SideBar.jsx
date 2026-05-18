@@ -130,7 +130,7 @@ const Sidebar = ({
           });
           setBookings(bookings?.pagination?.totalItems);
         } else if (isCustomer) {
-          const myBookings = await bookingService.getMyBookings();
+          const myBookings = await bookingService.getMyBookings("pending");
           console.log("My bookings: ", myBookings?.length);
           setBookings(myBookings?.length);
         }

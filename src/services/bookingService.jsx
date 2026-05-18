@@ -27,7 +27,9 @@ const update = async (id, tourId, data) => {
 // ─── Customer ────────────────────────────────────────────────────────────────
 
 const getMyBookings = async () => {
-  const response = await http.get(`${apiEndPoint}/customer/my`);
+  const response = await http.get(
+    `${apiEndPoint}/customer/my`
+  );
   return response.data.data;
 };
 

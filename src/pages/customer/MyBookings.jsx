@@ -61,8 +61,14 @@ const MyBookings = () => {
   useEffect(() => {
     bookingService
       .getMyBookings()
-      .then((res) => setBookings(res?.data || res || []))
-      .catch(() => setBookings([]))
+      .then((res) => {
+        setLoading(true);
+        console.log("Res: ", res);
+        setBookings(res);
+      })
+      .catch(() => {
+        setBookings([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 
