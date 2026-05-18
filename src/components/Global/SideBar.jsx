@@ -123,11 +123,17 @@ const Sidebar = ({
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const bookings = await bookingService.getAll({
-          status: "pending",
-          limit: 1000,
-        });
-        setBookings(bookings?.pagination?.totalItems);
+        if (isAdmin) {
+          const bookings = await bookingService.getAll({
+            status: "pending",
+            limit: 1000,
+          });
+          setBookings(bookings?.pagination?.totalItems);
+        } else if (isCustomer) {
+          const myBookings = await bookingService.getMyBookings();
+          console.log("My bookings: ", myBookings?.length);
+          setBookings(myBookings?.length);
+        }
         console.log("bookings: ", bookings);
       } catch (error) {
         console.log("Error: ", error);
