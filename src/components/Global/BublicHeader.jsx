@@ -65,7 +65,7 @@ const PublicHeader = () => {
       await authService.logout();
       setMenuOpen(false);
       navigate("/login");
-      window.location.href = "/";
+      window.location.href = "/"; 
     } catch (error) {
       console.log("Error: ", error);
     }
