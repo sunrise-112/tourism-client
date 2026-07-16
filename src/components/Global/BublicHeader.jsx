@@ -63,12 +63,11 @@ const PublicHeader = () => {
   const handleLogOut = async () => {
     const confirmed = window.confirm("Are you sure you want to log out?");
     if (!confirmed) return;
+    window.location.href = "/login";
 
     try {
       await authService.logout();
       setMenuOpen(false);
-      navigate("/login");
-      window.location.href = "/";
     } catch (error) {
       console.log("Error: ", error);
     }
