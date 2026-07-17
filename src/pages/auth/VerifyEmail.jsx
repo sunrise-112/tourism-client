@@ -22,7 +22,7 @@ const VerifyEmail = () => {
     };
 
     verify();
-  }, [token]);
+  }, []);
 
   // Auto‑redirect after successful verification
   useEffect(() => {
