@@ -11,7 +11,7 @@ const VerifyEmail = () => {
   useEffect(() => {
     const verify = async () => {
       const result = await authService.verifyEmail(token);
-      toast.success(result?.data.message);
+      toast.success(result?.data?.message);
       setStatus("success");
     };
 
