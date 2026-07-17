@@ -9,29 +9,19 @@ const VerifyEmail = () => {
   const [status, setStatus] = useState("loading");
 
   useEffect(() => {
-    let cancelled = false; 
-
     const verify = async () => {
       try {
         const result = await authService.verifyEmail(token);
-        if (!cancelled) {
-          toast.success(result?.data.message);
-          setStatus("success");
-        }
+        toast.success(result?.data.message);
+        setStatus("success");
       } catch (error) {
-        if (!cancelled) {
-          console.error("Verification error:", error.response);
-          toast.error(error.response?.data.message || "Verification failed");
-          setStatus("error");
-        }
+        console.error("Verification error:", error.response);
+        toast.error(error.response?.data.message || "Verification failed");
+        setStatus("error");
       }
     };
 
     verify();
-
-    return () => {
-      cancelled = true;
-    };
   }, [token]);
 
   // Auto‑redirect after successful verification
