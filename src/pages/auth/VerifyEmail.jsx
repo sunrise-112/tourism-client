@@ -10,14 +10,10 @@ const VerifyEmail = () => {
 
   useEffect(() => {
     // If no token in URL, immediately show error
-    {
-      /**
-      if (!token) {
-        setStatus("error");
-        toast.error("No verification token provided.");
-        return;
-      }      
-    */
+    if (!token) {
+      setStatus("error");
+      toast.error("No verification token provided.");
+      return;
     }
 
     const verify = async () => {
@@ -33,7 +29,7 @@ const VerifyEmail = () => {
     };
 
     verify();
-  }, []);
+  }, [token]);
 
   // Auto‑redirect after successful verification
   useEffect(() => {
