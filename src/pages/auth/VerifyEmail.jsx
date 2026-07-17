@@ -9,12 +9,6 @@ const VerifyEmail = () => {
   const [status, setStatus] = useState("loading");
 
   useEffect(() => {
-    if (!token) {
-      setStatus("error");
-      toast.error("No verification token provided.");
-      return;
-    }
-
     let cancelled = false; 
 
     const verify = async () => {
