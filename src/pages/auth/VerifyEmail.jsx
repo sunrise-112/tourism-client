@@ -10,19 +10,13 @@ const VerifyEmail = () => {
 
   useEffect(() => {
     const verify = async () => {
-      try {
-        const result = await authService.verifyEmail(token);
-        toast.success(result?.data.message);
-        setStatus("success");
-      } catch (error) {
-        console.error("Verification error:", error.response);
-        toast.error(error.response?.data.message || "Verification failed");
-        setStatus("error");
-      }
+      const result = await authService.verifyEmail(token);
+      toast.success(result?.data.message);
+      setStatus("success");
     };
 
     verify();
-  }, []);
+  }, [token]);
 
   // Auto‑redirect after successful verification
   useEffect(() => {
