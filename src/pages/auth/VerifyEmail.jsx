@@ -9,14 +9,14 @@ const VerifyEmail = () => {
   const [status, setStatus] = useState("loading");
 
   const verify = async () => {
-      setTimeout(() => {
-        if (!token) {
-          setStatus("error");
-          toast.error("No verification token provided.");
-          return;
-        }
-        
-        try {
+    setTimeout(async () => {
+      if (!token) {
+        setStatus("error");
+        toast.error("No verification token provided.");
+        return;
+      }
+
+      try {
         const result = await authService.verifyEmail(token);
         toast.success(result?.data.message);
         setStatus("success");
@@ -25,7 +25,7 @@ const VerifyEmail = () => {
         toast.error(error.response?.data.message || "Verification failed");
         setStatus("error");
       }
-    }, 1000); 
+    }, 1000);
   };
 
   useEffect(() => {
