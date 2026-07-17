@@ -8,14 +8,14 @@ const VerifyEmail = () => {
   const { token } = useParams();
   const [status, setStatus] = useState("loading");
 
+  if (!token) {
+    setStatus("error");
+    toast.error("No verification token provided.");
+    return;
+  }
+
   const verify = async () => {
     setTimeout(async () => {
-      if (!token) {
-        setStatus("error");
-        toast.error("No verification token provided.");
-        return;
-      }
-
       try {
         const result = await authService.verifyEmail(token);
         toast.success(result?.data.message);
