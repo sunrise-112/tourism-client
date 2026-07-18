@@ -12,9 +12,9 @@ const ImageUpload = ({
 }) => {
   const inputRef = useRef(null);
   const existingUrl = data?.[name];
-  console.log("existing url: ", existingUrl)
+  console.log("existing url: ", existingUrl);
   const [preview, setPreview] = useState(
-    typeof existingUrl === "string" ? existingUrl : null
+    typeof existingUrl === "string" ? existingUrl : null,
   );
   const hasError = !!errors?.[name];
 
@@ -57,8 +57,8 @@ const ImageUpload = ({
             preview
               ? "border-transparent cursor-default"
               : hasError
-              ? "border-red-500/50 bg-red-500/5 cursor-pointer"
-              : "border-zinc-700 hover:border-amber-500/50 bg-white-900 cursor-pointer hover:bg-white-800/50"
+                ? "border-red-500/50 bg-red-500/5 cursor-pointer"
+                : "border-zinc-700 hover:border-amber-500/50 bg-white-900 cursor-pointer hover:bg-white-800/50"
           }
         `}
       >
