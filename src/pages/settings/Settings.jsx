@@ -12,6 +12,7 @@ import {
   renderButton,
   renderInput,
   renderTextarea,
+  renderImageUpload,
 } from "../../utils/formRenders";
 import LocationViewer from "../../components/LocationViewer";
 
@@ -129,6 +130,7 @@ const PanelSkeleton = () => (
 const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
   const [cordinates, setCordinates] = useState({ lng: "", lat: "" });
   const [formData, setFormData] = useState({
+    logo: "",
     company_name: "",
     address: "",
     company_phone: "",
@@ -142,6 +144,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
   });
 
   const schema = {
+    logo: Joi.string().uri().allow(null, "").optional(),
     company_name: Joi.string().max(255).allow(null, "").optional(),
     address: Joi.string().allow(null, "").optional(),
     company_phone: Joi.string().max(50).allow(null, "").optional(),
@@ -166,6 +169,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
         const response = await settingsService.get();
         setCordinates({ lat: response?.lat || "", lng: response?.lng || "" });
         setFormData({
+          logo: response.logo || "",
           company_name: response.company_name || "",
           address: response.address || "",
           company_phone: response.company_phone || "",
@@ -185,6 +189,8 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
   }, []);
 
   const doSubmit = async () => {
+    const formData = getFormData();
+
     try {
       const updateData = {
         ...data,
@@ -193,21 +199,18 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
       };
       await settingsService.update(updateData);
       toast.success(
-        t("settings.general.updateSuccess", "Settings updated successfully!")
+        t("settings.general.updateSuccess", "Settings updated successfully!"),
       );
       setTimeout(() => setIsEditing(false), 1500);
     } catch (error) {
       toast.error(
-        t("settings.general.updateError", "Error updating Settings!")
+        t("settings.general.updateError", "Error updating Settings!"),
       );
     }
   };
 
-  const { data, errors, handleChange, handleSubmit, validate } = useForm(
-    formData,
-    schema,
-    doSubmit
-  );
+  const { data, errors, handleChange, handleSubmit, validate, getFormData } =
+    useForm(formData, schema, doSubmit);
 
   return (
     <SectionCard
@@ -334,66 +337,67 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
             <form
               onSubmit={handleSubmit}
               className='bg-white rounded-xl p-2 sm:p-4'
-            >
+            > 
               <h2 className='text-lg font-bold text-stone-800 mb-4 pb-2 border-b border-stone-200'>
                 {t("settings.general.companySettings", "Company Settings")}
               </h2>
               <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2'>
-                {renderInput(
+                {renderImageUpload("logo", "logo", data, errors, handleChange)}
+                {renderInput( 
                   t("settings.general.company_name", "Company name"),
                   "company_name",
                   data,
                   errors,
-                  handleChange
+                  handleChange,
                 )}
                 {renderInput(
                   t("settings.general.address", "Address"),
                   "address",
                   data,
                   errors,
-                  handleChange
+                  handleChange,
                 )}
                 {renderInput(
                   t("settings.general.company_phone", "Phone number"),
                   "company_phone",
                   data,
                   errors,
-                  handleChange
+                  handleChange,
                 )}
                 {renderInput(
                   t("settings.general.opening_hours", "Opening hours"),
                   "opening_hours",
                   data,
                   errors,
-                  handleChange
+                  handleChange,
                 )}
                 {renderInput(
                   t("settings.general.facebook_url", "Facebook URL"),
                   "facebook_url",
                   data,
                   errors,
-                  handleChange
+                  handleChange,
                 )}
                 {renderInput(
                   t("settings.general.instagram_url", "Instagram URL"),
                   "instagram_url",
                   data,
                   errors,
-                  handleChange
+                  handleChange,
                 )}
                 {renderInput(
                   t("settings.general.youtube_url", "YouTube URL"),
                   "youtube_url",
                   data,
                   errors,
-                  handleChange
+                  handleChange,
                 )}
                 {renderInput(
                   t("settings.general.twitter_url", "Twitter URL"),
                   "twitter_url",
                   data,
                   errors,
-                  handleChange
+                  handleChange,
                 )}
                 <div className='col-span-1 sm:col-span-2'>
                   {renderTextarea(
@@ -403,7 +407,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                     errors,
                     handleChange,
                     "text",
-                    5
+                    5,
                   )}
                 </div>
                 <div className='col-span-1 sm:col-span-2'>
@@ -414,7 +418,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                     errors,
                     handleChange,
                     "text",
-                    5
+                    5,
                   )}
                 </div>
               </div>
@@ -426,7 +430,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
                 {renderButton(
                   t("common.saveChanges", "Save changes"),
                   "submit",
-                  validate()
+                  validate(),
                 )}
               </div>
             </form>
@@ -565,7 +569,7 @@ const Settings = ({ className = "" }) => {
       toast.success(
         value
           ? t("settings.toasts.enabled", { channel: key.toUpperCase() })
-          : t("settings.toasts.disabled", { channel: key.toUpperCase() })
+          : t("settings.toasts.disabled", { channel: key.toUpperCase() }),
       );
     } catch {
       setSettings((prev) => ({ ...prev, [key]: !value }));
