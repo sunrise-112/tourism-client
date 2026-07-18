@@ -144,7 +144,7 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
   });
 
   const schema = {
-    logo: Joi.string().uri().allow(null, "").optional(),
+    logo: Joi.optional(),
     company_name: Joi.string().max(255).allow(null, "").optional(),
     address: Joi.string().allow(null, "").optional(),
     company_phone: Joi.string().max(50).allow(null, "").optional(),
