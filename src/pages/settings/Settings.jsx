@@ -189,15 +189,12 @@ const GeneralPanel = ({ isEditing, setIsEditing, t, user }) => {
   }, []);
 
   const doSubmit = async () => {
-    const payload = getFormData();
-
     try {
-      const updateData = {
-        ...payload,
-        lat: cordinates?.lat,
-        lng: cordinates?.lng,
-      };
-      await settingsService.update(updateData);
+      const payload = getFormData();
+      payload.append("lat", cordinates?.lat);
+      payload.append("lng", cordinates?.lng);
+
+      await settingsService.update(payload);
       toast.success(
         t("settings.general.updateSuccess", "Settings updated successfully!"),
       );
