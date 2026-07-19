@@ -26,6 +26,20 @@ const Sidebar = ({
     Account: true,
   });
 
+  const [companyInfo, setCompanyInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const data = await settingsService.get();
+        setCompanyInfo(data);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+    fetchSettings();
+  }, []);
+
   const NAV = [
     {
       section: t("nav.main"),
@@ -173,14 +187,21 @@ const Sidebar = ({
           }`}
         >
           <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0'>
-            <i className='fa fa-globe text-white text-sm' />
+            {companyInfo?.logo ? (
+              <img
+                src={companyInfo?.logo}
+                className='w-full h-full object-cover'
+              />
+            ) : (
+              <i className='fa fa-globe text-white text-sm' />
+            )}
           </div>
           {!collapsed && (
             <span
               className='text-white font-black text-base tracking-tight'
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              {import.meta.env.VITE_COMPANY}
+              {import.meta.env.VITE_COMPANY || companyInfo?.company_name}
             </span>
           )}
         </div>

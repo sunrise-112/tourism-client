@@ -7,6 +7,20 @@ const Footer = () => {
   const { t } = useTranslation();
   const year = new Date().getFullYear();
 
+  const [companyInfo, setCompanyInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const data = await settingsService.get();
+        setCompanyInfo(data);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+    fetchSettings();
+  }, []);
+
   const links = {
     Explore: [
       { labelKey: "footer.links.explore.allTours", to: "/tours" },
@@ -98,7 +112,14 @@ const Footer = () => {
             className='flex items-center gap-2 text-xl font-black w-fit'
           >
             <div className='w-8 h-8 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center flex-shrink-0 shadow-sm'>
-              <i className='fa fa-globe text-white text-sm' />
+              {companyInfo?.logo ? (
+                <img
+                  src={companyInfo?.logo}
+                  className='w-full h-full object-cover'
+                />
+              ) : (
+                <i className='fa fa-globe text-white text-sm' />
+              )}
             </div>
             <div className='text-stone-800'>
               {import.meta.env.VITE_COMPANY || companyInfo?.company_name}

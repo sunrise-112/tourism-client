@@ -24,14 +24,17 @@ const PublicHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [logo, setlogo] = useState(null);
-
-  const fetchSettings = async () => {
-    const data = await settingsService.get();
-    setlogo(data?.logo);
-  };
+  const [companyInfo, setCompanyInfo] = useState(null);
 
   useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const data = await settingsService.get();
+        setCompanyInfo(data);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
     fetchSettings();
   }, []);
 
@@ -135,8 +138,11 @@ const PublicHeader = () => {
             className='flex items-center gap-2 sm:gap-2.5 select-none group shrink-0'
           >
             <div className='w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm shadow-amber-200 group-hover:shadow-amber-300 transition-shadow shrink-0'>
-              {logo ? (
-                <img src={logo} width={10} height={10} />
+              {companyInfo?.logo ? (
+                <img
+                  src={companyInfo?.logo}
+                  className='w-full h-full object-cover'
+                />
               ) : (
                 <i className='fa fa-globe text-white text-sm' />
               )}{" "}
@@ -145,7 +151,7 @@ const PublicHeader = () => {
               className='text-sm sm:text-base font-black text-stone-800 tracking-tight'
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              {import.meta.env.VITE_COMPANY}
+              {import.meta.env.VITE_COMPANY || companyInfo?.company_name}
             </span>
           </Link>
 
