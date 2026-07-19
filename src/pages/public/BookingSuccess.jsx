@@ -283,7 +283,7 @@ const BookingSuccess = ({ onDashboard, onHome }) => {
               </svg>
               <Link
                 to={
-                  user?.role === role.ADMIN
+                  user?.role === "admin"
                     ? "/admin/dashboard"
                     : "/customer/dashboard"
                 }
