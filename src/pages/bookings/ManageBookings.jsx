@@ -148,6 +148,7 @@ const ManageBookings = () => {
   const [trigger, setTrigger] = useState(false);
 
   const { start, end } = getCurrentMonthRange();
+  const [dateRangeColumn, setDateRangeColumn] = useState("created_at");
   const [dateRange, setDateRange] = useState({
     startDate: start,
     endDate: end,
@@ -182,7 +183,7 @@ const ManageBookings = () => {
         ...(statusFilter !== "All" && { status: statusFilter.toLowerCase() }),
         startDate: dateRange?.startDate,
         endDate: dateRange?.endDate,
-        dateColumn: dateRange?.dateColumn,
+        dateColumn: dateRangeColumn,
       };
       const res = await bookingService.getAll(params);
       setBookings(res?.data);

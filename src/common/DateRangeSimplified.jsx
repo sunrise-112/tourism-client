@@ -448,7 +448,7 @@ const DateRangePickerSimplified = ({
                     Filter by
                   </p>
                   <div className='flex flex-col gap-1'>
-                    {["created_at", " "].map((col) => (
+                    {["created_at", "booking_date"].map((col) => (
                       <button
                         key={col}
                         onClick={() => handleColumnToggle(col)}
