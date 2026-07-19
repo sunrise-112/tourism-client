@@ -136,7 +136,7 @@ const PublicHeader = () => {
           <Link
             to='/'
             className='flex items-center gap-2 sm:gap-2.5 select-none group shrink-0'
-          >
+          > 
             <div className='w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm shadow-amber-200 group-hover:shadow-amber-300 transition-shadow shrink-0'>
               {companyInfo?.logo ? (
                 <img
@@ -324,7 +324,8 @@ const PublicHeader = () => {
               </div>
             )}
 
-            {/* Mobile user info — shown when logged in */}
+            {/* Mobile user info — shown when logged in 
+            
             {user && (
               <div className='pt-3 pb-1 border-t border-stone-100 mt-2'>
                 <div className='flex items-center gap-3 px-4 py-2 mb-1'>
@@ -359,6 +360,8 @@ const PublicHeader = () => {
                 </button>{" "}
               </div>
             )}
+            */}
+            
           </nav>
         </div>
       </header>
