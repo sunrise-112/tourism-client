@@ -199,10 +199,7 @@ const DateRangePickerSimplified = ({
 
     const handleDateClick = (date) => {
       setActivePreset(t("dateRangePicker.presets.customRange"));
-      if (
-        !selection.startDate ||
-        (selection.startDate && selection.endDate)
-      ) {
+      if (!selection.startDate || (selection.startDate && selection.endDate)) {
         setSelection({ startDate: date, endDate: null, key: "selection" });
       } else if (selection.startDate && !selection.endDate) {
         date >= selection.startDate
@@ -213,7 +210,7 @@ const DateRangePickerSimplified = ({
 
     const nextMonth = new Date(
       currentMonth.getFullYear(),
-      currentMonth.getMonth() + 1
+      currentMonth.getMonth() + 1,
     );
 
     const monthLabel = (d) =>
@@ -231,26 +228,26 @@ const DateRangePickerSimplified = ({
     const renderMonth = (monthDate, showPrev, showNext) => {
       const days = generateCalendar(monthDate);
       return (
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-3">
+        <div className='flex-1 min-w-0'>
+          <div className='flex items-center justify-between mb-3'>
             {showPrev ? (
               <button
                 onClick={() =>
                   setCurrentMonth(
                     new Date(
                       currentMonth.getFullYear(),
-                      currentMonth.getMonth() - 1
-                    )
+                      currentMonth.getMonth() - 1,
+                    ),
                   )
                 }
-                className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-stone-100 text-stone-400 hover:text-stone-700 transition-colors focus:outline-none"
+                className='w-7 h-7 flex items-center justify-center rounded-lg hover:bg-stone-100 text-stone-400 hover:text-stone-700 transition-colors focus:outline-none'
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className='w-4 h-4' />
               </button>
             ) : (
-              <div className="w-7" />
+              <div className='w-7' />
             )}
-            <span className="text-sm font-bold text-stone-700 capitalize">
+            <span className='text-sm font-bold text-stone-700 capitalize'>
               {monthLabel(monthDate)}
             </span>
             {showNext ? (
@@ -259,31 +256,31 @@ const DateRangePickerSimplified = ({
                   setCurrentMonth(
                     new Date(
                       currentMonth.getFullYear(),
-                      currentMonth.getMonth() + 1
-                    )
+                      currentMonth.getMonth() + 1,
+                    ),
                   )
                 }
-                className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-stone-100 text-stone-400 hover:text-stone-700 transition-colors focus:outline-none"
+                className='w-7 h-7 flex items-center justify-center rounded-lg hover:bg-stone-100 text-stone-400 hover:text-stone-700 transition-colors focus:outline-none'
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className='w-4 h-4' />
               </button>
             ) : (
-              <div className="w-7" />
+              <div className='w-7' />
             )}
           </div>
 
-          <div className="grid grid-cols-7 mb-1">
+          <div className='grid grid-cols-7 mb-1'>
             {dayNames.map((name, i) => (
               <div
                 key={i}
-                className="text-center text-[10px] font-bold text-stone-400 uppercase tracking-wider py-1"
+                className='text-center text-[10px] font-bold text-stone-400 uppercase tracking-wider py-1'
               >
                 {name.slice(0, 2)}
               </div>
             ))}
           </div>
 
-          <div className="grid grid-cols-7">
+          <div className='grid grid-cols-7'>
             {days.map((day, i) => {
               const isSingle = day.isStartDate && day.isEndDate;
               return (
@@ -296,7 +293,9 @@ const DateRangePickerSimplified = ({
                   className={[
                     "relative h-8 w-full text-xs flex items-center justify-center transition-all duration-100 focus:outline-none select-none",
                     !day.isCurrentMonth ? "text-stone-300" : "text-stone-700",
-                    day.isFuture ? "opacity-30 cursor-not-allowed" : "cursor-pointer",
+                    day.isFuture
+                      ? "opacity-30 cursor-not-allowed"
+                      : "cursor-pointer",
                     day.isStartDate
                       ? `bg-amber-400 text-amber-900 font-bold shadow-sm ${isSingle ? "rounded-xl" : "rounded-l-full"}`
                       : "",
@@ -306,14 +305,18 @@ const DateRangePickerSimplified = ({
                     day.isInRange && !day.isStartDate && !day.isEndDate
                       ? "bg-amber-50"
                       : "",
-                    !day.isStartDate && !day.isEndDate && !day.isInRange && !day.isFuture && day.isCurrentMonth
+                    !day.isStartDate &&
+                    !day.isEndDate &&
+                    !day.isInRange &&
+                    !day.isFuture &&
+                    day.isCurrentMonth
                       ? "hover:bg-stone-100 rounded-lg"
                       : "",
                     day.isToday && !day.isStartDate && !day.isEndDate
                       ? "font-black ring-1 ring-amber-300 ring-offset-1 rounded-lg"
                       : day.isToday
-                      ? "font-black"
-                      : "font-medium",
+                        ? "font-black"
+                        : "font-medium",
                   ]
                     .filter(Boolean)
                     .join(" ")}
@@ -328,10 +331,10 @@ const DateRangePickerSimplified = ({
     };
 
     return (
-      <div className="p-4 border-t border-stone-100">
-        <div className="flex flex-col sm:flex-row gap-5">
+      <div className='p-4 border-t border-stone-100'>
+        <div className='flex flex-col sm:flex-row gap-5'>
           {renderMonth(currentMonth, true, false)}
-          <div className="hidden sm:block w-px bg-stone-100 self-stretch" />
+          <div className='hidden sm:block w-px bg-stone-100 self-stretch' />
           {renderMonth(nextMonth, false, true)}
         </div>
       </div>
@@ -342,7 +345,7 @@ const DateRangePickerSimplified = ({
 
   return (
     <div
-      className="relative w-full"
+      className='relative w-full'
       ref={dropdownRef}
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
@@ -356,7 +359,7 @@ const DateRangePickerSimplified = ({
             : "border-stone-200 bg-white hover:border-amber-300 hover:shadow-sm",
         ].join(" ")}
       >
-        <div className="flex items-center gap-2.5 min-w-0">
+        <div className='flex items-center gap-2.5 min-w-0'>
           <Calendar
             className={`w-4 h-4 shrink-0 transition-colors ${
               hasSelection ? "text-amber-500" : "text-stone-400"
@@ -370,33 +373,33 @@ const DateRangePickerSimplified = ({
             {formatDisplayRange()}
           </span>
           {hasSelection && (
-            <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-600 border border-amber-200 uppercase tracking-wide">
+            <span className='shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-600 border border-amber-200 uppercase tracking-wide'>
               {activeColumn === "created_at" ? "Created" : "Booking"}
             </span>
           )}
         </div>
         {hasSelection && (
           <span
-            role="button"
+            role='button'
             onClick={(e) => {
               e.stopPropagation();
               handleCancel();
             }}
-            className="shrink-0 w-5 h-5 flex items-center justify-center rounded-full hover:bg-stone-100 text-stone-400 hover:text-stone-600 transition-colors cursor-pointer"
+            className='shrink-0 w-5 h-5 flex items-center justify-center rounded-full hover:bg-stone-100 text-stone-400 hover:text-stone-600 transition-colors cursor-pointer'
           >
-            <X className="w-3 h-3" />
+            <X className='w-3 h-3' />
           </span>
         )}
       </button>
 
       {/* ── Dropdown ────────────────────────────────────────────────────────── */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 z-50 bg-white rounded-2xl border border-stone-200 shadow-2xl shadow-stone-300/20 overflow-hidden w-full min-w-[300px] sm:min-w-[460px] lg:min-w-[740px] max-w-[95vw]">
-          <div className="flex flex-col lg:flex-row">
+        <div className='absolute top-full left-0 mt-2 z-50 bg-white rounded-2xl border border-stone-200 shadow-2xl shadow-stone-300/20 overflow-hidden w-full min-w-[300px] sm:min-w-[460px] lg:min-w-[740px] max-w-[95vw]'>
+          <div className='flex flex-col lg:flex-row'>
             {/* ── Sidebar ─────────────────────────────────────────────────── */}
-            <div className="lg:w-44 bg-stone-50 border-b lg:border-b-0 lg:border-r border-stone-100 shrink-0">
+            <div className='lg:w-44 bg-stone-50 border-b lg:border-b-0 lg:border-r border-stone-100 shrink-0'>
               {/* Mobile: horizontal chips */}
-              <div className="lg:hidden p-3 flex flex-wrap gap-1.5">
+              <div className='lg:hidden p-3 flex flex-wrap gap-1.5'>
                 {presets.map((preset) => (
                   <button
                     key={preset.label}
@@ -414,15 +417,15 @@ const DateRangePickerSimplified = ({
               </div>
 
               {/* Desktop: vertical list */}
-              <div className="hidden lg:block p-3">
-                <p className="text-[10px] font-black uppercase tracking-widest text-stone-400 px-2 mb-3">
+              <div className='hidden lg:block p-3'>
+                <p className='text-[10px] font-black uppercase tracking-widest text-stone-400 px-2 mb-3'>
                   {t("dateRangePicker.sidebar.quickRanges")}
                 </p>
-                <div className="space-y-0.5">
+                <div className='space-y-0.5'>
                   {presets.map((preset) => (
                     <React.Fragment key={preset.label}>
                       {preset.isCustom && (
-                        <div className="my-2 border-t border-stone-200" />
+                        <div className='my-2 border-t border-stone-200' />
                       )}
                       <button
                         onClick={() => handlePresetClick(preset)}
@@ -440,11 +443,11 @@ const DateRangePickerSimplified = ({
                 </div>
 
                 {/* ── Column toggle (desktop sidebar) ── */}
-                <div className="mt-4 pt-4 border-t border-stone-200">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-stone-400 px-2 mb-2">
+                <div className='mt-4 pt-4 border-t border-stone-200'>
+                  <p className='text-[10px] font-black uppercase tracking-widest text-stone-400 px-2 mb-2'>
                     Filter by
                   </p>
-                  <div className="flex flex-col gap-1">
+                  <div className='flex flex-col gap-1'>
                     {["created_at", "booking_date"].map((col) => (
                       <button
                         key={col}
@@ -458,10 +461,14 @@ const DateRangePickerSimplified = ({
                       >
                         <span
                           className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                            activeColumn === col ? "bg-amber-900" : "bg-stone-300"
+                            activeColumn === col
+                              ? "bg-amber-900"
+                              : "bg-stone-300"
                           }`}
                         />
-                        {col === "created_at" ? "Creation date" : "Booking date"}
+                        {col === "created_at"
+                          ? "Creation date"
+                          : "Booking date"}
                       </button>
                     ))}
                   </div>
@@ -470,14 +477,14 @@ const DateRangePickerSimplified = ({
             </div>
 
             {/* ── Calendar + footer ────────────────────────────────────────── */}
-            <div className="flex-1 min-w-0">
+            <div className='flex-1 min-w-0'>
               {/* Section label + mobile column toggle */}
-              <div className="flex items-center justify-between px-4 pt-4 pb-0">
-                <p className="text-[10px] font-black uppercase tracking-widest text-stone-400">
+              <div className='flex items-center justify-between px-4 pt-4 pb-0'>
+                <p className='text-[10px] font-black uppercase tracking-widest text-stone-400'>
                   {t("dateRangePicker.sections.primaryRange")}
                 </p>
                 {/* Mobile column toggle pill */}
-                <div className="flex lg:hidden items-center gap-1 bg-stone-100 rounded-lg p-0.5">
+                <div className='flex lg:hidden items-center gap-1 bg-stone-100 rounded-lg p-0.5'>
                   {["created_at", "booking_date"].map((col) => (
                     <button
                       key={col}
@@ -498,14 +505,14 @@ const DateRangePickerSimplified = ({
               <CustomDateRange />
 
               {/* ── Footer ──────────────────────────────────────────────────── */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 py-3 border-t border-stone-100 bg-stone-50">
+              <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 py-3 border-t border-stone-100 bg-stone-50'>
                 {/* Summary */}
-                <div className="text-xs text-stone-500 order-2 sm:order-1 space-y-1">
+                <div className='text-xs text-stone-500 order-2 sm:order-1 space-y-1'>
                   {selection.startDate && selection.endDate ? (
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
+                    <div className='flex items-center gap-1.5'>
+                      <span className='w-2 h-2 rounded-full bg-amber-400 shrink-0' />
                       <span>
-                        <span className="font-bold text-stone-700">
+                        <span className='font-bold text-stone-700'>
                           {activeColumn === "created_at"
                             ? "Creation date"
                             : "Booking date"}{" "}
@@ -515,23 +522,23 @@ const DateRangePickerSimplified = ({
                       </span>
                     </div>
                   ) : (
-                    <span className="italic text-stone-400">
+                    <span className='italic text-stone-400'>
                       {t("dateRangePicker.placeholder")}
                     </span>
                   )}
                 </div>
 
                 {/* Buttons */}
-                <div className="flex gap-2 w-full sm:w-auto order-1 sm:order-2 shrink-0">
+                <div className='flex gap-2 w-full sm:w-auto order-1 sm:order-2 shrink-0'>
                   <button
                     onClick={handleCancel}
-                    className="flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-xl border border-stone-200 text-stone-600 hover:bg-stone-100 hover:border-stone-300 transition-colors focus:outline-none"
+                    className='flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-xl border border-stone-200 text-stone-600 hover:bg-stone-100 hover:border-stone-300 transition-colors focus:outline-none'
                   >
                     {t("dateRangePicker.footer.cancel")}
                   </button>
                   <button
                     onClick={handleApply}
-                    className="flex-1 sm:flex-none px-5 py-2 text-xs font-bold rounded-xl bg-amber-400 text-amber-900 hover:bg-amber-300 transition-colors shadow-sm shadow-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-200"
+                    className='flex-1 sm:flex-none px-5 py-2 text-xs font-bold rounded-xl bg-amber-400 text-amber-900 hover:bg-amber-300 transition-colors shadow-sm shadow-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-200'
                   >
                     {t("dateRangePicker.footer.apply")}
                   </button>

@@ -8,6 +8,7 @@ import { Link, useSearchParams } from "react-router-dom";
 
 import renderImage from "../../utils/renderImage";
 import DateRangePickerSimplified from "../../common/DateRangeSimplified";
+import getCurrentMonthRange from "../../utils/getCurrentMonthRange";
 
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
@@ -146,6 +147,12 @@ const ManageBookings = () => {
   const [deleting, setDeleting] = useState(false);
   const [trigger, setTrigger] = useState(false);
 
+  const { start, end } = getCurrentMonthRange();
+  const [dateRange, setDateRange] = useState({
+    startDate: start,
+    endDate: end,
+  });
+
   const STATUSES = [
     { key: "All", label: t("manageBookings.filterTabs.all") },
     { key: "Pending", label: t("manageBookings.statuses.pending") },
@@ -153,6 +160,15 @@ const ManageBookings = () => {
     { key: "Completed", label: t("manageBookings.statuses.completed") },
     { key: "Cancelled", label: t("manageBookings.statuses.cancelled") },
   ];
+
+  const handleDateColumnChange = (column) => {
+    setDateRangeColumn(column);
+    console.log("setDateRangeColumn: ", column);
+  };
+  const handleRangeSelect = (range) => {
+    setDateRange(range);
+    console.log("handleRangeSelect: ", range);
+  };
 
   const fetchData = async () => {
     try {
@@ -174,7 +190,7 @@ const ManageBookings = () => {
 
   useEffect(() => {
     fetchData();
-  }, [pageNumber, pageSize, statusFilter, trigger]);
+  }, [pageNumber, pageSize, statusFilter, trigger, dateRange]);
 
   useEffect(() => {
     if (!String(q || "").trim()) {
@@ -288,7 +304,13 @@ const ManageBookings = () => {
       className='min-h-screen bg-stone-50 p-6 md:p-8'
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
-      {<DateRangePickerSimplified />}
+      {
+        <DateRangePickerSimplified
+          dateRange={dateRange}
+          onDateColumnChange={handleDateColumnChange}
+          setRangeSelect={handleRangeSelect}
+        />
+      }
       {/* ── Header ─────────────────────────────────── */}
       <div className='mb-8'>
         <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
