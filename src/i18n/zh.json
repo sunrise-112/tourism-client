@@ -256,6 +256,7 @@
       "cancelled": "已取消"
     },
     "table": {
+      "created_at": "创建日期",
       "tour": "行程",
       "customer": "客户",
       "booking_date": "预订日期",

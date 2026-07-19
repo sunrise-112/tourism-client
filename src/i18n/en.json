@@ -256,6 +256,7 @@
       "cancelled": "Cancelled"
     },
     "table": {
+      "created_at": "Created At",
       "tour": "Tour",
       "customer": "Customer",
       "booking_date": "Booking Date",

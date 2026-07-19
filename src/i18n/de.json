@@ -256,6 +256,7 @@
       "cancelled": "Storniert"
     },
     "table": {
+      "created_at": "Erstellt am",
       "tour": "Tour",
       "customer": "Kunde",
       "booking_date": "Buchungsdatum",

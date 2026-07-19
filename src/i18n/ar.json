@@ -257,6 +257,7 @@
       "cancelled": "ملغى"
     },
     "table": {
+      "created_at": "تاريخ الإنشاء",
       "tour": "الجولة",
       "customer": "العميل",
       "booking_date": "تاريخ الحجز",

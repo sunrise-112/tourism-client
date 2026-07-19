@@ -296,7 +296,7 @@ const ManageBookings = () => {
   ];
 
   const tableHeaders = [
-    "Date",
+    t("manageBookings.table.created_at"),
     t("manageBookings.table.tour"),
     t("manageBookings.table.customer"),
     t("manageBookings.table.booking_date"),
