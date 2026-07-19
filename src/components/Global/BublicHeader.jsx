@@ -5,6 +5,7 @@ import userService from "../../services/userService";
 import role from "../../constants/role";
 import renderImage from "../../utils/renderImage";
 import authService from "../../services/authService";
+import settingsService from "../../services/adminSettings";
 
 const NAV_LINKS = [
   { labelKey: "publicHeader.nav.home", path: "/" },
@@ -22,6 +23,17 @@ const PublicHeader = () => {
   const dropRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [logo, setlogo] = useState(null);
+
+  const fetchSettings = async () => {
+    const data = await settingsService.get();
+    setlogo(data?.logo);
+  };
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
 
   useEffect(() => {
     userService
@@ -122,8 +134,12 @@ const PublicHeader = () => {
             to='/'
             className='flex items-center gap-2 sm:gap-2.5 select-none group shrink-0'
           >
-            <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm shadow-amber-200 group-hover:shadow-amber-300 transition-shadow shrink-0'>
-              <i className='fa fa-globe text-white text-sm' />
+            <div className='w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm shadow-amber-200 group-hover:shadow-amber-300 transition-shadow shrink-0'>
+              {logo ? (
+                <img src={logo} width={10} height={10} />
+              ) : (
+                <i className='fa fa-globe text-white text-sm' />
+              )}{" "}
             </div>
             <span
               className='text-sm sm:text-base font-black text-stone-800 tracking-tight'

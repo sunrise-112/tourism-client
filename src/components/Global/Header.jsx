@@ -176,7 +176,6 @@ const Header = ({
       </div>
 
       {/* Notifications */}
-      {/* Notifications */}
       <div ref={notifRef} className='relative shrink-0'>
         <button
           onClick={() => {
