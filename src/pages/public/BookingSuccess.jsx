@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import userService from "../../services/userService";
 
 const BookingSuccess = ({ onDashboard, onHome }) => {
   const { t } = useTranslation();
