@@ -201,13 +201,13 @@ const ManageBookings = () => {
       await bookingService.updateStatus(statusModal.id, newStatus);
       setBookings((prev) =>
         prev.map((b) =>
-          b.id === statusModal.id ? { ...b, status: newStatus } : b
-        )
+          b.id === statusModal.id ? { ...b, status: newStatus } : b,
+        ),
       );
       setStatusModal(null);
     } catch (err) {
       toast.error(
-        err?.response?.data?.message || t("manageBookings.errors.updateFailed")
+        err?.response?.data?.message || t("manageBookings.errors.updateFailed"),
       );
     } finally {
       setUpdatingStatus(false);
@@ -224,7 +224,7 @@ const ManageBookings = () => {
       setDeleteModal(null);
     } catch (err) {
       toast.error(
-        err?.response?.data?.message || t("manageBookings.errors.deleteFailed")
+        err?.response?.data?.message || t("manageBookings.errors.deleteFailed"),
       );
     } finally {
       setDeleting(false);
@@ -272,6 +272,7 @@ const ManageBookings = () => {
   ];
 
   const tableHeaders = [
+    "Date",
     t("manageBookings.table.tour"),
     t("manageBookings.table.customer"),
     t("manageBookings.table.booking_date"),
@@ -384,6 +385,7 @@ const ManageBookings = () => {
                     className='hover:bg-stone-50 transition-colors group'
                   >
                     {/* Tour */}
+                    <td className='px-4 py-3'>{b.created_at}</td>
                     <td className='px-4 py-3'>
                       <div className='flex items-center gap-3'>
                         <div className='w-10 h-10 rounded-md overflow-hidden bg-stone-100 shrink-0'>
