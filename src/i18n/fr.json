@@ -258,7 +258,7 @@
     "table": {
       "tour": "Circuit",
       "customer": "Client",
-      "date": "Date",
+      "booking_date": "Date de réservation",
       "duration": "Durée",
       "durationValue": "{{count}}j",
       "total": "Total",

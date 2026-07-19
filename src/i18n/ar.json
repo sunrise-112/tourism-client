@@ -259,7 +259,7 @@
     "table": {
       "tour": "الجولة",
       "customer": "العميل",
-      "date": "التاريخ",
+      "booking_date": "تاريخ الحجز",
       "duration": "المدة",
       "durationValue": "{{count}} يوم",
       "total": "الإجمالي",

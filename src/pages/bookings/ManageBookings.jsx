@@ -274,7 +274,7 @@ const ManageBookings = () => {
   const tableHeaders = [
     t("manageBookings.table.tour"),
     t("manageBookings.table.customer"),
-    t("manageBookings.table.date"),
+    t("manageBookings.table.booking_date"),
     t("manageBookings.table.duration"),
     t("manageBookings.table.total"),
     t("manageBookings.table.status"),
