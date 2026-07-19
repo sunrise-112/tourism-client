@@ -151,6 +151,7 @@ const ManageBookings = () => {
   const [dateRange, setDateRange] = useState({
     startDate: start,
     endDate: end,
+    dateColumn: "created_at",
   });
 
   const STATUSES = [
