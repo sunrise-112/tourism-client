@@ -524,7 +524,7 @@ const ManageBookings = () => {
                               href={renderWhatsappLink(
                                 b.phone,
                                 b.full_name,
-                                "Hope you're doing well, we've received your booking and it is currently being processed. We'll let you know once it has been verified.",
+                                "Thank you for your booking. We've successfully received your request and it is currently being reviewed by our team. We'll notify you as soon as it has been verified. If you have any questions, feel free to reply to this message—we're happy to help!",
                               )}
                               target='_blank'
                               rel='noopener noreferrer'
