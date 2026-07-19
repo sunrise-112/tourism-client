@@ -374,7 +374,7 @@ const DateRangePickerSimplified = ({
           </span>
           {hasSelection && (
             <span className='shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-600 border border-amber-200 uppercase tracking-wide'>
-              {activeColumn === "created_at" ? "Created" : "Booking"}
+              {activeColumn === "created_at" ? "Created at" : "Booking Date"}
             </span>
           )}
         </div>
@@ -448,7 +448,7 @@ const DateRangePickerSimplified = ({
                     Filter by
                   </p>
                   <div className='flex flex-col gap-1'>
-                    {["created_at", "booking_date"].map((col) => (
+                    {["created_at", " "].map((col) => (
                       <button
                         key={col}
                         onClick={() => handleColumnToggle(col)}

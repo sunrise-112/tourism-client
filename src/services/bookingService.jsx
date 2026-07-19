@@ -46,6 +46,7 @@ const getAll = async ({
   order,
   startDate,
   endDate,
+  dateColumn
 } = {}) => {
   const query = new URLSearchParams({
     ...(status && { status }),
@@ -58,6 +59,7 @@ const getAll = async ({
     ...(order && { order }),
     ...(startDate && { startDate }),
     ...(endDate && { endDate }),
+    ...(dateColumn && { dateColumn })
   }).toString();
 
   const response = await http.get(`${apiEndPoint}/admin?${query}`);
