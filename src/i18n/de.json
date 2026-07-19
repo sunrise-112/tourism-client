@@ -2151,7 +2151,8 @@
       "cancellation": "Stornierung / Rückerstattung",
       "other": "Sonstiges"
     }
-  },  "dateRangePickerSimplified": {
+  },
+  "dateRangePickerSimplified": {
     "placeholder": "Zeitraum auswählen",
     "trigger": {
       "clear": "Auswahl löschen"

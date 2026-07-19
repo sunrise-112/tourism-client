@@ -2174,7 +2174,8 @@
       "cancellation": "Cancelación / Reembolso",
       "other": "Otro"
     }
-  },  "dateRangePickerSimplified": {
+  },
+  "dateRangePickerSimplified": {
     "placeholder": "Seleccionar rango de fechas",
     "trigger": {
       "clear": "Limpiar selección"

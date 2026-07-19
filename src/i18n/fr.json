@@ -2174,7 +2174,8 @@
       "cancellation": "Annulation / Remboursement",
       "other": "Autre"
     }
-  },  "dateRangePickerSimplified": {
+  },
+  "dateRangePickerSimplified": {
     "placeholder": "Sélectionner une période",
     "trigger": {
       "clear": "Effacer la sélection"

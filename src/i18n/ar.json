@@ -2184,7 +2184,8 @@
       "cancellation": "إلغاء / استرداد",
       "other": "أخرى"
     }
-  },  "dateRangePickerSimplified": {
+  },
+  "dateRangePickerSimplified": {
     "placeholder": "اختر نطاقاً زمنياً",
     "trigger": {
       "clear": "مسح التحديد"

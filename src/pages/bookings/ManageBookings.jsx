@@ -255,6 +255,23 @@ const ManageBookings = () => {
     }
   };
 
+  const renderWhatsappLink = (phoneNumber, username, message) => {
+    const cleanNumber = phoneNumber?.replace(/[^0-9]/g, "");
+    const href = `https://wa.me/${cleanNumber}${
+      message ? `?text=${encodeURIComponent(`Hi ${username}! ` + message)}` : ""
+    }`;
+  };
+
+  const isValidPhone = (phone) => {
+    if (!phone) return false;
+
+    // Keep only digits
+    const cleaned = phone.replace(/\D/g, "");
+
+    // International numbers are typically 8-15 digits
+    return /^\d{8,15}$/.test(cleaned);
+  };
+
   const sorted = _.orderBy(bookings, [sortColumn.path], [sortColumn.order]);
 
   // Stats
@@ -501,6 +518,36 @@ const ManageBookings = () => {
                             <i className='fa fa-eye text-xs' />
                           </Link>
                         </button>
+                        <div className='relative'>
+                          {isValidPhone(b.phone) ? (
+                            <a
+                              href={renderWhatsappLink(
+                                b.phone,
+                                b.full_name,
+                                "Hope you're doing well, we've received your booking and it is currently being processed. We'll let you know once it has been verified.",
+                              )}
+                              target='_blank'
+                              rel='noopener noreferrer'
+                              className='cursor-pointer w-8 h-8 rounded-xl bg-stone-100 hover:bg-green-50 hover:text-green-600 flex items-center justify-center text-stone-400 transition-colors'
+                              title='Contact via WhatsApp'
+                            >
+                              <i className='fab fa-whatsapp text-sm' />
+                            </a>
+                          ) : (
+                            <>
+                              <div
+                                className='w-8 h-8 rounded-xl bg-stone-100 text-stone-300 cursor-not-allowed flex items-center justify-center'
+                                title='Invalid phone number'
+                              >
+                                <i className='fab fa-whatsapp text-sm' />
+                              </div>
+
+                              <div className='absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-500 text-white flex items-center justify-center'>
+                                <i className='fa fa-exclamation text-[8px]' />
+                              </div>
+                            </>
+                          )}
+                        </div>
                         <button
                           onClick={() => setDeleteModal(b)}
                           title={t("manageBookings.actions.delete")}
