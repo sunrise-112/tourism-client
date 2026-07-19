@@ -7,6 +7,7 @@ import Pagination from "../../common/Pagination";
 import { Link, useSearchParams } from "react-router-dom";
 
 import renderImage from "../../utils/renderImage";
+import DateRangePickerSimplified from "../../common/DateRangeSimplified";
 
 // ─── Helpers ──────────────────────────────────────────────────
 const Sk = ({ className }) => (
@@ -287,6 +288,7 @@ const ManageBookings = () => {
       className='min-h-screen bg-stone-50 p-6 md:p-8'
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
+      {<DateRangePickerSimplified />}
       {/* ── Header ─────────────────────────────────── */}
       <div className='mb-8'>
         <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
