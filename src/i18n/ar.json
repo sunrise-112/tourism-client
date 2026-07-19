@@ -2184,5 +2184,45 @@
       "cancellation": "إلغاء / استرداد",
       "other": "أخرى"
     }
+  },  "dateRangePickerSimplified": {
+    "placeholder": "اختر نطاقاً زمنياً",
+    "trigger": {
+      "clear": "مسح التحديد"
+    },
+    "columnBadge": {
+      "createdAt": "تاريخ الإنشاء",
+      "bookingDate": "تاريخ الحجز"
+    },
+    "sidebar": {
+      "quickRanges": "نطاقات سريعة",
+      "filterBy": "تصفية حسب"
+    },
+    "sections": {
+      "primaryRange": "النطاق الأساسي"
+    },
+    "presets": {
+      "allTime": "كل الأوقات",
+      "today": "اليوم",
+      "yesterday": "أمس",
+      "last7Days": "آخر 7 أيام",
+      "last30Days": "آخر 30 يوماً",
+      "thisMonth": "هذا الشهر",
+      "lastMonth": "الشهر الماضي",
+      "customRange": "نطاق مخصص"
+    },
+    "columns": {
+      "createdAt": "تاريخ الإنشاء",
+      "bookingDate": "تاريخ الحجز",
+      "createdAtShort": "الإنشاء",
+      "bookingDateShort": "الحجز"
+    },
+    "calendar": {
+      "prevMonth": "الشهر السابق",
+      "nextMonth": "الشهر التالي"
+    },
+    "footer": {
+      "cancel": "إلغاء",
+      "apply": "تطبيق"
+    }
   }
 }

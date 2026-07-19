@@ -2151,5 +2151,45 @@
       "cancellation": "Stornierung / Rückerstattung",
       "other": "Sonstiges"
     }
+  },  "dateRangePickerSimplified": {
+    "placeholder": "Zeitraum auswählen",
+    "trigger": {
+      "clear": "Auswahl löschen"
+    },
+    "columnBadge": {
+      "createdAt": "Erstellt am",
+      "bookingDate": "Buchungsdatum"
+    },
+    "sidebar": {
+      "quickRanges": "Schnellauswahl",
+      "filterBy": "Filtern nach"
+    },
+    "sections": {
+      "primaryRange": "Hauptzeitraum"
+    },
+    "presets": {
+      "allTime": "Gesamter Zeitraum",
+      "today": "Heute",
+      "yesterday": "Gestern",
+      "last7Days": "Letzte 7 Tage",
+      "last30Days": "Letzte 30 Tage",
+      "thisMonth": "Diesen Monat",
+      "lastMonth": "Letzten Monat",
+      "customRange": "Benutzerdefinierter Zeitraum"
+    },
+    "columns": {
+      "createdAt": "Erstellungsdatum",
+      "bookingDate": "Buchungsdatum",
+      "createdAtShort": "Erstellt",
+      "bookingDateShort": "Buchung"
+    },
+    "calendar": {
+      "prevMonth": "Vorheriger Monat",
+      "nextMonth": "Nächster Monat"
+    },
+    "footer": {
+      "cancel": "Abbrechen",
+      "apply": "Anwenden"
+    }
   }
 }

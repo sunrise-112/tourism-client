@@ -2175,5 +2175,46 @@
       "cancellation": "取消/退款",
       "other": "其他"
     }
+  },
+  "dateRangePickerSimplified": {
+    "placeholder": "选择日期范围",
+    "trigger": {
+      "clear": "清除选择"
+    },
+    "columnBadge": {
+      "createdAt": "创建于",
+      "bookingDate": "预订日期"
+    },
+    "sidebar": {
+      "quickRanges": "快速范围",
+      "filterBy": "筛选方式"
+    },
+    "sections": {
+      "primaryRange": "主要范围"
+    },
+    "presets": {
+      "allTime": "所有时间",
+      "today": "今天",
+      "yesterday": "昨天",
+      "last7Days": "最近7天",
+      "last30Days": "最近30天",
+      "thisMonth": "本月",
+      "lastMonth": "上个月",
+      "customRange": "自定义范围"
+    },
+    "columns": {
+      "createdAt": "创建日期",
+      "bookingDate": "预订日期",
+      "createdAtShort": "创建",
+      "bookingDateShort": "预订"
+    },
+    "calendar": {
+      "prevMonth": "上个月",
+      "nextMonth": "下个月"
+    },
+    "footer": {
+      "cancel": "取消",
+      "apply": "应用"
+    }
   }
 }

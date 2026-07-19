@@ -2174,5 +2174,45 @@
       "cancellation": "Annulation / Remboursement",
       "other": "Autre"
     }
+  },  "dateRangePickerSimplified": {
+    "placeholder": "Sélectionner une période",
+    "trigger": {
+      "clear": "Effacer la sélection"
+    },
+    "columnBadge": {
+      "createdAt": "Créé le",
+      "bookingDate": "Date de réservation"
+    },
+    "sidebar": {
+      "quickRanges": "Périodes rapides",
+      "filterBy": "Filtrer par"
+    },
+    "sections": {
+      "primaryRange": "Période principale"
+    },
+    "presets": {
+      "allTime": "Tout le temps",
+      "today": "Aujourd'hui",
+      "yesterday": "Hier",
+      "last7Days": "7 derniers jours",
+      "last30Days": "30 derniers jours",
+      "thisMonth": "Ce mois-ci",
+      "lastMonth": "Mois dernier",
+      "customRange": "Période personnalisée"
+    },
+    "columns": {
+      "createdAt": "Date de création",
+      "bookingDate": "Date de réservation",
+      "createdAtShort": "Création",
+      "bookingDateShort": "Réservation"
+    },
+    "calendar": {
+      "prevMonth": "Mois précédent",
+      "nextMonth": "Mois suivant"
+    },
+    "footer": {
+      "cancel": "Annuler",
+      "apply": "Appliquer"
+    }
   }
 }

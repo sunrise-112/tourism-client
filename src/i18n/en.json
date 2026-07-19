@@ -2176,5 +2176,45 @@
       "cancellation": "Cancellation / Refund",
       "other": "Other"
     }
+  },  "dateRangePickerSimplified": {
+    "placeholder": "Select date range",
+    "trigger": {
+      "clear": "Clear selection"
+    },
+    "columnBadge": {
+      "createdAt": "Created at",
+      "bookingDate": "Booking date"
+    },
+    "sidebar": {
+      "quickRanges": "Quick ranges",
+      "filterBy": "Filter by"
+    },
+    "sections": {
+      "primaryRange": "Primary range"
+    },
+    "presets": {
+      "allTime": "All time",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "last7Days": "Last 7 days",
+      "last30Days": "Last 30 days",
+      "thisMonth": "This month",
+      "lastMonth": "Last month",
+      "customRange": "Custom range"
+    },
+    "columns": {
+      "createdAt": "Creation date",
+      "bookingDate": "Booking date",
+      "createdAtShort": "Created",
+      "bookingDateShort": "Booking"
+    },
+    "calendar": {
+      "prevMonth": "Previous month",
+      "nextMonth": "Next month"
+    },
+    "footer": {
+      "cancel": "Cancel",
+      "apply": "Apply"
+    }
   }
 }

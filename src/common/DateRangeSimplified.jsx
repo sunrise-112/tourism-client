@@ -29,7 +29,6 @@ const DateRangePickerSimplified = ({
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // ─── Presets ───────────────────────────────────────────────────────────────
   const buildPresets = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -48,38 +47,40 @@ const DateRangePickerSimplified = ({
 
     return [
       {
-        label: t("dateRangePicker.presets.allTime"),
+        label: t("dateRangePickerSimplified.presets.allTime"),
         range: { startDate: null, endDate: null },
       },
       {
-        label: t("dateRangePicker.presets.today"),
+        label: t("dateRangePickerSimplified.presets.today"),
         range: { startDate: today, endDate: today },
       },
       {
-        label: t("dateRangePicker.presets.yesterday"),
+        label: t("dateRangePickerSimplified.presets.yesterday"),
         range: { startDate: yesterday, endDate: yesterday },
       },
       {
-        label: t("dateRangePicker.presets.last7Days"),
+        label: t("dateRangePickerSimplified.presets.last7Days"),
         range: { startDate: last7Days, endDate: today },
       },
       {
-        label: t("dateRangePicker.presets.last30Days"),
+        label: t("dateRangePickerSimplified.presets.last30Days"),
         range: { startDate: last30Days, endDate: today },
       },
       {
-        label: t("dateRangePicker.presets.thisMonth"),
+        label: t("dateRangePickerSimplified.presets.thisMonth"),
         range: { startDate: thisMonth, endDate: today },
       },
       {
-        label: t("dateRangePicker.presets.lastMonth"),
+        label: t("dateRangePickerSimplified.presets.lastMonth"),
         range: { startDate: lastMonth, endDate: lastMonthEnd },
       },
-      { label: t("dateRangePicker.presets.customRange"), isCustom: true },
+      {
+        label: t("dateRangePickerSimplified.presets.customRange"),
+        isCustom: true,
+      },
     ];
   };
 
-  // ─── Formatters ────────────────────────────────────────────────────────────
   const formatDate = (date) => {
     if (!date) return "";
     return new Intl.DateTimeFormat(locale, {
@@ -98,20 +99,20 @@ const DateRangePickerSimplified = ({
 
   const formatDisplayRange = () => {
     const { startDate, endDate } = selection;
-    if (!startDate && !endDate) return t("dateRangePicker.placeholder");
+    if (!startDate && !endDate)
+      return t("dateRangePickerSimplified.placeholder");
     if (startDate && !endDate) return formatDate(startDate);
     if (startDate && endDate) {
       if (startDate.getTime() === endDate.getTime())
         return formatDate(startDate);
       return `${formatDate(startDate)} – ${formatDate(endDate)}`;
     }
-    return t("dateRangePicker.placeholder");
+    return t("dateRangePickerSimplified.placeholder");
   };
 
-  // ─── Handlers ─────────────────────────────────────────────────────────────
   const handlePresetClick = (preset) => {
     if (preset.isCustom) {
-      setActivePreset(t("dateRangePicker.presets.customRange"));
+      setActivePreset(t("dateRangePickerSimplified.presets.customRange"));
       return;
     }
     setSelection({
@@ -149,7 +150,6 @@ const DateRangePickerSimplified = ({
 
   const hasSelection = !!(selection.startDate || selection.endDate);
 
-  // ─── Calendar ─────────────────────────────────────────────────────────────
   const CustomDateRange = () => {
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [hoverDate, setHoverDate] = useState(null);
@@ -165,20 +165,17 @@ const DateRangePickerSimplified = ({
         const date = new Date(year, month, i - firstDayOfWeek + 1);
         date.setHours(0, 0, 0, 0);
         const ts = date.getTime();
-
         const isInRange =
           selection.startDate &&
           selection.endDate &&
           ts > selection.startDate.getTime() &&
           ts < selection.endDate.getTime();
-
         const isHoverRange =
           selection.startDate &&
           !selection.endDate &&
           hoverDate &&
           ts > Math.min(selection.startDate.getTime(), hoverDate.getTime()) &&
           ts < Math.max(selection.startDate.getTime(), hoverDate.getTime());
-
         return {
           date,
           day: date.getDate(),
@@ -198,7 +195,7 @@ const DateRangePickerSimplified = ({
     };
 
     const handleDateClick = (date) => {
-      setActivePreset(t("dateRangePicker.presets.customRange"));
+      setActivePreset(t("dateRangePickerSimplified.presets.customRange"));
       if (!selection.startDate || (selection.startDate && selection.endDate)) {
         setSelection({ startDate: date, endDate: null, key: "selection" });
       } else if (selection.startDate && !selection.endDate) {
@@ -212,13 +209,11 @@ const DateRangePickerSimplified = ({
       currentMonth.getFullYear(),
       currentMonth.getMonth() + 1,
     );
-
     const monthLabel = (d) =>
       new Intl.DateTimeFormat(locale, {
         month: "long",
         year: "numeric",
       }).format(d);
-
     const dayNames = Array.from({ length: 7 }, (_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - d.getDay() + i);
@@ -241,6 +236,7 @@ const DateRangePickerSimplified = ({
                   )
                 }
                 className='w-7 h-7 flex items-center justify-center rounded-lg hover:bg-stone-100 text-stone-400 hover:text-stone-700 transition-colors focus:outline-none'
+                aria-label={t("dateRangePickerSimplified.calendar.prevMonth")}
               >
                 <ChevronLeft className='w-4 h-4' />
               </button>
@@ -261,6 +257,7 @@ const DateRangePickerSimplified = ({
                   )
                 }
                 className='w-7 h-7 flex items-center justify-center rounded-lg hover:bg-stone-100 text-stone-400 hover:text-stone-700 transition-colors focus:outline-none'
+                aria-label={t("dateRangePickerSimplified.calendar.nextMonth")}
               >
                 <ChevronRight className='w-4 h-4' />
               </button>
@@ -349,7 +346,6 @@ const DateRangePickerSimplified = ({
       ref={dropdownRef}
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
-      {/* ── Trigger ─────────────────────────────────────────────────────────── */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={[
@@ -361,20 +357,18 @@ const DateRangePickerSimplified = ({
       >
         <div className='flex items-center gap-2.5 min-w-0'>
           <Calendar
-            className={`w-4 h-4 shrink-0 transition-colors ${
-              hasSelection ? "text-amber-500" : "text-stone-400"
-            }`}
+            className={`w-4 h-4 shrink-0 transition-colors ${hasSelection ? "text-amber-500" : "text-stone-400"}`}
           />
           <span
-            className={`truncate ${
-              hasSelection ? "font-semibold text-stone-800" : "text-stone-400"
-            }`}
+            className={`truncate ${hasSelection ? "font-semibold text-stone-800" : "text-stone-400"}`}
           >
             {formatDisplayRange()}
           </span>
           {hasSelection && (
             <span className='shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-600 border border-amber-200 uppercase tracking-wide'>
-              {activeColumn === "created_at" ? "Created at" : "Booking Date"}
+              {activeColumn === "created_at"
+                ? t("dateRangePickerSimplified.columnBadge.createdAt")
+                : t("dateRangePickerSimplified.columnBadge.bookingDate")}
             </span>
           )}
         </div>
@@ -386,19 +380,17 @@ const DateRangePickerSimplified = ({
               handleCancel();
             }}
             className='shrink-0 w-5 h-5 flex items-center justify-center rounded-full hover:bg-stone-100 text-stone-400 hover:text-stone-600 transition-colors cursor-pointer'
+            aria-label={t("dateRangePickerSimplified.trigger.clear")}
           >
             <X className='w-3 h-3' />
           </span>
         )}
       </button>
 
-      {/* ── Dropdown ────────────────────────────────────────────────────────── */}
       {isOpen && (
         <div className='absolute top-full left-0 mt-2 z-50 bg-white rounded-2xl border border-stone-200 shadow-2xl shadow-stone-300/20 overflow-hidden w-full min-w-[300px] sm:min-w-[460px] lg:min-w-[740px] max-w-[95vw]'>
           <div className='flex flex-col lg:flex-row'>
-            {/* ── Sidebar ─────────────────────────────────────────────────── */}
             <div className='lg:w-44 bg-stone-50 border-b lg:border-b-0 lg:border-r border-stone-100 shrink-0'>
-              {/* Mobile: horizontal chips */}
               <div className='lg:hidden p-3 flex flex-wrap gap-1.5'>
                 {presets.map((preset) => (
                   <button
@@ -416,10 +408,9 @@ const DateRangePickerSimplified = ({
                 ))}
               </div>
 
-              {/* Desktop: vertical list */}
               <div className='hidden lg:block p-3'>
                 <p className='text-[10px] font-black uppercase tracking-widest text-stone-400 px-2 mb-3'>
-                  {t("dateRangePicker.sidebar.quickRanges")}
+                  {t("dateRangePickerSimplified.sidebar.quickRanges")}
                 </p>
                 <div className='space-y-0.5'>
                   {presets.map((preset) => (
@@ -442,10 +433,9 @@ const DateRangePickerSimplified = ({
                   ))}
                 </div>
 
-                {/* ── Column toggle (desktop sidebar) ── */}
                 <div className='mt-4 pt-4 border-t border-stone-200'>
                   <p className='text-[10px] font-black uppercase tracking-widest text-stone-400 px-2 mb-2'>
-                    Filter by
+                    {t("dateRangePickerSimplified.sidebar.filterBy")}
                   </p>
                   <div className='flex flex-col gap-1'>
                     {["created_at", "booking_date"].map((col) => (
@@ -460,15 +450,11 @@ const DateRangePickerSimplified = ({
                         ].join(" ")}
                       >
                         <span
-                          className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                            activeColumn === col
-                              ? "bg-amber-900"
-                              : "bg-stone-300"
-                          }`}
+                          className={`w-1.5 h-1.5 rounded-full shrink-0 ${activeColumn === col ? "bg-amber-900" : "bg-stone-300"}`}
                         />
                         {col === "created_at"
-                          ? "Creation date"
-                          : "Booking date"}
+                          ? t("dateRangePickerSimplified.columns.createdAt")
+                          : t("dateRangePickerSimplified.columns.bookingDate")}
                       </button>
                     ))}
                   </div>
@@ -476,14 +462,11 @@ const DateRangePickerSimplified = ({
               </div>
             </div>
 
-            {/* ── Calendar + footer ────────────────────────────────────────── */}
             <div className='flex-1 min-w-0'>
-              {/* Section label + mobile column toggle */}
               <div className='flex items-center justify-between px-4 pt-4 pb-0'>
                 <p className='text-[10px] font-black uppercase tracking-widest text-stone-400'>
-                  {t("dateRangePicker.sections.primaryRange")}
+                  {t("dateRangePickerSimplified.sections.primaryRange")}
                 </p>
-                {/* Mobile column toggle pill */}
                 <div className='flex lg:hidden items-center gap-1 bg-stone-100 rounded-lg p-0.5'>
                   {["created_at", "booking_date"].map((col) => (
                     <button
@@ -496,7 +479,11 @@ const DateRangePickerSimplified = ({
                           : "text-stone-500 hover:text-stone-700",
                       ].join(" ")}
                     >
-                      {col === "created_at" ? "Created" : "Booking"}
+                      {col === "created_at"
+                        ? t("dateRangePickerSimplified.columns.createdAtShort")
+                        : t(
+                            "dateRangePickerSimplified.columns.bookingDateShort",
+                          )}
                     </button>
                   ))}
                 </div>
@@ -504,9 +491,7 @@ const DateRangePickerSimplified = ({
 
               <CustomDateRange />
 
-              {/* ── Footer ──────────────────────────────────────────────────── */}
               <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 py-3 border-t border-stone-100 bg-stone-50'>
-                {/* Summary */}
                 <div className='text-xs text-stone-500 order-2 sm:order-1 space-y-1'>
                   {selection.startDate && selection.endDate ? (
                     <div className='flex items-center gap-1.5'>
@@ -514,8 +499,10 @@ const DateRangePickerSimplified = ({
                       <span>
                         <span className='font-bold text-stone-700'>
                           {activeColumn === "created_at"
-                            ? "Creation date"
-                            : "Booking date"}{" "}
+                            ? t("dateRangePickerSimplified.columns.createdAt")
+                            : t(
+                                "dateRangePickerSimplified.columns.bookingDate",
+                              )}{" "}
                         </span>
                         {formatDate(selection.startDate)} –{" "}
                         {formatDate(selection.endDate)}
@@ -523,24 +510,23 @@ const DateRangePickerSimplified = ({
                     </div>
                   ) : (
                     <span className='italic text-stone-400'>
-                      {t("dateRangePicker.placeholder")}
+                      {t("dateRangePickerSimplified.placeholder")}
                     </span>
                   )}
                 </div>
 
-                {/* Buttons */}
                 <div className='flex gap-2 w-full sm:w-auto order-1 sm:order-2 shrink-0'>
                   <button
                     onClick={handleCancel}
                     className='flex-1 sm:flex-none px-4 py-2 text-xs font-bold rounded-xl border border-stone-200 text-stone-600 hover:bg-stone-100 hover:border-stone-300 transition-colors focus:outline-none'
                   >
-                    {t("dateRangePicker.footer.cancel")}
+                    {t("dateRangePickerSimplified.footer.cancel")}
                   </button>
                   <button
                     onClick={handleApply}
                     className='flex-1 sm:flex-none px-5 py-2 text-xs font-bold rounded-xl bg-amber-400 text-amber-900 hover:bg-amber-300 transition-colors shadow-sm shadow-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-200'
                   >
-                    {t("dateRangePicker.footer.apply")}
+                    {t("dateRangePickerSimplified.footer.apply")}
                   </button>
                 </div>
               </div>
