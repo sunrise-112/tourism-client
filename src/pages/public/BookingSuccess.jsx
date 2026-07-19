@@ -284,9 +284,11 @@ const BookingSuccess = ({ onDashboard, onHome }) => {
               </svg>
               <Link
                 to={
-                  user?.role === "admin"
-                    ? "/admin/dashboard"
-                    : "/customer/dashboard"
+                  !user
+                    ? "/login"
+                    : user?.role === "admin"
+                      ? "/admin/dashboard"
+                      : "/customer/dashboard"
                 }
               >
                 {t("bookingSuccess.cta.dashboardButton")}
