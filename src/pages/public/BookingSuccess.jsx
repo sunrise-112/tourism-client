@@ -1,9 +1,18 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const BookingSuccess = ({ onDashboard, onHome }) => {
   const { t } = useTranslation();
+
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    userService
+      .getMe()
+      .then(setUser)
+      .catch(() => setUser(null));
+  }, []);
 
   return (
     <div className="min-h-screen py-8 px-5 bg-[#f5f4ef] font-['DM_Sans',sans-serif]">
@@ -272,7 +281,15 @@ const BookingSuccess = ({ onDashboard, onHome }) => {
                 <rect x='3' y='3' width='18' height='18' rx='2' />
                 <path d='M3 9h18M9 21V9' />
               </svg>
-              <Link to='/login'>{t("bookingSuccess.cta.dashboardButton")}</Link>
+              <Link
+                to={
+                  user?.role === role.ADMIN
+                    ? "/admin/dashboard"
+                    : "/customer/dashboard"
+                }
+              >
+                {t("bookingSuccess.cta.dashboardButton")}
+              </Link>
             </button>
           </div>
         </div>
