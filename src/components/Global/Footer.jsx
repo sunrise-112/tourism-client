@@ -101,7 +101,7 @@ const Footer = () => {
               {companyInfo?.logo ? (
                 <img
                   src={companyInfo?.logo}
-                  className='w-full h-full object-cover'
+                  className='w-full h-full object-cover rounded-xl'
                 />
               ) : (
                 <i className='fa fa-globe text-white text-sm' />

@@ -141,7 +141,7 @@ const PublicHeader = () => {
               {companyInfo?.logo ? (
                 <img
                   src={companyInfo?.logo}
-                  className='w-full h-full object-cover'
+                  className='w-full h-full object-cover rounded-lg'
                 />
               ) : (
                 <i className='fa fa-globe text-white text-sm' />
