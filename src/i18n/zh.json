@@ -258,7 +258,7 @@
     "table": {
       "tour": "行程",
       "customer": "客户",
-      "date": "日期",
+      "booking_date": "预订日期",
       "duration": "时长",
       "durationValue": "{{count}} 天",
       "total": "总价",
