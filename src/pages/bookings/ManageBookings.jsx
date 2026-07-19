@@ -161,10 +161,12 @@ const ManageBookings = () => {
     { key: "Cancelled", label: t("manageBookings.statuses.cancelled") },
   ];
 
+  // No need to use it since handleRangeSelect returns { startDate, endDate, dateColumn }
   const handleDateColumnChange = (column) => {
     setDateRangeColumn(column);
     console.log("setDateRangeColumn: ", column);
   };
+
   const handleRangeSelect = (range) => {
     setDateRange(range);
     console.log("handleRangeSelect: ", range);
@@ -177,6 +179,9 @@ const ManageBookings = () => {
         page: pageNumber,
         limit: pageSize,
         ...(statusFilter !== "All" && { status: statusFilter.toLowerCase() }),
+        startDate: dateRange?.startDate,
+        endDate: dateRange?.endDate,
+        dateColumn: dateRange?.dateColumn,
       };
       const res = await bookingService.getAll(params);
       setBookings(res?.data);
