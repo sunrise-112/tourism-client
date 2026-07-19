@@ -257,7 +257,7 @@ const ManageBookings = () => {
 
   const renderWhatsappLink = (phoneNumber, username, message) => {
     const cleanNumber = phoneNumber?.replace(/[^0-9]/g, "");
-    const href = `https://wa.me/${cleanNumber}${
+    return `https://wa.me/${cleanNumber}${
       message ? `?text=${encodeURIComponent(`Hi ${username}! ` + message)}` : ""
     }`;
   };
