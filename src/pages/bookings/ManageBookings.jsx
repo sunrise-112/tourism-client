@@ -385,7 +385,15 @@ const ManageBookings = () => {
                     className='hover:bg-stone-50 transition-colors group'
                   >
                     {/* Tour */}
-                    <td className='px-4 py-3'>{b.created_at}</td>
+                    <td className='px-4 py-3 whitespace-nowrap text-xs text-stone-500'>
+                      {b.created_at
+                        ? new Date(b.created_at).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "—"}
+                    </td>
                     <td className='px-4 py-3'>
                       <div className='flex items-center gap-3'>
                         <div className='w-10 h-10 rounded-md overflow-hidden bg-stone-100 shrink-0'>
