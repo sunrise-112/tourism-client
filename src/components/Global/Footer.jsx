@@ -49,20 +49,6 @@ const Footer = () => {
     ],
   };
 
-  const [companyInfo, setCompanyInfo] = useState(null);
-
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const data = await settingsService.get();
-        setCompanyInfo(data);
-      } catch (error) {
-        console.log("Error: ", error);
-      }
-    };
-    fetchSettings();
-  }, []);
-
   const contactFields = [
     {
       icon: "fa-map-marker-alt",
