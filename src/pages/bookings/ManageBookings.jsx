@@ -318,6 +318,7 @@ const ManageBookings = () => {
           setRangeSelect={handleRangeSelect}
         />
       }
+      <br />
       {/* ── Header ─────────────────────────────────── */}
       <div className='mb-8'>
         <p className='text-xs font-bold uppercase tracking-[0.2em] text-amber-500 mb-1'>
