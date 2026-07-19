@@ -4,6 +4,7 @@ import userService from "../../services/userService";
 import role from "../../constants/role";
 import bookingService from "../../services/bookingService";
 import { useTranslation } from "react-i18next";
+import settingsService from "../../services/adminSettings";
 
 const user = userService?.getCurrentUser();
 const isAdmin = user?.role === role.ADMIN;

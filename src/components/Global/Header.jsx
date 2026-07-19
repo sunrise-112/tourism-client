@@ -145,15 +145,17 @@ const Header = ({
         <i className={`fa ${mobileOpen ? "fa-times" : "fa-bars"} text-sm`} />
       </button>
 
-      {/* Logo — mobile center */}
-      <div className='lg:hidden flex-1 flex justify-center'>
+      {/* Logo — mobile center 
+      
+       <div className='lg:hidden flex-1 flex justify-center'>
         <span
           className='text-sm font-black text-stone-800 truncate max-w-[160px]'
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           {import.meta.env.VITE_COMPANY}
         </span>
-      </div>
+      </div>*/}
+     
 
       {/* Breadcrumb — desktop only */}
       <div className='hidden lg:flex items-center gap-2 text-sm'>
