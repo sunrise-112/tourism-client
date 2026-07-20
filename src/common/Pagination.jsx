@@ -10,7 +10,7 @@ const Pagination = ({
 }) => {
   const { t } = useTranslation();
 
-  const pageSizeOptions = [2, 5, 10, 20, 30, 40, 50, 100, 200];
+  const pageSizeOptions = [5, 10, 20, 30, 40, 50, 100, 200];
   const totalPages = Math.ceil(itemsCount / pageSize);
   const startItem = (pageNumber - 1) * pageSize + 1;
   const endItem = Math.min(pageNumber * pageSize, itemsCount);
@@ -38,7 +38,7 @@ const Pagination = ({
     else if (totalPages > 1) rangeWithDots.push(totalPages);
 
     return rangeWithDots.filter(
-      (item, index, arr) => arr.indexOf(item) === index
+      (item, index, arr) => arr.indexOf(item) === index,
     );
   };
 
@@ -56,8 +56,8 @@ const Pagination = ({
           active
             ? "bg-amber-400 text-amber-900 border-amber-400 shadow-md shadow-amber-200"
             : disabled
-            ? "bg-stone-50 text-stone-300 border-stone-100 cursor-not-allowed"
-            : "bg-white text-stone-500 border-stone-200 hover:border-amber-300 hover:text-amber-600 hover:bg-amber-50"
+              ? "bg-stone-50 text-stone-300 border-stone-100 cursor-not-allowed"
+              : "bg-white text-stone-500 border-stone-200 hover:border-amber-300 hover:text-amber-600 hover:bg-amber-50"
         }
       `}
     >
@@ -113,7 +113,7 @@ const Pagination = ({
               >
                 {page}
               </PageBtn>
-            )
+            ),
           )}
 
           {/* Next */}
