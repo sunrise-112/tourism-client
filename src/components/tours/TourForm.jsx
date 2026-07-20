@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Joi from "joi-browser";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 // Hooks
 import useForm from "../../hooks/useForm";
@@ -784,6 +785,7 @@ const TourForm = ({ Type }) => {
   const [itineraryData, setItineraryData] = useState([]);
   const [inclusions, setInclusions] = useState([]);
   const [exclusions, setExclusions] = useState([]);
+  const navigate = useNavigate();
 
   /*   const CATEGORIES = [
     { id: 1, name: t("tourForm.categories.adventure") },
@@ -1030,6 +1032,8 @@ const TourForm = ({ Type }) => {
           ? t("tourForm.toast.updated", { type: label })
           : t("tourForm.toast.created", { type: label }),
       );
+
+      setTimeout(() => navigate("/admin/tours"), 500);
     } catch (err) {
       console.error(err);
       toast.error(err?.response?.data?.message);
