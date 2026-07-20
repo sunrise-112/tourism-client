@@ -161,7 +161,7 @@ const ManageExperiences = ({ Type }) => {
       });
 
       setTours(res.data);
-      setTotalItems(q ? res.data?.length : res.pagination.totalItems);
+      setTotalItems(res.pagination.totalItems);
     } catch (err) {
       toast.error(t("manageExperiences.errors.fetchFailed"));
     } finally {
@@ -184,13 +184,13 @@ const ManageExperiences = ({ Type }) => {
       setTours((prev) => prev.filter((t) => t.id !== deleteModal.id));
       setTotalItems((n) => n - 1);
       toast.success(
-        t("manageExperiences.errors.deleteSuccess", { type: Type })
+        t("manageExperiences.errors.deleteSuccess", { type: Type }),
       );
       setDeleteModal(null);
     } catch (err) {
       toast.error(
         err?.response?.data?.message ||
-          t("manageExperiences.errors.deleteFailed")
+          t("manageExperiences.errors.deleteFailed"),
       );
     } finally {
       setDeleting(false);
