@@ -1030,6 +1030,7 @@ const TourForm = ({ Type }) => {
           : t("tourForm.toast.created", { type: label }),
       );
     } catch (err) {
+      console.error(err);
       toast.error(err?.response?.data?.message);
     } finally {
       setIsSubmitting(false);
