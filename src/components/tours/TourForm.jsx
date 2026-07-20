@@ -1024,6 +1024,7 @@ const TourForm = ({ Type }) => {
 
       const label =
         activeType[0].toUpperCase() + activeType.slice(1).toLowerCase();
+
       toast.success(
         id
           ? t("tourForm.toast.updated", { type: label })
@@ -1098,12 +1099,14 @@ const TourForm = ({ Type }) => {
                 </p>
               </div>
             </div>
+            {/*
             <button
               type='button'
               className='text-sm text-gray-400 hover:text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors font-medium'
             >
               {t("tourForm.actions.cancel")}
             </button>
+            */}
           </div>
         </div>
 
