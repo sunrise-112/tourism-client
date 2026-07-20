@@ -50,12 +50,13 @@ const searchByTitle = async (q) => {
 
 const create = (formData) => {
   const response = await http.post(`${apiEndPoint}/admin`, formData);
-  return response.data.data;
+  console.log("Response: ", response)
+  return response?.data?.data;
 };
 
 const update = async (id, data) => {
   const response = await http.put(`${apiEndPoint}/admin/${id}`, data);
-  return response.data.data;
+  return response?.data?.data;
 };
 
 const deleteOne = async (id) => {
