@@ -178,8 +178,8 @@ const ManageBookings = () => {
     try {
       setLoading(true);
       const params = {
-        page: pageNumber,
         limit: pageSize,
+        skip: (pageNumber - 1) * pageSize,
         ...(statusFilter !== "All" && { status: statusFilter.toLowerCase() }),
         startDate: dateRange?.startDate,
         endDate: dateRange?.endDate,
