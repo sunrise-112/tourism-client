@@ -49,14 +49,11 @@ const searchByTitle = async (q) => {
 // ─── Admin ───────────────────────────────────────────────────────────────────
 
 const create = (formData) => {
-  const response = await http.post(`${apiEndPoint}/admin`, formData);
-  console.log("Response: ", response)
-  return response?.data?.data;
+  await http.post(`${apiEndPoint}/admin`, formData);
 };
 
 const update = async (id, data) => {
-  const response = await http.put(`${apiEndPoint}/admin/${id}`, data);
-  return response?.data?.data;
+  await http.put(`${apiEndPoint}/admin/${id}`, data);
 };
 
 const deleteOne = async (id) => {

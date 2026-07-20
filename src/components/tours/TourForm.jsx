@@ -729,7 +729,7 @@ const LivePreview = ({
           text-white shadow-[0_4px_16px_rgba(245,158,11,0.3)] hover:shadow-[0_4px_24px_rgba(245,158,11,0.4)]
           transition-all duration-200 flex items-center justify-center gap-2
         '
-      > 
+      >
         {isSubmitting ? (
           <>
             <svg
