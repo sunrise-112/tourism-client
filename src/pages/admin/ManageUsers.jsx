@@ -117,7 +117,7 @@ const ManageUsers = ({ user: currentUser }) => {
         limit: pageSize,
       });
       setUsers(res?.users || []);
-      setTotalItems(res?.pagination?.totalItems || 0);
+      setTotalItems(res?.data?.pagination?.totalUsers || 0);
     } catch {
       toast.error(t("manageUsers.toasts.fetchFailed"));
     } finally {
@@ -162,7 +162,7 @@ const ManageUsers = ({ user: currentUser }) => {
     } catch (err) {
       setUsers(original);
       toast.error(
-        err?.response?.data?.message || t("manageUsers.toasts.deleteFailed")
+        err?.response?.data?.message || t("manageUsers.toasts.deleteFailed"),
       );
     } finally {
       setDeleting(false);
@@ -171,12 +171,12 @@ const ManageUsers = ({ user: currentUser }) => {
 
   const onUserSelect = (id) =>
     setSelectedItems((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
 
   const toggleAll = () =>
     setSelectedItems(
-      selectedItems.length === users.length ? [] : users.map((u) => u.id)
+      selectedItems.length === users.length ? [] : users.map((u) => u.id),
     );
 
   const sorted = _.orderBy(users, [sortColumn.path], [sortColumn.order]);
