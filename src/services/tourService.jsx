@@ -48,7 +48,7 @@ const searchByTitle = async (q) => {
 
 // ─── Admin ───────────────────────────────────────────────────────────────────
 
-const create = (formData) => {
+const create = async (formData) => {
   await http.post(`${apiEndPoint}/admin`, formData);
 };
 
