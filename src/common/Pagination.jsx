@@ -10,7 +10,7 @@ const Pagination = ({
 }) => {
   const { t } = useTranslation();
 
-  const pageSizeOptions = [5, 10, 20, 30, 40, 50, 100, 200];
+  const pageSizeOptions = [2, 5, 10, 20, 30, 40, 50, 100, 200];
   const totalPages = Math.ceil(itemsCount / pageSize);
   const startItem = (pageNumber - 1) * pageSize + 1;
   const endItem = Math.min(pageNumber * pageSize, itemsCount);
