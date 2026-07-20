@@ -110,7 +110,7 @@ const ManageExclusions = () => {
 
   const toggleSelect = (id) =>
     setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
 
   // ─── Toggle active ────────────────────────────────────────
@@ -123,19 +123,19 @@ const ManageExclusions = () => {
       });
       setExclusions((prev) =>
         prev.map((e) =>
-          e.id === exclusion.id ? { ...e, is_active: !e.is_active } : e
-        )
+          e.id === exclusion.id ? { ...e, is_active: !e.is_active } : e,
+        ),
       );
       toast.success(
         exclusion.is_active
           ? t("manageExclusions.toasts.deactivated")
-          : t("manageExclusions.toasts.activated")
+          : t("manageExclusions.toasts.activated"),
       );
     } catch (err) {
       setExclusions(original);
       toast.error(
         err?.response?.data?.message ||
-          t("manageExclusions.errors.updateFailed")
+          t("manageExclusions.errors.updateFailed"),
       );
     } finally {
       setTogglingId(null);
@@ -155,7 +155,7 @@ const ManageExclusions = () => {
     } catch (err) {
       toast.error(
         err?.response?.data?.message ||
-          t("manageExclusions.errors.deleteFailed")
+          t("manageExclusions.errors.deleteFailed"),
       );
     } finally {
       setDeleting(false);
@@ -175,7 +175,7 @@ const ManageExclusions = () => {
     } catch (err) {
       toast.error(
         err?.response?.data?.message ||
-          t("manageExclusions.errors.bulkDeleteFailed")
+          t("manageExclusions.errors.bulkDeleteFailed"),
       );
     } finally {
       setBulkDeleting(false);
@@ -209,17 +209,17 @@ const ManageExclusions = () => {
       } else {
         const updated = await exclusionService.update(
           formModal.data.id,
-          formValue
+          formValue,
         );
         setExclusions((prev) =>
-          prev.map((e) => (e.id === updated.id ? updated : e))
+          prev.map((e) => (e.id === updated.id ? updated : e)),
         );
         toast.success(t("manageExclusions.toasts.updateSuccess"));
       }
       setFormModal(null);
     } catch (err) {
       toast.error(
-        err?.response?.data?.message || t("manageExclusions.errors.saveFailed")
+        err?.response?.data?.message || t("manageExclusions.errors.saveFailed"),
       );
     } finally {
       setFormSaving(false);
@@ -453,7 +453,7 @@ const ManageExclusions = () => {
                               day: "2-digit",
                               month: "short",
                               year: "numeric",
-                            }
+                            },
                           )
                         : "—"}
                     </td>

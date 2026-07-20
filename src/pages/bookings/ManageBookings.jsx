@@ -187,7 +187,7 @@ const ManageBookings = () => {
       };
       const res = await bookingService.getAll(params);
       setBookings(res?.data);
-      setTotalItems(res?.data?.length || 0);
+      setTotalItems(res?.data?.totalItems);
     } catch {
       toast.error(t("manageBookings.errors.fetchFailed"));
     } finally {
