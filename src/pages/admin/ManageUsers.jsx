@@ -117,7 +117,7 @@ const ManageUsers = ({ user: currentUser }) => {
         limit: pageSize,
       });
       setUsers(res?.users || []);
-      setTotalItems(res?.data?.pagination?.totalUsers || 0);
+      setTotalItems(res?.pagination?.totalUsers || 0);
     } catch {
       toast.error(t("manageUsers.toasts.fetchFailed"));
     } finally {
