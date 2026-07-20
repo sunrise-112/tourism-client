@@ -446,7 +446,7 @@ const ManageUsers = ({ user: currentUser }) => {
                           to={`/admin/users/edit/${u.id}`}
                           title={t("manageUsers.tooltips.edit")}
                           className='w-8 h-8 rounded-xl bg-stone-100 hover:bg-blue-50 hover:text-blue-600 flex items-center justify-center text-stone-400 transition-colors'
-                        >
+                        > 
                           <i className='fa fa-pen text-xs' />
                         </Link> */}
                         {/*  <button
