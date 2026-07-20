@@ -170,7 +170,7 @@ const ExcursionFields = ({ data, errors, handleChange }) => {
             "departure_time",
             data,
             errors,
-            handleChange
+            handleChange,
           )}
         </div>
         <div>
@@ -179,7 +179,7 @@ const ExcursionFields = ({ data, errors, handleChange }) => {
             "return_time",
             data,
             errors,
-            handleChange
+            handleChange,
           )}
         </div>
       </TwoCol>
@@ -192,7 +192,7 @@ const ExcursionFields = ({ data, errors, handleChange }) => {
             errors,
             handleChange,
             "number",
-            false
+            false,
           )}
         </div>
         <div>
@@ -203,7 +203,7 @@ const ExcursionFields = ({ data, errors, handleChange }) => {
             errors,
             handleChange,
             "text",
-            false
+            false,
           )}
         </div>
       </TwoCol>
@@ -238,7 +238,7 @@ const ActivityFields = ({ data, errors, handleChange }) => {
             errors,
             handleChange,
             "number",
-            false
+            false,
           )}
         </div>
         <div>
@@ -250,7 +250,7 @@ const ActivityFields = ({ data, errors, handleChange }) => {
             handleChange,
             DIFFICULTY_OPTIONS,
             "name",
-            "id"
+            "id",
           )}
         </div>
       </TwoCol>
@@ -263,7 +263,7 @@ const ActivityFields = ({ data, errors, handleChange }) => {
           handleChange,
           null,
           null,
-          t("tourForm.activityDetails.equipmentIncludedHint")
+          t("tourForm.activityDetails.equipmentIncludedHint"),
         )}
       </div>
     </FormSection>
@@ -491,7 +491,7 @@ const LivePreview = ({
     .filter(Boolean);
   const fields = getCompletenessFields(data, itineraryData, activeType, t);
   const pct = Math.round(
-    (fields.filter((f) => f.done).length / fields.length) * 100
+    (fields.filter((f) => f.done).length / fields.length) * 100,
   );
 
   return (
@@ -956,7 +956,7 @@ const TourForm = ({ Type }) => {
             ?.map((e) => parseInt(e.id))
             .filter(Boolean),
           gallery: tour.images?.map((img) =>
-            typeof img === "object" && img?.url ? img.url : img
+            typeof img === "object" && img?.url ? img.url : img,
           ),
           ...(tour.type === "tour"
             ? {
@@ -988,7 +988,7 @@ const TourForm = ({ Type }) => {
             description: i?.description,
             location: i?.location,
             image: i?.image,
-          }))
+          })),
         );
       } catch (err) {
         console.error(err);
@@ -1027,10 +1027,10 @@ const TourForm = ({ Type }) => {
       toast.success(
         id
           ? t("tourForm.toast.updated", { type: label })
-          : t("tourForm.toast.created", { type: label })
+          : t("tourForm.toast.created", { type: label }),
       );
     } catch (err) {
-      toast.error(err.response.data.message);
+      toast.error(err?.response?.data?.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -1126,14 +1126,14 @@ const TourForm = ({ Type }) => {
                   errors,
                   handleChange,
                   "text",
-                  true
+                  true,
                 )}
                 {renderTextarea(
                   t("tourForm.fields.description"),
                   "description",
                   data,
                   errors,
-                  handleChange
+                  handleChange,
                 )}
                 {renderInput(
                   t("tourForm.fields.destination"),
@@ -1142,7 +1142,7 @@ const TourForm = ({ Type }) => {
                   errors,
                   handleChange,
                   "text",
-                  true
+                  true,
                 )}
               </FormSection>
 
@@ -1160,7 +1160,7 @@ const TourForm = ({ Type }) => {
                       errors,
                       handleChange,
                       "number",
-                      true
+                      true,
                     )}
                   </div>
                   {activeType === "tour" ? (
@@ -1172,7 +1172,7 @@ const TourForm = ({ Type }) => {
                         errors,
                         handleChange,
                         "number",
-                        true
+                        true,
                       )}
                     </div>
                   ) : (
@@ -1184,7 +1184,7 @@ const TourForm = ({ Type }) => {
                         errors,
                         handleChange,
                         "number",
-                        true
+                        true,
                       )}
                     </div>
                   )}
@@ -1199,7 +1199,7 @@ const TourForm = ({ Type }) => {
                         errors,
                         handleChange,
                         "number",
-                        true
+                        true,
                       )}
                     </div>
                     <div>
@@ -1211,7 +1211,7 @@ const TourForm = ({ Type }) => {
                         handleChange,
                         translatedCategories,
                         "label",
-                        "id"
+                        "id",
                       )}
                     </div>
                   </TwoCol>
@@ -1225,7 +1225,7 @@ const TourForm = ({ Type }) => {
                       handleChange,
                       categories,
                       "name",
-                      "id"
+                      "id",
                     )}
                   </div>
                 )}
@@ -1290,7 +1290,7 @@ const TourForm = ({ Type }) => {
                       errors,
                       handleChange,
                       true,
-                      t("tourForm.fields.selectThumbnail")
+                      t("tourForm.fields.selectThumbnail"),
                     )}
                   </div>
                   <div>
@@ -1305,7 +1305,7 @@ const TourForm = ({ Type }) => {
                       handleChange,
                       true,
                       20,
-                      t("tourForm.fields.galleryHint")
+                      t("tourForm.fields.galleryHint"),
                     )}
                   </div>
                 </div>
@@ -1339,7 +1339,7 @@ const TourForm = ({ Type }) => {
                       undefined,
                       true,
                       false,
-                      10
+                      10,
                     )}
                   </div>
                   <div>
@@ -1356,7 +1356,7 @@ const TourForm = ({ Type }) => {
                       undefined,
                       true,
                       false,
-                      10
+                      10,
                     )}
                   </div>
                 </div>
@@ -1372,8 +1372,8 @@ const TourForm = ({ Type }) => {
                   {isSubmitting
                     ? t("tourForm.actions.processing")
                     : id
-                    ? t("tourForm.actions.update", { type: Type })
-                    : t("tourForm.actions.publish", { type: Type })}
+                      ? t("tourForm.actions.update", { type: Type })
+                      : t("tourForm.actions.publish", { type: Type })}
                 </button>
               </div>
               <LocationPicker
