@@ -1231,8 +1231,8 @@ const TourForm = ({ Type }) => {
                       data,
                       errors,
                       handleChange,
-                      categories,
-                      "name",
+                      translatedCategories,
+                      "label",
                       "id",
                     )}
                   </div>
