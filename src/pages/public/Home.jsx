@@ -10,6 +10,8 @@ import categoryService from "../../services/categoryService";
 import { categoryKeyMap } from "../../utils/CategoriesMap";
 import renderImage from "../../utils/renderImage";
 
+// ─── Hero background video ───────────────────────────────────
+const HERO_BACKGROUND_VIDEO = "/vids/background_video.mp4";
 // ─── Hero background images carousel configuration ─────────────
 // Easily edit this array to add, remove, or change background images
 const HERO_BACKGROUND_IMAGES = [
@@ -231,7 +233,7 @@ const Home = () => {
     // Start auto-advancing carousel
     carouselIntervalRef.current = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
-        prevIndex === HERO_BACKGROUND_IMAGES.length - 1 ? 0 : prevIndex + 1
+        prevIndex === HERO_BACKGROUND_IMAGES.length - 1 ? 0 : prevIndex + 1,
       );
     }, CAROUSEL_INTERVAL_MS);
 
@@ -346,21 +348,39 @@ const Home = () => {
         // Optional: pause on hover - uncomment the following line and add handlers
         // onMouseEnter={pauseCarousel} onMouseLeave={resumeCarousel}
       >
-        {/* Carousel Images Container */}
-        <div className='absolute inset-0 w-full h-full z-0'>
-          {HERO_BACKGROUND_IMAGES?.map((image, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-                index === currentImageIndex ? "opacity-100" : "opacity-0"
-              }`}
-            >
+        {/* Video Background */}
+
+        {/**
+          <div className='absolute inset-0 w-full h-full z-0'>
+            {HERO_BACKGROUND_IMAGES?.map((image, index) => (
               <div
-                className='w-full h-full bg-cover bg-center bg-no-repeat'
-                style={{ backgroundImage: `url(${image})` }}
-              />
-            </div>
-          ))}
+                key={index}
+                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+                  index === currentImageIndex ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <div
+                  className='w-full h-full bg-cover bg-center bg-no-repeat'
+                  style={{ backgroundImage: `url(${image})` }}
+                />
+              </div>
+            ))}
+          </div>
+         * 
+         */}
+
+        <div className='absolute inset-0 w-full h-full z-0'>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload='auto'
+            className='w-full h-full object-cover'
+            poster={HERO_BACKGROUND_IMAGES[3]} // optional: shows an image while video loads
+          >
+            <source src={HERO_BACKGROUND_VIDEO} type='video/mp4' />
+          </video>
         </div>
 
         {/* Dark overlay for readability */}
@@ -446,7 +466,7 @@ const Home = () => {
                     setCurrentImageIndex((prevIndex) =>
                       prevIndex === HERO_BACKGROUND_IMAGES.length - 1
                         ? 0
-                        : prevIndex + 1
+                        : prevIndex + 1,
                     );
                   }, CAROUSEL_INTERVAL_MS);
                 }
@@ -646,19 +666,19 @@ const Home = () => {
             "home.toursSection.title",
             tours,
             "/tours?type=tour",
-            "home.toursSection.eyebrow"
+            "home.toursSection.eyebrow",
           )}
           {renderSection(
             "home.excursionsSection.title",
             excursions,
             "/tours?type=excursion",
-            "home.excursionsSection.eyebrow"
+            "home.excursionsSection.eyebrow",
           )}
           {renderSection(
             "home.activitiesSection.title",
             activities,
             "/tours?type=activity",
-            "home.activitiesSection.eyebrow"
+            "home.activitiesSection.eyebrow",
           )}
         </>
       )}
