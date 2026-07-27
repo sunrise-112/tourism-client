@@ -369,15 +369,16 @@ const Home = () => {
          * 
          */}
 
-        <div className='absolute inset-0 w-full h-full z-0'>
+        {/* Video Background */}
+        <div className='absolute inset-0 w-full h-full z-0 overflow-hidden'>
           <video
             autoPlay
             muted
             loop
             playsInline
             preload='auto'
-            className='w-full h-full object-cover'
-            poster={HERO_BACKGROUND_IMAGES[3]} // optional: shows an image while video loads
+            poster={HERO_BACKGROUND_IMAGES[0]}
+            className='absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover'
           >
             <source src={HERO_BACKGROUND_VIDEO} type='video/mp4' />
           </video>
