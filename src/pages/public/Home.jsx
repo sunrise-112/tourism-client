@@ -11,7 +11,7 @@ import { categoryKeyMap } from "../../utils/CategoriesMap";
 import renderImage from "../../utils/renderImage";
 
 // ─── Hero background video ───────────────────────────────────
-const HERO_BACKGROUND_VIDEO = "/vids/background_video.mp4";
+const HERO_BACKGROUND_VIDEO = "/vids/intro_video.mp4";
 // ─── Hero background images carousel configuration ─────────────
 // Easily edit this array to add, remove, or change background images
 const HERO_BACKGROUND_IMAGES = [
