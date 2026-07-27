@@ -229,7 +229,9 @@ const Home = () => {
   }, []);
 
   // ─── Hero image carousel auto-advance ─────────────────────
-  useEffect(() => {
+  {
+    /***
+useEffect(() => {
     // Start auto-advancing carousel
     carouselIntervalRef.current = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
@@ -244,6 +246,9 @@ const Home = () => {
       }
     };
   }, []);
+    
+    */
+  }
 
   // Optional: Pause carousel on hover (uncomment if desired)
   // const pauseCarousel = () => {
@@ -454,7 +459,8 @@ const Home = () => {
         </div>
 
         {/* Optional: Carousel navigation dots */}
-        <div className='absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
+        {/**
+         * <div className='absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
           {HERO_BACKGROUND_IMAGES?.map((_, index) => (
             <button
               key={index}
@@ -482,7 +488,6 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Scroll indicator */}
         <div
           className='absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-stone-300 animate-bounce pointer-events-none z-10'
           style={{ marginBottom: "1.5rem" }} // Offset to avoid overlap with dots
@@ -492,6 +497,8 @@ const Home = () => {
           </span>
           <i className='fa fa-chevron-down text-xs' />
         </div>
+         * 
+        */}
       </section>
 
       {/* ── STATS ────────────────────────────────────────── */}
