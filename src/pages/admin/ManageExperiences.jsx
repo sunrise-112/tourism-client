@@ -20,12 +20,19 @@ import userService from "../../services/userService";
 import role from "../../constants/role";
 import paginate from "../../utils/paginate";
 
+// Services
+import categoryService from "../../services/categoryService";
+
+// Utils
+import { categoryKeyMap } from "../../utils/CategoriesMap";
+
 const ManageExperiences = ({ Type }) => {
   const { t } = useTranslation();
   const [searchParam] = useSearchParams();
   const q = searchParam.get("q");
 
   const [tours, setTours] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -39,6 +46,22 @@ const ManageExperiences = ({ Type }) => {
 
   // Derive the pluralised type key once — used for routes and display
   const typePlural = Type === "activity" ? "activities" : Type + "s";
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categories = await categoryService.getAll({
+          is_active: true,
+          limit: 100,
+        });
+        setCategories(categories?.data);
+        console.log("Categories: ", categories);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const columns = [
     {
@@ -91,7 +114,7 @@ const ManageExperiences = ({ Type }) => {
       path: "category",
       content: (item) => (
         <div className='rounded-2xl p-1 border text-center border-amber-800 text-amber-800 bg-amber-100'>
-          {item.category_name}
+          {t(`home.categories.${categoryKeyMap[item?.category_name]}`)}
         </div>
       ),
     },
