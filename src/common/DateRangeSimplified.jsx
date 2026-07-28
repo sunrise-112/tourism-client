@@ -158,8 +158,6 @@ const DateRangePickerSimplified = ({
       const year = monthDate.getFullYear();
       const month = monthDate.getMonth();
       const firstDayOfWeek = new Date(year, month, 1).getDay();
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
 
       return Array.from({ length: 42 }, (_, i) => {
         const date = new Date(year, month, i - firstDayOfWeek + 1);
@@ -181,9 +179,9 @@ const DateRangePickerSimplified = ({
           day: date.getDate(),
           isCurrentMonth:
             date.getMonth() === month && date.getFullYear() === year,
-          isToday: ts === today.getTime(),
+          isToday: ts === new Date().setHours(0, 0, 0, 0), // ✅ keep today highlight
           isInRange: !!(isInRange || isHoverRange),
-          isFuture: date > today,
+          isFuture: false, // ✅ never disable future
           isStartDate: !!(
             selection.startDate && ts === selection.startDate.getTime()
           ),
@@ -283,20 +281,16 @@ const DateRangePickerSimplified = ({
               return (
                 <button
                   key={i}
-                  onClick={() => !day.isFuture && handleDateClick(day.date)}
+                  onClick={() => handleDateClick(day.date)} // ✅ removed isFuture guard
                   onMouseEnter={() => setHoverDate(day.date)}
                   onMouseLeave={() => setHoverDate(null)}
-                  disabled={day.isFuture}
                   className={[
-                    "relative h-8 w-full text-xs flex items-center justify-center transition-all duration-100 focus:outline-none select-none",
+                    "relative h-8 w-full text-xs flex items-center justify-center transition-all duration-100 focus:outline-none select-none cursor-pointer", // ✅ removed disabled/opacity classes
                     !day.isCurrentMonth ? "text-stone-300" : "text-stone-700",
-                    day.isFuture
-                      ? "opacity-30 cursor-not-allowed"
-                      : "cursor-pointer",
                     day.isStartDate
-                      ? `bg-amber-400 text-amber-900 font-bold shadow-sm ${isSingle ? "rounded-xl" : "rounded-l-full"}`
+                      ? `bg-amber-400 text-amber-900 font-bold shadow-sm ${day.isStartDate && day.isEndDate ? "rounded-xl" : "rounded-l-full"}`
                       : "",
-                    day.isEndDate && !isSingle
+                    day.isEndDate && !(day.isStartDate && day.isEndDate)
                       ? "bg-amber-400 text-amber-900 font-bold shadow-sm rounded-r-full"
                       : "",
                     day.isInRange && !day.isStartDate && !day.isEndDate
@@ -305,7 +299,6 @@ const DateRangePickerSimplified = ({
                     !day.isStartDate &&
                     !day.isEndDate &&
                     !day.isInRange &&
-                    !day.isFuture &&
                     day.isCurrentMonth
                       ? "hover:bg-stone-100 rounded-lg"
                       : "",
