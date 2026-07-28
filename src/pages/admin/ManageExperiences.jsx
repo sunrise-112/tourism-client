@@ -32,7 +32,6 @@ const ManageExperiences = ({ Type }) => {
   const q = searchParam.get("q");
 
   const [tours, setTours] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -46,22 +45,6 @@ const ManageExperiences = ({ Type }) => {
 
   // Derive the pluralised type key once — used for routes and display
   const typePlural = Type === "activity" ? "activities" : Type + "s";
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categories = await categoryService.getAll({
-          is_active: true,
-          limit: 100,
-        });
-        setCategories(categories?.data);
-        console.log("Categories: ", categories);
-      } catch (error) {
-        console.log("Error: ", error);
-      }
-    };
-    fetchCategories();
-  }, []);
 
   const columns = [
     {
