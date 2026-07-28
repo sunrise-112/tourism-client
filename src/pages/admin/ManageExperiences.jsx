@@ -115,7 +115,7 @@ const ManageExperiences = ({ Type }) => {
       content: (item) => (
         <div className='rounded-2xl p-1 border text-center border-amber-800 text-amber-800 bg-amber-100'>
           {t(
-            `home.categories.${categoryKeyMap[item?.category_name]}` ??
+            `home.categories.${categoryKeyMap["Adventure"]}` ??
               item?.category_name,
           )}
         </div>
