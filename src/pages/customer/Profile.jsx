@@ -225,7 +225,7 @@ const Profile = () => {
                       />
                     ) : (
                       <div className='w-full h-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-black text-3xl'>
-                        {user?.name?.charAt(0)?.toUpperCase() || "?"}
+                        {user?.name?.charAt(0)?.toUpperCase() || ""}
                       </div>
                     )}
                   </div>
