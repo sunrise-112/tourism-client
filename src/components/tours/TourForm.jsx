@@ -1033,7 +1033,7 @@ const TourForm = ({ Type }) => {
           : t("tourForm.toast.created", { type: label }),
       );
 
-      setTimeout(() => navigate("/admin/tours"), 500);
+      setTimeout(() => navigate(-1), 500);
     } catch (err) {
       console.error(err);
       toast.error(err?.response?.data?.message);
