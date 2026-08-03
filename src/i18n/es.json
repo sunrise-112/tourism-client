@@ -1204,6 +1204,18 @@
       "shopping": "Compras",
       "guidedTours": "Visitas Guiadas",
       "sahara": "Sáhara"
+    }, "why": {
+      "eyebrow": "Por Qué Elegirnos",
+      "title": "Viaja Con Confianza",
+      "subtitle": "Hacemos todo lo posible para que tu viaje sea inolvidable.",
+      "safe": "Seguro y Confiable",
+      "safeDesc": "Tu seguridad es nuestra máxima prioridad con socios verificados y monitoreo 24/7.",
+      "price": "Garantía de Mejor Precio",
+      "priceDesc": "Tarifas competitivas sin cargos ocultos. Obtén el mejor valor por tu dinero.",
+      "support": "Soporte 24/7",
+      "supportDesc": "Nuestro equipo dedicado está disponible las 24 horas para asistirte en cualquier momento.",
+      "custom": "Viajes Personalizados",
+      "customDesc": "Itinerarios a medida diseñados para adaptarse a tus preferencias y necesidades."
     },
     "featured": {
       "eyebrow": "Seleccionados para ti",
