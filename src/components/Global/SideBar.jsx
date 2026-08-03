@@ -368,7 +368,11 @@ const Sidebar = ({
                 ring-2 ring-white/10 shadow-lg shrink-0
               '
             >
-              {renderImage(user?.avatar)}
+              <img
+                className='w-full h-full object-cover'
+                src={user?.avatar}
+                alt={user?.name}
+              />
             </div>
             {!collapsed && (
               <div className='flex-1 min-w-0'>
