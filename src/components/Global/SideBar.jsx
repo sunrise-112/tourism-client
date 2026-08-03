@@ -5,6 +5,7 @@ import role from "../../constants/role";
 import bookingService from "../../services/bookingService";
 import { useTranslation } from "react-i18next";
 import settingsService from "../../services/adminSettings";
+import renderImage from "../../utils/renderImage";
 
 const user = userService?.getCurrentUser();
 const isAdmin = user?.role === role.ADMIN;
@@ -367,15 +368,15 @@ const Sidebar = ({
                 ring-2 ring-white/10 shadow-lg shrink-0
               '
             >
-              {(user?.name || "T").charAt(0).toUpperCase()}
+              {renderImage(user?.avatar)}
             </div>
             {!collapsed && (
               <div className='flex-1 min-w-0'>
                 <p className='text-sm font-bold text-white/90 truncate'>
-                  {user?.name || "Traveler"}
+                  {user?.name}
                 </p>
                 <p className='text-[11px] text-white/30 truncate capitalize font-medium'>
-                  {user?.role || "Customer"}
+                  {user?.role}
                 </p>
               </div>
             )}
@@ -399,7 +400,7 @@ const Sidebar = ({
                     w-2 h-2 bg-[#2a1f15] border-l border-b border-white/[0.08] rotate-45
                   '
                 />
-                {user?.name || "Traveler"}
+                {user?.name}
               </div>
             )}
           </div>
