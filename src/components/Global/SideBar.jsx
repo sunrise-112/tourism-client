@@ -369,7 +369,7 @@ const Sidebar = ({
               '
             >
               <img
-                className='w-full h-full object-cover'
+                className='w-full h-full object-cover rounded-full'
                 src={user?.avatar}
                 alt={user?.name}
               />
