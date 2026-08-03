@@ -163,7 +163,7 @@ const Sidebar = ({
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className='fixed inset-0 z-30 bg-black/50 lg:hidden'
+          className='fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden transition-opacity duration-300 ease-out'
           onClick={() => {
             setMobileOpen(false);
             setIsOpen(false);
@@ -174,32 +174,45 @@ const Sidebar = ({
       <aside
         className={`
           fixed top-0 left-0 h-full z-40 flex flex-col
-          bg-[#1C1107] border-r border-white/5
-          transition-all duration-300 ease-in-out
+          bg-[#1C1107] border-r border-white/[0.06]
+          transition-[width,transform] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
           ${collapsed ? "w-[72px]" : "w-64"}
           ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
+        style={{
+          fontFamily: "'DM Sans', sans-serif",
+          boxShadow: collapsed ? "none" : "4px 0 24px rgba(0,0,0,0.15)",
+        }}
       >
         {/* Logo */}
         <div
-          className={`flex items-center h-16 px-4 border-b border-white/5 shrink-0  ${
-            collapsed ? "justify-center" : "gap-3"
-          }`}
+          className={`
+            flex items-center h-[68px] px-4 border-b border-white/[0.06] shrink-0
+            transition-all duration-300
+            ${collapsed ? "justify-center" : "gap-3"}
+          `}
         >
-          <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0'>
+          <div
+            className='
+              w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-orange-600 
+              flex items-center justify-center shrink-0 
+              shadow-lg shadow-amber-500/20 ring-2 ring-white/10
+              transition-transform duration-300 hover:scale-105
+            '
+          >
             {companyInfo?.logo ? (
               <img
                 src={companyInfo?.logo}
-                className='w-full h-full object-cover rounded-lg'
+                className='w-full h-full object-cover rounded-xl'
+                alt=''
               />
             ) : (
-              <i className='fa fa-globe text-white text-sm' />
+              <i className='fa fa-globe text-white text-sm drop-shadow' />
             )}
           </div>
           {!collapsed && (
             <span
-              className='text-white font-black text-base tracking-tight'
+              className='text-white font-black text-base tracking-tight truncate'
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               {import.meta.env.VITE_COMPANY || companyInfo?.company_name}
@@ -208,25 +221,15 @@ const Sidebar = ({
         </div>
 
         {/* Nav */}
-        <nav className='flex-1 overflow-y-auto py-4 px-2 space-y-1 scrollbar-hide'>
-          {NAV.map(({ items }) => (
-            <div className={`mb-2`}>
-              {/* Section header */}
-              {/*   {!collapsed && (
-                <button
-                  onClick={() => toggleSection(section)}
-                  className='w-full flex items-center justify-between px-3 py-1.5 mb-1 group'
-                >
-                  <span className='text-[10px] font-bold uppercase tracking-[0.18em] text-white/30 group-hover:text-white/50 transition-colors'>
-                    {section}
-                  </span>
-                  <i
-                    className={`fa fa-chevron-down text-[8px] text-white/25 transition-transform duration-200 ${
-                      openSections[section] ? "" : "-rotate-90"
-                    }`}
-                  />
-                </button>
-              )} */}
+        <nav
+          className='flex-1 overflow-y-auto py-5 px-2.5 space-y-5 scrollbar-hide'
+          style={{
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(255,255,255,0.1) transparent",
+          }}
+        >
+          {NAV.map(({ items }, navIdx) => (
+            <div key={navIdx} className='space-y-1'>
               {items.map((item) => (
                 <Link
                   key={item.path}
@@ -237,91 +240,169 @@ const Sidebar = ({
                     setIsOpen(false);
                   }}
                   className={`
-                    flex items-center gap-3 px-3 py-2.5 rounded-xl mb-0.5 transition-all duration-150 group relative
+                    relative flex items-center gap-3 px-3 py-2.5 rounded-xl 
+                    transition-all duration-200 ease-out group
+                    ${collapsed ? "justify-center" : ""}
                     ${
                       isActive(item.path)
-                        ? "bg-amber-500/20 text-amber-400"
-                        : "text-white/40 hover:text-white/80 hover:bg-white/5"
+                        ? "bg-gradient-to-r from-amber-500/15 via-amber-500/5 to-transparent text-amber-400 shadow-[inset_3px_0_0_0_rgba(251,191,36,0.9)]"
+                        : "text-white/40 hover:text-white/90 hover:bg-white/[0.04] hover:shadow-[inset_3px_0_0_0_rgba(255,255,255,0.08)]"
                     }
-                    ${collapsed ? "justify-center" : ""}
                   `}
                 >
+                  {/* Ambient glow for active */}
                   {isActive(item.path) && (
-                    <span className='absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-amber-400 rounded-r-full' />
+                    <span className='absolute inset-0 rounded-xl bg-amber-400/[0.03] blur-md' />
                   )}
-                  <i className={`fa ${item.icon} text-sm w-4 text-center`} />
+
+                  <span
+                    className={`
+                      relative flex items-center justify-center w-5 h-5
+                      transition-all duration-200
+                      ${
+                        isActive(item.path)
+                          ? "scale-110"
+                          : "group-hover:scale-105 group-hover:text-white/70"
+                      }
+                    `}
+                  >
+                    <i
+                      className={`
+                        fa ${item.icon} text-[15px]
+                        ${
+                          isActive(item.path)
+                            ? "drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]"
+                            : ""
+                        }
+                      `}
+                    />
+                  </span>
+
                   {item.total ? (
-                    <div
-                      className={`${bookings > 0 && item?.className}
-                                  absolute  right-1.5 min-w-[18px] h-[18px] px-1
-                                  bg-amber-500 rounded-full text-[10px] font-bold *
-                                  text-white flex items-center justify-center leading-none`}
+                    <span
+                      className={`
+                        ${bookings > 0 && item?.className}
+                        absolute right-2 top-1/2 -translate-y-1/2
+                        min-w-[20px] h-5 px-1.5
+                        bg-gradient-to-br from-amber-400 to-amber-600 
+                        rounded-full text-[10px] font-bold text-white 
+                        flex items-center justify-center leading-none
+                        shadow-lg shadow-amber-500/30 ring-2 ring-[#1C1107]
+                        z-10
+                      `}
                     >
                       {item.total}
-                    </div>
+                    </span>
                   ) : (
-                    <div></div>
+                    <div className='hidden' />
                   )}
+
                   {!collapsed && (
-                    <span className='text-sm font-medium'>{item.label}</span>
-                  )}
-                  {/* Tooltip on collapsed */}
-                  {collapsed && (
-                    <div className='absolute left-full ml-3 px-2.5 py-1.5 bg-stone-800 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-xl'>
+                    <span
+                      className={`
+                        relative text-sm font-medium tracking-wide
+                        transition-all duration-200
+                        ${
+                          isActive(item.path)
+                            ? "translate-x-0.5"
+                            : "group-hover:translate-x-0.5"
+                        }
+                      `}
+                    >
                       {item.label}
+                    </span>
+                  )}
+
+                  {/* Collapsed tooltip */}
+                  {collapsed && (
+                    <div
+                      className='
+                        absolute left-full ml-3 px-3 py-2 
+                        bg-[#2a1f15] text-white text-xs font-medium 
+                        rounded-lg whitespace-nowrap 
+                        opacity-0 group-hover:opacity-100 
+                        pointer-events-none transition-all duration-200 z-50 
+                        shadow-2xl border border-white/[0.08]
+                        translate-x-2 group-hover:translate-x-0
+                      '
+                    >
+                      <span
+                        className='
+                          absolute left-0 top-1/2 -translate-x-1 -translate-y-1/2 
+                          w-2 h-2 bg-[#2a1f15] border-l border-b border-white/[0.08] rotate-45
+                        '
+                      />
+                      {item.label}
+                      {item.total > 0 && (
+                        <span className='ml-2 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-amber-500 rounded-full text-[9px] font-bold'>
+                          {item.total}
+                        </span>
+                      )}
                     </div>
                   )}
                 </Link>
               ))}
+              {/* Section divider */}
+              {navIdx < NAV.length - 1 && (
+                <div className='pt-4 mt-2 border-t border-white/[0.04]' />
+              )}
             </div>
           ))}
         </nav>
 
-        {/* User + collapse */}
-        <div className='shrink-0 border-t border-white/5 p-3 space-y-2'>
-          {/* User row */}
+        {/* User */}
+        <div className='shrink-0 border-t border-white/[0.06] p-3 bg-gradient-to-t from-black/20 to-transparent'>
           <div
-            className={`flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer ${
-              collapsed ? "justify-center" : ""
-            }`}
+            className={`
+              group relative flex items-center gap-3 px-2.5 py-2.5 rounded-xl 
+              hover:bg-white/[0.04] active:bg-white/[0.06]
+              transition-all duration-200 cursor-pointer
+              ${collapsed ? "justify-center" : ""}
+            `}
           >
-            {/*             <Avatar
-              name={user?.name}
-              src={
-                user?.avatar
-                  ? `${import.meta.env.VITE_BACK_END_URL}${user.avatar}`
-                  : null
-              }
-              size='w-8 h-8'
-              textSize='text-xs'
-            />
- */}{" "}
+            <div
+              className='
+                w-8 h-8 rounded-full bg-gradient-to-br from-stone-600 to-stone-700 
+                flex items-center justify-center text-white text-xs font-bold
+                ring-2 ring-white/10 shadow-lg shrink-0
+              '
+            >
+              {(user?.name || "T").charAt(0).toUpperCase()}
+            </div>
             {!collapsed && (
               <div className='flex-1 min-w-0'>
-                <p className='text-xs font-bold text-white truncate'>
+                <p className='text-sm font-bold text-white/90 truncate'>
                   {user?.name || "Traveler"}
                 </p>
-                <p className='text-[10px] text-white/30 truncate capitalize'>
+                <p className='text-[11px] text-white/30 truncate capitalize font-medium'>
                   {user?.role || "Customer"}
                 </p>
               </div>
             )}
+
+            {/* Collapsed user tooltip */}
+            {collapsed && (
+              <div
+                className='
+                  absolute left-full ml-3 px-3 py-2 
+                  bg-[#2a1f15] text-white text-xs font-medium 
+                  rounded-lg whitespace-nowrap 
+                  opacity-0 group-hover:opacity-100 
+                  pointer-events-none transition-all duration-200 z-50 
+                  shadow-2xl border border-white/[0.08]
+                  translate-x-2 group-hover:translate-x-0
+                '
+              >
+                <span
+                  className='
+                    absolute left-0 top-1/2 -translate-x-1 -translate-y-1/2 
+                    w-2 h-2 bg-[#2a1f15] border-l border-b border-white/[0.08] rotate-45
+                  '
+                />
+                {user?.name || "Traveler"}
+              </div>
+            )}
           </div>
-          {/* Collapse toggle */}
-          {/*           <button
-            onClick={() => setCollapsed((c) => !c)}
-            className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-white/30 hover:text-white/60 hover:bg-white/5 transition-all text-xs ${
-              collapsed ? "justify-center" : ""
-            }`}
-          >
-            <i
-              className={`fa ${
-                collapsed ? "fa-chevron-right" : "fa-chevron-left"
-              } text-xs`}
-            />
-            {!collapsed && <span>Collapse</span>}
-          </button>
- */}{" "}
         </div>
       </aside>
     </>
