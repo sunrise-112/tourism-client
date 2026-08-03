@@ -1205,6 +1205,16 @@
       "guidedTours": "Guided Tours",
       "sahara": "Sahara"
     },
+    "why": {
+      "safe": "Safe & Secure",
+      "safeDesc": "Your safety is our top priority with verified partners and 24/7 monitoring.",
+      "price": "Best Price Guarantee",
+      "priceDesc": "Competitive rates with no hidden fees. Get the best value for your money.",
+      "support": "24/7 Support",
+      "supportDesc": "Our dedicated team is available around the clock to assist you anytime.",
+      "custom": "Customized Trips",
+      "customDesc": "Tailor-made itineraries designed to match your preferences and needs."
+    },
     "featured": {
       "eyebrow": "Handpicked for You",
       "title": "Featured Tours",

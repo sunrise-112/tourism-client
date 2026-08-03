@@ -627,7 +627,7 @@ const Home = () => {
                   className='w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-400 group-hover:scale-110 group-hover:rotate-3 shadow-sm'
                   style={{ background: cat.bg }}
                 >
-                  <i className={`${cat.icon} text-lg`} />
+                  <i className={`${cat.icon} text-lg text-white`} />
                 </div>
                 <span className='text-xs font-bold tracking-wide text-stone-500 group-hover:text-stone-800 text-center leading-tight transition-colors duration-200'>
                   {cat.label}
