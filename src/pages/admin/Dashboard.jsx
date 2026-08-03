@@ -259,24 +259,26 @@ const AdminDashboard = () => {
   }, {});
 
   const primaryMonthMap = Object.fromEntries(
-    (ps?.monthlyBreakdown ?? []).map((m) => [m.month, m])
+    (ps?.monthlyBreakdown ?? []).map((m) => [m.month, m]),
   );
   const compareMonthMap = Object.fromEntries(
-    (cs?.monthlyBreakdown ?? []).map((m) => [m.month, m])
+    (cs?.monthlyBreakdown ?? []).map((m) => [m.month, m]),
   );
   const allMonthLabels = Array.from(
     new Set([
       ...(ps?.monthlyBreakdown ?? []).map((m) => m.month),
       ...(cs?.monthlyBreakdown ?? []).map((m) => m.month),
-    ])
+    ]),
   );
   const monthlyData = allMonthLabels.map((month) => ({
     month,
     revenue: primaryMonthMap[month]?.revenue ?? 0,
     bookings: primaryMonthMap[month]?.bookings ?? 0,
     people: primaryMonthMap[month]?.total_people ?? 0,
-    cmpRevenue: hasCompare ? compareMonthMap[month]?.revenue ?? 0 : undefined,
-    cmpBookings: hasCompare ? compareMonthMap[month]?.bookings ?? 0 : undefined,
+    cmpRevenue: hasCompare ? (compareMonthMap[month]?.revenue ?? 0) : undefined,
+    cmpBookings: hasCompare
+      ? (compareMonthMap[month]?.bookings ?? 0)
+      : undefined,
   }));
 
   const pendingReviews = reviews.filter((r) => !r.approved).length;
@@ -314,7 +316,7 @@ const AdminDashboard = () => {
       sub: t("dashboard.kpi.confirmedPending", {
         confirmed: confirmedCount,
         pending: pendingCount,
-      }), 
+      }),
       color: "from-emerald-400 to-teal-500",
       ring: "ring-emerald-200",
       trend: t("dashboard.kpi.cancelledCount", { count: cancelledCount }),
@@ -356,58 +358,91 @@ const AdminDashboard = () => {
       <main className='min-h-screen bg-stone-100'>
         <div className='p-2 md:p-8 max-w-[1400px] space-y-3'>
           {/* ── Welcome banner ──────────────────────────── */}
-          <div className='relative bg-[#1C1107] rounded-2xl overflow-hidden p-7 flex flex-col md:flex-row md:items-center justify-between gap-6'>
+          <div className='relative bg-[#1C1107] rounded-3xl overflow-hidden p-8 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-8 isolate'>
+            {/* Base texture */}
             <div
-              className='absolute inset-0 opacity-[0.04]'
+              className='absolute inset-0 opacity-[0.03]'
               style={{
                 backgroundImage:
-                  "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-                backgroundSize: "24px 24px",
+                  "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.8) 1px, transparent 0)",
+                backgroundSize: "28px 28px",
               }}
             />
-            <div className='absolute top-0 right-0 w-72 h-72 bg-amber-500/15 rounded-full blur-[80px] pointer-events-none' />
-            <div className='absolute bottom-0 left-1/3 w-48 h-48 bg-orange-600/10 rounded-full blur-[60px] pointer-events-none' />
-            <div className='relative z-10'>
-              <div className='flex items-center gap-2 mb-2'>
-                <span className='text-xs font-bold uppercase tracking-[0.2em] text-amber-400'>
+
+            {/* Atmospheric glow layers */}
+            <div
+              className='absolute -top-24 -right-24 w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse'
+              style={{ animationDuration: "4s" }}
+            />
+            <div className='absolute -bottom-20 left-1/4 w-64 h-64 bg-orange-600/8 rounded-full blur-[80px] pointer-events-none' />
+            <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-900/5 rounded-full blur-[120px] pointer-events-none' />
+
+            {/* Subtle top highlight line */}
+            <div className='absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent' />
+
+            {/* Content */}
+            <div className='relative z-10 max-w-xl'>
+              <div className='inline-flex items-center gap-2.5 mb-4 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.06] backdrop-blur-sm'>
+                <span className='relative flex h-2 w-2'>
+                  <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75' />
+                  <span className='relative inline-flex rounded-full h-2 w-2 bg-emerald-500' />
+                </span>
+                <span className='text-[11px] font-bold uppercase tracking-[0.18em] text-amber-400/90'>
                   {t("dashboard.banner.adminPanel")}
                 </span>
-                <span className='w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse' />
-                <span className='text-[10px] text-emerald-400 font-semibold'>
+                <span className='w-px h-3 bg-white/10' />
+                <span className='text-[11px] text-emerald-400/80 font-semibold tracking-wide'>
                   {t("dashboard.banner.live")}
                 </span>
               </div>
+
               <h1
-                className='text-2xl md:text-3xl font-black text-white mb-1'
+                className='text-3xl md:text-4xl font-black text-white mb-3 leading-tight'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 {getGreeting()},{" "}
-                {user?.name?.split(" ")[0] ||
-                  t("dashboard.banner.defaultAdmin")}{" "}
+                <span className='text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-orange-400'>
+                  {user?.name?.split(" ")[0] ||
+                    t("dashboard.banner.defaultAdmin")}
+                </span>
               </h1>
-              <p className='text-stone-400 text-sm'>
-                {new Date().toLocaleDateString("en-US", {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
-                })}{" "}
-                — {t("dashboard.banner.overview")}
-              </p>
+
+              <div className='flex items-center gap-2 text-stone-400/80'>
+                <i className='fa fa-calendar-alt text-xs text-stone-500' />
+                <p className='text-sm font-medium tracking-wide'>
+                  {new Date().toLocaleDateString("en-US", {
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                  <span className='mx-2 text-stone-600'>/</span>
+                  <span className='text-stone-500'>
+                    {t("dashboard.banner.overview")}
+                  </span>
+                </p>
+              </div>
             </div>
+
+            {/* Actions */}
             <div className='relative z-10 flex items-center gap-3 shrink-0 flex-wrap'>
               <Link
                 to='/admin/tours/create'
-                className='flex items-center gap-2 text-sm font-bold text-amber-900 bg-amber-400 hover:bg-amber-300 transition-colors px-5 py-2.5 rounded-xl shadow-lg shadow-amber-900/30'
+                className='group relative flex items-center gap-2.5 text-sm font-bold text-[#1C1107] bg-gradient-to-r from-amber-300 to-amber-400 hover:from-amber-200 hover:to-amber-300 transition-all duration-300 px-6 py-3 rounded-2xl shadow-lg shadow-amber-900/30 hover:shadow-amber-900/50 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden'
               >
-                <i className='fa fa-plus text-xs' />{" "}
-                {t("dashboard.banner.addTour")}
+                <span className='absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out' />
+                <i className='fa fa-plus text-xs relative z-10 group-hover:rotate-90 transition-transform duration-300' />
+                <span className='relative z-10'>
+                  {t("dashboard.banner.addTour")}
+                </span>
               </Link>
+
               <Link
                 to='/admin/bookings'
-                className='flex items-center gap-2 text-sm font-semibold text-stone-300 hover:text-white border border-white/15 hover:border-white/30 px-5 py-2.5 rounded-xl transition-all'
+                className='group flex items-center gap-2.5 text-sm font-semibold text-stone-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-white/20 px-6 py-3 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 backdrop-blur-sm'
               >
-                <i className='fa fa-suitcase text-xs' />{" "}
-                {t("dashboard.banner.viewBookings")}
+                <i className='fa fa-suitcase text-xs group-hover:scale-110 transition-transform duration-300' />
+                <span>{t("dashboard.banner.viewBookings")}</span>
+                <i className='fa fa-arrow-right text-[10px] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300' />
               </Link>
             </div>
           </div>
@@ -1072,7 +1107,7 @@ const AdminDashboard = () => {
                 ) : (
                   topTours.map((tour, i) => {
                     const ct = cs?.topTours?.find(
-                      (c) => c.tour_id === tour.tour_id
+                      (c) => c.tour_id === tour.tour_id,
                     );
                     const d = ct ? delta(tour.revenue, ct.revenue) : null;
                     return (
@@ -1085,8 +1120,8 @@ const AdminDashboard = () => {
                             i === 0
                               ? "text-amber-500"
                               : i === 1
-                              ? "text-stone-400"
-                              : "text-stone-300"
+                                ? "text-stone-400"
+                                : "text-stone-300"
                           }`}
                         >
                           #{i + 1}
