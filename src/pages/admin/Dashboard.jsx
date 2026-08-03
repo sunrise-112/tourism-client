@@ -358,65 +358,58 @@ const AdminDashboard = () => {
       <main className='min-h-screen bg-stone-100'>
         <div className='p-2 md:p-8 max-w-[1400px] space-y-3'>
           {/* ── Welcome banner ──────────────────────────── */}
-          <div className='relative bg-[#1C1107] rounded-3xl overflow-hidden p-8 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-8 isolate'>
+          <div className='relative bg-white rounded-3xl overflow-hidden p-8 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-8 isolate border border-stone-100 shadow-sm'>
             {/* Base texture */}
             <div
-              className='absolute inset-0 opacity-[0.03]'
+              className='absolute inset-0 opacity-[0.3]'
               style={{
                 backgroundImage:
-                  "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.8) 1px, transparent 0)",
+                  "radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 0)",
                 backgroundSize: "28px 28px",
               }}
             />
 
             {/* Atmospheric glow layers */}
-            <div
-              className='absolute -top-24 -right-24 w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse'
-              style={{ animationDuration: "4s" }}
-            />
-            <div className='absolute -bottom-20 left-1/4 w-64 h-64 bg-orange-600/8 rounded-full blur-[80px] pointer-events-none' />
-            <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-900/5 rounded-full blur-[120px] pointer-events-none' />
-
-            {/* Subtle top highlight line */}
-            <div className='absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent' />
+            <div className='absolute -top-24 -right-24 w-[400px] h-[400px] bg-amber-100/60 rounded-full blur-[100px] pointer-events-none' />
+            <div className='absolute -bottom-20 left-1/4 w-64 h-64 bg-orange-100/40 rounded-full blur-[80px] pointer-events-none' />
 
             {/* Content */}
             <div className='relative z-10 max-w-xl'>
-              <div className='inline-flex items-center gap-2.5 mb-4 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.06] backdrop-blur-sm'>
+              <div className='inline-flex items-center gap-2.5 mb-4 px-3 py-1.5 rounded-full bg-stone-50 border border-stone-100'>
                 <span className='relative flex h-2 w-2'>
                   <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75' />
                   <span className='relative inline-flex rounded-full h-2 w-2 bg-emerald-500' />
                 </span>
-                <span className='text-[11px] font-bold uppercase tracking-[0.18em] text-amber-400/90'>
+                <span className='text-[11px] font-bold uppercase tracking-[0.18em] text-amber-700'>
                   {t("dashboard.banner.adminPanel")}
                 </span>
-                <span className='w-px h-3 bg-white/10' />
-                <span className='text-[11px] text-emerald-400/80 font-semibold tracking-wide'>
+                <span className='w-px h-3 bg-stone-200' />
+                <span className='text-[11px] text-emerald-600 font-semibold tracking-wide'>
                   {t("dashboard.banner.live")}
                 </span>
               </div>
 
               <h1
-                className='text-3xl md:text-4xl font-black text-white mb-3 leading-tight'
+                className='text-3xl md:text-4xl font-black text-stone-900 mb-3 leading-tight'
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 {getGreeting()},{" "}
-                <span className='text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-orange-400'>
+                <span className='text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600'>
                   {user?.name?.split(" ")[0] ||
                     t("dashboard.banner.defaultAdmin")}
                 </span>
               </h1>
 
-              <div className='flex items-center gap-2 text-stone-400/80'>
-                <i className='fa fa-calendar-alt text-xs text-stone-500' />
+              <div className='flex items-center gap-2 text-stone-400'>
+                <i className='fa fa-calendar-alt text-xs text-stone-300' />
                 <p className='text-sm font-medium tracking-wide'>
                   {new Date().toLocaleDateString("en-US", {
                     weekday: "long",
                     month: "long",
                     day: "numeric",
                   })}
-                  <span className='mx-2 text-stone-600'>/</span>
-                  <span className='text-stone-500'>
+                  <span className='mx-2 text-stone-200'>/</span>
+                  <span className='text-stone-400'>
                     {t("dashboard.banner.overview")}
                   </span>
                 </p>
@@ -427,7 +420,7 @@ const AdminDashboard = () => {
             <div className='relative z-10 flex items-center gap-3 shrink-0 flex-wrap'>
               <Link
                 to='/admin/tours/create'
-                className='group relative flex items-center gap-2.5 text-sm font-bold text-[#1C1107] bg-gradient-to-r from-amber-300 to-amber-400 hover:from-amber-200 hover:to-amber-300 transition-all duration-300 px-6 py-3 rounded-2xl shadow-lg shadow-amber-900/30 hover:shadow-amber-900/50 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden'
+                className='group relative flex items-center gap-2.5 text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 transition-all duration-300 px-6 py-3 rounded-2xl shadow-lg shadow-amber-900/20 hover:shadow-amber-900/40 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden'
               >
                 <span className='absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out' />
                 <i className='fa fa-plus text-xs relative z-10 group-hover:rotate-90 transition-transform duration-300' />
@@ -438,7 +431,7 @@ const AdminDashboard = () => {
 
               <Link
                 to='/admin/bookings'
-                className='group flex items-center gap-2.5 text-sm font-semibold text-stone-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-white/20 px-6 py-3 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 backdrop-blur-sm'
+                className='group flex items-center gap-2.5 text-sm font-semibold text-stone-600 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 border border-stone-200 hover:border-stone-300 px-6 py-3 rounded-2xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0'
               >
                 <i className='fa fa-suitcase text-xs group-hover:scale-110 transition-transform duration-300' />
                 <span>{t("dashboard.banner.viewBookings")}</span>
